@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dltacademy.github.io/sitemap.xml
