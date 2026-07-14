@@ -21,4 +21,11 @@ const TOOLS = [
     tag: "Iniciante",
     tone: "blue",
   },
+  {
+    name: "Vender ou Segurar?",
+    desc: "4 perguntas pra descobrir se vender agora é decisão ou pânico — e o que fazer a seguir.",
+    url: "/vender-ou-segurar/",
+    tag: "Já tem posição",
+    tone: "green",
+  },
 ];
