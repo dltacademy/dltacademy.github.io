@@ -4,6 +4,7 @@
 
 const CATEGORY_LABELS = {
   ferramenta: "Ferramentas",
+  guia: "Guias",
   protocolo: "Protocolos",
   manual: "Manuais",
   teste: "Testes",
@@ -49,6 +50,7 @@ function renderTools() {
 
     const section = document.createElement("section");
     section.className = "catalog-section";
+    section.id = category === "guia" ? "guias" : category + "s";
     const title = document.createElement("h2");
     title.textContent = CATEGORY_LABELS[category] || category;
     const categoryGrid = document.createElement("div");

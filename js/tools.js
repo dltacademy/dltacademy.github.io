@@ -9,6 +9,14 @@
 
 const TOOLS = [
   {
+    name: "Criar conta com segurança",
+    desc: "Um passo por vez para criar e proteger sua conta, sem compartilhar dados sensíveis.",
+    url: "/guias/conta-binance/",
+    tag: "Guia interativo",
+    tone: "blue",
+    category: "guia",
+  },
+  {
     name: "Sobrevive ou Quebra?",
     desc: "Simulador de risco de futuros + raio-x do seu histórico de trades.",
     url: "https://sobrevive-ou-quebra.dlt.academy/",
