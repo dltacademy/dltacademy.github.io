@@ -1,0 +1,23 @@
+:root { --guide-width: 680px; }
+
+.guide-wrap { max-width: var(--guide-width); margin: 0 auto; padding: 0 20px; }
+.guide-hero { padding: 52px 0 24px; }
+.guide-hero h1 { margin-top: 0; }
+.guide-card { background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+.guide-step-label { color: var(--accent); font-family: var(--font-head); font-size: 12px; font-weight: 700; letter-spacing: .08em; margin: 0 0 8px; text-transform: uppercase; }
+.guide-card h2 { font-size: 24px; margin-bottom: 10px; }
+.guide-card > p { color: var(--text-dim); margin: 0 0 18px; }
+.guide-list { color: var(--text-dim); line-height: 1.65; margin: 0 0 22px; padding-left: 20px; }
+.guide-list li + li { margin-top: 8px; }
+.guide-note { background: var(--bg-elev-2); border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; color: var(--text-dim); font-size: 14px; margin: 0 0 20px; padding: 12px 14px; }
+.guide-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.guide-progress { display: flex; gap: 8px; list-style: none; margin: 0 0 18px; padding: 0; }
+.guide-progress li { background: var(--bg-elev-2); border-radius: 999px; color: var(--text-faint); flex: 1; font-size: 11px; height: 5px; }
+.guide-progress li.active { background: var(--accent); }
+.guide-noscript { color: var(--text-dim); padding-bottom: 40px; }
+
+@media (max-width: 560px) {
+  .guide-hero { padding-top: 38px; }
+  .guide-card { padding: 20px; }
+  .guide-actions .btn { width: 100%; justify-content: center; }
+}
