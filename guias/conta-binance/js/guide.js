@@ -7,7 +7,7 @@ const GUIDE_STEPS = [
       "Crie uma senha única, que não seja usada em outro serviço.",
       "Nunca envie senha, código de confirmação, 2FA ou documento para alguém pelo chat.",
     ],
-    note: "O link abaixo é de indicação. Ele pode se aplicar somente a contas novas e elegíveis; confirme condições e benefícios diretamente na página de cadastro.",
+    note: "O link abaixo é de indicação: contas novas e elegíveis recebem cashback vitalício em parte das taxas elegíveis. Confira as condições aplicáveis na página de cadastro.",
     external: { label: "Abrir cadastro oficial", href: "https://www.binance.com/register?ref=BOSS2026" },
     next: "Já abri a página",
   },
