@@ -4,6 +4,7 @@
 //
 // tone: "green" ou "blue" — só varia a cor da etiqueta (tag), sem
 // significado bom/ruim (o design system não tem cor de alerta pra tag).
+// category: opcional; sem valor, o item entra em "ferramenta".
 // ============================================================
 
 const TOOLS = [
@@ -13,6 +14,7 @@ const TOOLS = [
     url: "https://sobrevive-ou-quebra.dlt.academy/",
     tag: "Trader de futuros",
     tone: "green",
+    category: "ferramenta",
   },
   {
     name: "Primeiros Passos no Cripto",
@@ -20,6 +22,7 @@ const TOOLS = [
     url: "https://primeiros-passos-cripto.dlt.academy/",
     tag: "Iniciante",
     tone: "blue",
+    category: "ferramenta",
   },
   {
     name: "Vender ou Segurar?",
@@ -27,5 +30,6 @@ const TOOLS = [
     url: "https://vender-ou-segurar.dlt.academy/",
     tag: "Já tem posição",
     tone: "green",
+    category: "ferramenta",
   },
 ];
