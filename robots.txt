@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dltacademy.github.io/sitemap.xml
+Sitemap: https://dlt.academy/sitemap.xml
