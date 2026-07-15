@@ -7,6 +7,16 @@
   --max-width: 960px; /* portal é um diretório, não um funil — layout mais largo */
 }
 
+.header-row { display: flex; align-items: center; justify-content: space-between; }
+.header-nav a {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text-dim);
+  text-decoration: none;
+}
+.header-nav a:hover { color: var(--accent); }
+
 .portal-hero {
   text-align: center;
   padding: 56px 0 36px;
