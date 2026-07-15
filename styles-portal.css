@@ -90,6 +90,7 @@
 .article-card-date { color: var(--text-faint); display: block; font-size: 12px; margin-bottom: 8px; }
 .article-card h3 { font-family: var(--font-head); font-size: 16px; line-height: 1.35; margin: 0 0 8px; }
 .article-card p { color: var(--text-dim); font-size: 13.5px; line-height: 1.5; margin: 0; }
+.section-empty { color: var(--text-dim); margin: 0; }
 
 .principles {
   align-items: start;
