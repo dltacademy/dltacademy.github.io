@@ -1,0 +1,99 @@
+/* ============================================================
+   Tipografia de texto longo (blog) — não existe em styles-base.css
+   (que só cobre UI de calculadora/fluxo, textos curtos). Este módulo
+   fica só pro blog, em cima dos MESMOS tokens (--bg, --accent, fontes
+   Sora/Manrope) — nenhuma cor nova, nenhuma fonte nova.
+   Path é sempre absoluto (/styles-base.css, /assets/...) porque os
+   posts vivem em subpastas (/blog/<slug>/) — path relativo quebraria.
+   ============================================================ */
+
+/* Listagem (/blog/) — mesmo idioma visual do #tools-grid do portal */
+#posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 18px;
+  margin-top: 12px;
+}
+.post-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px;
+  text-decoration: none;
+  color: var(--text);
+  transition: border-color .15s, transform .15s;
+}
+.post-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+.post-card h3 { font-family: var(--font-head); font-size: 19px; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+.post-card p { color: var(--text-dim); font-size: 14.5px; margin: 0; line-height: 1.5; }
+.post-card .post-card-date { font-size: 12px; color: var(--text-faint); margin-top: auto; padding-top: 8px; }
+
+/* Página de post — largura de leitura própria, não usa --max-width global
+   (que é 780px na ferramenta/960px no portal) pra não acoplar a essas páginas. */
+.article-wrap {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.article-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--text-faint);
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+.article-meta .tag { margin-bottom: 0; }
+.article h1 { margin-top: 6px; }
+
+.article-body { font-size: 16.5px; line-height: 1.75; }
+.article-body p { margin: 0 0 20px; }
+.article-body h2 {
+  font-family: var(--font-head);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 40px 0 14px;
+}
+.article-body h3 {
+  font-family: var(--font-head);
+  font-size: 19px;
+  font-weight: 700;
+  margin: 30px 0 12px;
+}
+.article-body ul, .article-body ol { margin: 0 0 20px; padding-left: 22px; }
+.article-body li { margin-bottom: 8px; }
+.article-body blockquote {
+  margin: 24px 0;
+  padding: 4px 20px;
+  border-left: 3px solid var(--accent);
+  color: var(--text-dim);
+  font-style: italic;
+}
+.article-body code {
+  background: var(--bg-elev-2);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 0.9em;
+}
+.article-body pre {
+  background: var(--bg-elev-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  overflow-x: auto;
+  margin: 0 0 20px;
+}
+.article-body pre code { background: none; padding: 0; }
+.article-body a { color: var(--accent); }
+.article-body img { max-width: 100%; border-radius: var(--radius); display: block; margin: 24px auto; }
+.article-body figcaption { text-align: center; color: var(--text-faint); font-size: 13px; margin-top: -12px; margin-bottom: 20px; }
+.article-body hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+@media (max-width: 480px) {
+  #posts-grid { grid-template-columns: 1fr; }
+}
