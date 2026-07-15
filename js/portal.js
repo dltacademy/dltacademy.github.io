@@ -63,6 +63,14 @@ function renderLatestPosts() {
   const grid = document.getElementById("latest-posts-grid");
   grid.innerHTML = "";
 
+  if (typeof POSTS === "undefined" || !Array.isArray(POSTS) || POSTS.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "section-empty";
+    empty.textContent = "Nenhum artigo publicado ainda.";
+    grid.appendChild(empty);
+    return;
+  }
+
   [...POSTS].slice(-3).reverse().forEach((post) => {
     const card = document.createElement("a");
     card.className = "article-card";
