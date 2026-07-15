@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DLT Academy — Ferramentas de investimento</title>
-<meta name="description" content="Calculadoras, simuladores e guias interativos de cripto e mercado — grátis, sem cadastro, direto ao ponto. Nenhum dado sai do seu navegador.">
-<meta name="keywords" content="dlt academy, ferramentas de investimento, calculadora cripto, simulador de risco, guia cripto, ferramentas defi">
+<title>DLT Academy — Educação financeira inteligente</title>
+<meta name="description" content="Ferramentas interativas, guias e artigos para aprender, testar e decidir melhor sobre cripto e mercado — grátis, sem cadastro e com dados no seu navegador.">
+<meta name="keywords" content="dlt academy, educação financeira, ferramentas de investimento, calculadora cripto, simulador de risco, guia cripto, gestão de risco">
 <link rel="canonical" href="https://dlt.academy/">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="DLT Academy — Ferramentas de investimento">
-<meta property="og:description" content="Calculadoras, simuladores e guias interativos de cripto e mercado — grátis, sem cadastro, direto ao ponto.">
+<meta property="og:title" content="DLT Academy — Educação financeira inteligente">
+<meta property="og:description" content="Ferramentas interativas, guias e artigos para aprender, testar e decidir melhor sobre cripto e mercado.">
 <meta property="og:url" content="https://dlt.academy/">
 <meta property="og:image" content="https://dlt.academy/og-image.png">
 <meta property="og:locale" content="pt_BR">
 
 <!-- Twitter/X -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="DLT Academy — Ferramentas de investimento">
-<meta name="twitter:description" content="Calculadoras, simuladores e guias interativos de cripto e mercado — grátis, sem cadastro, direto ao ponto.">
+<meta name="twitter:title" content="DLT Academy — Educação financeira inteligente">
+<meta name="twitter:description" content="Ferramentas interativas, guias e artigos para aprender, testar e decidir melhor sobre cripto e mercado.">
 <meta name="twitter:image" content="https://dlt.academy/og-image.png">
 
 <link rel="icon" type="image/png" href="assets/dlt-mark.png">
@@ -29,10 +29,11 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebSite",
+  "@type": "Organization",
   "name": "DLT Academy",
   "url": "https://dlt.academy/",
-  "description": "Ferramentas de investimento — DeFi, blockchain e mercado, sem enrolação."
+  "logo": "https://dlt.academy/assets/dlt-mark.png",
+  "description": "Hub de educação financeira inteligente com ferramentas interativas, guias e artigos sobre cripto e mercado."
 }
 </script>
 </head>
@@ -41,7 +42,11 @@
 <header class="top">
   <div class="wrap header-row">
     <a class="brand" href="#top"><img src="assets/dlt-logo-light.png" alt="DLT Academy"></a>
-    <nav class="header-nav"><a href="/blog/">Blog</a></nav>
+    <nav class="header-nav" aria-label="Navegação principal">
+      <a href="#ferramentas">Ferramentas</a>
+      <a href="#artigos">Blog</a>
+      <a href="/sobre/">Sobre</a>
+    </nav>
   </div>
 </header>
 
@@ -50,12 +55,64 @@
 
     <section class="portal-hero">
       <img src="assets/dlt-logo-light.png" alt="DLT Academy">
-      <h1>Ferramentas de investimento</h1>
-      <p class="subtitle">DeFi, blockchain e mercado — sem enrolação. Grátis, sem cadastro, nenhum dado sai do seu navegador.</p>
+      <p class="eyebrow">Hub de educação inteligente</p>
+      <h1>Educação financeira inteligente</h1>
+      <p class="subtitle">Não é conteúdo para consumir e esquecer. É educação feita para você entender o cenário, testar o raciocínio e decidir com mais clareza sobre cripto e mercado.</p>
     </section>
 
-    <section>
+    <section class="hub-intro" aria-labelledby="hub-titulo">
+      <div class="section-heading hub-intro-heading">
+        <p class="eyebrow">Como a DLT Academy ajuda</p>
+        <h2 id="hub-titulo">Cada peça começa com uma pergunta real.</h2>
+        <p>Em vez de despejar informação genérica, criamos experiências que respondem ao seu contexto — e conectamos a ferramenta certa ao conteúdo que aprofunda o assunto.</p>
+      </div>
+      <div class="hub-pillars">
+        <article class="hub-pillar">
+          <span class="hub-pillar-number">01</span>
+          <h3>Interaja</h3>
+          <p>Ferramentas que usam suas respostas para transformar uma dúvida específica em um próximo passo prático.</p>
+        </article>
+        <article class="hub-pillar">
+          <span class="hub-pillar-number">02</span>
+          <h3>Entenda</h3>
+          <p>Artigos que explicam o raciocínio, os limites e os riscos por trás de uma decisão — sem promessa de lucro.</p>
+        </article>
+        <article class="hub-pillar">
+          <span class="hub-pillar-number">03</span>
+          <h3>Decida</h3>
+          <p>Você fica no controle: sem cadastro, sem coleta de dados e sem recomendação disfarçada de conteúdo.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="ferramentas" aria-labelledby="ferramentas-titulo">
+      <div class="section-heading">
+        <h2 id="ferramentas-titulo">Ferramentas</h2>
+        <p>Respostas práticas para decisões que importam.</p>
+      </div>
       <div id="tools-grid"></div>
+    </section>
+
+    <section id="artigos" aria-labelledby="artigos-titulo">
+      <div class="section-heading section-heading-row">
+        <div>
+          <h2 id="artigos-titulo">Últimos artigos</h2>
+          <p>Contexto para entender o porquê por trás das decisões.</p>
+        </div>
+        <a class="section-link" href="/blog/">Ver todos <span aria-hidden="true">→</span></a>
+      </div>
+      <div id="latest-posts-grid"></div>
+    </section>
+
+    <section class="principles" aria-labelledby="principios-titulo">
+      <div>
+        <p class="eyebrow">O nosso compromisso</p>
+        <h2 id="principios-titulo">Valor primeiro. Transparência sempre.</h2>
+      </div>
+      <div class="principles-copy">
+        <p>As ferramentas e os artigos são gratuitos e completos por si mesmos. Quando indicamos um serviço que usamos, deixamos isso explícito — a indicação financia a próxima peça educacional, não define o que você deve fazer.</p>
+        <a class="section-link" href="/transparencia/">Como a DLT Academy se financia <span aria-hidden="true">→</span></a>
+      </div>
     </section>
 
   </div>
@@ -64,11 +121,13 @@
 <footer>
   <div class="wrap">
     <p>Conteúdo educacional. Não é recomendação de investimento. Os sites listados podem conter links de afiliado.</p>
+    <p><a href="/sobre/">Sobre a DLT Academy</a> · <a href="/transparencia/">Transparência</a></p>
     <p>© 2026 dltacademy</p>
   </div>
 </footer>
 
 <script src="js/tools.js"></script>
+<script src="blog/js/posts.js"></script>
 <script src="js/portal.js"></script>
 </body>
 </html>
