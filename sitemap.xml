@@ -11,6 +11,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://quanto-em-taxas.dlt.academy/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://primeiros-passos-cripto.dlt.academy/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
