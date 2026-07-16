@@ -25,6 +25,14 @@ const TOOLS = [
     category: "ferramenta",
   },
   {
+    name: "Quanto você paga para operar?",
+    desc: "Calcule o custo mensal e anual das suas taxas de trading em menos de 30 segundos.",
+    url: "https://quanto-em-taxas.dlt.academy/",
+    tag: "Custos do trader",
+    tone: "blue",
+    category: "ferramenta",
+  },
+  {
     name: "Primeiros Passos no Cripto",
     desc: "Responda 6 perguntas e receba seu plano de entrada personalizado.",
     url: "https://primeiros-passos-cripto.dlt.academy/",
