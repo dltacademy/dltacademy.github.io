@@ -10,14 +10,26 @@ const CATEGORY_LABELS = {
   teste: "Testes",
 };
 
+const DEFAULT_ICON = "✦";
+
 function createToolCard(tool) {
   const card = document.createElement("a");
-  card.className = "tool-card";
+  card.className = "tool-card reveal";
   card.href = tool.url;
+
+  const top = document.createElement("div");
+  top.className = "tool-card-top";
+
+  const icon = document.createElement("span");
+  icon.className = "tool-card-icon";
+  icon.setAttribute("aria-hidden", "true");
+  icon.textContent = tool.icon || DEFAULT_ICON;
 
   const tag = document.createElement("span");
   tag.className = "tag " + (tool.tone === "green" ? "s1" : "s2");
   tag.textContent = tool.tag;
+
+  top.append(icon, tag);
 
   const title = document.createElement("h3");
   title.textContent = tool.name;
@@ -27,9 +39,14 @@ function createToolCard(tool) {
 
   const cta = document.createElement("span");
   cta.className = "tool-card-cta";
-  cta.textContent = "Abrir →";
+  cta.textContent = "Abrir ";
+  const arrow = document.createElement("span");
+  arrow.className = "arrow";
+  arrow.setAttribute("aria-hidden", "true");
+  arrow.textContent = "→";
+  cta.appendChild(arrow);
 
-  card.append(tag, title, desc, cta);
+  card.append(top, title, desc, cta);
   return card;
 }
 
@@ -75,7 +92,7 @@ function renderLatestPosts() {
 
   [...POSTS].slice(-3).reverse().forEach((post) => {
     const card = document.createElement("a");
-    card.className = "article-card";
+    card.className = "article-card reveal";
     card.href = "/blog/" + post.slug + "/";
 
     const date = document.createElement("time");
@@ -93,5 +110,29 @@ function renderLatestPosts() {
   });
 }
 
+// Reveal on scroll — a animação em si só existe no CSS sob
+// prefers-reduced-motion: no-preference; sem IntersectionObserver,
+// tudo recebe .in imediatamente e fica visível.
+function setupReveal() {
+  const targets = document.querySelectorAll(".reveal");
+  if (!("IntersectionObserver" in window)) {
+    targets.forEach((el) => el.classList.add("in"));
+    return;
+  }
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in");
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.12, rootMargin: "0px 0px -40px 0px" }
+  );
+  targets.forEach((el) => observer.observe(el));
+}
+
 renderTools();
 renderLatestPosts();
+setupReveal();

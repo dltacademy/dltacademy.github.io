@@ -24,10 +24,35 @@
 <meta name="twitter:description" content="Ferramentas interativas, guias e artigos para aprender, testar e decidir melhor sobre finanças.">
 <meta name="twitter:image" content="https://dlt.academy/og-image.png">
 
+<meta name="theme-color" content="#06090F">
 <link rel="icon" type="image/png" href="assets/dlt-mark.png">
 <link rel="stylesheet" href="styles-base.css">
 <link rel="stylesheet" href="styles-portal.css">
 
+<!-- Dados estruturados (JSON-LD é bloco de dados, não executa — ok com o CSP) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://dlt.academy/#org",
+      "name": "DLT Academy",
+      "url": "https://dlt.academy/",
+      "logo": "https://dlt.academy/assets/dlt-logo-light.png",
+      "description": "Hub de educação financeira: ferramentas interativas, guias e artigos para aprender, testar e decidir melhor."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://dlt.academy/#website",
+      "url": "https://dlt.academy/",
+      "name": "DLT Academy",
+      "inLanguage": "pt-BR",
+      "publisher": { "@id": "https://dlt.academy/#org" }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -39,6 +64,7 @@
       <a href="#guias">Guias</a>
       <a href="#artigos">Blog</a>
       <a href="/sobre/">Sobre</a>
+      <a class="header-cta" href="#ferramentas">Começar grátis</a>
     </nav>
   </div>
 </header>
@@ -46,31 +72,40 @@
 <main id="top">
   <div class="wrap">
 
-    <section class="portal-hero">
-      <img src="assets/dlt-logo-light.png" alt="DLT Academy">
-      <p class="eyebrow">Hub de educação inteligente</p>
-      <h1>Educação financeira inteligente</h1>
-      <p class="subtitle">Ferramentas e conteúdos para entender, testar e decidir com mais clareza sobre finanças.</p>
+    <section class="home-hero">
+      <p class="hero-badge"><span class="pulse-dot" aria-hidden="true"></span> Grátis, sem cadastro e sem promessa de lucro</p>
+      <h1>Decida melhor sobre <span class="grad">o seu dinheiro</span>.</h1>
+      <p class="subtitle">Educação financeira na prática: ferramentas interativas e conteúdo direto ao ponto para entender, testar e decidir com clareza — no seu ritmo, no seu navegador.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" href="#ferramentas">Explorar ferramentas <span aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost btn-lg" href="#como-funciona">Como funciona</a>
+      </div>
+      <ul class="hero-trust">
+        <li>100% gratuito</li>
+        <li>Sem cadastro ou e-mail</li>
+        <li>Respostas processadas no seu navegador</li>
+        <li>Afiliados sempre declarados</li>
+      </ul>
     </section>
 
-    <section class="hub-intro" aria-labelledby="hub-titulo">
-      <div class="section-heading hub-intro-heading">
+    <section class="hub-intro" id="como-funciona" aria-labelledby="hub-titulo">
+      <div class="section-heading hub-intro-heading reveal">
         <p class="eyebrow">Como a DLT Academy ajuda</p>
         <h2 id="hub-titulo">Cada peça começa com uma pergunta real.</h2>
         <p>Criamos experiências que respondem ao seu contexto e conectam a ferramenta ao conteúdo que aprofunda o assunto.</p>
       </div>
       <div class="hub-pillars">
-        <article class="hub-pillar">
+        <article class="hub-pillar reveal">
           <span class="hub-pillar-number">01</span>
           <h3>Interaja</h3>
           <p>Ferramentas que usam suas respostas para transformar uma dúvida específica em um próximo passo prático.</p>
         </article>
-        <article class="hub-pillar">
+        <article class="hub-pillar reveal">
           <span class="hub-pillar-number">02</span>
           <h3>Entenda</h3>
           <p>Artigos que explicam o raciocínio, os limites e os riscos por trás de uma decisão — sem promessa de lucro.</p>
         </article>
-        <article class="hub-pillar">
+        <article class="hub-pillar reveal">
           <span class="hub-pillar-number">03</span>
           <h3>Decida</h3>
           <p>Você fica no controle: sem cadastro, respostas processadas localmente nas ferramentas e sem recomendação disfarçada de conteúdo.</p>
@@ -79,7 +114,8 @@
     </section>
 
     <section id="ferramentas" aria-labelledby="ferramentas-titulo">
-      <div class="section-heading">
+      <div class="section-heading reveal">
+        <p class="eyebrow">Escolha por onde começar</p>
         <h2 id="ferramentas-titulo">Ferramentas</h2>
         <p>Respostas práticas para decisões que importam.</p>
       </div>
@@ -87,7 +123,7 @@
     </section>
 
     <section id="artigos" aria-labelledby="artigos-titulo">
-      <div class="section-heading section-heading-row">
+      <div class="section-heading section-heading-row reveal">
         <div>
           <h2 id="artigos-titulo">Últimos artigos</h2>
           <p>Contexto para entender o porquê por trás das decisões.</p>
@@ -97,13 +133,18 @@
       <div id="latest-posts-grid"></div>
     </section>
 
-    <section class="principles" aria-labelledby="principios-titulo">
+    <section class="principles reveal" aria-labelledby="principios-titulo">
       <div>
         <p class="eyebrow">O nosso compromisso</p>
         <h2 id="principios-titulo">Valor primeiro. Transparência sempre.</h2>
       </div>
       <div class="principles-copy">
-        <p>As ferramentas e os artigos são gratuitos. Quando indicamos um serviço que usamos, deixamos isso explícito.</p>
+        <ul class="promise-list">
+          <li>Ferramentas e artigos 100% gratuitos, sem paywall.</li>
+          <li>Suas respostas ficam no seu navegador — não pedimos e-mail nem dados.</li>
+          <li>Quando indicamos um serviço que usamos, deixamos isso explícito.</li>
+          <li>Educação, não recomendação: nenhum conteúdo promete lucro.</li>
+        </ul>
         <a class="section-link" href="/transparencia/">Como a DLT Academy se financia <span aria-hidden="true">→</span></a>
       </div>
     </section>
@@ -111,10 +152,28 @@
   </div>
 </main>
 
-<footer>
-  <div class="wrap">
+<footer class="footer-rich">
+  <div class="wrap footer-grid">
+    <div class="footer-brand">
+      <img src="assets/dlt-logo-light.png" alt="DLT Academy">
+      <p>Hub de educação financeira inteligente: ferramentas interativas, guias e artigos para aprender, testar e decidir melhor.</p>
+    </div>
+    <nav class="footer-nav" aria-label="Links do rodapé">
+      <div class="footer-nav-col">
+        <strong>Explorar</strong>
+        <a href="#ferramentas">Ferramentas</a>
+        <a href="#guias">Guias</a>
+        <a href="/blog/">Blog</a>
+      </div>
+      <div class="footer-nav-col">
+        <strong>Institucional</strong>
+        <a href="/sobre/">Sobre</a>
+        <a href="/transparencia/">Transparência</a>
+      </div>
+    </nav>
+  </div>
+  <div class="wrap footer-legal">
     <p>Conteúdo educacional. Não é recomendação de investimento. Os sites listados podem conter links de afiliado.</p>
-    <p><a href="/sobre/">Sobre a DLT Academy</a> · <a href="/transparencia/">Transparência</a></p>
     <p>© 2026 dltacademy</p>
   </div>
 </footer>

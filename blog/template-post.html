@@ -24,10 +24,27 @@
 <meta name="twitter:description" content="{{POST_DESCRIPTION}}">
 <meta name="twitter:image" content="https://dlt.academy/blog/{{POST_SLUG}}/og-image.png">
 
+<meta name="theme-color" content="#06090F">
 <link rel="icon" type="image/png" href="/assets/dlt-mark.png">
 <link rel="stylesheet" href="/styles-base.css">
 <link rel="stylesheet" href="../styles-blog.css">
 
+
+<!-- Dados estruturados (JSON-LD é bloco de dados, não executa — ok com o CSP) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{POST_TITLE}}",
+  "description": "{{POST_DESCRIPTION}}",
+  "datePublished": "{{POST_DATE_ISO}}",
+  "inLanguage": "pt-BR",
+  "mainEntityOfPage": "https://dlt.academy/blog/{{POST_SLUG}}/",
+  "image": "https://dlt.academy/blog/{{POST_SLUG}}/og-image.png",
+  "author": { "@type": "Organization", "name": "DLT Academy", "url": "https://dlt.academy/" },
+  "publisher": { "@type": "Organization", "name": "DLT Academy", "url": "https://dlt.academy/", "logo": { "@type": "ImageObject", "url": "https://dlt.academy/assets/dlt-logo-light.png" } }
+}
+</script>
 </head>
 <body>
 
