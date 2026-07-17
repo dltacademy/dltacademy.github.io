@@ -77,12 +77,20 @@ class SecurityHTMLParser(HTMLParser):
             self.errors.append(f"{self.source}: bloco JSON-LD vazio")
             return
         try:
-            json.loads(raw_json)
+            json.loads(raw_json, parse_constant=_reject_non_finite)
         except json.JSONDecodeError as error:
             self.errors.append(
                 f"{self.source}: JSON-LD inválido "
                 f"(linha {error.lineno}, coluna {error.colno}): {error.msg}"
             )
+        except ValueError as error:
+            self.errors.append(f"{self.source}: JSON-LD inválido: {error}")
+
+
+def _reject_non_finite(value: str) -> None:
+    # json.loads aceita NaN/Infinity/-Infinity como extensão do Python;
+    # RFC 8259 não permite essas constantes, então o data block reprova.
+    raise ValueError(f"constante não permitida ({value})")
 
 
 def check_html(path: Path) -> list[str]:
