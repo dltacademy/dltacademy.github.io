@@ -60,6 +60,16 @@ const CONTENT = [
     "icon": "🔐"
   },
   {
+    "id": "guide-bybit-pay-vietqr",
+    "type": "guide",
+    "title": "Pagar com QR Code no exterior (Bybit Pay)",
+    "description": "VietQR e outros QRs locais com Bybit Pay: taxas reais, limites, erros comuns e o que usar quando não funcionar.",
+    "url": "/guias/bybit-pay-vietqr/",
+    "tag": "Guia de viagem",
+    "tone": "green",
+    "icon": "📱"
+  },
+  {
     "id": "article-bem-vindo",
     "type": "article",
     "title": "Bem-vindo ao Blog da DLT Academy",
