@@ -4,21 +4,34 @@ Portal/hub central da DLT Academy — lista todas as ferramentas web (calculador
 
 Página única, zero backend, zero build — mesmo padrão do [ferramenta-kit](https://github.com/dltacademy/ferramenta-kit).
 
-## Registrar uma ferramenta nova
+## Registrar conteúdo novo
 
-Único arquivo a editar: **`js/tools.js`**. Adicione um objeto ao array `TOOLS`:
+Único arquivo a editar: **`js/content-registry.js`**. Adicione um objeto ao array `CONTENT`, usando JSON estrito:
 
 ```js
 {
-  name: "Nome da Ferramenta",
-  desc: "Descrição de 1 frase.",
-  url: "/nome-do-repo/",
-  tag: "Público-alvo",
-  tone: "green", // "green" ou "blue" — só a cor da etiqueta
+  "id": "tool-nome-estavel",
+  "type": "tool",
+  "title": "Nome da Ferramenta",
+  "description": "Descrição de 1 frase.",
+  "url": "https://nome.dlt.academy/",
+  "tag": "Público-alvo",
+  "tone": "green",
+  "icon": "✦"
 }
 ```
 
-Commit + push — o card aparece no portal automaticamente (deploy via GitHub Actions).
+Tipos aceitos: `tool`, `guide` e `article`. `tone` (`green` ou `blue`) e `icon` são opcionais e exclusivos de ferramentas/guias. Artigos exigem `publishedAt` no formato `YYYY-MM-DD`. IDs publicados nunca são renomeados.
+
+Antes do commit, valide o registry, o sitemap e a segurança:
+
+```bash
+python3 -m unittest discover -s tests -p 'test_*.py'
+python3 validate_registry.py
+python3 security_check.py .
+```
+
+Commit + push — ferramentas e guias aparecem no portal; artigos aparecem no portal e no blog (deploy via GitHub Actions).
 
 ## Hub-and-spoke
 
@@ -28,8 +41,11 @@ O logo no header de cada ferramenta (`ferramenta-kit/template`) linka de volta p
 
 ```
 index.html          hero (logo grande) + grid de cards
-js/tools.js           registry — ÚNICO arquivo a editar pra listar uma ferramenta nova
-js/portal.js            renderiza os cards a partir do registry
+js/content-registry.js registry único de ferramentas, guias e artigos
+js/portal.js           renderiza os cards do portal a partir do registry
+blog/js/blog.js        renderiza o blog a partir do mesmo registry
+validate_registry.py  valida schema, destinos locais e sitemap
+tests/                 testes dos gates locais
 styles-base.css        design system da marca (copiado do kit)
 styles-portal.css       hero + grid de cards (específico do portal)
 assets/                logo/favicon de marca
