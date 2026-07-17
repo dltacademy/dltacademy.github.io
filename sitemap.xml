@@ -36,6 +36,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://dlt.academy/blog/bybit-pay-vs-moneta-vietqr/</loc>
+    <lastmod>2026-07-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://dlt.academy/sobre/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
