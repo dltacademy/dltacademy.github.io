@@ -5,9 +5,15 @@ from __future__ import annotations
 
 from html.parser import HTMLParser
 from pathlib import Path
+import json
 import re
 import sys
 
+
+# Política de segurança aplicada (T1A/T1B): zero JavaScript executável inline;
+# o único <script> sem src permitido é o data block type="application/ld+json"
+# com JSON estático válido.
+SECURITY_POLICY_VERSION = "2026-07-17"
 
 REQUIRED_CSP = (
     "default-src 'self'",
@@ -26,6 +32,7 @@ class SecurityHTMLParser(HTMLParser):
         self.errors: list[str] = []
         self.csp: str | None = None
         self.referrer: str | None = None
+        self._json_ld_parts: list[str] | None = None
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
@@ -35,7 +42,13 @@ class SecurityHTMLParser(HTMLParser):
             if values.get("name", "").lower() == "referrer":
                 self.referrer = values.get("content")
         if tag == "script" and not values.get("src"):
-            self.errors.append(f"{self.source}: script inline não permitido")
+            script_type = values.get("type", "").strip().lower()
+            if script_type == "application/ld+json":
+                self._json_ld_parts = []
+            else:
+                self.errors.append(
+                    f"{self.source}: JavaScript executável inline não permitido"
+                )
         if tag == "a" and values.get("target") == "_blank":
             rel = set(values.get("rel", "").split())
             missing = {"noopener", "noreferrer"} - rel
@@ -44,10 +57,39 @@ class SecurityHTMLParser(HTMLParser):
             if values.get("referrerpolicy") != "no-referrer":
                 self.errors.append(f"{self.source}: link target=_blank sem referrerpolicy=no-referrer")
 
+    def handle_data(self, data: str) -> None:
+        if self._json_ld_parts is not None:
+            self._json_ld_parts.append(data)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "script" and self._json_ld_parts is not None:
+            self._validate_json_ld()
+
+    def finish(self) -> None:
+        if self._json_ld_parts is not None:
+            self.errors.append(f"{self.source}: bloco JSON-LD sem fechamento")
+            self._json_ld_parts = None
+
+    def _validate_json_ld(self) -> None:
+        raw_json = "".join(self._json_ld_parts or []).strip()
+        self._json_ld_parts = None
+        if not raw_json:
+            self.errors.append(f"{self.source}: bloco JSON-LD vazio")
+            return
+        try:
+            json.loads(raw_json)
+        except json.JSONDecodeError as error:
+            self.errors.append(
+                f"{self.source}: JSON-LD inválido "
+                f"(linha {error.lineno}, coluna {error.colno}): {error.msg}"
+            )
+
 
 def check_html(path: Path) -> list[str]:
     parser = SecurityHTMLParser(path)
     parser.feed(path.read_text(encoding="utf-8"))
+    parser.close()
+    parser.finish()
     errors = parser.errors
     if not parser.csp:
         errors.append(f"{path}: CSP ausente")
