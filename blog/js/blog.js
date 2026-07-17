@@ -1,13 +1,28 @@
 // ============================================================
-// Renderiza os cards do blog a partir do registry em js/posts.js.
-// Espelha js/portal.js (mesmo padrão pro grid de ferramentas).
+// Renderiza os cards do blog a partir de js/content-registry.js.
 // ============================================================
+
+function formatDatePtBr(iso) {
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Intl.DateTimeFormat("pt-BR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(y, m - 1, d));
+}
 
 function renderPosts() {
   const grid = document.getElementById("posts-grid");
   grid.innerHTML = "";
 
-  if (POSTS.length === 0) {
+  const articles =
+    typeof CONTENT === "undefined" || !Array.isArray(CONTENT)
+      ? []
+      : CONTENT.filter((entry) => entry.type === "article").sort((a, b) =>
+          a.publishedAt.localeCompare(b.publishedAt)
+        );
+
+  if (articles.length === 0) {
     const empty = document.createElement("p");
     empty.className = "subtitle";
     empty.textContent = "Primeiro artigo a caminho.";
@@ -15,24 +30,24 @@ function renderPosts() {
     return;
   }
 
-  [...POSTS].reverse().forEach((post) => {
+  articles.reverse().forEach((entry) => {
     const card = document.createElement("a");
     card.className = "post-card";
-    card.href = "/blog/" + post.slug + "/";
+    card.href = entry.url;
 
     const tag = document.createElement("span");
     tag.className = "tag s2";
-    tag.textContent = post.tag;
+    tag.textContent = entry.tag;
 
     const title = document.createElement("h3");
-    title.textContent = post.title;
+    title.textContent = entry.title;
 
     const desc = document.createElement("p");
-    desc.textContent = post.desc;
+    desc.textContent = entry.description;
 
     const date = document.createElement("span");
     date.className = "post-card-date";
-    date.textContent = post.date;
+    date.textContent = formatDatePtBr(entry.publishedAt);
 
     card.appendChild(tag);
     card.appendChild(title);

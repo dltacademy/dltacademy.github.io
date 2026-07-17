@@ -1,21 +1,13 @@
 // ============================================================
-// Renderiza os cards do portal a partir do registry em js/tools.js.
+// Renderiza os cards do portal a partir de js/content-registry.js.
 // ============================================================
-
-const CATEGORY_LABELS = {
-  ferramenta: "Ferramentas",
-  guia: "Guias",
-  protocolo: "Protocolos",
-  manual: "Manuais",
-  teste: "Testes",
-};
 
 const DEFAULT_ICON = "✦";
 
-function createToolCard(tool) {
+function createToolCard(entry) {
   const card = document.createElement("a");
   card.className = "tool-card reveal";
-  card.href = tool.url;
+  card.href = entry.url;
 
   const top = document.createElement("div");
   top.className = "tool-card-top";
@@ -23,19 +15,19 @@ function createToolCard(tool) {
   const icon = document.createElement("span");
   icon.className = "tool-card-icon";
   icon.setAttribute("aria-hidden", "true");
-  icon.textContent = tool.icon || DEFAULT_ICON;
+  icon.textContent = entry.icon || DEFAULT_ICON;
 
   const tag = document.createElement("span");
-  tag.className = "tag " + (tool.tone === "green" ? "s1" : "s2");
-  tag.textContent = tool.tag;
+  tag.className = "tag " + (entry.tone === "green" ? "s1" : "s2");
+  tag.textContent = entry.tag;
 
   top.append(icon, tag);
 
   const title = document.createElement("h3");
-  title.textContent = tool.name;
+  title.textContent = entry.title;
 
   const desc = document.createElement("p");
-  desc.textContent = tool.desc;
+  desc.textContent = entry.description;
 
   const cta = document.createElement("span");
   cta.className = "tool-card-cta";
@@ -54,35 +46,46 @@ function renderTools() {
   const grid = document.getElementById("tools-grid");
   grid.innerHTML = "";
 
-  const categories = TOOLS.reduce((groups, tool) => {
-    const category = tool.category || "ferramenta";
-    (groups[category] ||= []).push(tool);
-    return groups;
-  }, {});
+  CONTENT.filter((entry) => entry.type === "tool").forEach((entry) => {
+    grid.appendChild(createToolCard(entry));
+  });
 
-  (categories.ferramenta || []).forEach((tool) => grid.appendChild(createToolCard(tool)));
-
-  Object.entries(categories).forEach(([category, tools]) => {
-    if (category === "ferramenta") return;
-
+  const guides = CONTENT.filter((entry) => entry.type === "guide");
+  if (guides.length > 0) {
     const section = document.createElement("section");
     section.className = "catalog-section";
-    section.id = category === "guia" ? "guias" : category + "s";
+    section.id = "guias";
     const title = document.createElement("h2");
-    title.textContent = CATEGORY_LABELS[category] || category;
+    title.textContent = "Guias";
     const categoryGrid = document.createElement("div");
     categoryGrid.className = "tools-grid";
-    tools.forEach((tool) => categoryGrid.appendChild(createToolCard(tool)));
+    guides.forEach((entry) => categoryGrid.appendChild(createToolCard(entry)));
     section.append(title, categoryGrid);
     grid.parentElement.after(section);
-  });
+  }
+}
+
+function formatDatePtBr(iso) {
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Intl.DateTimeFormat("pt-BR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(y, m - 1, d));
 }
 
 function renderLatestPosts() {
   const grid = document.getElementById("latest-posts-grid");
   grid.innerHTML = "";
 
-  if (typeof POSTS === "undefined" || !Array.isArray(POSTS) || POSTS.length === 0) {
+  const articles =
+    typeof CONTENT === "undefined" || !Array.isArray(CONTENT)
+      ? []
+      : CONTENT.filter((entry) => entry.type === "article").sort((a, b) =>
+          a.publishedAt.localeCompare(b.publishedAt)
+        );
+
+  if (articles.length === 0) {
     const empty = document.createElement("p");
     empty.className = "section-empty";
     empty.textContent = "Nenhum artigo publicado ainda.";
@@ -90,20 +93,20 @@ function renderLatestPosts() {
     return;
   }
 
-  [...POSTS].slice(-3).reverse().forEach((post) => {
+  articles.slice(-3).reverse().forEach((entry) => {
     const card = document.createElement("a");
     card.className = "article-card reveal";
-    card.href = "/blog/" + post.slug + "/";
+    card.href = entry.url;
 
     const date = document.createElement("time");
     date.className = "article-card-date";
-    date.textContent = post.date;
+    date.textContent = formatDatePtBr(entry.publishedAt);
 
     const title = document.createElement("h3");
-    title.textContent = post.title;
+    title.textContent = entry.title;
 
     const desc = document.createElement("p");
-    desc.textContent = post.desc;
+    desc.textContent = entry.description;
 
     card.append(date, title, desc);
     grid.appendChild(card);
