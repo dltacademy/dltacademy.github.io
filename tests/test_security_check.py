@@ -59,6 +59,22 @@ class JsonLdPolicyTests(unittest.TestCase):
         html = page('<script type="application/ld+json">{"a": }</script>')
         self.assertTrue(any("JSON-LD inválido" in e for e in errors_for(html)))
 
+    def test_non_finite_constants_in_json_ld_are_rejected(self) -> None:
+        for constant in ("NaN", "Infinity", "-Infinity"):
+            with self.subTest(constant=constant):
+                html = page(
+                    f'<script type="application/ld+json">{{"value": {constant}}}</script>'
+                )
+                self.assertTrue(
+                    any("constante não permitida" in e for e in errors_for(html))
+                )
+
+    def test_finite_numbers_in_json_ld_are_allowed(self) -> None:
+        html = page(
+            '<script type="application/ld+json">{"value": 1.5e308, "negative": -0.25}</script>'
+        )
+        self.assertEqual(errors_for(html), [])
+
     def test_empty_json_ld_is_rejected(self) -> None:
         html = page('<script type="application/ld+json">   </script>')
         self.assertTrue(any("JSON-LD vazio" in e for e in errors_for(html)))
