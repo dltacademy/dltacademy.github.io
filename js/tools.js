@@ -29,6 +29,7 @@ const TOOLS = [
   },
   {
     name: "Quanto você paga para operar?",
+    icon: "💸",
     desc: "Calcule o custo mensal e anual das suas taxas de trading em menos de 30 segundos.",
     url: "https://quanto-em-taxas.dlt.academy/",
     tag: "Custos do trader",
