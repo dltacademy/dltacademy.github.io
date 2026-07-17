@@ -67,5 +67,14 @@ const CONTENT = [
     "url": "/blog/bem-vindo/",
     "tag": "Institucional",
     "publishedAt": "2026-07-15"
+  },
+  {
+    "id": "article-bybit-pay-vs-moneta-vietqr",
+    "type": "article",
+    "title": "Bybit Pay ou Moneta Pay no Vietnã: qual saiu mais barato no VietQR?",
+    "description": "Pagamos a mesma compra de 100.000 VND com os dois. Veja o custo real, o cashback e qual usar em cada situação.",
+    "url": "/blog/bybit-pay-vs-moneta-vietqr/",
+    "tag": "Teste real",
+    "publishedAt": "2026-07-17"
   }
 ];
