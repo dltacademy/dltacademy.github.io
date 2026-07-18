@@ -7,15 +7,19 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.goatcounter.com; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
 <title>{{POST_TITLE}} — DLT Academy</title>
 <meta name="description" content="{{POST_DESCRIPTION}}">
-<meta name="keywords" content="{{POST_KEYWORDS}}">
 <link rel="canonical" href="https://dlt.academy/blog/{{POST_SLUG}}/">
 
 <!-- Open Graph -->
 <meta property="og:type" content="article">
+<meta property="og:site_name" content="DLT Academy">
 <meta property="og:title" content="{{POST_TITLE}}">
 <meta property="og:description" content="{{POST_DESCRIPTION}}">
 <meta property="og:url" content="https://dlt.academy/blog/{{POST_SLUG}}/">
 <meta property="og:image" content="https://dlt.academy/blog/{{POST_SLUG}}/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="{{POST_OG_ALT}}">
 <meta property="og:locale" content="pt_BR">
 
 <!-- Twitter/X -->
@@ -23,6 +27,7 @@
 <meta name="twitter:title" content="{{POST_TITLE}}">
 <meta name="twitter:description" content="{{POST_DESCRIPTION}}">
 <meta name="twitter:image" content="https://dlt.academy/blog/{{POST_SLUG}}/og-image.png">
+<meta name="twitter:image:alt" content="{{POST_OG_ALT}}">
 
 <meta name="theme-color" content="#06090F">
 <link rel="icon" type="image/png" href="/assets/dlt-mark.png">
@@ -38,6 +43,7 @@
   "headline": "{{POST_TITLE}}",
   "description": "{{POST_DESCRIPTION}}",
   "datePublished": "{{POST_DATE_ISO}}",
+  "dateModified": "{{POST_MODIFIED_ISO}}",
   "inLanguage": "pt-BR",
   "mainEntityOfPage": "https://dlt.academy/blog/{{POST_SLUG}}/",
   "image": "https://dlt.academy/blog/{{POST_SLUG}}/og-image.png",
@@ -60,6 +66,7 @@
     <div class="article-meta">
       <span class="tag s2">{{POST_TAG}}</span>
       <time datetime="{{POST_DATE_ISO}}">{{POST_DATE}}</time>
+      <span>Atualizado em {{POST_MODIFIED}}</span>
     </div>
     <h1>{{POST_TITLE}}</h1>
 
