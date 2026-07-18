@@ -22,6 +22,11 @@
 .guide-reference ol { color: var(--text-dim); line-height: 1.65; margin: 16px 0 0; padding-left: 22px; }
 .guide-reference li + li { margin-top: 10px; }
 .guide-reference strong { color: var(--text); }
+.table-scroll { margin: 16px 0 22px; overflow-x: auto; }
+.table-scroll table { border-collapse: collapse; min-width: 420px; width: 100%; }
+.table-scroll th, .table-scroll td { border-bottom: 1px solid var(--border); padding: 11px 12px; text-align: left; }
+.table-scroll th { background: var(--bg-elev-2); color: var(--text); font-family: var(--font-head); font-size: 13px; }
+.table-scroll td { color: var(--text-dim); font-size: 14px; }
 .guide-faq { padding-bottom: 20px; }
 .guide-faq details { border-bottom: 1px solid var(--border); color: var(--text-dim); padding: 14px 0; }
 .guide-faq summary { color: var(--text); cursor: pointer; font-family: var(--font-head); font-size: 14px; font-weight: 600; }
