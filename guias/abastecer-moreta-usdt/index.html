@@ -74,8 +74,24 @@
     <p>Um cartão brasileiro tradicional pode ficar ainda pior. Se, além da taxa Moreta e do IOF, o emissor aplicar um spread de 4% sobre a conversão, o exemplo de 100 USD sobe de 106,09 USD para cerca de <strong>110,19 USD equivalentes</strong>: aproximadamente 10,2% de custo adicional. É um cenário ilustrativo, não uma tarifa universal; alguns cartões cobram menos, outros podem chegar perto disso.</p>
     <p>Nas corretoras, pares líquidos de BRL/USDT ou BRL/USDC costumam ficar muito próximos da cotação de mercado, com spread pequeno e tarifa visível. Ainda assim, compare a prévia: a rota vencedora é a que usa menos reais para entregar o mesmo saldo líquido, incluindo negociação e saque.</p>
 
+    <h2>Benchmark real: quanto custaram os mesmos 100 USD</h2>
+    <p>Na comparação feita pelo Tiago em 18/07/2026, no mesmo momento e para obter 100 USD, as prévias mostraram:</p>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Comparação em reais para obter 100 dólares">
+      <table>
+        <thead><tr><th>Método</th><th>Reais necessários</th><th>Diferença contra Binance</th></tr></thead>
+        <tbody>
+          <tr><td>Binance</td><td>R$ 515,15</td><td>base</td></tr>
+          <tr><td>ether.fi</td><td>R$ 518,20</td><td>+R$ 3,05 · +0,59%</td></tr>
+          <tr><td>Wise</td><td>R$ 533,26</td><td>+R$ 18,11 · +3,52%</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Esse snapshot confirma por que a corretora é forte para preparar o saldo: a Binance ficou mais próxima do preço de referência em reais. Para entregar 100 USD líquidos ao Moreta, uma estimativa proporcional leva a rota Binance para cerca de <strong>R$ 516,70</strong> ao comprar 100,30 USDT e pagar o saque; Wise + depósito Moreta iria para aproximadamente <strong>R$ 546,59</strong>; ether.fi + depósito Moreta, para aproximadamente <strong>R$ 531,16</strong>. As duas últimas estimativas presumem que a cotação escala linearmente para a cobrança de 102,50 USD — confira a prévia real, pois tarifas mínimas e arredondamentos podem alterar o resultado.</p>
+    <p class="guide-note">Não foi incluído cartão bancário brasileiro no benchmark porque faltou uma prévia comparável do mesmo instante. A experiência do Tiago indica custo bem maior, mas o artigo só atribui um percentual quando existe cotação observada ou cenário matemático explicitamente identificado.</p>
+
     <h2>Onde o cartão ether.fi entra — e onde não entra</h2>
     <p>Para <strong>pagar uma compra internacional diretamente</strong>, o ether.fi Cash pode ser mais eficiente que cartões tradicionais. A documentação consultada em 18/07/2026 informa margem FX adicional de <strong>0% a 0,5%</strong>, conforme o nível, e cashback padrão de até <strong>3%</strong> nas primeiras faixas mensais de compras elegíveis. Nesse cenário, o cashback pode cobrir a margem cambial e ainda deixar retorno líquido positivo, antes de diferenças de liquidação da Visa.</p>
+    <p>No snapshot acima, os mesmos 100 USD custaram R$ 518,20 no ether.fi. Se a compra direta for elegível aos 3% da primeira faixa, o cashback equivale a cerca de R$ 15,55 na mesma referência, levando o <strong>custo econômico líquido</strong> para aproximadamente R$ 502,65. O cashback é recebido depois e pode variar por faixa e categoria; não reduz a cobrança inicial.</p>
     <p>Isso não torna o ether.fi uma boa forma de abastecer o Moreta. A taxa de depósito por cartão de 2,5% continua existindo e operações de funding, carteira, stored value ou equivalente podem não gerar cashback conforme a categoria processada. Para o Moreta, prefira comprar stablecoin numa corretora e transferir pela Solana; reserve o ether.fi para pagar diretamente no estabelecimento quando cartão for aceito e a compra for elegível.</p>
 
     <h2>Passo a passo: Binance → Moreta Pay</h2>
