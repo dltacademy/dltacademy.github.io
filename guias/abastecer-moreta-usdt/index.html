@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.goatcounter.com; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
+<title>Como abastecer o Moreta Pay com USDT e fugir das taxas de depósito — DLT Academy</title>
+<meta name="description" content="Veja como abastecer o Moreta Pay com USDT e compare o custo da Solana com taxa de depósito, IOF e spread de um cartão brasileiro.">
+<link rel="canonical" href="https://dlt.academy/guias/abastecer-moreta-usdt/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="DLT Academy">
+<meta property="og:title" content="Como abastecer o Moreta Pay com USDT e fugir das taxas de depósito">
+<meta property="og:description" content="Compare Solana com depósito por cartão brasileiro: taxa do Moreta, IOF, spread e o custo observado da transferência em USDT.">
+<meta property="og:url" content="https://dlt.academy/guias/abastecer-moreta-usdt/">
+<meta property="og:image" content="https://dlt.academy/guias/abastecer-moreta-usdt/og-image.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Como abastecer o Moreta Pay com USDT — DLT Academy">
+<meta property="og:locale" content="pt_BR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Como abastecer o Moreta Pay com USDT e fugir das taxas de depósito">
+<meta name="twitter:description" content="Compare Solana com depósito por cartão brasileiro: taxa do Moreta, IOF, spread e o custo observado da transferência em USDT.">
+<meta name="twitter:image" content="https://dlt.academy/guias/abastecer-moreta-usdt/og-image.png">
+<meta name="twitter:image:alt" content="Como abastecer o Moreta Pay com USDT — DLT Academy">
+<meta name="theme-color" content="#06090F">
+<link rel="icon" type="image/png" href="/assets/dlt-mark.png">
+<link rel="stylesheet" href="/styles-base.css">
+<link rel="stylesheet" href="/styles-portal.css">
+<link rel="stylesheet" href="/guias/styles-guides.css">
+
+<!-- Dados estruturados (JSON-LD é bloco de dados, não executa — ok com o CSP) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Como abastecer o Moreta Pay com USDT e fugir das taxas de depósito",
+  "description": "O caminho barato de funding: comprar USDT na Binance ou Bybit e transferir para o Moreta Pay, evitando a taxa do depósito convencional (2,5%, mínimo 1,50 USD).",
+  "datePublished": "2026-07-18",
+  "dateModified": "2026-07-18",
+  "inLanguage": "pt-BR",
+  "mainEntityOfPage": "https://dlt.academy/guias/abastecer-moreta-usdt/",
+  "image": "https://dlt.academy/guias/abastecer-moreta-usdt/og-image.png",
+  "author": { "@type": "Organization", "name": "DLT Academy", "url": "https://dlt.academy/" },
+  "publisher": { "@type": "Organization", "name": "DLT Academy", "url": "https://dlt.academy/", "logo": { "@type": "ImageObject", "url": "https://dlt.academy/assets/dlt-logo-light.png" } }
+}
+</script>
+</head>
+<body>
+<header class="top"><div class="wrap header-row"><a class="brand" href="/"><img src="/assets/dlt-logo-light.png" alt="DLT Academy"></a><nav class="header-nav" aria-label="Navegação principal"><a href="/#ferramentas">Ferramentas</a><a href="/#guias">Guias</a><a href="/blog/">Blog</a><a href="/sobre/">Sobre</a></nav></div></header>
+<main><div class="guide-wrap">
+  <section class="guide-hero">
+    <p class="eyebrow">Guia de viagem</p>
+    <h1>Como abastecer o Moreta Pay com USDT e fugir das taxas de depósito</h1>
+    <p class="subtitle">O depósito convencional no Moreta Pay (cartão) cobra 2,5% com mínimo de 1,50 USD. Transferir USDT credita saldo equivalente com custo bem menor — foi exatamente esse funding que sustentou o resultado do nosso teste real comparando Bybit Pay e Moreta Pay.</p>
+  </section>
+
+  <article class="guide-reference">
+    <h2>Resposta curta</h2>
+    <p>Comprar USDT na Binance ou na Bybit e transferir para o Moreta Pay pode sair muito mais barato que o depósito por cartão. Para creditar 100 USD, a rota ilustrativa do cartão parte de <strong>102,50 USD</strong> após a taxa de 2,5% do Moreta; com IOF de 3,5% sobre esse valor, chega a aproximadamente <strong>106,09 USD antes do spread do emissor</strong>. Na rota testada por Solana, a taxa de saque foi <strong>0,30 USDT</strong>; ainda entram o preço e eventuais custos de comprar o USDT na exchange, que devem ser conferidos na hora.</p>
+
+    <h2>O problema: a taxa do depósito fiat</h2>
+    <p>O Moreta Pay documenta oficialmente a taxa de depósito por cartão: <strong>2,5%, com mínimo de 1,50 USD</strong> (fonte: página oficial de tarifas do Moreta e seu help center, verificado em 18/07/2026). Depósitos por transferência bancária têm tarifa fixa menor (1 a 1,50 USD, conforme moeda) e ficam isentos de taxa acima de determinado valor — mas ainda assim exigem conta bancária internacional, algo que nem todo viajante tem à mão. O funding via USDT resolve os dois problemas: custo baixo e não depende de banco.</p>
+
+    <h2>Se o seu cartão for brasileiro, a conta é pior ainda</h2>
+    <p>Os 2,5% acima são a taxa do próprio Moreta. Quem usa <strong>cartão brasileiro</strong> soma o <strong>IOF de 3,5%</strong> das compras internacionais e o spread cambial do emissor. Num exemplo em que você quer 100 USD de saldo, o cartão recebe uma cobrança de 102,50 USD após a taxa do Moreta; 3,5% de IOF sobre 102,50 USD equivale a cerca de <strong>3,59 USD</strong>. O desembolso fica em aproximadamente <strong>106,09 USD antes do spread</strong> — custo adicional conhecido de 6,09 USD, não 8 USD. Como o spread varia por banco, ele deve ser somado usando a cotação efetivamente mostrada na fatura.</p>
+    <p>Na rota cripto, para entregar os mesmos 100 USD de saldo, você precisa comprar o valor a enviar mais a taxa de saque. Usando o custo observado de 0,30 USDT, seriam aproximadamente <strong>100,30 USDT, mais o spread ou a tarifa da compra na exchange</strong>. Antes de comparar os spreads, a diferença entre os custos conhecidos das duas rotas já é de cerca de <strong>5,79 USD</strong>. No cartão, o spread costuma ampliar a diferença; na exchange ele também existe, mas aparece na cotação ou na tarifa da compra e precisa ser medido, não presumido como zero.</p>
+    <p class="guide-note">Exemplo ilustrativo verificado em 18/07/2026. O IOF de 3,5% consta na regra vigente para compras internacionais; taxas, câmbio e benefícios podem mudar. Confira a cobrança final nos dois aplicativos antes de decidir.</p>
+
+    <h2>Passo a passo: Binance → Moreta Pay</h2>
+    <ol>
+      <li>Compre USDT à vista na Binance (Spot ou Convert), com o valor que pretende transferir.</li>
+      <li>No Moreta Pay, abra a tela de depósito em cripto e gere o endereço de recebimento na rede <strong>Solana (SOL)</strong> — no momento deste guia, é a única rede que o app aceita para USDT.</li>
+      <li>Na Binance, vá em <strong>Withdraw</strong> (Saque), escolha USDT e selecione a rede <strong>Solana (SOL)</strong> — precisa ser exatamente a mesma rede do endereço gerado no Moreta.</li>
+      <li>Cole o endereço do Moreta no campo de destino e confira caractere por caractere antes de confirmar.</li>
+      <li>Envie primeiro um valor pequeno de teste. Só depois de ver o crédito confirmado no Moreta, envie o restante.</li>
+      <li>Aguarde o crédito — no nosso teste (18/07/2026), o saldo apareceu no Moreta em poucos minutos.</li>
+    </ol>
+
+    <h2>Passo a passo: Bybit → Moreta Pay</h2>
+    <ol>
+      <li>Compre USDT à vista na Bybit.</li>
+      <li>No Moreta Pay, gere o endereço de depósito em USDT na rede <strong>Solana (SOL)</strong>.</li>
+      <li>Na Bybit, abra <strong>Assets → Withdraw</strong>, escolha USDT e selecione a rede Solana (SOL) — confirme que essa opção aparece na tela antes de prosseguir; se não aparecer, use a Binance.</li>
+      <li>Cole o endereço do Moreta, confira o endereço completo e envie um valor pequeno de teste primeiro.</li>
+      <li>Confirme o crédito no Moreta antes de enviar o restante.</li>
+    </ol>
+    <p class="guide-note">Não testamos a rota Bybit → Moreta pessoalmente — os passos seguem a mesma mecânica do teste real que fizemos pela Binance. Confirme a taxa de saque exibida na tela da Bybit antes de confirmar; ela muda com o tempo e não temos um número datado próprio para essa rota.</p>
+
+    <h2>Taxas de saque: o que realmente pesa</h2>
+    <p>A rede escolhida no saque é o maior fator de custo — não a exchange em si. Na nossa transferência real pela Binance (18/07/2026), a taxa de saque de USDT pela rede Solana foi <strong>0,30 USDT</strong>. Taxas de saque mudam com frequência e variam por rede — confira sempre o valor exibido na tela da sua exchange, na data em que for sacar, antes de confirmar. Redes diferentes da mesma moeda (por exemplo TRC20, TON, ERC20) têm taxas bem diferentes entre si; o ponto central deste guia é usar a rede Solana porque é a que o Moreta aceita hoje — não a mais barata em teoria, mas a única compatível.</p>
+
+    <h2>Segurança: o que não pode falhar</h2>
+    <ul class="guide-list">
+      <li><strong>Rede errada = perda quase certa.</strong> Enviar USDT numa rede diferente da que o Moreta gerou o endereço normalmente não tem volta. Confira a rede dos dois lados antes de qualquer envio.</li>
+      <li><strong>Sempre teste com um valor pequeno primeiro.</strong> Só envie o valor cheio depois de confirmar que o teste chegou certo.</li>
+      <li><strong>Confira o endereço completo</strong>, não só os primeiros e últimos caracteres — copie e cole, nunca digite manualmente.</li>
+      <li><strong>Nunca compartilhe credenciais</strong> — nem senha, nem seed phrase, nem código de autenticação — com ninguém, em nenhuma etapa deste processo.</li>
+    </ul>
+
+    <h2>Ressalvas que não vamos omitir</h2>
+    <ul class="guide-list">
+      <li>Isso funcionou nesta conta e neste teste, na data indicada; confirme sempre as taxas e condições atuais no seu próprio aplicativo antes de decidir.</li>
+      <li>A taxa de depósito por cartão (2,5%, mínimo 1,50 USD) é documentada oficialmente pelo Moreta. Já a ausência de taxa no depósito via USDT/Solana é o que observamos nesta conta neste teste — não existe documentação pública do Moreta cobrindo esse fluxo especificamente; isso pode mudar sem aviso.</li>
+      <li>Valores datados: teste realizado em 18/07/2026. Taxas de saque na Binance e na Bybit, e as condições de depósito no Moreta, podem mudar depois desta data.</li>
+      <li>Não é "sem taxa nenhuma": você paga a taxa de saque da exchange de origem. O que muda é que ela costuma ser muito menor que a taxa de depósito fiat.</li>
+    </ul>
+
+    <h2>Conexões</h2>
+    <p>Este guia fecha o triângulo do funding: o <a href="/blog/bybit-pay-vs-moreta-vietqr/">teste real comparando Bybit Pay e Moreta Pay</a> mostrou o resultado; o <a href="/guias/bybit-pay-vietqr/">guia de VietQR com Bybit Pay</a> explica como pagar; este guia explica como preparar o saldo que sustenta os dois.</p>
+
+    <h2>Onde comprar USDT</h2>
+    <p>Abra conta numa das duas para comprar o USDT que vai virar saldo no Moreta:</p>
+    <div class="guide-hero-cta">
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://www.binance.com/register?ref=BOSS2026" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Abra sua conta Binance com cashback vitalício nas taxas spot</a>
+        <a class="btn btn-secondary" href="https://www.bybit.com/invite?ref=O0YDQDM" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Abra sua conta Bybit e receba US$20 de bônus</a>
+      </div>
+      <p>Transparência: os dois links acima são de indicação (Binance e Bybit). Se você abrir conta nova por eles, podemos receber uma comissão, sem custo extra para você. Cashback, bônus, elegibilidade e verificação de identidade seguem os termos vigentes de cada corretora na hora do seu cadastro — confira as condições atuais na própria tela antes de decidir. Isso não muda nenhuma informação técnica deste guia.</p>
+    </div>
+  </article>
+
+  <section class="guide-faq" aria-labelledby="faq-titulo">
+    <h2 id="faq-titulo">Perguntas frequentes</h2>
+    <details><summary>Qual rede eu uso para transferir USDT para o Moreta Pay?</summary><p>Solana (SOL) — é a única rede que o Moreta aceita para depósito de USDT no momento deste guia. Confirme sempre no seu app antes de sacar.</p></details>
+    <details><summary>Quanto custa depositar por cartão no Moreta Pay?</summary><p>2,5% do valor, com mínimo de 1,50 USD — taxa documentada oficialmente pelo Moreta (moretapay.com/fees, verificado em 18/07/2026).</p></details>
+    <details><summary>E com um cartão brasileiro, quanto custaria colocar 100 USD?</summary><p>No exemplo deste guia, aproximadamente 106,09 USD antes do spread: 100 USD de saldo, 2,50 USD de taxa do Moreta e cerca de 3,59 USD de IOF sobre a cobrança de 102,50 USD. O spread do emissor aumenta esse total. Pela rota testada em USDT/Solana, o custo conhecido foi 0,30 USDT de saque, além do preço e das eventuais tarifas da compra do USDT.</p></details>
+    <details><summary>O depósito via USDT é realmente gratuito?</summary><p>No nosso teste (18/07/2026), o Moreta não cobrou taxa de depósito pela rede Solana — mas isso não está documentado publicamente, então trate como observação desta conta, não como garantia. Você ainda paga a taxa de saque da exchange de origem.</p></details>
+    <details><summary>Quanto tempo demora para o saldo aparecer no Moreta?</summary><p>No nosso teste, poucos minutos após a confirmação do saque na Binance.</p></details>
+    <details><summary>Posso usar qualquer rede da Binance ou Bybit?</summary><p>Não. A rede do saque precisa ser exatamente a mesma que o Moreta gerou no endereço de depósito (Solana). Rede errada normalmente significa perda do valor.</p></details>
+    <details><summary>Esse resultado vale pra sempre?</summary><p>Não. Taxas de saque e as condições de depósito do Moreta mudam com o tempo. Os números aqui são datados de 18/07/2026 — confirme sempre a versão atual antes de decidir.</p></details>
+  </section>
+  </div>
+</main>
+<footer><div class="wrap"><p>Conteúdo educacional. Não é recomendação de investimento.</p><p><a href="/sobre/">Sobre a DLT Academy</a> · <a href="/transparencia/">Transparência</a></p><p>© 2026 dltacademy</p></div></footer>
+</body>
+</html>
