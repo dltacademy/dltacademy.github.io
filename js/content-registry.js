@@ -91,8 +91,8 @@ const CONTENT = [
   {
     "id": "article-bybit-pay-vs-moreta-vietqr",
     "type": "article",
-    "title": "Bybit Pay ou Moreta Pay no Vietnã: qual saiu mais barato no VietQR?",
-    "description": "Pagamos a mesma compra de 100.000 VND com os dois. Veja o custo real, o cashback e qual usar em cada situação.",
+    "title": "Bybit Pay ou Moreta Pay: qual saiu mais barato no VietQR?",
+    "description": "Teste real no Vietnã e um método para escolher entre os dois em outros países, considerando QR, spread, cashback e funding.",
     "url": "/blog/bybit-pay-vs-moreta-vietqr/",
     "tag": "Teste real",
     "publishedAt": "2026-07-17"
