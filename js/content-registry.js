@@ -70,6 +70,16 @@ const CONTENT = [
     "icon": "📱"
   },
   {
+    "id": "guide-abastecer-moreta-usdt",
+    "type": "guide",
+    "title": "Abastecer o Moreta Pay com USDT",
+    "description": "O caminho barato de funding: comprar USDT na Binance ou Bybit e transferir, evitando a taxa do depósito convencional.",
+    "url": "/guias/abastecer-moreta-usdt/",
+    "tag": "Guia de viagem",
+    "tone": "blue",
+    "icon": "💱"
+  },
+  {
     "id": "article-bem-vindo",
     "type": "article",
     "title": "Bem-vindo ao Blog da DLT Academy",
