@@ -68,6 +68,10 @@
     <p>Na rota cripto, para entregar os mesmos 100 USD de saldo, você precisa comprar o valor a enviar mais a taxa de saque. Usando o custo observado de 0,30 USDT, seriam aproximadamente <strong>100,30 USDT, mais o spread ou a tarifa da compra na exchange</strong>. Antes de comparar os spreads, a diferença entre os custos conhecidos das duas rotas já é de cerca de <strong>5,79 USD</strong>. No cartão, o spread costuma ampliar a diferença; na exchange ele também existe, mas aparece na cotação ou na tarifa da compra e precisa ser medido, não presumido como zero.</p>
     <p class="guide-note">Exemplo ilustrativo verificado em 18/07/2026. O IOF de 3,5% consta na regra vigente para compras internacionais; taxas, câmbio e benefícios podem mudar. Confira a cobrança final nos dois aplicativos antes de decidir.</p>
 
+    <h2>E cartões internacionais como Wise?</h2>
+    <p>Ter um cartão internacional ou multicurrency não torna a compra automaticamente mais barata. Ele pode evitar o spread de um cartão bancário brasileiro tradicional e mostrar a conversão com mais transparência, mas ainda existe uma <strong>cotação efetiva</strong>: valor em reais usado para comprar ou converter o saldo, tarifa da conversão, eventual imposto aplicável e câmbio usado na compra. Se esse cartão for usado para depositar no Moreta, a taxa de 2,5% do próprio Moreta continua entrando na conta.</p>
+    <p>Por isso, Wise e cartões semelhantes podem ganhar em alguns cenários e perder em outros. A comparação correta não é “cartão internacional versus cartão brasileiro”, mas <strong>quantos reais saíram para entregar os mesmos 100 USD de saldo</strong>. Compare a prévia final do cartão com o custo completo de comprar 100,30 USDT na exchange. Em momentos de spread pior no cartão, a rota por USDT pode continuar mais barata mesmo contra um produto internacional.</p>
+
     <h2>Passo a passo: Binance → Moreta Pay</h2>
     <ol>
       <li>Compre USDT à vista na Binance (Spot ou Convert), com o valor que pretende transferir.</li>
@@ -86,10 +90,24 @@
       <li>Cole o endereço do Moreta, confira o endereço completo e envie um valor pequeno de teste primeiro.</li>
       <li>Confirme o crédito no Moreta antes de enviar o restante.</li>
     </ol>
-    <p class="guide-note">Não testamos a rota Bybit → Moreta pessoalmente — os passos seguem a mesma mecânica do teste real que fizemos pela Binance. Confirme a taxa de saque exibida na tela da Bybit antes de confirmar; ela muda com o tempo e não temos um número datado próprio para essa rota.</p>
+    <p class="guide-note">A rota completa Bybit → Moreta ainda não foi testada por nós. Em 18/07/2026, porém, a tela de saque da conta do Tiago mostrava 0,50 USDT para USDT/Solana e 1 USDC para USDC/Solana. Confirme ativo, rede e tarifa novamente antes de enviar; nunca mande USDC para um endereço de depósito de USDT, nem o contrário.</p>
 
     <h2>Taxas de saque: o que realmente pesa</h2>
-    <p>A rede escolhida no saque é o maior fator de custo — não a exchange em si. Na nossa transferência real pela Binance (18/07/2026), a taxa de saque de USDT pela rede Solana foi <strong>0,30 USDT</strong>. Taxas de saque mudam com frequência e variam por rede — confira sempre o valor exibido na tela da sua exchange, na data em que for sacar, antes de confirmar. Redes diferentes da mesma moeda (por exemplo TRC20, TON, ERC20) têm taxas bem diferentes entre si; o ponto central deste guia é usar a rede Solana porque é a que o Moreta aceita hoje — não a mais barata em teoria, mas a única compatível.</p>
+    <p>Rede, exchange e stablecoin alteram o custo. Estas foram as tarifas exibidas nas contas consultadas em <strong>18/07/2026</strong>, todas pela rede Solana:</p>
+    <div class="table-scroll" tabindex="0" role="region" aria-label="Taxas observadas de saque pela rede Solana">
+      <table>
+        <thead><tr><th>Origem</th><th>USDT/Solana</th><th>USDC/Solana</th></tr></thead>
+        <tbody>
+          <tr><td>Binance</td><td>0,30 USDT</td><td>0,30 USDC</td></tr>
+          <tr><td>Bybit</td><td>0,50 USDT</td><td>1 USDC</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Nesse recorte, a Binance foi mais barata para transferir ao Moreta e não houve vantagem de taxa em trocar USDT por USDC. Isso não é uma tabela permanente: a própria tela de confirmação da exchange é a fonte decisiva. Use apenas o ativo e a rede que o endereço de depósito do Moreta declarar naquele momento.</p>
+
+    <h2>Na Bybit, transferir ao Moreta não é a única opção</h2>
+    <p>Antes de sacar, tente pagar o QR diretamente pelo <strong>Bybit Pay</strong>. Quando o código é reconhecido, você evita a taxa de saque e mantém o pagamento dentro do aplicativo, além das recompensas aplicáveis à sua conta. A limitação é compatibilidade: nos testes do Tiago no Vietnã, o Bybit Pay recusou vários códigos que o Moreta aceitou.</p>
+    <p>A ordem prática fica: <strong>tente Bybit Pay primeiro</strong>; se o QR não for reconhecido, use o Moreta abastecido via Solana. O Moreta funcionou em quase todos os estabelecimentos testados até agora, mas isso é experiência de campo, não garantia de aceitação universal. Veja os detalhes no <a href="/guias/bybit-pay-vietqr/">guia de Bybit Pay e VietQR</a>.</p>
 
     <h2>Segurança: o que não pode falhar</h2>
     <ul class="guide-list">
@@ -126,6 +144,9 @@
     <details><summary>Qual rede eu uso para transferir USDT para o Moreta Pay?</summary><p>Solana (SOL) — é a única rede que o Moreta aceita para depósito de USDT no momento deste guia. Confirme sempre no seu app antes de sacar.</p></details>
     <details><summary>Quanto custa depositar por cartão no Moreta Pay?</summary><p>2,5% do valor, com mínimo de 1,50 USD — taxa documentada oficialmente pelo Moreta (moretapay.com/fees, verificado em 18/07/2026).</p></details>
     <details><summary>E com um cartão brasileiro, quanto custaria colocar 100 USD?</summary><p>No exemplo deste guia, aproximadamente 106,09 USD antes do spread: 100 USD de saldo, 2,50 USD de taxa do Moreta e cerca de 3,59 USD de IOF sobre a cobrança de 102,50 USD. O spread do emissor aumenta esse total. Pela rota testada em USDT/Solana, o custo conhecido foi 0,30 USDT de saque, além do preço e das eventuais tarifas da compra do USDT.</p></details>
+    <details><summary>Wise ou outro cartão internacional sempre sai mais barato?</summary><p>Não. Compare o custo efetivo para entregar o mesmo saldo: conversão para a moeda do cartão, tarifa, imposto aplicável, câmbio da compra e os 2,5% do Moreta. Um cartão multicurrency pode ser competitivo, mas em alguns momentos o spread total ainda fica acima da compra de USDT mais o saque pela Solana.</p></details>
+    <details><summary>É melhor sacar USDT ou USDC pela Solana?</summary><p>Nas telas observadas em 18/07/2026, a Binance cobrava 0,30 tanto em USDT quanto em USDC; a Bybit mostrava 0,50 USDT e 1 USDC. Nesse recorte, USDC não trouxe economia. Confirme a tarifa atual e use exatamente o ativo que o Moreta indicar no endereço de depósito.</p></details>
+    <details><summary>Devo pagar pelo Bybit Pay ou transferir para o Moreta?</summary><p>Tente o Bybit Pay primeiro quando o QR for reconhecido: ele evita o saque e pode gerar recompensas. Use o Moreta como fallback quando o Bybit não reconhecer o código. Nos testes do Tiago, o Moreta teve aceitação maior, mas nenhum dos dois funciona com garantia em todo QR.</p></details>
     <details><summary>O depósito via USDT é realmente gratuito?</summary><p>No nosso teste (18/07/2026), o Moreta não cobrou taxa de depósito pela rede Solana — mas isso não está documentado publicamente, então trate como observação desta conta, não como garantia. Você ainda paga a taxa de saque da exchange de origem.</p></details>
     <details><summary>Quanto tempo demora para o saldo aparecer no Moreta?</summary><p>No nosso teste, poucos minutos após a confirmação do saque na Binance.</p></details>
     <details><summary>Posso usar qualquer rede da Binance ou Bybit?</summary><p>Não. A rede do saque precisa ser exatamente a mesma que o Moreta gerou no endereço de depósito (Solana). Rede errada normalmente significa perda do valor.</p></details>
