@@ -236,7 +236,8 @@ section { padding: 52px 0; }
 
 /* ---------- Cards de ferramentas ---------- */
 #tools-grid,
-.catalog-section .tools-grid {
+.catalog-section .tools-grid,
+.next-step-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
   gap: 18px;
@@ -244,6 +245,10 @@ section { padding: 52px 0; }
 }
 .catalog-section { padding-top: 0; }
 .catalog-section h2 { font-size: clamp(22px, 3vw, 28px); letter-spacing: -0.02em; margin-bottom: 4px; }
+
+/* ---------- Grafo de conteúdo (T3) — "Próximo passo"/"Relacionados",
+   componente reutilizável entre artigo e guia, mesmos cards acima. ---------- */
+.next-step-section + .next-step-section { padding-top: 0; }
 
 .tool-card {
   position: relative;
