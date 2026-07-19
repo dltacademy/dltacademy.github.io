@@ -13,10 +13,12 @@ from xml.etree import ElementTree
 
 REGISTRY_MARKER = "const CONTENT = "
 COMMON_FIELDS = {"id", "type", "title", "description", "url", "tag"}
+EDGE_FIELDS = {"primaryNext", "related"}
+MAX_RELATED = 3
 TYPE_FIELDS = {
-    "tool": COMMON_FIELDS | {"tone", "icon"},
-    "guide": COMMON_FIELDS | {"tone", "icon"},
-    "article": COMMON_FIELDS | {"publishedAt"},
+    "tool": COMMON_FIELDS | {"tone", "icon"} | EDGE_FIELDS,
+    "guide": COMMON_FIELDS | {"tone", "icon"} | EDGE_FIELDS,
+    "article": COMMON_FIELDS | {"publishedAt"} | EDGE_FIELDS,
 }
 INSTITUTIONAL_URLS = {
     "https://dlt.academy/",
@@ -78,6 +80,78 @@ def _load_sitemap_urls(path: Path) -> list[str]:
         if element.tag.rsplit("}", 1)[-1] == "loc" and element.text:
             urls.append(element.text.strip())
     return urls
+
+
+def _validate_edges(entries: list[object], seen_ids: set[str]) -> list[str]:
+    """Valida primaryNext/related: destino existente, sem autorreferência,
+    máximo de related e sem ciclo em primaryNext (regras da fase T3)."""
+
+    errors: list[str] = []
+    primary_next_map: dict[str, str] = {}
+
+    for position, entry in enumerate(entries, start=1):
+        if not isinstance(entry, dict):
+            continue
+        label = _entry_label(entry, position)
+        entry_id = entry.get("id") if isinstance(entry.get("id"), str) else None
+
+        if "primaryNext" in entry:
+            primary_next = entry["primaryNext"]
+            if not isinstance(primary_next, str) or not primary_next.strip():
+                errors.append(f"{label}, campo 'primaryNext': deve ser string não vazia")
+            elif entry_id is not None and primary_next == entry_id:
+                errors.append(f"{label}, campo 'primaryNext': não pode autorreferenciar")
+            elif primary_next not in seen_ids:
+                errors.append(
+                    f"{label}, campo 'primaryNext': destino inexistente {primary_next!r}"
+                )
+            elif entry_id is not None:
+                primary_next_map[entry_id] = primary_next
+
+        if "related" in entry:
+            related = entry["related"]
+            if not isinstance(related, list):
+                errors.append(f"{label}, campo 'related': deve ser array de IDs")
+            else:
+                if len(related) > MAX_RELATED:
+                    errors.append(
+                        f"{label}, campo 'related': máximo de {MAX_RELATED} IDs"
+                    )
+                seen_related: set[str] = set()
+                for related_id in related:
+                    if not isinstance(related_id, str) or not related_id.strip():
+                        errors.append(
+                            f"{label}, campo 'related': cada item deve ser string não vazia"
+                        )
+                        continue
+                    if entry_id is not None and related_id == entry_id:
+                        errors.append(
+                            f"{label}, campo 'related': não pode autorreferenciar {related_id!r}"
+                        )
+                    if related_id in seen_related:
+                        errors.append(
+                            f"{label}, campo 'related': valor duplicado {related_id!r}"
+                        )
+                    seen_related.add(related_id)
+                    if related_id not in seen_ids:
+                        errors.append(
+                            f"{label}, campo 'related': destino inexistente {related_id!r}"
+                        )
+
+    cyclic_ids: set[str] = set()
+    for start_id in primary_next_map:
+        visited: list[str] = []
+        current = start_id
+        while current in primary_next_map:
+            if current in visited:
+                cyclic_ids.update(visited[visited.index(current):])
+                break
+            visited.append(current)
+            current = primary_next_map[current]
+    for cyclic_id in sorted(cyclic_ids):
+        errors.append(f"grafo 'primaryNext': ciclo detectado envolvendo {cyclic_id!r}")
+
+    return errors
 
 
 def validate_repository(root: Path | str) -> list[str]:
@@ -175,6 +249,8 @@ def validate_repository(root: Path | str) -> list[str]:
                 )
                 continue
         valid_registry_urls.add(_absolute_url(url))
+
+    errors.extend(_validate_edges(entries, seen_ids))
 
     try:
         sitemap_urls = _load_sitemap_urls(repo / "sitemap.xml")
