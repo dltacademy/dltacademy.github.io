@@ -138,6 +138,67 @@ class ValidateRegistryTests(unittest.TestCase):
         path.write_text("const OUTRO = [];\n", encoding="utf-8")
         self.assert_has_error(validate_repository(self.root), "não foi possível extrair")
 
+    def test_primary_next_para_destino_inexistente_reprova(self):
+        entries = [self.valid_tool(primaryNext="tool-fantasma")]
+        self.write_fixture(entries)
+        self.assert_has_error(validate_repository(self.root), "destino inexistente")
+
+    def test_primary_next_autorreferencia_reprova(self):
+        entries = [self.valid_tool(id="tool-a", primaryNext="tool-a")]
+        self.write_fixture(entries)
+        self.assert_has_error(validate_repository(self.root), "autorreferenciar")
+
+    def test_related_acima_do_limite_reprova(self):
+        entries = [
+            self.valid_tool(
+                id="tool-a",
+                url="https://a.dlt.academy/",
+                related=["tool-b", "tool-c", "tool-d", "tool-e"],
+            ),
+            self.valid_tool(id="tool-b", url="https://b.dlt.academy/"),
+            self.valid_tool(id="tool-c", url="https://c.dlt.academy/"),
+            self.valid_tool(id="tool-d", url="https://d.dlt.academy/"),
+            self.valid_tool(id="tool-e", url="https://e.dlt.academy/"),
+        ]
+        self.write_fixture(entries)
+        self.assert_has_error(validate_repository(self.root), "máximo de 3")
+
+    def test_related_duplicado_reprova(self):
+        entries = [
+            self.valid_tool(id="tool-a", url="https://a.dlt.academy/", related=["tool-b", "tool-b"]),
+            self.valid_tool(id="tool-b", url="https://b.dlt.academy/"),
+        ]
+        self.write_fixture(entries)
+        self.assert_has_error(validate_repository(self.root), "valor duplicado")
+
+    def test_related_autorreferencia_reprova(self):
+        entries = [self.valid_tool(id="tool-a", related=["tool-a"])]
+        self.write_fixture(entries)
+        self.assert_has_error(validate_repository(self.root), "autorreferenciar")
+
+    def test_related_para_destino_inexistente_reprova(self):
+        entries = [self.valid_tool(id="tool-a", related=["tool-fantasma"])]
+        self.write_fixture(entries)
+        self.assert_has_error(validate_repository(self.root), "destino inexistente")
+
+    def test_primary_next_ciclo_reprova(self):
+        entries = [
+            self.valid_tool(id="tool-a", url="https://a.dlt.academy/", primaryNext="tool-b"),
+            self.valid_tool(id="tool-b", url="https://b.dlt.academy/", primaryNext="tool-a"),
+        ]
+        self.write_fixture(entries)
+        self.assert_has_error(validate_repository(self.root), "ciclo")
+
+    def test_arestas_validas_nao_reprovam(self):
+        entries = [
+            self.valid_tool(
+                id="tool-a", url="https://a.dlt.academy/", primaryNext="tool-b", related=["tool-b"]
+            ),
+            self.valid_tool(id="tool-b", url="https://b.dlt.academy/"),
+        ]
+        self.write_fixture(entries)
+        self.assertEqual([], validate_repository(self.root))
+
 
 if __name__ == "__main__":
     unittest.main()

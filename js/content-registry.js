@@ -67,7 +67,8 @@ const CONTENT = [
     "url": "/guias/bybit-pay-vietqr/",
     "tag": "Guia de viagem",
     "tone": "green",
-    "icon": "📱"
+    "icon": "📱",
+    "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt"]
   },
   {
     "id": "guide-abastecer-moreta-usdt",
@@ -77,7 +78,8 @@ const CONTENT = [
     "url": "/guias/abastecer-moreta-usdt/",
     "tag": "Guia de viagem",
     "tone": "blue",
-    "icon": "💱"
+    "icon": "💱",
+    "related": ["guide-bybit-pay-vietqr", "article-bybit-pay-vs-moreta-vietqr"]
   },
   {
     "id": "article-bem-vindo",
@@ -95,6 +97,7 @@ const CONTENT = [
     "description": "Teste real no Vietnã e um método para escolher entre os dois em outros países, considerando QR, spread, cashback e funding.",
     "url": "/blog/bybit-pay-vs-moreta-vietqr/",
     "tag": "Teste real",
-    "publishedAt": "2026-07-17"
+    "publishedAt": "2026-07-17",
+    "primaryNext": "guide-bybit-pay-vietqr"
   }
 ];
