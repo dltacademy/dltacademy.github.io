@@ -68,7 +68,19 @@ const CONTENT = [
     "tag": "Guia de viagem",
     "tone": "green",
     "icon": "📱",
-    "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt"]
+    "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt", "guide-assinaturas-ia-bybit"]
+  },
+  {
+    "id": "guide-assinaturas-ia-bybit",
+    "type": "guide",
+    "title": "Cashback em assinaturas de IA com o Bybit Card",
+    "description": "Quem se qualifica ao reembolso de até 100%, quanto realmente cabe no teto mensal e por que subir de tier costuma piorar o seu resultado.",
+    "url": "/guias/assinaturas-ia-bybit/",
+    "tag": "Guia de pagamentos",
+    "tone": "blue",
+    "icon": "🤖",
+    "primaryNext": "guide-bybit-pay-vietqr",
+    "related": ["article-bybit-pay-vs-moreta-vietqr"]
   },
   {
     "id": "guide-abastecer-moreta-usdt",
