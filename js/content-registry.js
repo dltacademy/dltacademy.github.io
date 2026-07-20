@@ -17,7 +17,8 @@ const CONTENT = [
     "url": "https://sobrevive-ou-quebra.dlt.academy/",
     "tag": "Proteção de patrimônio",
     "tone": "green",
-    "icon": "🛡️"
+    "icon": "🛡️",
+    "related": ["tool-vender-ou-segurar", "tool-quanto-em-taxas"]
   },
   {
     "id": "tool-quanto-em-taxas",
@@ -47,7 +48,8 @@ const CONTENT = [
     "url": "https://vender-ou-segurar.dlt.academy/",
     "tag": "Já tem posição",
     "tone": "green",
-    "icon": "⚖️"
+    "icon": "⚖️",
+    "primaryNext": "tool-sobrevive-ou-quebra"
   },
   {
     "id": "guide-conta-binance",
