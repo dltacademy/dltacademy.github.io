@@ -53,6 +53,7 @@ class ProtocolResultTests(unittest.TestCase):
         self.assertIn("overflow-wrap: anywhere", self.styles)
         self.assertIn(".protocol-actions .btn,", self.styles)
         self.assertIn("width: 100%", self.styles)
+        self.assertIn("padding: 24px 0 0", self.styles)
 
     def test_vendor_e_build_umd_min_licenciada(self):
         vendor = self.root / "js/vendor/jspdf.umd.min.js"
