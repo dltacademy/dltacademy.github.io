@@ -171,7 +171,7 @@
 
 .protocol-delivery {
   margin-top: 28px;
-  padding-top: 24px;
+  padding: 24px 0 0;
   border-top: 1px solid var(--border);
 }
 .protocol-delivery-title {
