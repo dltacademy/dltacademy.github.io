@@ -103,7 +103,8 @@ const PROTOCOL = {
       ? `Você se comprometeu com isto: “${compromisso}”. Ele está no seu registro abaixo — releia amanhã, sem a pressa de hoje.`
       : "Você não deixou um compromisso escrito — vale voltar e escrever um. É a diferença entre refletir e decidir.";
 
-    // Ramo 1 — entraria devendo/alavancado: a resposta é não. Sem CTA afiliado.
+    // Ramo 1 — entraria devendo/alavancado: a resposta é não.
+    // Próximo passo é utilidade educacional, nunca presente afiliado.
     if (a.dinheiro === "nao_tenho") {
       return {
         verdict: "O passo de hoje é não dar o passo.",
@@ -113,11 +114,18 @@ const PROTOCOL = {
           eco, ecoPasso,
         ],
         record, safety: safetyNote,
-        cta: { tipo: "none" },
+        cta: {
+          tipo: "artigo",
+          headline: "Antes de qualquer entrada, monte um plano que não dependa de dívida.",
+          texto: "Primeiros Passos no Cripto ajuda a separar objetivo, reserva e ritmo de entrada usando o dinheiro que já existe — sem transformar pressa em obrigação.",
+          label: "Montar meus primeiros passos →",
+          href: "https://primeiros-passos-cripto.dlt.academy/",
+          external: false,
+        },
       };
     }
 
-    // Ramo 2 — tiraria de reserva/meta. Sem CTA afiliado.
+    // Ramo 2 — tiraria de reserva/meta. Só utilidade educacional.
     if (a.dinheiro === "tirar") {
       return {
         verdict: "Antes de tirar de outro lugar, olhe o que você trocaria.",
@@ -127,11 +135,18 @@ const PROTOCOL = {
           eco, ecoPasso,
         ],
         record, safety: safetyNote,
-        cta: { tipo: "none" },
+        cta: {
+          tipo: "artigo",
+          headline: "Transforme essa troca num plano antes de mexer na reserva ou em outra meta.",
+          texto: "Primeiros Passos no Cripto ajuda a definir objetivo, limite e ritmo de entrada com dinheiro disponível — sem sacrificar o que já tinha destino.",
+          label: "Organizar um plano de entrada →",
+          href: "https://primeiros-passos-cripto.dlt.academy/",
+          external: false,
+        },
       };
     }
 
-    // Ramo 3 — dinheiro que sobra, mas quem decide é o aperto. Sem CTA.
+    // Ramo 3 — dinheiro que sobra, mas quem decide é o aperto.
     if (a.sentimento !== "tranquilo") {
       return {
         verdict: "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
@@ -144,12 +159,20 @@ const PROTOCOL = {
           eco, ecoPasso,
         ],
         record, safety: safetyNote,
-        cta: { tipo: "none" },
+        cta: {
+          tipo: "artigo",
+          headline: "Se a ideia continuar fazendo sentido amanhã, teste primeiro o tamanho que você suportaria.",
+          texto: "Sobrevive ou Quebra? compara cenários e mostra por que reduzir a exposição costuma proteger mais do que tentar acertar a hora.",
+          label: "Testar o tamanho antes de agir →",
+          href: "https://sobrevive-ou-quebra.dlt.academy/",
+          external: false,
+        },
       };
     }
 
     // Ramo 4 — dinheiro que sobra e cabeça tranquila: decisão legítima.
-    // Único ramo que leva a agir → CTA de utilidade (o tamanho protege).
+    // A continuação ainda é utilidade; o fluxo não confirmou necessidade
+    // nem elegibilidade para uma plataforma, então não há presente direto.
     return {
       verdict: "Decidir com calma, com dinheiro que sobra, é legítimo — inclusive decidir sim.",
       body: [
@@ -161,7 +184,7 @@ const PROTOCOL = {
       cta: {
         tipo: "artigo",
         headline: "Se for agir, veja quanto a sua exposição aguenta antes de decidir o tamanho.",
-        texto: "O que protege não é acertar a hora — é dimensionar. O simulador mostra, em 1.000 cenários, o que cada tamanho faz com o seu dinheiro no pior caso.",
+        texto: "O que protege não é acertar a hora — é dimensionar. O simulador compara cenários e mostra o impacto de cada tamanho no seu dinheiro.",
         label: "Abrir o Sobrevive ou Quebra? →",
         href: "https://sobrevive-ou-quebra.dlt.academy/",
         external: false,

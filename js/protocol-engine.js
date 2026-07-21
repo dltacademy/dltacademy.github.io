@@ -17,11 +17,18 @@
 // e chama runProtocol(PROTOCOL, mountId).
 // ============================================================
 
+const protocolPdfBrand = {
+  asset: null,
+  error: null,
+  promise: null,
+};
+
 function runProtocol(protocol, mountId) {
   const mount = document.getElementById(mountId);
   if (!mount) return;
 
   const state = { answers: {}, path: [] };
+  prepareProtocolPdfBrand();
 
   // ---- helpers de DOM seguro ----
   const el = (tag, cls, text) => {
@@ -120,13 +127,22 @@ function runProtocol(protocol, mountId) {
     const card = el("div", "protocol-card protocol-result");
 
     card.appendChild(el("p", "protocol-eyebrow", result.eyebrow || "Seu resultado"));
-    card.appendChild(el("h2", "protocol-verdict", result.verdict));
-    (result.body || []).forEach((p) => card.appendChild(el("p", "protocol-body", p)));
 
-    // Registro pessoal do que a pessoa escreveu/escolheu — visível e imprimível.
+    const verdictPanel = el("div", "protocol-verdict-panel");
+    verdictPanel.appendChild(el("h2", "protocol-verdict", result.verdict));
+    card.appendChild(verdictPanel);
+
+    const copy = el("div", "protocol-result-copy");
+    (result.body || []).forEach((p) => copy.appendChild(el("p", "protocol-body", p)));
+    card.appendChild(copy);
+
+    // Registro pessoal do que a pessoa escreveu/escolheu.
     if (result.record && result.record.length) {
-      const rec = el("div", "protocol-record");
-      rec.appendChild(el("h3", null, "O que você registrou"));
+      const rec = el("section", "protocol-record");
+      rec.setAttribute("aria-labelledby", "protocol-record-title");
+      const recTitle = el("h3", null, "O que você registrou");
+      recTitle.id = "protocol-record-title";
+      rec.appendChild(recTitle);
       result.record.forEach((r) => {
         if (!r.value) return;
         const item = el("div", "protocol-record-item");
@@ -137,32 +153,85 @@ function runProtocol(protocol, mountId) {
       card.appendChild(rec);
     }
 
-    // Entrega: PDF via impressão nativa (principal) + .md (secundário).
-    const actions = el("div", "protocol-actions protocol-noprint");
-    const pdf = el("button", "btn btn-primary", "🖨️ Salvar meu resultado em PDF");
+    if (result.safety) card.appendChild(el("p", "protocol-safety", result.safety));
+
+    const delivery = el("section", "protocol-delivery");
+    delivery.appendChild(el("h3", "protocol-delivery-title", "Leve este resultado com você"));
+    delivery.appendChild(el("p", "protocol-delivery-text",
+      "Os arquivos são montados localmente no seu navegador e não incluem recomendações ou ofertas exibidas depois do resultado."));
+
+    const actions = el("div", "protocol-actions");
+    const pdf = el("button", "btn btn-primary", "Preparando o PDF…");
     pdf.type = "button";
-    pdf.addEventListener("click", () => window.print());
-    const md = el("button", "btn btn-secondary", "⬇️ Baixar como texto (.md)");
+    pdf.disabled = true;
+    pdf.setAttribute("aria-busy", "true");
+
+    const enablePdf = () => {
+      if (!pdf.isConnected) return;
+      if (protocolPdfBrand.asset && window.jspdf && window.jspdf.jsPDF) {
+        pdf.disabled = false;
+        pdf.removeAttribute("aria-busy");
+        pdf.textContent = "Baixar meu resultado em PDF";
+        return;
+      }
+      if (protocolPdfBrand.error || !window.jspdf || !window.jspdf.jsPDF) {
+        pdf.disabled = false;
+        pdf.removeAttribute("aria-busy");
+        pdf.textContent = "Tentar baixar meu resultado em PDF";
+      }
+    };
+
+    enablePdf();
+    if (protocolPdfBrand.promise) {
+      protocolPdfBrand.promise.then(enablePdf).catch(enablePdf);
+    }
+
+    pdf.addEventListener("click", () => {
+      const previousLabel = pdf.textContent;
+      pdf.disabled = true;
+      pdf.textContent = "Gerando PDF…";
+      try {
+        if (!protocolPdfBrand.asset) {
+          throw new Error("O logo da DLT Academy ainda não foi carregado.");
+        }
+        downloadProtocolPdf(protocol, result, protocolPdfBrand.asset);
+        pdf.textContent = "PDF baixado";
+      } catch (error) {
+        console.error("Não foi possível gerar o PDF do protocolo.", error);
+        pdf.textContent = "Não foi possível baixar — tentar novamente";
+      } finally {
+        window.setTimeout(() => {
+          if (!pdf.isConnected) return;
+          pdf.disabled = false;
+          pdf.textContent = previousLabel || "Baixar meu resultado em PDF";
+        }, 1800);
+      }
+    });
+
+    const md = el("button", "btn btn-secondary", "Baixar como texto (.md)");
     md.type = "button";
-    md.addEventListener("click", () => downloadTextFile(protocol.slug + ".md", buildMarkdown(protocol, result, state.answers)));
+    md.addEventListener("click", () => downloadTextFile(
+      protocol.slug + ".md",
+      buildMarkdown(protocol, result, state.answers)
+    ));
+
     actions.appendChild(pdf);
     actions.appendChild(md);
-    card.appendChild(actions);
-
-    card.appendChild(el("p", "protocol-privacy protocol-noprint",
-      "Tudo isto rodou no seu navegador. Nenhuma resposta foi enviada a lugar nenhum — o arquivo é gerado no seu computador."));
-
-    if (result.safety) card.appendChild(el("p", "protocol-safety", result.safety));
+    delivery.appendChild(actions);
+    delivery.appendChild(el("p", "protocol-privacy",
+      "Tudo isto rodou no seu navegador. Nenhuma resposta foi enviada a lugar nenhum — os arquivos são gerados no seu dispositivo."));
+    card.appendChild(delivery);
 
     mount.replaceChildren(card);
 
     // CTA por veredito — bloco separado, só na tela, nunca no arquivo nem
-    // tecido na reflexão. tipo "none" (ou ausente) = nenhum CTA: o silêncio
-    // é a conversão nos vereditos de "não/espere". Ver PROTOCOL_FRAMEWORK.
+    // tecido na reflexão. O modo "artigo" também pode apontar para guia ou
+    // ferramenta de utilidade; "presente" é reservado a oferta elegível.
     const cta = result.cta;
     if (cta && cta.tipo && cta.tipo !== "none") {
-      const box = el("div", "protocol-cta protocol-noprint");
-      box.appendChild(el("p", "protocol-cta-eyebrow", cta.tipo === "presente" ? "🎁 Um presente por ter chegado até aqui" : "Próximo passo útil"));
+      const box = el("section", "protocol-cta");
+      box.appendChild(el("p", "protocol-cta-eyebrow",
+        cta.tipo === "presente" ? "Um presente por ter chegado até aqui" : "Próximo passo útil"));
       if (cta.headline) box.appendChild(el("p", "protocol-cta-headline", cta.headline));
       if (cta.texto) box.appendChild(el("p", "protocol-cta-texto", cta.texto));
       const a = el("a", "btn btn-primary", cta.label);
@@ -186,6 +255,224 @@ function runProtocol(protocol, mountId) {
   }
 
   render(0);
+}
+
+function prepareProtocolPdfBrand() {
+  if (protocolPdfBrand.promise) return protocolPdfBrand.promise;
+
+  protocolPdfBrand.promise = loadLocalImageAsDataUrl("/assets/dlt-logo.png")
+    .then((asset) => {
+      protocolPdfBrand.asset = asset;
+      return asset;
+    })
+    .catch((error) => {
+      protocolPdfBrand.error = error;
+      return null;
+    });
+
+  return protocolPdfBrand.promise;
+}
+
+function loadLocalImageAsDataUrl(src) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.decoding = "async";
+    image.onload = () => {
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = image.naturalWidth;
+        canvas.height = image.naturalHeight;
+        const context = canvas.getContext("2d");
+        if (!context) throw new Error("Canvas 2D indisponível.");
+        context.drawImage(image, 0, 0);
+        resolve({
+          dataUrl: canvas.toDataURL("image/png"),
+          width: image.naturalWidth,
+          height: image.naturalHeight,
+        });
+      } catch (error) {
+        reject(error);
+      }
+    };
+    image.onerror = () => reject(new Error("Não foi possível carregar a marca do PDF."));
+    image.src = src;
+  });
+}
+
+// Monta e baixa um PDF paginado. Recebe apenas resultado + registro + aviso:
+// CTA, cupom, disclosure e próximos passos nunca entram no arquivo pessoal.
+function downloadProtocolPdf(protocol, result, brandAsset) {
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    throw new Error("jsPDF não está disponível.");
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a4", compress: true });
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const margin = 18;
+  const contentWidth = pageWidth - (margin * 2);
+  const contentBottom = pageHeight - 25;
+  const blue = [30, 79, 216];
+  const lightBlue = [74, 141, 248];
+  const ink = [24, 34, 52];
+  const muted = [82, 94, 116];
+  const border = [221, 226, 235];
+  let y = 16;
+
+  doc.setProperties({
+    title: protocol.title,
+    subject: "Reflexão estruturada — medo de ficar de fora",
+    author: "DLT Academy",
+    creator: "dlt.academy",
+  });
+
+  const ensureSpace = (height) => {
+    if (y + height <= contentBottom) return;
+    doc.addPage();
+    y = 19;
+    doc.setDrawColor(...lightBlue);
+    doc.setLineWidth(0.7);
+    doc.line(margin, 13, pageWidth - margin, 13);
+  };
+
+  const writeLines = (text, options = {}) => {
+    const fontSize = options.fontSize || 10.5;
+    const lineHeight = options.lineHeight || 5.1;
+    const width = options.width || contentWidth;
+    const x = options.x || margin;
+    const color = options.color || ink;
+    const fontStyle = options.fontStyle || "normal";
+    const lines = doc.splitTextToSize(safePdfText(text), width);
+
+    doc.setFont("helvetica", fontStyle);
+    doc.setFontSize(fontSize);
+    doc.setTextColor(...color);
+    lines.forEach((line) => {
+      ensureSpace(lineHeight + 0.5);
+      doc.text(line, x, y);
+      y += lineHeight;
+    });
+    return lines.length;
+  };
+
+  const logoHeight = 11;
+  const logoRatio = brandAsset.width / brandAsset.height;
+  const logoWidth = Math.min(48, logoHeight * logoRatio);
+  doc.addImage(brandAsset.dataUrl, "PNG", margin, y, logoWidth, logoHeight, undefined, "FAST");
+  y += logoHeight + 6;
+  doc.setDrawColor(...blue);
+  doc.setLineWidth(1.1);
+  doc.line(margin, y, pageWidth - margin, y);
+  y += 10;
+
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(8.5);
+  doc.setTextColor(...blue);
+  doc.text("SEU RESULTADO", margin, y);
+  y += 7;
+
+  writeLines(result.verdict, {
+    fontSize: 18,
+    lineHeight: 7.6,
+    fontStyle: "bold",
+    color: blue,
+  });
+  y += 4;
+
+  (result.body || []).forEach((paragraph) => {
+    writeLines(paragraph, { fontSize: 10.5, lineHeight: 5.2, color: ink });
+    y += 3.2;
+  });
+
+  const records = (result.record || []).filter((item) => item.value);
+  if (records.length) {
+    ensureSpace(16);
+    y += 2;
+    doc.setDrawColor(...border);
+    doc.setLineWidth(0.4);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 9;
+    writeLines("O que você registrou", {
+      fontSize: 14,
+      lineHeight: 6.5,
+      fontStyle: "bold",
+      color: ink,
+    });
+    y += 2;
+
+    records.forEach((item) => {
+      ensureSpace(14);
+      doc.setFillColor(246, 248, 252);
+      doc.roundedRect(margin, y - 4.2, contentWidth, 7, 1.5, 1.5, "F");
+      writeLines(item.q, {
+        x: margin + 3,
+        width: contentWidth - 6,
+        fontSize: 8.6,
+        lineHeight: 4.3,
+        fontStyle: "bold",
+        color: blue,
+      });
+      y += 1.5;
+      writeLines(item.value, {
+        x: margin + 3,
+        width: contentWidth - 6,
+        fontSize: 10.2,
+        lineHeight: 5,
+        color: ink,
+      });
+      y += 5;
+    });
+  }
+
+  if (result.safety) {
+    ensureSpace(20);
+    y += 1;
+    doc.setDrawColor(229, 188, 88);
+    doc.setLineWidth(0.5);
+    doc.line(margin, y, margin, y + 8);
+    writeLines("Aviso de segurança", {
+      x: margin + 4,
+      width: contentWidth - 4,
+      fontSize: 9,
+      lineHeight: 4.6,
+      fontStyle: "bold",
+      color: muted,
+    });
+    y += 1;
+    writeLines(result.safety, {
+      x: margin + 4,
+      width: contentWidth - 4,
+      fontSize: 8.8,
+      lineHeight: 4.5,
+      color: muted,
+    });
+  }
+
+  const totalPages = doc.getNumberOfPages();
+  const pageUrl = "dlt.academy/protocolos/medo-de-ficar-de-fora";
+  const disclaimer = "Reflexão estruturada — não é terapia nem recomendação de investimento";
+
+  for (let page = 1; page <= totalPages; page += 1) {
+    doc.setPage(page);
+    doc.setDrawColor(...border);
+    doc.setLineWidth(0.35);
+    doc.line(margin, pageHeight - 18, pageWidth - margin, pageHeight - 18);
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(7.2);
+    doc.setTextColor(...muted);
+    doc.text(pageUrl, margin, pageHeight - 12.5);
+    doc.text(disclaimer, margin, pageHeight - 8.5);
+    doc.text(`${page}/${totalPages}`, pageWidth - margin, pageHeight - 8.5, { align: "right" });
+  }
+
+  doc.save(protocol.slug + "-resultado.pdf");
+}
+
+function safePdfText(value) {
+  return String(value == null ? "" : value)
+    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "")
+    .replace(/\r\n?/g, "\n");
 }
 
 // Monta o registro pessoal em Markdown — a versão editável/journalável.
@@ -219,6 +506,9 @@ function downloadTextFile(filename, content) {
   const a = document.createElement("a");
   a.href = url;
   a.download = filename;
+  a.rel = "noopener";
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  a.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 0);
 }
