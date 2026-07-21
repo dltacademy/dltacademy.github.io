@@ -71,7 +71,7 @@ class ValidateRegistryTests(unittest.TestCase):
 
     def test_tipo_invalido_reprova(self):
         self.write_fixture([self.valid_tool(type="video")])
-        self.assert_has_error(validate_repository(self.root), "tool, guide ou article")
+        self.assert_has_error(validate_repository(self.root), "tool, guide, protocolo ou article")
 
     def test_artigo_sem_published_at_reprova(self):
         entry = self.valid_tool(type="article")
