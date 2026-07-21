@@ -1,0 +1,73 @@
+name: Protocol prepublish check
+
+on:
+  push:
+    branches:
+      - agent/protocol-pdf-result
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Remove temporary workflow from final tree
+        run: rm .github/workflows/protocol-prepublish-check.yml
+
+      - name: Security gate
+        run: python3 security_check.py
+
+      - name: Registry gate
+        run: python3 validate_registry.py
+
+      - name: Repository tests
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+
+      - name: JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check js/protocol-engine.js
+          node --check protocolos/medo-de-ficar-de-fora/js/protocol.js
+          node --check js/vendor/jspdf.umd.min.js
+
+      - name: CSP and vendor assertions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          page = Path('protocolos/medo-de-ficar-de-fora/index.html').read_text(encoding='utf-8')
+          vendor = Path('js/vendor/jspdf.umd.min.js').read_text(encoding='utf-8')
+          styles = Path('protocolos/styles-protocols.css').read_text(encoding='utf-8')
+          assert "script-src 'self' https://gc.zgo.at" in page
+          assert '<script src="/js/vendor/jspdf.umd.min.js"></script>' in page
+          assert 'Version 4.2.1' in vendor[:3000]
+          assert 'new Function' not in vendor
+          assert 'eval(' not in vendor
+          assert 'padding: 24px 0 0' in styles
+          print('OK: identidade, CSP, vendor e reset de seção validados')
+          PY
+
+      - name: Vault reference gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          matches="$(grep -RInE --exclude-dir=.git '(dknowledger|Dknowledger|/Users/[^/]+/|/home/[^/]+/|[A-Za-z]:\\Users\\)' . || true)"
+          test -z "$matches" || { printf '%s\n' "$matches"; exit 1; }
+
+      - name: Commit final validated tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .github/workflows/protocol-prepublish-check.yml
+          git commit -m "validate protocol result before publish"
+          git push origin HEAD:agent/protocol-pdf-result
