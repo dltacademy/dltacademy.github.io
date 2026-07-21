@@ -31,6 +31,11 @@ function runProtocol(protocol, mountId) {
     return n;
   };
 
+  // Um prompt/help pode ser função das respostas anteriores — é o que
+  // permite a defusão ativa: devolver o pensamento que a pessoa escreveu,
+  // reformulado, em vez de descrever o movimento em abstrato.
+  const resolve = (v) => (typeof v === "function" ? v(state.answers) : v);
+
   function currentStep(index) {
     return protocol.steps[index];
   }
@@ -57,8 +62,9 @@ function runProtocol(protocol, mountId) {
     const card = el("div", "protocol-card");
 
     if (step.eyebrow) card.appendChild(el("p", "protocol-eyebrow", step.eyebrow));
-    card.appendChild(el("h2", "protocol-q", step.prompt));
-    if (step.help) card.appendChild(el("p", "protocol-help", step.help));
+    card.appendChild(el("h2", "protocol-q", resolve(step.prompt)));
+    const help = resolve(step.help);
+    if (help) card.appendChild(el("p", "protocol-help", help));
 
     if (step.type === "choice") {
       const group = el("div", "protocol-options");
@@ -149,6 +155,27 @@ function runProtocol(protocol, mountId) {
     if (result.safety) card.appendChild(el("p", "protocol-safety", result.safety));
 
     mount.replaceChildren(card);
+
+    // CTA por veredito — bloco separado, só na tela, nunca no arquivo nem
+    // tecido na reflexão. tipo "none" (ou ausente) = nenhum CTA: o silêncio
+    // é a conversão nos vereditos de "não/espere". Ver PROTOCOL_FRAMEWORK.
+    const cta = result.cta;
+    if (cta && cta.tipo && cta.tipo !== "none") {
+      const box = el("div", "protocol-cta protocol-noprint");
+      box.appendChild(el("p", "protocol-cta-eyebrow", cta.tipo === "presente" ? "🎁 Um presente por ter chegado até aqui" : "Próximo passo útil"));
+      if (cta.headline) box.appendChild(el("p", "protocol-cta-headline", cta.headline));
+      if (cta.texto) box.appendChild(el("p", "protocol-cta-texto", cta.texto));
+      const a = el("a", "btn btn-primary", cta.label);
+      a.href = cta.href;
+      if (cta.external) {
+        a.target = "_blank";
+        a.rel = "sponsored nofollow noopener noreferrer";
+        a.setAttribute("referrerpolicy", "no-referrer");
+      }
+      box.appendChild(a);
+      if (cta.disclosure) box.appendChild(el("p", "protocol-cta-disclosure", cta.disclosure));
+      mount.appendChild(box);
+    }
 
     // Próximo passo pelo grafo do registry (mesmo componente dos guias).
     const nextMount = el("div");

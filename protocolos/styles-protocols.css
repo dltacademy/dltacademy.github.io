@@ -102,9 +102,24 @@
   background: rgba(251, 191, 36, 0.06);
 }
 
+/* CTA por veredito — bloco separado, só na tela, casado com o resultado. */
+.protocol-cta {
+  margin: 22px 0 8px;
+  padding: 20px 20px 22px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(30,79,216,0.10), rgba(10,17,32,0.5));
+}
+.protocol-cta-eyebrow { color: var(--accent); font-weight: 700; font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 8px; }
+.protocol-cta-headline { font-size: 17px; font-weight: 600; line-height: 1.35; margin: 0 0 6px; }
+.protocol-cta-texto { color: var(--text-dim); font-size: 14.5px; line-height: 1.55; margin: 0 0 14px; }
+.protocol-cta .btn { margin-top: 2px; }
+.protocol-cta-disclosure { color: var(--text-faint); font-size: 12.5px; line-height: 1.5; margin: 12px 0 0; }
+
 @media (max-width: 560px) {
   .protocol-q { font-size: 20px; }
   .protocol-actions .btn { width: 100%; justify-content: center; }
+  .protocol-cta .btn { width: 100%; justify-content: center; }
 }
 
 /* ---- Impressão: o resultado vira um PDF limpo ---- */

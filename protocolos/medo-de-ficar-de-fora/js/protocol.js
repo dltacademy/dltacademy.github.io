@@ -1,7 +1,15 @@
 // Protocolo: medo de ficar de fora (FOMO).
-// Motor de decisão original, inspirado nos princípios da ACT (agir pelo
-// valor carregando o desconforto). Texto próprio — não reproduz exercícios
-// de terceiros. Reflexão estruturada, não terapia.
+// Motor de decisão original sobre os princípios da ACT — texto próprio,
+// não reproduz exercícios de terceiros. Reflexão estruturada, não terapia.
+//
+// Profundidade (PROTOCOL_FRAMEWORK): os verbos transformadores exigem
+// que a pessoa PRODUZA algo. Escolha só para diagnóstico e roteamento.
+//   1 Notar (escolha)         diagnóstico
+//   2 Desgrudar — escrever    a pessoa escreve o pensamento que a empurra
+//   3 Desgrudar — reler       o próprio texto devolvido reformulado
+//   4 Voltar ao agora (escolha)  de onde vem o dinheiro
+//   5 Clarear o valor (escrever) elicitação real, não uma linha
+//   6 Dar o passo (escrever)     compromisso concreto e com prazo
 
 const PROTOCOL = {
   id: "protocolo-medo-de-ficar-de-fora",
@@ -10,13 +18,13 @@ const PROTOCOL = {
   path: "/protocolos/medo-de-ficar-de-fora/",
 
   steps: [
-    // 1. NOTAR — dar nome ao que está no comando.
+    // 1. NOTAR — dar nome ao que está no comando (diagnóstico → escolha ok).
     {
       id: "sentimento",
       type: "choice",
-      eyebrow: "1 de 4 · Notar",
+      eyebrow: "1 de 6 · Notar",
       prompt: "Você viu algo subir e bateu a vontade de entrar agora. O que está mais forte neste momento?",
-      help: "Não existe resposta certa. Nomear o que você sente já tira um pouco do piloto automático.",
+      help: "Não existe resposta certa. Só nomear o que está no comando já tira um pouco do piloto automático.",
       options: [
         { value: "urgencia", label: "Aperto de “agora ou nunca” — se eu não entrar já, perco" },
         { value: "inveja", label: "Incômodo de ver os outros ganhando e eu não" },
@@ -24,25 +32,40 @@ const PROTOCOL = {
         { value: "tranquilo", label: "Curiosidade tranquila, sem aperto nenhum" },
       ],
     },
-    // 2. DESGRUDAR — o pensamento não é uma ordem.
+    // 2. DESGRUDAR (ativo) — escrever o pensamento exato.
     {
-      id: "fato",
+      id: "pensamento",
+      type: "write",
+      eyebrow: "2 de 6 · Desgrudar",
+      prompt: "Escreva, com as suas palavras, o pensamento exato que está te empurrando a entrar agora.",
+      help: "Sem filtro, do jeito que ele aparece na sua cabeça. Isto fica só com você, no seu navegador.",
+      placeholder: "Ex.: se eu não entrar hoje, vou me arrepender pra sempre / todo mundo vai ficar rico menos eu",
+      cta: "Escrevi",
+    },
+    // 3. DESGRUDAR (ativo) — reler o próprio pensamento, reformulado.
+    {
+      id: "desfusao",
       type: "choice",
-      eyebrow: "2 de 4 · Desgrudar",
-      prompt: "Troque o pensamento “vou perder essa oportunidade” por “estou tendo o pensamento de que vou perder essa”. Visto assim, de fora: quantas “últimas chances” o mercado já te ofereceu?",
-      help: "O mercado fabrica uma “oportunidade única” por semana. Isso não quer dizer que esta seja ruim — quer dizer que a pressa não é prova de nada.",
+      eyebrow: "3 de 6 · Desgrudar",
+      prompt: (a) => {
+        const p = (a.pensamento || "").trim();
+        return p
+          ? `Agora leia de novo, assim: “Estou tendo o pensamento de que ${primeiraMinuscula(p)}.” Repare na diferença. Não é um fato sobre o mundo — é um pensamento que a sua mente te ofereceu. Como ele soa agora?`
+          : "Pense no que te empurra a entrar como uma frase que a sua mente te oferece — não como um fato. Como isso soa?";
+      },
+      help: "Você não precisa acreditar nem brigar com o pensamento. Só percebê-lo como um pensamento já muda quem está no comando.",
       options: [
-        { value: "varias", label: "Várias — e a vida seguiu bem sem eu entrar em quase todas" },
-        { value: "diferente", label: "Poucas, e essa aqui parece mesmo diferente" },
-        { value: "novo", label: "Nunca tinha parado pra pensar nisso assim" },
+        { value: "solto", label: "Perde um pouco da força quando vejo que é só um pensamento" },
+        { value: "grudado", label: "Continua parecendo verdade, real, urgente" },
+        { value: "estranho", label: "Estranho de ler assim — mas faz sentido" },
       ],
     },
-    // 3. VOLTAR AO AGORA — o fato, tirando a sensação.
+    // 4. VOLTAR AO AGORA — o fato, tirando a sensação (escolha → roteamento).
     {
       id: "dinheiro",
       type: "choice",
-      eyebrow: "3 de 4 · Voltar ao agora",
-      prompt: "O dinheiro que você pensa em colocar agora — de onde ele sai?",
+      eyebrow: "4 de 6 · Voltar ao agora",
+      prompt: "Saindo da sensação e olhando o concreto: o dinheiro que você pensa em colocar agora — de onde ele sai?",
       help: "O preço de agora é o lucro de quem entrou antes, não o seu ponto de partida. E de onde vem o dinheiro muda tudo.",
       options: [
         { value: "sobra", label: "Já está parado, sobrando — eu escolheria com consciência" },
@@ -50,81 +73,99 @@ const PROTOCOL = {
         { value: "nao_tenho", label: "Eu não tenho agora — entraria devendo ou alavancado" },
       ],
     },
-    // 4. CLAREAR O VALOR — o antídoto do FOMO.
+    // 5. CLAREAR O VALOR (ativo) — elicitação real, não uma linha.
     {
       id: "valor",
       type: "write",
-      eyebrow: "4 de 4 · Clarear o valor",
-      prompt: "Se esse dinheiro rendesse tudo o que você imagina, o que mudaria de verdade na sua vida?",
-      help: "Escreva com suas palavras. Isto fica só com você. É o antídoto do FOMO: te lembra pra que o dinheiro serve, em vez de te lembrar do que os outros ganharam.",
-      placeholder: "Ex.: me daria mais tranquilidade para… / me aproximaria de…",
+      eyebrow: "5 de 6 · Clarear o valor",
+      prompt: "Esquece o preço por um minuto. Daqui a dez anos, olhando pra trás, pra que você vai querer ter usado o seu dinheiro?",
+      help: "Não é sobre este ativo. É sobre o que o dinheiro compra na sua vida que importa de verdade — tranquilidade, tempo, cuidar de alguém, uma escolha. O FOMO some quando você lembra disso, porque ele vive de te comparar com os outros, não com a sua vida.",
+      placeholder: "Escreva algumas linhas, com as suas palavras…",
+      cta: "Continuar",
+    },
+    // 6. DAR O PASSO (ativo) — compromisso concreto e com prazo.
+    {
+      id: "passo",
+      type: "write",
+      eyebrow: "6 de 6 · Dar o passo",
+      prompt: "Em uma frase concreta: o que você vai fazer nas próximas 24 horas com essa vontade?",
+      help: "Um compromisso específico, não uma intenção vaga. Escrever fixa a decisão antes de a emoção decidir por você.",
+      placeholder: "Ex.: não faço nada hoje e reavalio amanhã de manhã, sem a pressa / entro com no máximo R$ ___, que aguento perder sem mudar minha vida",
       cta: "Ver meu resultado",
     },
   ],
 
   result(a) {
-    const valor = (a.valor || "").trim();
-    const temValor = valor.length > 0;
-    const eco = temValor
-      ? "Você escreveu que esse dinheiro serviria para algo concreto na sua vida. Segure essa frase: a pergunta que desarma o FOMO é se este movimento te aproxima disso — ou se ele só alivia, por alguns minutos, o aperto de ficar de fora."
-      : "Você preferiu não escrever pra que o dinheiro serve — e tudo bem. Mas vale voltar nisso antes de decidir: o FOMO some quando você lembra que o dinheiro serve a uma vida, não a um placar contra os outros.";
+    const record = buildRecord(a);
+    const eco = ecoDoValor(a);
+    const compromisso = (a.passo || "").trim();
+    const ecoPasso = compromisso
+      ? `Você se comprometeu com isto: “${compromisso}”. Ele está no seu registro abaixo — releia amanhã, sem a pressa de hoje.`
+      : "Você não deixou um compromisso escrito — vale voltar e escrever um. É a diferença entre refletir e decidir.";
 
-    // Ramo 1 — entraria devendo/alavancado por FOMO: a resposta é não.
+    // Ramo 1 — entraria devendo/alavancado: a resposta é não. Sem CTA afiliado.
     if (a.dinheiro === "nao_tenho") {
       return {
-        eyebrow: "Seu resultado",
         verdict: "O passo de hoje é não dar o passo.",
         body: [
-          "Entrar devendo ou alavancado por causa de um aperto de pressa é o roteiro mais clássico de transformar FOMO em prejuízo real — e em dívida, que dói muito depois de a euforia passar.",
+          "Entrar devendo ou alavancado por causa de um aperto de pressa é o roteiro mais clássico de transformar FOMO em prejuízo — e em dívida, que dói muito depois que a euforia passa.",
           "Isso não fecha a porta pra sempre. Fecha a porta pra decidir isso agora, com dinheiro que você não tem, empurrado pela sensação. Se a tese for boa, ela continua boa quando você tiver capital que possa perder sem quebrar.",
-          eco,
+          eco, ecoPasso,
         ],
-        record: buildRecord(a),
-        safety: safetyNote,
+        record, safety: safetyNote,
+        cta: { tipo: "none" },
       };
     }
 
-    // Ramo 2 — tiraria de reserva/meta: trocar plano por impulso.
+    // Ramo 2 — tiraria de reserva/meta. Sem CTA afiliado.
     if (a.dinheiro === "tirar") {
       return {
-        eyebrow: "Seu resultado",
         verdict: "Antes de tirar de outro lugar, olhe o que você trocaria.",
         body: [
-          "Tirar da reserva, das contas ou de uma meta que você já tinha para correr atrás desta é trocar um plano por um impulso. Às vezes vale — mas essa é uma decisão grande demais para ser tomada no aperto.",
-          "Um teste simples: se amanhã, sem a pressa de hoje, você ainda achar que faz sentido mover esse dinheiro, o movimento continua disponível. O que o FOMO não suporta é esperar 24 horas — porque ele sabe que não sobrevive à calma.",
-          eco,
+          "Tirar da reserva, das contas ou de uma meta que você já tinha para correr atrás desta é trocar um plano por um impulso. Às vezes vale — mas é uma decisão grande demais para ser tomada no aperto.",
+          "O teste é simples: se amanhã, sem a pressa de hoje, você ainda achar que faz sentido mover esse dinheiro, ele continua disponível. O que o FOMO não suporta é esperar 24 horas — porque ele sabe que não sobrevive à calma.",
+          eco, ecoPasso,
         ],
-        record: buildRecord(a),
-        safety: safetyNote,
+        record, safety: safetyNote,
+        cta: { tipo: "none" },
       };
     }
 
-    // Ramo 3 — dinheiro que sobra, mas quem decide é o aperto.
+    // Ramo 3 — dinheiro que sobra, mas quem decide é o aperto. Sem CTA.
     if (a.sentimento !== "tranquilo") {
       return {
-        eyebrow: "Seu resultado",
         verdict: "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
         body: [
           "Essa é a situação mais escorregadia: como o dinheiro sobra, parece seguro entrar. E pode até ser. Mas você marcou que o que está no comando é a pressa, a inveja ou o medo de ficar pra trás — e nenhum desses é um bom analista.",
+          a.desfusao === "grudado"
+            ? "Você também sentiu que o pensamento continua parecendo verdade absoluta. Isso é normal — e é justamente o sinal de esperar antes de agir."
+            : "Você já sentiu o pensamento perder um pouco da força quando o viu como pensamento. Use isso: a decisão não precisa ser dele.",
           "Faça o teste das 24 horas. Se amanhã, sem o aperto, a ideia ainda fizer sentido, entre — mas com um tamanho que você aguente ver cair 50% no dia seguinte sem perder o sono. Se o aperto passar e a vontade sumir junto, você acabou de economizar o preço de uma lição.",
-          eco,
+          eco, ecoPasso,
         ],
-        record: buildRecord(a),
-        safety: safetyNote,
+        record, safety: safetyNote,
+        cta: { tipo: "none" },
       };
     }
 
     // Ramo 4 — dinheiro que sobra e cabeça tranquila: decisão legítima.
+    // Único ramo que leva a agir → CTA de utilidade (o tamanho protege).
     return {
-      eyebrow: "Seu resultado",
       verdict: "Decidir com calma, com dinheiro que sobra, é legítimo — inclusive decidir sim.",
       body: [
         "Você marcou que não há aperto e que o dinheiro já está sobrando. Essa é a única combinação em que entrar não é FOMO — é escolha. Aqui o protocolo não te segura.",
         "Se for entrar, entre pensando no tamanho, não no timing: um valor que você aguente ver cair pela metade amanhã sem que isso mude a sua vida. O que protege você não é acertar a hora — é o tamanho da aposta.",
-        eco,
+        eco, ecoPasso,
       ],
-      record: buildRecord(a),
-      safety: safetyNote,
+      record, safety: safetyNote,
+      cta: {
+        tipo: "artigo",
+        headline: "Se for agir, veja quanto a sua exposição aguenta antes de decidir o tamanho.",
+        texto: "O que protege não é acertar a hora — é dimensionar. O simulador mostra, em 1.000 cenários, o que cada tamanho faz com o seu dinheiro no pior caso.",
+        label: "Abrir o Sobrevive ou Quebra? →",
+        href: "https://sobrevive-ou-quebra.dlt.academy/",
+        external: false,
+      },
     };
   },
 };
@@ -132,13 +173,26 @@ const PROTOCOL = {
 const safetyNote =
   "Se a vontade de entrar em tudo, o tempo todo, virou algo que você sente que não controla mais — isso vai além de uma decisão pontual, e conversar com um profissional de saúde ajuda mais do que qualquer ferramenta. Isto aqui é reflexão, não tratamento.";
 
+function ecoDoValor(a) {
+  const v = (a.valor || "").trim();
+  return v
+    ? "Releia o que você escreveu sobre pra que o seu dinheiro serve, ali embaixo. A pergunta que desarma o FOMO é uma só: este movimento te aproxima disso — ou só alivia, por alguns minutos, o aperto de ficar de fora?"
+    : "Você preferiu não escrever pra que o dinheiro serve na sua vida — e tudo bem. Mas vale voltar nisso: o FOMO só perde a força quando você lembra que o dinheiro serve a uma vida, não a um placar contra os outros.";
+}
+
 function buildRecord(a) {
   return [
     { q: "O que estava mais forte", value: a.sentimento__label },
-    { q: "“Últimas chances” que o mercado já ofereceu", value: a.fato__label },
+    { q: "O pensamento que me empurrava", value: (a.pensamento || "").trim() },
+    { q: "Como ele soou quando reli como “um pensamento”", value: a.desfusao__label },
     { q: "De onde sairia o dinheiro", value: a.dinheiro__label },
-    { q: "Pra que esse dinheiro serve na minha vida", value: (a.valor || "").trim() },
+    { q: "Pra que o meu dinheiro serve, daqui a dez anos", value: (a.valor || "").trim() },
+    { q: "Meu compromisso para as próximas 24 horas", value: (a.passo || "").trim() },
   ];
+}
+
+function primeiraMinuscula(s) {
+  return s.charAt(0).toLowerCase() + s.slice(1);
 }
 
 runProtocol(PROTOCOL, "protocol-mount");
