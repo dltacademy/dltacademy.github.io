@@ -356,7 +356,7 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
     return lines.length;
   };
 
-  const logoHeight = 11;
+  const logoHeight = 15;
   const logoRatio = brandAsset.width / brandAsset.height;
   const logoWidth = Math.min(48, logoHeight * logoRatio);
   doc.addImage(brandAsset.dataUrl, "PNG", margin, y, logoWidth, logoHeight, undefined, "FAST");
