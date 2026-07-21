@@ -1,13 +1,14 @@
 /* ============================================================
    Estilos do tipo `protocolo`. Herda tokens de styles-base.css.
-   Duas superfícies: tela (reflexão interativa) e impressão
-   (o resultado vira um PDF limpo via "Salvar como PDF" nativo).
+   A tela de resultado é a superfície principal; o PDF é montado
+   client-side pelo motor compartilhado, sem depender de impressão.
    ============================================================ */
 
 .protocol-wrap {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 8px 20px 64px;
+  padding: 8px 20px 72px;
+  overflow-wrap: anywhere;
 }
 
 .protocol-hero { padding: 24px 0 8px; }
@@ -37,6 +38,7 @@
   border-radius: var(--radius);
   padding: 24px 22px;
   margin: 20px 0;
+  min-width: 0;
 }
 .protocol-eyebrow { color: var(--accent); font-weight: 700; font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 10px; }
 .protocol-q { font-size: 22px; line-height: 1.25; margin: 0 0 8px; }
@@ -47,6 +49,8 @@
 
 .protocol-write {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   background: rgba(255,255,255,0.04);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -73,85 +77,169 @@
 .protocol-back:hover { color: var(--text-dim); }
 
 /* Resultado */
-.protocol-result { border-color: var(--accent); }
-.protocol-verdict { font-size: 24px; line-height: 1.2; margin: 0 0 14px; }
-.protocol-body { font-size: 16px; line-height: 1.6; margin: 0 0 12px; }
+.protocol-result {
+  border-color: rgba(74, 141, 248, .75);
+  padding: clamp(24px, 4vw, 36px);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, .18);
+}
+
+.protocol-verdict-panel {
+  position: relative;
+  margin: 0 0 24px;
+  padding: 18px 20px 18px 22px;
+  border: 1px solid rgba(74, 141, 248, .35);
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(30, 79, 216, .20), rgba(74, 141, 248, .07));
+  overflow: hidden;
+}
+.protocol-verdict-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: linear-gradient(180deg, #4A8DF8, #1E4FD8);
+}
+.protocol-verdict {
+  font-size: clamp(26px, 4vw, 34px);
+  line-height: 1.15;
+  letter-spacing: -.02em;
+  margin: 0;
+  max-width: 28ch;
+}
+
+.protocol-result-copy {
+  display: grid;
+  gap: 14px;
+}
+.protocol-body {
+  font-size: 16px;
+  line-height: 1.68;
+  margin: 0;
+  max-width: 72ch;
+}
 
 .protocol-record {
-  margin: 20px 0;
-  padding: 16px 18px;
-  background: rgba(255,255,255,0.03);
+  margin: 30px 0 24px;
+  padding: 20px 22px 6px;
+  background: rgba(255,255,255,0.035);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 14px;
+  min-width: 0;
 }
-.protocol-record h3 { font-size: 15px; margin: 0 0 12px; color: var(--text-dim); }
-.protocol-record-item { display: flex; flex-direction: column; gap: 3px; margin-bottom: 14px; }
-.protocol-record-q { font-size: 13.5px; color: var(--text-faint); }
-.protocol-record-a { font-size: 15.5px; color: var(--text); }
+.protocol-record h3 {
+  font-size: 18px;
+  line-height: 1.3;
+  margin: 0 0 6px;
+  color: var(--text);
+}
+.protocol-record-item {
+  display: grid;
+  grid-template-columns: minmax(140px, .72fr) minmax(0, 1.28fr);
+  gap: 14px 22px;
+  align-items: start;
+  padding: 16px 0;
+  border-top: 1px solid rgba(255,255,255,.08);
+  min-width: 0;
+}
+.protocol-record-q {
+  font-size: 12.5px;
+  line-height: 1.45;
+  font-weight: 700;
+  letter-spacing: .025em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.protocol-record-a {
+  min-width: 0;
+  font-size: 15.5px;
+  line-height: 1.58;
+  color: var(--text);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 
-.protocol-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 8px; }
-.protocol-privacy { font-size: 13.5px; color: var(--text-faint); line-height: 1.5; margin: 8px 0 0; }
 .protocol-safety {
   font-size: 13.5px;
   color: var(--text-dim);
-  line-height: 1.55;
-  margin: 18px 0 0;
-  padding: 12px 14px;
+  line-height: 1.6;
+  margin: 24px 0 0;
+  padding: 14px 16px;
   border: 1px solid var(--border);
   border-radius: 10px;
   background: rgba(251, 191, 36, 0.06);
 }
 
+.protocol-delivery {
+  margin-top: 28px;
+  padding: 24px 0 0;
+  border-top: 1px solid var(--border);
+}
+.protocol-delivery-title {
+  font-size: 17px;
+  line-height: 1.35;
+  margin: 0 0 5px;
+}
+.protocol-delivery-text {
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 66ch;
+}
+.protocol-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 18px 0 10px;
+}
+.protocol-actions .btn:disabled {
+  cursor: wait;
+  opacity: .68;
+}
+.protocol-privacy {
+  font-size: 13px;
+  color: var(--text-faint);
+  line-height: 1.5;
+  margin: 8px 0 0;
+  max-width: 72ch;
+}
+
 /* CTA por veredito — bloco separado, só na tela, casado com o resultado. */
 .protocol-cta {
-  margin: 22px 0 8px;
-  padding: 20px 20px 22px;
-  border: 1px solid var(--border);
+  margin: 24px 0 10px;
+  padding: 22px 22px 24px;
+  border: 1px solid rgba(74, 141, 248, .34);
   border-radius: var(--radius);
-  background: linear-gradient(180deg, rgba(30,79,216,0.10), rgba(10,17,32,0.5));
+  background: linear-gradient(180deg, rgba(30,79,216,0.13), rgba(10,17,32,0.56));
 }
-.protocol-cta-eyebrow { color: var(--accent); font-weight: 700; font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 8px; }
-.protocol-cta-headline { font-size: 17px; font-weight: 600; line-height: 1.35; margin: 0 0 6px; }
-.protocol-cta-texto { color: var(--text-dim); font-size: 14.5px; line-height: 1.55; margin: 0 0 14px; }
+.protocol-cta-eyebrow { color: var(--accent); font-weight: 700; font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 9px; }
+.protocol-cta-headline { font-size: 19px; font-weight: 650; line-height: 1.35; margin: 0 0 7px; max-width: 48ch; }
+.protocol-cta-texto { color: var(--text-dim); font-size: 14.5px; line-height: 1.58; margin: 0 0 16px; max-width: 66ch; }
 .protocol-cta .btn { margin-top: 2px; }
 .protocol-cta-disclosure { color: var(--text-faint); font-size: 12.5px; line-height: 1.5; margin: 12px 0 0; }
 
-@media (max-width: 560px) {
-  .protocol-q { font-size: 20px; }
-  .protocol-actions .btn { width: 100%; justify-content: center; }
-  .protocol-cta .btn { width: 100%; justify-content: center; }
+@media (max-width: 680px) {
+  .protocol-result { padding: 24px 20px; }
+  .protocol-verdict-panel { padding: 16px 16px 16px 19px; }
+  .protocol-record { padding: 18px 16px 4px; }
+  .protocol-record-item { grid-template-columns: 1fr; gap: 5px; padding: 14px 0; }
 }
 
-/* ---- Impressão: o resultado vira um PDF limpo ---- */
-@media print {
-  :root { --text: #101828; --text-dim: #475467; --text-faint: #667085; }
-  body { background: #fff !important; color: #101828; }
-  header.top, footer, .protocol-hero, .protocol-intro,
-  .protocol-noprint, #next-step-mount, .top { display: none !important; }
-  .protocol-wrap { padding: 0; max-width: 100%; }
-  .protocol-card, .protocol-result {
-    background: #fff !important;
-    border: none !important;
-    padding: 0;
-    margin: 0;
+@media (max-width: 560px) {
+  .protocol-wrap { padding-left: 16px; padding-right: 16px; }
+  .protocol-q { font-size: 20px; }
+  .protocol-card { padding: 22px 18px; }
+  .protocol-result { padding: 22px 17px; }
+  .protocol-verdict { font-size: 25px; }
+  .protocol-actions { flex-direction: column; }
+  .protocol-actions .btn,
+  .protocol-cta .btn,
+  .protocol-nav .btn {
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+    text-align: center;
+    white-space: normal;
   }
-  .protocol-verdict, .protocol-q { color: #101828; }
-  .protocol-body { color: #1d2939; }
-  .protocol-record {
-    background: #f9fafb !important;
-    border: 1px solid #e4e7ec !important;
-    break-inside: avoid;
-  }
-  .protocol-record-a { color: #101828; }
-  .protocol-safety { background: #fff !important; border: 1px solid #e4e7ec !important; color: #475467; }
-  /* Cabeçalho impresso */
-  .protocol-result::before {
-    content: "DLT Academy · reflexão estruturada — não é terapia nem recomendação de investimento";
-    display: block;
-    font-size: 11px;
-    color: #667085;
-    border-bottom: 1px solid #e4e7ec;
-    padding-bottom: 8px;
-    margin-bottom: 16px;
-  }
+  .protocol-cta { padding: 20px 18px 22px; }
 }
