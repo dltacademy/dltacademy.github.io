@@ -13,19 +13,20 @@ const CONTENT = [
     "id": "tool-sobrevive-ou-quebra",
     "type": "tool",
     "title": "Sobrevive ou Quebra?",
-    "description": "Simulador de risco de futuros + raio-x do seu histórico de trades.",
+    "description": "Proteger custa caro; não proteger pode custar mais. Compare não fazer nada, reduzir, travar com futuros e comprar seguro nos mesmos 1.000 cenários.",
     "url": "https://sobrevive-ou-quebra.dlt.academy/",
-    "tag": "Trader de futuros",
+    "tag": "Proteção de patrimônio",
     "tone": "green",
-    "icon": "🛡️"
+    "icon": "🛡️",
+    "related": ["tool-vender-ou-segurar", "tool-quanto-em-taxas"]
   },
   {
     "id": "tool-quanto-em-taxas",
     "type": "tool",
     "title": "Quanto você paga para operar?",
-    "description": "Calcule o custo mensal e anual das suas taxas de trading em menos de 30 segundos.",
+    "description": "Calcule quanto as taxas consomem do seu dinheiro por mês e por ano, em menos de 30 segundos.",
     "url": "https://quanto-em-taxas.dlt.academy/",
-    "tag": "Custos do trader",
+    "tag": "Custos e taxas",
     "tone": "blue",
     "icon": "💸"
   },
@@ -47,7 +48,8 @@ const CONTENT = [
     "url": "https://vender-ou-segurar.dlt.academy/",
     "tag": "Já tem posição",
     "tone": "green",
-    "icon": "⚖️"
+    "icon": "⚖️",
+    "primaryNext": "tool-sobrevive-ou-quebra"
   },
   {
     "id": "guide-conta-binance",
