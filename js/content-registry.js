@@ -55,6 +55,18 @@ const CONTENT = [
     "primaryNext": "tool-sobrevive-ou-quebra"
   },
   {
+    "id": "protocolo-medo-de-ficar-de-fora",
+    "type": "protocolo",
+    "title": "Cheguei tarde?",
+    "description": "Algo disparou e bateu a vontade de entrar agora. Um protocolo curto para separar a decisão do medo de ficar de fora — e decidir por você, não pelo aperto.",
+    "url": "/protocolos/medo-de-ficar-de-fora/",
+    "tag": "Decisão sob emoção",
+    "tone": "green",
+    "icon": "🧭",
+    "primaryNext": "tool-sobrevive-ou-quebra",
+    "related": ["tool-vender-ou-segurar"]
+  },
+  {
     "id": "guide-conta-binance",
     "type": "guide",
     "title": "Criar conta com segurança",

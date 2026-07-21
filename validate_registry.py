@@ -18,6 +18,7 @@ MAX_RELATED = 3
 TYPE_FIELDS = {
     "tool": COMMON_FIELDS | {"tone", "icon"} | EDGE_FIELDS,
     "guide": COMMON_FIELDS | {"tone", "icon"} | EDGE_FIELDS,
+    "protocolo": COMMON_FIELDS | {"tone", "icon"} | EDGE_FIELDS,
     "article": COMMON_FIELDS | {"publishedAt"} | EDGE_FIELDS,
 }
 INSTITUTIONAL_URLS = {
@@ -177,7 +178,7 @@ def validate_repository(root: Path | str) -> list[str]:
         allowed_fields = TYPE_FIELDS.get(entry_type) if isinstance(entry_type, str) else None
         if allowed_fields is None:
             errors.append(
-                f"{label}, campo 'type': deve ser um de tool, guide ou article"
+                f"{label}, campo 'type': deve ser um de tool, guide, protocolo ou article"
             )
             allowed_fields = COMMON_FIELDS
 
