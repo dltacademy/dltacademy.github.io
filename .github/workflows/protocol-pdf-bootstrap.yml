@@ -1,0 +1,96 @@
+name: Protocol PDF bootstrap
+
+on:
+  push:
+    branches:
+      - agent/protocol-pdf-result
+
+permissions:
+  contents: write
+
+jobs:
+  vendor-and-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Prepare final tree
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p js/vendor
+          curl --fail --location --silent --show-error --retry 3 \
+            --proto '=https' --tlsv1.2 \
+            'https://raw.githubusercontent.com/parallax/jsPDF/4562ce8aa35bd5ecd98cd5e262e3da2af96476f6/dist/jspdf.umd.min.js' \
+            --output js/vendor/jspdf.umd.min.js
+          curl --fail --location --silent --show-error --retry 3 \
+            --proto '=https' --tlsv1.2 \
+            'https://raw.githubusercontent.com/parallax/jsPDF/4562ce8aa35bd5ecd98cd5e262e3da2af96476f6/LICENSE' \
+            --output js/vendor/jspdf.LICENSE.txt
+          rm .github/workflows/protocol-pdf-bootstrap.yml
+          sha256sum js/vendor/jspdf.umd.min.js js/vendor/jspdf.LICENSE.txt
+
+      - name: Confirm vendored build and CSP
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+
+          vendor = Path("js/vendor/jspdf.umd.min.js")
+          text = vendor.read_text(encoding="utf-8")
+          assert vendor.stat().st_size > 300_000, vendor.stat().st_size
+          assert "Version 4.2.1" in text[:3000]
+          assert "Permission is hereby granted" in text[:3000]
+          assert "new Function" not in text
+          assert "eval(" not in text
+
+          page = Path("protocolos/medo-de-ficar-de-fora/index.html").read_text(encoding="utf-8")
+          assert "script-src 'self' https://gc.zgo.at" in page
+          assert '<script src="/js/vendor/jspdf.umd.min.js"></script>' in page
+          assert "unpkg.com" not in page
+          assert "cdnjs.cloudflare.com" not in page
+          print("OK: jsPDF 4.2.1 UMD/min auto-hospedado; CSP sem exceção")
+          PY
+
+      - name: Security gate
+        run: python3 security_check.py
+
+      - name: Registry gate
+        run: python3 validate_registry.py
+
+      - name: Repository tests
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+
+      - name: JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check js/protocol-engine.js
+          node --check protocolos/medo-de-ficar-de-fora/js/protocol.js
+          node --check js/vendor/jspdf.umd.min.js
+          echo "OK: node --check em todos os JavaScript alterados"
+
+      - name: Vault reference gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          matches="$(grep -RInE --exclude-dir=.git '(dknowledger|Dknowledger|/Users/[^/]+/|/home/[^/]+/|[A-Za-z]:\\Users\\)' . || true)"
+          if [[ -n "$matches" ]]; then
+            printf '%s\n' "$matches"
+            exit 1
+          fi
+          echo "OK: grep recursivo por vaults e caminhos pessoais vazio"
+
+      - name: Commit vendored library and remove bootstrap
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add js/vendor/jspdf.umd.min.js js/vendor/jspdf.LICENSE.txt .github/workflows/protocol-pdf-bootstrap.yml
+          git commit -m "vendor jsPDF 4.2.1"
+          git push origin HEAD:agent/protocol-pdf-result
