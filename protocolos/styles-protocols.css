@@ -1,0 +1,142 @@
+/* ============================================================
+   Estilos do tipo `protocolo`. Herda tokens de styles-base.css.
+   Duas superfícies: tela (reflexão interativa) e impressão
+   (o resultado vira um PDF limpo via "Salvar como PDF" nativo).
+   ============================================================ */
+
+.protocol-wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 8px 20px 64px;
+}
+
+.protocol-hero { padding: 24px 0 8px; }
+.protocol-hero .eyebrow {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 8px;
+}
+.protocol-hero h1 { font-size: clamp(28px, 5vw, 44px); line-height: 1.1; margin: 0 0 12px; }
+.protocol-hero .subtitle { color: var(--text-dim); font-size: 17px; line-height: 1.5; max-width: 46ch; }
+
+.protocol-intro {
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.6;
+  border-left: 3px solid var(--border);
+  padding: 4px 0 4px 16px;
+  margin: 20px 0;
+}
+
+.protocol-card {
+  background: linear-gradient(180deg, rgba(14, 33, 72, .30), rgba(10, 17, 32, .9));
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 22px;
+  margin: 20px 0;
+}
+.protocol-eyebrow { color: var(--accent); font-weight: 700; font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 10px; }
+.protocol-q { font-size: 22px; line-height: 1.25; margin: 0 0 8px; }
+.protocol-help { color: var(--text-dim); font-size: 15px; line-height: 1.55; margin: 0 0 18px; }
+
+.protocol-options { display: flex; flex-direction: column; gap: 10px; }
+.protocol-options .btn { text-align: left; justify-content: flex-start; white-space: normal; }
+
+.protocol-write {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  font: inherit;
+  font-size: 15px;
+  padding: 12px 14px;
+  resize: vertical;
+}
+.protocol-write:focus { outline: none; border-color: var(--accent); }
+.protocol-nav { margin-top: 14px; }
+
+.protocol-back {
+  display: inline-block;
+  margin-top: 16px;
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 0;
+}
+.protocol-back:hover { color: var(--text-dim); }
+
+/* Resultado */
+.protocol-result { border-color: var(--accent); }
+.protocol-verdict { font-size: 24px; line-height: 1.2; margin: 0 0 14px; }
+.protocol-body { font-size: 16px; line-height: 1.6; margin: 0 0 12px; }
+
+.protocol-record {
+  margin: 20px 0;
+  padding: 16px 18px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.protocol-record h3 { font-size: 15px; margin: 0 0 12px; color: var(--text-dim); }
+.protocol-record-item { display: flex; flex-direction: column; gap: 3px; margin-bottom: 14px; }
+.protocol-record-q { font-size: 13.5px; color: var(--text-faint); }
+.protocol-record-a { font-size: 15.5px; color: var(--text); }
+
+.protocol-actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 8px; }
+.protocol-privacy { font-size: 13.5px; color: var(--text-faint); line-height: 1.5; margin: 8px 0 0; }
+.protocol-safety {
+  font-size: 13.5px;
+  color: var(--text-dim);
+  line-height: 1.55;
+  margin: 18px 0 0;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: rgba(251, 191, 36, 0.06);
+}
+
+@media (max-width: 560px) {
+  .protocol-q { font-size: 20px; }
+  .protocol-actions .btn { width: 100%; justify-content: center; }
+}
+
+/* ---- Impressão: o resultado vira um PDF limpo ---- */
+@media print {
+  :root { --text: #101828; --text-dim: #475467; --text-faint: #667085; }
+  body { background: #fff !important; color: #101828; }
+  header.top, footer, .protocol-hero, .protocol-intro,
+  .protocol-noprint, #next-step-mount, .top { display: none !important; }
+  .protocol-wrap { padding: 0; max-width: 100%; }
+  .protocol-card, .protocol-result {
+    background: #fff !important;
+    border: none !important;
+    padding: 0;
+    margin: 0;
+  }
+  .protocol-verdict, .protocol-q { color: #101828; }
+  .protocol-body { color: #1d2939; }
+  .protocol-record {
+    background: #f9fafb !important;
+    border: 1px solid #e4e7ec !important;
+    break-inside: avoid;
+  }
+  .protocol-record-a { color: #101828; }
+  .protocol-safety { background: #fff !important; border: 1px solid #e4e7ec !important; color: #475467; }
+  /* Cabeçalho impresso */
+  .protocol-result::before {
+    content: "DLT Academy · reflexão estruturada — não é terapia nem recomendação de investimento";
+    display: block;
+    font-size: 11px;
+    color: #667085;
+    border-bottom: 1px solid #e4e7ec;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+  }
+}
