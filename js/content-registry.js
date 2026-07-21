@@ -28,7 +28,8 @@ const CONTENT = [
     "url": "https://quanto-em-taxas.dlt.academy/",
     "tag": "Custos e taxas",
     "tone": "blue",
-    "icon": "💸"
+    "icon": "💸",
+    "primaryNext": "tool-sobrevive-ou-quebra"
   },
   {
     "id": "tool-primeiros-passos-cripto",
@@ -38,7 +39,9 @@ const CONTENT = [
     "url": "https://primeiros-passos-cripto.dlt.academy/",
     "tag": "Iniciante",
     "tone": "blue",
-    "icon": "🧭"
+    "icon": "🧭",
+    "primaryNext": "guide-conta-binance",
+    "related": ["tool-quanto-em-taxas"]
   },
   {
     "id": "tool-vender-ou-segurar",
@@ -59,7 +62,8 @@ const CONTENT = [
     "url": "/guias/conta-binance/",
     "tag": "Guia interativo",
     "tone": "blue",
-    "icon": "🔐"
+    "icon": "🔐",
+    "primaryNext": "tool-quanto-em-taxas"
   },
   {
     "id": "guide-bybit-pay-vietqr",
@@ -102,7 +106,8 @@ const CONTENT = [
     "description": "Por que criamos esse blog, o que você vai encontrar aqui, e como ele se conecta com as ferramentas gratuitas da DLT Academy.",
     "url": "/blog/bem-vindo/",
     "tag": "Institucional",
-    "publishedAt": "2026-07-15"
+    "publishedAt": "2026-07-15",
+    "primaryNext": "tool-primeiros-passos-cripto"
   },
   {
     "id": "article-bybit-pay-vs-moreta-vietqr",
