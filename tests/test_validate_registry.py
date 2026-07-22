@@ -1,7 +1,12 @@
 import json
+import sys
 import tempfile
 import unittest
 from pathlib import Path
+
+# validate_registry.py vive na raiz do repo. Sem isto o import falha quando o
+# teste roda direto (sys.path[0] vira tests/) ou via unittest discover.
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from validate_registry import validate_repository
 
