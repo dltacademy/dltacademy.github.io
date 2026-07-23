@@ -86,7 +86,7 @@ const CONTENT = [
     "tag": "Guia de viagem",
     "tone": "green",
     "icon": "📱",
-    "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt", "guide-assinaturas-ia-bybit", "guide-etherfi-cash-viagem"]
+    "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt", "guide-etherfi-cash-viagem"]
   },
   {
     "id": "guide-assinaturas-ia-bybit",
