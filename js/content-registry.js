@@ -86,7 +86,7 @@ const CONTENT = [
     "tag": "Guia de viagem",
     "tone": "green",
     "icon": "📱",
-    "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt", "guide-assinaturas-ia-bybit"]
+    "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt", "guide-assinaturas-ia-bybit", "guide-etherfi-cash-viagem"]
   },
   {
     "id": "guide-assinaturas-ia-bybit",
@@ -109,7 +109,19 @@ const CONTENT = [
     "tag": "Guia de viagem",
     "tone": "blue",
     "icon": "💱",
-    "related": ["guide-bybit-pay-vietqr", "article-bybit-pay-vs-moreta-vietqr"]
+    "related": ["guide-bybit-pay-vietqr", "article-bybit-pay-vs-moreta-vietqr", "guide-etherfi-cash-viagem"]
+  },
+  {
+    "id": "guide-etherfi-cash-viagem",
+    "type": "guide",
+    "title": "ether.fi Cash para viagem",
+    "description": "Cashback, câmbio, Direct Pay e riscos: quando o cartão pode fazer sentido e quando Wise, Revolut ou seu cartão atual podem ser melhores.",
+    "url": "/guias/etherfi-cash-viagem/",
+    "tag": "Guia de viagem",
+    "tone": "green",
+    "icon": "💳",
+    "primaryNext": "guide-bybit-pay-vietqr",
+    "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt", "guide-assinaturas-ia-bybit"]
   },
   {
     "id": "article-bem-vindo",
