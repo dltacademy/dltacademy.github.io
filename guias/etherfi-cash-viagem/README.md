@@ -22,4 +22,4 @@ python3 validate_registry.py
 python3 -m unittest discover -s tests -p 'test_*.py'
 ```
 
-A imagem social em SVG é a fonte vetorial. Antes da publicação final, exporte também `og-image.png` em 1200 × 630 se o canal de distribuição exigir compatibilidade raster.
+`og-image.svg` é a fonte vetorial e `og-image.png` é o asset social raster 1200 × 630 usado nas metatags. Ao alterar a arte, mantenha os dois sincronizados.
