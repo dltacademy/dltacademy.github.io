@@ -20,8 +20,9 @@ class EtherfiCashTravelGuideTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.html = PAGE.read_text(encoding="utf-8")
         source = REGISTRY.read_text(encoding="utf-8")
-        payload = source[source.index("const CONTENT = ") + len("const CONTENT = ") : source.rindex("];" ) + 1]
-        cls.registry = json.loads(payload)
+        start = source.index("const CONTENT = ") + len("const CONTENT = ")
+        end = source.rindex("];") + 1
+        cls.registry = json.loads(source[start:end])
 
     def test_page_and_social_asset_exist(self) -> None:
         self.assertTrue(PAGE.is_file())
@@ -41,6 +42,11 @@ class EtherfiCashTravelGuideTests(unittest.TestCase):
         self.assertIn('rel="sponsored nofollow noopener noreferrer"', attrs)
         self.assertIn('referrerpolicy="no-referrer"', attrs)
         self.assertIn("Transparência: este é um link de afiliado", self.html)
+
+    def test_internal_next_step_precedes_affiliate_offer(self) -> None:
+        internal_position = self.html.index("Continue pelo método que o comerciante aceita")
+        affiliate_position = self.html.index("Se você ainda não tem ether.fi")
+        self.assertLess(internal_position, affiliate_position)
 
     def test_protection_and_neutral_comparison_are_present(self) -> None:
         required = (
