@@ -24,9 +24,12 @@ class EtherfiCashTravelGuideTests(unittest.TestCase):
         end = source.rindex("];") + 1
         cls.registry = json.loads(source[start:end])
 
-    def test_page_and_social_asset_exist(self) -> None:
+    def test_page_and_social_assets_exist(self) -> None:
         self.assertTrue(PAGE.is_file())
         self.assertTrue((PAGE.parent / "og-image.svg").is_file())
+        self.assertTrue((PAGE.parent / "og-image.png").is_file())
+        self.assertIn('/guias/etherfi-cash-viagem/og-image.png', self.html)
+        self.assertIn('<meta property="og:image:type" content="image/png">', self.html)
 
     def test_canonical_metadata_and_mount_match(self) -> None:
         self.assertIn(f'<link rel="canonical" href="{URL}">', self.html)
