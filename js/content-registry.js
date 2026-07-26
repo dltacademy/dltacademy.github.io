@@ -112,6 +112,17 @@ const CONTENT = [
     "related": ["guide-bybit-pay-vietqr", "article-bybit-pay-vs-moreta-vietqr"]
   },
   {
+    "id": "guide-topcashback-viagens",
+    "type": "guide",
+    "title": "Cashback em viagens com TopCashback",
+    "description": "Confira o cashback antes de reservar e use um checklist para preservar o rastreamento, entender exclusões e calcular o custo líquido real.",
+    "url": "/guias/topcashback-viagens/",
+    "tag": "Economia em viagem",
+    "tone": "green",
+    "icon": "✈️",
+    "related": ["guide-bybit-pay-vietqr", "guide-abastecer-moreta-usdt", "article-bybit-pay-vs-moreta-vietqr"]
+  },
+  {
     "id": "article-bem-vindo",
     "type": "article",
     "title": "Bem-vindo ao Blog da DLT Academy",
