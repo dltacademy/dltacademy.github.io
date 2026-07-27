@@ -1,0 +1,30 @@
+name: Validate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+
+      - name: Sintaxe dos checkers
+        run: python3 -m py_compile security_check.py validate_registry.py
+
+      - name: Politica de seguranca
+        run: python3 security_check.py .
+
+      - name: Registry unico
+        run: python3 validate_registry.py
+
+      - name: Sintaxe JavaScript
+        run: find js -name '*.js' -print0 | xargs -0 -n1 node --check
+
+      - name: Bateria de testes
+        run: python3 -m unittest discover -s tests -v
