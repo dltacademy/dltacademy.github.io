@@ -70,6 +70,45 @@ def _absolute_url(url: str) -> str:
     return url
 
 
+def _is_portal_url(url: str) -> bool:
+    """URL servida pelo próprio host do portal, e não por um subdomínio."""
+    return (urlparse(url).hostname or "").lower() == "dlt.academy"
+
+
+def _validate_sitemap_index(repo: Path, registry_urls: set[str]) -> list[str]:
+    """O índice precisa cobrir o portal e todo subdomínio citado no registry.
+
+    Sem isso, lançar uma ferramenta nova a deixaria invisível: ela sairia do
+    sitemap do portal (host diferente) sem entrar em lugar nenhum.
+    """
+    caminho = repo / "sitemap-index.xml"
+    if not caminho.is_file():
+        return ["sitemap-index.xml: ausente"]
+
+    try:
+        root = ElementTree.parse(caminho).getroot()
+    except ElementTree.ParseError as exc:
+        return [f"sitemap-index.xml inválido ou ilegível: {exc}"]
+
+    ns = "{http://www.sitemaps.org/schemas/sitemap/0.9}"
+    declarados = {
+        (node.text or "").strip()
+        for node in root.iter(f"{ns}loc")
+        if (node.text or "").strip()
+    }
+
+    esperados = {"https://dlt.academy/sitemap.xml"}
+    for url in registry_urls:
+        host = (urlparse(url).hostname or "").lower()
+        if host and host != "dlt.academy":
+            esperados.add(f"https://{host}/sitemap.xml")
+
+    return [
+        f"sitemap-index.xml: sitemap ausente do índice: {url}"
+        for url in sorted(esperados - declarados)
+    ]
+
+
 def _load_sitemap_urls(path: Path) -> list[str]:
     try:
         root = ElementTree.parse(path).getroot()
@@ -260,12 +299,27 @@ def validate_repository(root: Path | str) -> list[str]:
         return errors
 
     sitemap_set = set(sitemap_urls)
-    for url in sorted(valid_registry_urls - sitemap_set):
+
+    # Protocolo de sitemaps: um arquivo só pode declarar URLs do próprio host.
+    # As ferramentas vivem em subdomínios e cada uma tem o seu sitemap, então
+    # o sitemap do portal cobre apenas dlt.academy. O sitemap-index.xml é que
+    # reúne os cinco num ponto único de submissão.
+    portal_registry_urls = {u for u in valid_registry_urls if _is_portal_url(u)}
+
+    for url in sorted(portal_registry_urls - sitemap_set):
         errors.append(f"sitemap.xml: URL do registry ausente: {url}")
 
-    allowed_sitemap_urls = valid_registry_urls | INSTITUTIONAL_URLS
-    for url in sorted(sitemap_set - allowed_sitemap_urls):
+    for url in sorted(u for u in sitemap_set if not _is_portal_url(u)):
+        errors.append(
+            f"sitemap.xml: URL de outro host — declare no sitemap do próprio "
+            f"subdomínio e liste-o em sitemap-index.xml: {url}"
+        )
+
+    allowed_sitemap_urls = portal_registry_urls | INSTITUTIONAL_URLS
+    for url in sorted(u for u in sitemap_set if _is_portal_url(u) and u not in allowed_sitemap_urls):
         errors.append(f"sitemap.xml: URL órfã fora do registry/allowlist: {url}")
+
+    errors.extend(_validate_sitemap_index(repo, valid_registry_urls))
 
     return errors
 
