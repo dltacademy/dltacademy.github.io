@@ -62,6 +62,22 @@ function renderConnectionSection(title, entries) {
   return section;
 }
 
+// A comunidade não vive no registry: o schema do Registry Core V1 aceita só
+// tool/guide/article/protocolo, e forçar uma página institucional num desses
+// tipos distorceria o schema para caber. Ela é um destino fixo, declarado
+// aqui, e reaproveita o mesmo card do grafo — mesma linguagem visual, mesmo
+// DOM seguro. Fecha o ciclo: conteúdo → canal → volta ao site.
+const COMMUNITY_ENTRY = {
+  id: "comunidade",
+  url: "/comunidade/",
+  title: "Comunidade da DLT Academy",
+  description:
+    "Canal para acompanhar, grupo para conversar e YouTube. Gratuitos, sem cadastro — e com os links oficiais num lugar só, para reconhecer golpe quando ele chegar.",
+  tag: "Grátis",
+  tone: "green",
+  icon: "💬",
+};
+
 function renderNextStep() {
   const mount = document.getElementById("next-step-mount");
   if (!mount) return;
@@ -82,6 +98,10 @@ function renderNextStep() {
       mount.appendChild(renderConnectionSection("Relacionados", relatedEntries));
     }
   }
+
+  // Por último, sempre: é continuação, não desvio. Quem tem um próximo passo
+  // concreto no grafo vê aquilo primeiro; o canal fica para quem terminou.
+  mount.appendChild(renderConnectionSection("Continue com a gente", [COMMUNITY_ENTRY]));
 }
 
 renderNextStep();
