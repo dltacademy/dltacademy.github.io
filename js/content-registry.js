@@ -130,5 +130,16 @@ const CONTENT = [
     "tag": "Teste real",
     "publishedAt": "2026-07-17",
     "primaryNext": "guide-bybit-pay-vietqr"
+  },
+  {
+    "id": "article-fomo-investimentos-depois-da-alta",
+    "type": "article",
+    "title": "FOMO nos investimentos: como decidir depois que o preço disparou",
+    "description": "Uma alta forte não prova que você deve entrar nem que o topo chegou. Separe urgência, tese, origem do dinheiro e tamanho antes de decidir.",
+    "url": "/blog/fomo-investimentos-depois-da-alta/",
+    "tag": "Decisão sob emoção",
+    "publishedAt": "2026-07-28",
+    "primaryNext": "tool-primeiros-passos-cripto",
+    "related": ["protocolo-medo-de-ficar-de-fora", "tool-sobrevive-ou-quebra"]
   }
 ];
