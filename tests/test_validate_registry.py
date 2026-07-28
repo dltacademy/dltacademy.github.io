@@ -3,6 +3,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from urllib.parse import urlparse
 
 # validate_registry.py vive na raiz do repo. Sem isto o import falha quando o
 # teste roda direto (sys.path[0] vira tests/) ou via unittest discover.
@@ -41,17 +42,39 @@ class ValidateRegistryTests(unittest.TestCase):
         (self.root / "js" / "content-registry.js").write_text(
             f"const CONTENT = {raw_registry};\n", encoding="utf-8"
         )
+        todas_urls = [
+            ("https://dlt.academy" + entry["url"])
+            if entry.get("url", "").startswith("/")
+            else entry.get("url", "")
+            for entry in entries
+            if isinstance(entry, dict) and entry.get("url")
+        ]
         if sitemap_urls is None:
+            # O sitemap do portal só declara o próprio host: URL de subdomínio
+            # vive no sitemap dele, e o índice é quem reúne os dois.
             sitemap_urls = [
-                ("https://dlt.academy" + entry["url"])
-                if entry.get("url", "").startswith("/")
-                else entry.get("url", "")
-                for entry in entries
-                if isinstance(entry, dict) and entry.get("url")
+                url for url in todas_urls if urlparse(url).hostname == "dlt.academy"
             ]
         locs = "".join(f"<url><loc>{url}</loc></url>" for url in sitemap_urls)
         (self.root / "sitemap.xml").write_text(
             f'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{locs}</urlset>',
+            encoding="utf-8",
+        )
+        self.write_sitemap_index(todas_urls)
+
+    def write_sitemap_index(self, urls, extra_hosts=()):
+        hosts = {"dlt.academy"}
+        for url in urls:
+            host = (urlparse(url).hostname or "").lower()
+            if host:
+                hosts.add(host)
+        hosts.update(extra_hosts)
+        locs = "".join(
+            f"<sitemap><loc>https://{host}/sitemap.xml</loc></sitemap>"
+            for host in sorted(hosts)
+        )
+        (self.root / "sitemap-index.xml").write_text(
+            f'<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{locs}</sitemapindex>',
             encoding="utf-8",
         )
 
@@ -112,8 +135,33 @@ class ValidateRegistryTests(unittest.TestCase):
         self.assert_has_error(validate_repository(self.root), "subdomínio .dlt.academy")
 
     def test_url_do_registry_ausente_do_sitemap_reprova(self):
-        self.write_fixture([self.valid_tool()], sitemap_urls=[])
+        # Só URL do próprio host é exigida no sitemap do portal, então o caso
+        # precisa de uma peça interna — subdomínio vive no sitemap dele.
+        page = self.root / "guias" / "exemplo"
+        page.mkdir(parents=True)
+        (page / "index.html").write_text("<!doctype html>", encoding="utf-8")
+        self.write_fixture(
+            [self.valid_tool(type="guide", url="/guias/exemplo/")], sitemap_urls=[]
+        )
         self.assert_has_error(validate_repository(self.root), "URL do registry ausente")
+
+    def test_url_de_subdominio_no_sitemap_do_portal_reprova(self):
+        # Protocolo de sitemaps: host único por arquivo. Era o defeito real —
+        # o portal declarava as quatro ferramentas, que vivem em subdomínios.
+        self.write_fixture(
+            [self.valid_tool()],
+            sitemap_urls=["https://exemplo.dlt.academy/"],
+        )
+        self.assert_has_error(validate_repository(self.root), "URL de outro host")
+
+    def test_subdominio_ausente_do_indice_reprova(self):
+        # Sem esta checagem, lançar uma ferramenta nova a deixaria invisível:
+        # fora do sitemap do portal (host diferente) e fora do índice.
+        self.write_fixture([self.valid_tool()])
+        self.write_sitemap_index([])
+        self.assert_has_error(
+            validate_repository(self.root), "sitemap ausente do índice"
+        )
 
     def test_url_orfa_no_sitemap_reprova(self):
         self.write_fixture(
@@ -128,7 +176,7 @@ class ValidateRegistryTests(unittest.TestCase):
     def test_url_institucional_da_allowlist_e_aceita(self):
         self.write_fixture(
             [self.valid_tool()],
-            sitemap_urls=["https://exemplo.dlt.academy/", "https://dlt.academy/sobre/"],
+            sitemap_urls=["https://dlt.academy/sobre/"],
         )
         self.assertEqual([], validate_repository(self.root))
 
