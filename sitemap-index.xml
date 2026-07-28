@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Índice de sitemaps do ecossistema DLT Academy.
+
+     Cada host tem o próprio sitemap, porque o protocolo exige host único por
+     arquivo: o sitemap do portal não pode declarar URLs de subdomínio. Este
+     índice é o ponto único de submissão no Search Console — submeter apenas
+     ele cobre o portal e as quatro ferramentas.
+
+     Ao lançar uma ferramenta nova, acrescentar o sitemap dela aqui. -->
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <sitemap>
+    <loc>https://dlt.academy/sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://primeiros-passos-cripto.dlt.academy/sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://quanto-em-taxas.dlt.academy/sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://vender-ou-segurar.dlt.academy/sitemap.xml</loc>
+  </sitemap>
+  <sitemap>
+    <loc>https://sobrevive-ou-quebra.dlt.academy/sitemap.xml</loc>
+  </sitemap>
+</sitemapindex>
