@@ -71,6 +71,38 @@ def _absolute_url(url: str) -> str:
     return url
 
 
+def _validate_next_step(page: Path, entry: dict, label: str) -> list[str]:
+    """Toda peça de conteúdo termina com o bloco de próximo passo.
+
+    Sem isto a página vira beco sem saída **em silêncio**: nada quebra, nada
+    avisa, e o leitor simplesmente acaba ali. Foi o que aconteceu com o
+    `blog/template-post.html`, que gerava todo artigo novo sem o bloco.
+
+    O protocolo é a exceção conhecida: ele monta o mount por JS depois do
+    resultado (`protocol-engine.js`), então basta carregar o script.
+    """
+    errors: list[str] = []
+    html = page.read_text(encoding="utf-8", errors="replace")
+
+    if "/js/next-step.js" not in html:
+        errors.append(f"{label}: página não carrega /js/next-step.js — fim sem próximo passo")
+        return errors
+
+    if entry.get("type") == "protocolo":
+        return errors
+
+    entry_id = entry.get("id")
+    esperado = f'data-content-id="{entry_id}"'
+    if "next-step-mount" not in html:
+        errors.append(f"{label}: página sem <div id=\"next-step-mount\">")
+    elif isinstance(entry_id, str) and entry_id and esperado not in html:
+        errors.append(
+            f"{label}: data-content-id não bate com o id do registry "
+            f"(esperado {esperado!r})"
+        )
+    return errors
+
+
 def _is_portal_url(url: str) -> bool:
     """URL servida pelo próprio host do portal, e não por um subdomínio."""
     return (urlparse(url).hostname or "").lower() == "dlt.academy"
@@ -281,6 +313,7 @@ def validate_repository(root: Path | str) -> list[str]:
                     f"{label}, campo 'url': destino interno sem index.html em {url!r}"
                 )
                 continue
+            errors.extend(_validate_next_step(page, entry, label))
         else:
             parsed = urlparse(url)
             hostname = (parsed.hostname or "").lower()
