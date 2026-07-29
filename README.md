@@ -1,19 +1,40 @@
-# dltacademy.github.io
+# DLT Academy — Decision Lab & Tools
 
-Portal/hub central da DLT Academy — lista todas as ferramentas web (calculadoras, simuladores, guias) num único lugar. Repo especial de organização: serve na **raiz** do domínio (`https://dltacademy.github.io/`), não num subcaminho.
+Portal público da DLT Academy em **https://dlt.academy/**. Reúne ferramentas, guias, artigos, protocolos e páginas institucionais num único domínio, sem backend e sem build.
 
-Página única, zero backend, zero build — mesmo padrão do [ferramenta-kit](https://github.com/dltacademy/ferramenta-kit).
+O repositório especial continua se chamando `dltacademy.github.io`, mas o domínio canônico é `dlt.academy`.
 
-## Registrar conteúdo novo
+## O que existe hoje
 
-Único arquivo a editar: **`js/content-registry.js`**. Adicione um objeto ao array `CONTENT`, usando JSON estrito:
+- home registry-driven;
+- blog estático;
+- guias de referência;
+- protocolos interativos;
+- páginas `/sobre/`, `/transparencia/` e `/comunidade/`;
+- grafo de próximos passos;
+- comunidade no fim do conteúdo;
+- sitemap por host reunido em `sitemap-index.xml`;
+- CI e deploy automático por GitHub Actions.
+
+## Registry Core V1
+
+O catálogo público vive em **`js/content-registry.js`**.
+
+Tipos aceitos:
+
+- `tool` — ferramenta em subdomínio;
+- `guide` — guia no portal;
+- `article` — artigo no blog;
+- `protocolo` — fluxo interativo no portal.
+
+Exemplo de ferramenta:
 
 ```js
 {
   "id": "tool-nome-estavel",
   "type": "tool",
   "title": "Nome da Ferramenta",
-  "description": "Descrição de 1 frase.",
+  "description": "Descrição de uma frase.",
   "url": "https://nome.dlt.academy/",
   "tag": "Público-alvo",
   "tone": "green",
@@ -21,51 +42,85 @@ Página única, zero backend, zero build — mesmo padrão do [ferramenta-kit](h
 }
 ```
 
-## Lançar ferramenta nova: dois arquivos, um commit
+IDs publicados não são renomeados. Relações usam `primaryNext` e `related`.
 
-Ferramenta vive em subdomínio (`nome.dlt.academy`), o portal vive em `dlt.academy`. O protocolo de sitemaps exige **host único por arquivo**, então:
+## Publicar conteúdo novo no portal
 
-| Arquivo | O que recebe |
+Uma nova peça precisa nascer completa:
+
+1. página local criada;
+2. entrada em `js/content-registry.js`;
+3. URL no `sitemap.xml` do portal;
+4. `#next-step-mount` com `data-content-id` igual ao ID do registry;
+5. `content-registry.js` e `next-step.js` carregados;
+6. canonical, metadata, JSON-LD e OG próprios;
+7. gates verdes.
+
+O checker reprova conteúdo sem mount, script, registro ou relação coerente.
+
+Páginas institucionais não entram no registry. Elas vivem na allowlist `INSTITUTIONAL_URLS` e no `sitemap.xml` do portal.
+
+## Lançar ferramenta nova
+
+Ferramentas vivem em subdomínios e têm sitemap próprio. O protocolo exige host único por arquivo.
+
+No portal, alterar no mesmo commit:
+
+| Arquivo | Mudança |
 |---|---|
-| `js/content-registry.js` | a entrada da ferramenta — é o card no ar |
-| `sitemap-index.xml` | o `sitemap.xml` **da ferramenta** |
-| ~~`sitemap.xml`~~ | **não** recebe URL de subdomínio — `validate_registry.py` reprova |
+| `js/content-registry.js` | adicionar o card da ferramenta |
+| `sitemap-index.xml` | adicionar o sitemap da ferramenta |
+| `sitemap.xml` | **não** recebe URL do subdomínio |
 
-Os dois no mesmo commit. Ficar pela metade é o erro que já deixou uma ferramenta fora do sitemap desde o lançamento até uma auditoria pegar.
+A ferramenta declara sua URL no próprio `sitemap.xml`.
 
-Páginas institucionais (`/sobre/`, `/transparencia/`, `/comunidade/`) não entram no registry — o schema só aceita `tool`/`guide`/`article`/`protocolo`. Elas vivem na allowlist `INSTITUTIONAL_URLS` do `validate_registry.py` e no `sitemap.xml` do portal, porque são do mesmo host.
-
-Tipos aceitos: `tool`, `guide` e `article`. `tone` (`green` ou `blue`) e `icon` são opcionais e exclusivos de ferramentas/guias. Artigos exigem `publishedAt` no formato `YYYY-MM-DD`. IDs publicados nunca são renomeados.
-
-Antes do commit, valide o registry, o sitemap e a segurança:
+## Validação
 
 ```bash
-python3 -m unittest discover -s tests -p 'test_*.py'
+python3 -m unittest discover -s tests -p 'test_*.py' -v
 python3 validate_registry.py
 python3 security_check.py .
+find . -name '*.js' -not -path './.git/*' -print0 | xargs -0 -n1 node --check
 ```
 
-Commit + push — ferramentas e guias aparecem no portal; artigos aparecem no portal e no blog (deploy via GitHub Actions).
+O CI executa os gates em PR e push para `main`.
 
-## Hub-and-spoke
+## Arquitetura de navegação
 
-O logo no header de cada ferramenta (`ferramenta-kit/template`) linka de volta pra `https://dltacademy.github.io/`. O portal é a home; as ferramentas são os spokes.
+```text
+ferramenta → guia → cadastro         aquisição
+conteúdo → comunidade → volta        retenção
+```
+
+O registry governa o grafo dentro do portal. Ferramentas em subdomínios declaram somente sua aresta de saída local, sem duplicar o registry inteiro.
 
 ## Estrutura
 
+```text
+index.html                   home
+js/content-registry.js       registry único
+js/portal.js                 cards da home
+js/next-step.js              grafo + comunidade
+blog/                        artigos e template
+protocolos/                  protocolos interativos
+js/protocol-engine.js        motor compartilhado
+styles-protocols.css         tela e impressão dos protocolos
+guias/                       guias de referência
+sobre/ transparencia/ comunidade/
+validate_registry.py         schema, destinos, mounts e sitemaps
+security_check.py            baseline de segurança
+tests/                       contratos automatizados
+sitemap.xml                  somente URLs de dlt.academy
+sitemap-index.xml            portal + 4 ferramentas
+.github/workflows/ci.yml     gates
+.github/workflows/pages.yml  deploy
 ```
-index.html          hero (logo grande) + grid de cards
-js/content-registry.js registry único de ferramentas, guias e artigos
-js/portal.js           renderiza os cards do portal a partir do registry
-blog/js/blog.js        renderiza o blog a partir do mesmo registry
-validate_registry.py  valida schema, destinos locais, sitemap e índice de sitemaps
-tests/                 testes dos gates locais
-styles-base.css        design system da marca (copiado do kit)
-styles-portal.css       hero + grid de cards (específico do portal)
-assets/                logo/favicon de marca
-og-image.png           preview de compartilhamento
-sitemap.xml             SÓ as páginas de dlt.academy — host único por arquivo
-sitemap-index.xml       reúne os 5 sitemaps (portal + 4 ferramentas); é o que se submete
-.github/workflows/ci.yml      gates em PR e push para main
-.github/workflows/pages.yml   deploy automático a cada push
-```
+
+## Regras permanentes
+
+- zero backend e zero coleta de respostas pessoais;
+- JavaScript executável somente em arquivos externos;
+- links afiliados identificados e com disclosure;
+- comunidade pública, nunca contato pessoal como CTA;
+- conteúdo novo sempre termina com próximo passo coerente;
+- nenhuma referência ao vault ou contexto privado em repositório público.
