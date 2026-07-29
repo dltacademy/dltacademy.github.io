@@ -78,6 +78,12 @@ class ValidateRegistryTests(unittest.TestCase):
             encoding="utf-8",
         )
 
+    @staticmethod
+    def pagina_de_conteudo(content_id, com_mount=True, com_script=True):
+        mount = f'<div id="next-step-mount" data-content-id="{content_id}"></div>' if com_mount else ""
+        script = '<script src="/js/next-step.js"></script>' if com_script else ""
+        return f"<!doctype html><html><body>{mount}{script}</body></html>"
+
     def assert_has_error(self, errors, fragment):
         self.assertTrue(
             any(fragment in error for error in errors),
@@ -126,7 +132,7 @@ class ValidateRegistryTests(unittest.TestCase):
     def test_url_interna_com_index_e_valida(self):
         page = self.root / "guias" / "exemplo"
         page.mkdir(parents=True)
-        (page / "index.html").write_text("<!doctype html>", encoding="utf-8")
+        (page / "index.html").write_text(self.pagina_de_conteudo("tool-exemplo"), encoding="utf-8")
         self.write_fixture([self.valid_tool(type="guide", url="/guias/exemplo/")])
         self.assertEqual([], validate_repository(self.root))
 
@@ -139,7 +145,7 @@ class ValidateRegistryTests(unittest.TestCase):
         # precisa de uma peça interna — subdomínio vive no sitemap dele.
         page = self.root / "guias" / "exemplo"
         page.mkdir(parents=True)
-        (page / "index.html").write_text("<!doctype html>", encoding="utf-8")
+        (page / "index.html").write_text(self.pagina_de_conteudo("tool-exemplo"), encoding="utf-8")
         self.write_fixture(
             [self.valid_tool(type="guide", url="/guias/exemplo/")], sitemap_urls=[]
         )
@@ -178,6 +184,45 @@ class ValidateRegistryTests(unittest.TestCase):
             [self.valid_tool()],
             sitemap_urls=["https://dlt.academy/sobre/"],
         )
+        self.assertEqual([], validate_repository(self.root))
+
+    def test_pagina_de_conteudo_sem_mount_reprova(self):
+        # Beco sem saída silencioso: nada quebra, o leitor simplesmente acaba ali.
+        page = self.root / "guias" / "exemplo"
+        page.mkdir(parents=True)
+        (page / "index.html").write_text(
+            self.pagina_de_conteudo("tool-exemplo", com_mount=False), encoding="utf-8"
+        )
+        self.write_fixture([self.valid_tool(type="guide", url="/guias/exemplo/")])
+        self.assert_has_error(validate_repository(self.root), "next-step-mount")
+
+    def test_pagina_de_conteudo_sem_script_reprova(self):
+        page = self.root / "guias" / "exemplo"
+        page.mkdir(parents=True)
+        (page / "index.html").write_text(
+            self.pagina_de_conteudo("tool-exemplo", com_script=False), encoding="utf-8"
+        )
+        self.write_fixture([self.valid_tool(type="guide", url="/guias/exemplo/")])
+        self.assert_has_error(validate_repository(self.root), "next-step.js")
+
+    def test_data_content_id_divergente_reprova(self):
+        # Se o id não bate, o bloco não renderiza — e o erro é invisível.
+        page = self.root / "guias" / "exemplo"
+        page.mkdir(parents=True)
+        (page / "index.html").write_text(
+            self.pagina_de_conteudo("id-errado"), encoding="utf-8"
+        )
+        self.write_fixture([self.valid_tool(type="guide", url="/guias/exemplo/")])
+        self.assert_has_error(validate_repository(self.root), "data-content-id")
+
+    def test_protocolo_pode_montar_por_js(self):
+        # O motor de protocolo cria o mount depois do resultado; basta o script.
+        page = self.root / "protocolos" / "exemplo"
+        page.mkdir(parents=True)
+        (page / "index.html").write_text(
+            self.pagina_de_conteudo("tool-exemplo", com_mount=False), encoding="utf-8"
+        )
+        self.write_fixture([self.valid_tool(type="protocolo", url="/protocolos/exemplo/")])
         self.assertEqual([], validate_repository(self.root))
 
     def test_json_nao_finito_reprova(self):
