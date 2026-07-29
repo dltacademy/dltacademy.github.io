@@ -132,6 +132,17 @@ const CONTENT = [
     "primaryNext": "guide-bybit-pay-vietqr"
   },
   {
+    "id": "article-topcashback-economia-viagem",
+    "type": "article",
+    "title": "TopCashback para viagens: cashback em hotéis, voos e compras",
+    "description": "Faixas de cashback, exemplos concretos de economia e um método para comparar preço final, bônus, câmbio e elegibilidade antes de reservar.",
+    "url": "/blog/topcashback-economia-viagem/",
+    "tag": "Economia em viagem",
+    "publishedAt": "2026-07-29",
+    "primaryNext": "guide-bybit-pay-vietqr",
+    "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt"]
+  },
+  {
     "id": "article-fomo-investimentos-depois-da-alta",
     "type": "article",
     "title": "FOMO nos investimentos: como decidir depois que o preço disparou",
