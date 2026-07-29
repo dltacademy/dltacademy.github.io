@@ -85,6 +85,21 @@ const CONTENT = [
     "primaryNext": "tool-quanto-em-taxas"
   },
   {
+    "id": "guide-pagamentos-no-exterior",
+    "type": "guide",
+    "title": "Como pagar no exterior gastando menos",
+    "description": "Um mapa prático de cartão, QR, saques, backup, funding e cashback para montar um setup de viagem sem depender de uma solução só.",
+    "url": "/pagamentos-no-exterior/",
+    "tag": "Guia central de viagem",
+    "tone": "green",
+    "icon": "🌍",
+    "related": [
+      "guide-etherfi-cash-viagem",
+      "guide-bybit-pay-vietqr",
+      "article-topcashback-economia-viagem"
+    ]
+  },
+  {
     "id": "guide-bybit-pay-vietqr",
     "type": "guide",
     "title": "Pagar com QR Code no exterior (Bybit Pay)",
@@ -93,6 +108,7 @@ const CONTENT = [
     "tag": "Guia de viagem",
     "tone": "green",
     "icon": "📱",
+    "primaryNext": "guide-pagamentos-no-exterior",
     "related": [
       "article-bybit-pay-vs-moreta-vietqr",
       "guide-abastecer-moreta-usdt",
@@ -124,7 +140,8 @@ const CONTENT = [
     "icon": "💱",
     "related": [
       "guide-bybit-pay-vietqr",
-      "article-bybit-pay-vs-moreta-vietqr"
+      "article-bybit-pay-vs-moreta-vietqr",
+      "guide-pagamentos-no-exterior"
     ]
   },
   {
@@ -136,7 +153,7 @@ const CONTENT = [
     "tag": "Guia de viagem",
     "tone": "green",
     "icon": "💳",
-    "primaryNext": "guide-bybit-pay-vietqr",
+    "primaryNext": "guide-pagamentos-no-exterior",
     "related": [
       "article-bybit-pay-vs-moreta-vietqr",
       "guide-abastecer-moreta-usdt",
@@ -171,7 +188,7 @@ const CONTENT = [
     "url": "/blog/topcashback-economia-viagem/",
     "tag": "Economia em viagem",
     "publishedAt": "2026-07-29",
-    "primaryNext": "guide-bybit-pay-vietqr",
+    "primaryNext": "guide-pagamentos-no-exterior",
     "related": [
       "article-bybit-pay-vs-moreta-vietqr",
       "guide-abastecer-moreta-usdt"
