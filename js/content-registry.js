@@ -139,7 +139,7 @@ const CONTENT = [
     "url": "/blog/fomo-investimentos-depois-da-alta/",
     "tag": "Decisão sob emoção",
     "publishedAt": "2026-07-28",
-    "primaryNext": "tool-primeiros-passos-cripto",
-    "related": ["protocolo-medo-de-ficar-de-fora", "tool-sobrevive-ou-quebra"]
+    "primaryNext": "protocolo-medo-de-ficar-de-fora",
+    "related": ["tool-primeiros-passos-cripto", "tool-sobrevive-ou-quebra"]
   }
 ];
