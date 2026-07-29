@@ -18,7 +18,10 @@ const CONTENT = [
     "tag": "Proteção de patrimônio",
     "tone": "green",
     "icon": "🛡️",
-    "related": ["tool-vender-ou-segurar", "tool-quanto-em-taxas"]
+    "related": [
+      "tool-vender-ou-segurar",
+      "tool-quanto-em-taxas"
+    ]
   },
   {
     "id": "tool-quanto-em-taxas",
@@ -41,7 +44,9 @@ const CONTENT = [
     "tone": "blue",
     "icon": "🧭",
     "primaryNext": "guide-conta-binance",
-    "related": ["tool-quanto-em-taxas"]
+    "related": [
+      "tool-quanto-em-taxas"
+    ]
   },
   {
     "id": "tool-vender-ou-segurar",
@@ -64,7 +69,9 @@ const CONTENT = [
     "tone": "green",
     "icon": "🧭",
     "primaryNext": "tool-sobrevive-ou-quebra",
-    "related": ["tool-vender-ou-segurar"]
+    "related": [
+      "tool-vender-ou-segurar"
+    ]
   },
   {
     "id": "guide-conta-binance",
@@ -86,7 +93,11 @@ const CONTENT = [
     "tag": "Guia de viagem",
     "tone": "green",
     "icon": "📱",
-    "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt", "guide-assinaturas-ia-bybit"]
+    "related": [
+      "article-bybit-pay-vs-moreta-vietqr",
+      "guide-abastecer-moreta-usdt",
+      "guide-assinaturas-ia-bybit"
+    ]
   },
   {
     "id": "guide-assinaturas-ia-bybit",
@@ -98,7 +109,9 @@ const CONTENT = [
     "tone": "blue",
     "icon": "🤖",
     "primaryNext": "guide-bybit-pay-vietqr",
-    "related": ["article-bybit-pay-vs-moreta-vietqr"]
+    "related": [
+      "article-bybit-pay-vs-moreta-vietqr"
+    ]
   },
   {
     "id": "guide-abastecer-moreta-usdt",
@@ -109,7 +122,26 @@ const CONTENT = [
     "tag": "Guia de viagem",
     "tone": "blue",
     "icon": "💱",
-    "related": ["guide-bybit-pay-vietqr", "article-bybit-pay-vs-moreta-vietqr"]
+    "related": [
+      "guide-bybit-pay-vietqr",
+      "article-bybit-pay-vs-moreta-vietqr"
+    ]
+  },
+  {
+    "id": "guide-etherfi-cash-viagem",
+    "type": "guide",
+    "title": "Por que uso o ether.fi Cash no exterior",
+    "description": "A pesquisa e a experiência real que fizeram o ether.fi virar meu cartão principal: 3% de cashback, câmbio competitivo, promoções e a limitação dos saques.",
+    "url": "/guias/etherfi-cash-viagem/",
+    "tag": "Guia de viagem",
+    "tone": "green",
+    "icon": "💳",
+    "primaryNext": "guide-bybit-pay-vietqr",
+    "related": [
+      "article-bybit-pay-vs-moreta-vietqr",
+      "guide-abastecer-moreta-usdt",
+      "guide-assinaturas-ia-bybit"
+    ]
   },
   {
     "id": "article-bem-vindo",
@@ -140,7 +172,10 @@ const CONTENT = [
     "tag": "Economia em viagem",
     "publishedAt": "2026-07-29",
     "primaryNext": "guide-bybit-pay-vietqr",
-    "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt"]
+    "related": [
+      "article-bybit-pay-vs-moreta-vietqr",
+      "guide-abastecer-moreta-usdt"
+    ]
   },
   {
     "id": "article-fomo-investimentos-depois-da-alta",
@@ -151,6 +186,9 @@ const CONTENT = [
     "tag": "Decisão sob emoção",
     "publishedAt": "2026-07-28",
     "primaryNext": "protocolo-medo-de-ficar-de-fora",
-    "related": ["tool-primeiros-passos-cripto", "tool-sobrevive-ou-quebra"]
+    "related": [
+      "tool-primeiros-passos-cripto",
+      "tool-sobrevive-ou-quebra"
+    ]
   }
 ];
