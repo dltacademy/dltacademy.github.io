@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Por que uso o ether.fi Cash no exterior</title>
+  <desc id="desc">Pesquisa e experiência real sobre 3% de cashback, câmbio competitivo, promoções e a limitação dos saques.</desc>
+  <rect width="1200" height="630" fill="#06090f"/>
+  <rect x="760" width="440" height="630" fill="#08261f"/>
+  <text x="72" y="82" fill="#f4f8fc" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">DLT ACADEMY</text>
+  <rect x="72" y="104" width="300" height="40" rx="20" fill="none" stroke="#30e89a" stroke-width="2"/>
+  <text x="94" y="131" fill="#60f0b1" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">PESQUISA E EXPERIÊNCIA REAL</text>
+  <g fill="#f4f8fc" font-family="Arial, Helvetica, sans-serif" font-size="55" font-weight="700">
+    <text x="72" y="230">Por que uso o</text>
+    <text x="72" y="298">ether.fi Cash</text>
+    <text x="72" y="366">no exterior</text>
+  </g>
+  <g fill="#b2becd" font-family="Arial, Helvetica, sans-serif" font-size="28">
+    <text x="76" y="430">3% de cashback, câmbio competitivo</text>
+    <text x="76" y="472">e uma limitação importante: os saques.</text>
+  </g>
+  <rect x="72" y="530" width="560" height="50" rx="25" fill="none" stroke="#30e89a" stroke-width="2"/>
+  <text x="98" y="563" fill="#5aebad" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">MENOS TAXAS, CASHBACK REAL</text>
+  <rect x="835" y="105" width="245" height="415" rx="30" fill="#0f1621" stroke="#596f83" stroke-width="4"/>
+  <rect x="865" y="160" width="75" height="55" rx="8" fill="none" stroke="#596f83" stroke-width="3"/>
+  <g fill="none" stroke="#30e89a" stroke-width="4">
+    <path d="M998 172c20 12 20 35 0 48"/>
+    <path d="M1008 160c31 20 31 53 0 72"/>
+    <path d="M1018 149c43 27 43 68 0 94"/>
+  </g>
+  <text x="865" y="290" fill="#f4f8fc" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="700">3%</text>
+  <text x="865" y="330" fill="#60f0b1" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700">CASHBACK</text>
+  <line x1="865" y1="375" x2="1045" y2="375" stroke="#30e89a" stroke-width="16" stroke-linecap="round"/>
+  <line x1="865" y1="415" x2="1005" y2="415" stroke="#596f83" stroke-width="12" stroke-linecap="round"/>
+  <line x1="865" y1="445" x2="1030" y2="445" stroke="#596f83" stroke-width="12" stroke-linecap="round"/>
+</svg>
