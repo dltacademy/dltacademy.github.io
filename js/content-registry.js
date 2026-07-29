@@ -140,7 +140,7 @@ const CONTENT = [
     "related": [
       "article-bybit-pay-vs-moreta-vietqr",
       "guide-abastecer-moreta-usdt",
-      "guide-assinaturas-ia-bybit"
+      "article-arq-saques-exterior"
     ]
   },
   {
@@ -174,6 +174,20 @@ const CONTENT = [
     "primaryNext": "guide-bybit-pay-vietqr",
     "related": [
       "article-bybit-pay-vs-moreta-vietqr",
+      "guide-abastecer-moreta-usdt"
+    ]
+  },
+  {
+    "id": "article-arq-saques-exterior",
+    "type": "article",
+    "title": "Por que uso o ARQ para sacar dinheiro no exterior",
+    "description": "Experiência real com o antigo DolarApp: taxa atual do saque, tarifa do ATM, DCC, cartão físico e Revolut como backup.",
+    "url": "/blog/arq-saques-exterior/",
+    "tag": "Dinheiro em viagem",
+    "publishedAt": "2026-07-29",
+    "primaryNext": "guide-etherfi-cash-viagem",
+    "related": [
+      "guide-bybit-pay-vietqr",
       "guide-abastecer-moreta-usdt"
     ]
   },
