@@ -62,9 +62,9 @@ class ArqAtmArticleTests(unittest.TestCase):
     def test_personal_setup_and_revolut_backup_are_explicit(self) -> None:
         required = (
             "já foi meu cartão principal para praticamente tudo na América Latina",
-            "ether.fi Cash para compras internacionais",
+            "ether.fi para pagar; ARQ para sacar.",
             "Dinheiro físico:</strong> ARQ",
-            "Revolut continua instalado e com cartão ativo como backup",
+            "Primeira retirada ou franquias:</strong> Wise e Revolut",
             "R$ 1.600 ou cinco saques por mês",
         )
         for text in required:
