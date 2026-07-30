@@ -97,6 +97,7 @@ const CONTENT = [
     "tag": "Guia de viagem",
     "tone": "green",
     "icon": "📱",
+    "primaryNext": "guide-pagamentos-no-exterior",
     "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt", "guide-assinaturas-ia-bybit"]
   },
   {
