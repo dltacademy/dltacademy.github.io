@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
   <title id="title">Como pagar no exterior gastando menos</title>
-  <desc id="desc">Um mapa de cartão, QR, dinheiro, backup e cashback para viagens.</desc>
+  <desc id="desc">Um mapa de cartão, QR, dinheiro, backup e funding para viagens.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#06090f"/>
@@ -29,12 +29,12 @@
     <rect x="562" y="448" width="166" height="58" rx="18" fill="#111c2a" stroke="#315d9d"/>
     <text x="592" y="485" fill="#f5f8fb">BACKUP</text>
     <rect x="742" y="448" width="230" height="58" rx="18" fill="#10251f" stroke="#3e8f6c"/>
-    <text x="776" y="485" fill="#82efb8">CASHBACK</text>
+    <text x="793" y="485" fill="#82efb8">FUNDING</text>
   </g>
   <path d="M1010 208h76v76h-76z" fill="none" stroke="#6ee7a8" stroke-width="7" rx="8"/>
   <path d="M1028 226h16v16h-16zm40 0h-16v16h16zm-40 40h16v-16h-16zm40 0h-16v-16h16z" fill="#6ee7a8"/>
   <path d="M910 188h-70a24 24 0 0 0-24 24v118a24 24 0 0 0 24 24h70a24 24 0 0 0 24-24V212a24 24 0 0 0-24-24z" fill="#111c2a" stroke="#4a8df8" stroke-width="5"/>
   <path d="M842 238h66" stroke="#4a8df8" stroke-width="12" stroke-linecap="round"/>
   <path d="M842 282h44" stroke="#6ee7a8" stroke-width="12" stroke-linecap="round"/>
-  <text x="80" y="570" fill="#758aa2" font-family="Arial, sans-serif" font-size="18">Cartão · QR local · dinheiro físico · redundância · economia em hospedagem</text>
+  <text x="80" y="570" fill="#758aa2" font-family="Arial, sans-serif" font-size="18">Cartão · QR local · dinheiro físico · redundância · formação de saldo</text>
 </svg>
