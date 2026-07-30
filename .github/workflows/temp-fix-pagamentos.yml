@@ -1,0 +1,183 @@
+name: Temporary payments pillar update
+
+on:
+  push:
+    branches:
+      - agent/pagina-pilar-pagamentos
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
+        with:
+          fetch-depth: 0
+      - name: Merge main and apply requested changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+          if ! git merge --no-ff --no-commit origin/main; then
+            git checkout --ours js/content-registry.js
+            git add js/content-registry.js
+            git diff --name-only --diff-filter=U | grep . && exit 1 || true
+          fi
+
+          python3 - <<'PY'
+          from pathlib import Path
+
+          path = Path('pagamentos-no-exterior/index.html')
+          html = path.read_text(encoding='utf-8')
+
+          replacements = {
+              '<span><strong>Cashback</strong> antes da reserva</span>': '<span><strong>Funding</strong> para formar saldo</span>',
+              '<article class="payment-card payment-card-pending" data-future-guide="arq-bank-saques">': '<article class="payment-card">',
+              '<span class="payment-card-status">Guia do ARQ Bank em preparação</span>': '<a class="payment-card-cta" href="/blog/arq-saques-exterior/">Ver o guia de saques com ARQ <span aria-hidden="true">→</span></a>',
+              '<span class="setup-pending">ARQ · guia chegando</span>': '<a href="/blog/arq-saques-exterior/">ARQ para saques</a>',
+              '''            <p class="layer-role">Antes de pagar</p>
+            <h3>Redução do preço da viagem</h3>
+            <p>Compare cashback, tarifa, cancelamento e preço direto antes de reservar hospedagem, voo ou passeio.</p>
+          </div>
+          <a href="/blog/topcashback-economia-viagem/">TopCashback</a>''': '''            <p class="layer-role">Formação do saldo</p>
+            <h3>Funding compatível e barato</h3>
+            <p>Forme o saldo por uma rota compatível e barata. Uma recarga cara pode apagar a economia obtida no cartão ou no QR.</p>
+          </div>
+          <a href="/guias/abastecer-moreta-usdt/">Rota de funding com USDT</a>''',
+              '<li><strong>TopCashback</strong><span>reduzir hospedagem e outras compras elegíveis</span></li>': '<li><strong>Funding</strong><span>formar o saldo por uma rota compatível e barata</span></li>',
+              'Enquanto a ferramenta não está pronta, a página já entrega o mesmo mapa sem pedir saldo, documento, UID ou qualquer dado sensível.': 'Esta página entrega o mapa editorial base. A recomendação personalizada ficará na ferramenta, sem pedir saldo, documento, UID ou qualquer dado sensível.'
+          }
+
+          for old, new in replacements.items():
+              if old not in html:
+                  raise SystemExit(f'Trecho esperado não encontrado: {old[:80]}')
+              html = html.replace(old, new, 1)
+
+          forbidden = [
+              'Guia do ARQ Bank em preparação',
+              'ARQ · guia chegando',
+              'data-future-guide="arq-bank-saques"',
+              'a página já entrega o mesmo mapa',
+          ]
+          for text in forbidden:
+              if text in html:
+                  raise SystemExit(f'Placeholder ainda presente: {text}')
+
+          path.write_text(html, encoding='utf-8')
+          PY
+
+          cat > tests/test_pagamentos_no_exterior_arq.py <<'PY'
+          import json
+          import unittest
+          from html.parser import HTMLParser
+          from pathlib import Path
+
+          ROOT = Path(__file__).resolve().parents[1]
+          PAGE = ROOT / "pagamentos-no-exterior" / "index.html"
+          REGISTRY = ROOT / "js" / "content-registry.js"
+
+
+          class PageParser(HTMLParser):
+              def __init__(self):
+                  super().__init__()
+                  self.links = []
+                  self.sections = []
+                  self._section_depth = 0
+                  self._section_classes = set()
+                  self._section_text = []
+
+              def handle_starttag(self, tag, attrs):
+                  attrs = dict(attrs)
+                  if tag == "a" and attrs.get("href"):
+                      self.links.append(attrs["href"])
+                  if tag in {"section", "article"}:
+                      if self._section_depth == 0:
+                          self._section_classes = set(attrs.get("class", "").split())
+                          self._section_text = []
+                      self._section_depth += 1
+
+              def handle_endtag(self, tag):
+                  if tag in {"section", "article"} and self._section_depth:
+                      self._section_depth -= 1
+                      if self._section_depth == 0:
+                          self.sections.append((self._section_classes, " ".join(self._section_text)))
+
+              def handle_data(self, data):
+                  if self._section_depth:
+                      text = data.strip()
+                      if text:
+                          self._section_text.append(text)
+
+
+          def load_registry():
+              raw = REGISTRY.read_text(encoding="utf-8")
+              start = raw.index("[")
+              end = raw.rindex("]") + 1
+              return {item["id"]: item for item in json.loads(raw[start:end])}
+
+
+          class PagamentosNoExteriorArqTests(unittest.TestCase):
+              @classmethod
+              def setUpClass(cls):
+                  cls.html = PAGE.read_text(encoding="utf-8")
+                  cls.parser = PageParser()
+                  cls.parser.feed(cls.html)
+                  cls.registry = load_registry()
+
+              def test_arq_article_is_linked_without_placeholders(self):
+                  self.assertGreaterEqual(self.parser.links.count("/blog/arq-saques-exterior/"), 2)
+                  for old in (
+                      "Guia do ARQ Bank em preparação",
+                      "ARQ · guia chegando",
+                      'data-future-guide="arq-bank-saques"',
+                  ):
+                      self.assertNotIn(old, self.html)
+
+              def test_funding_is_the_fifth_operational_layer(self):
+                  setup = next(text for classes, text in self.parser.sections if "setup-layers" in classes)
+                  self.assertIn("05", setup)
+                  self.assertIn("Funding compatível e barato", setup)
+                  self.assertIn("Uma recarga cara pode apagar a economia", setup)
+                  self.assertIn("/guias/abastecer-moreta-usdt/", self.parser.links)
+
+              def test_topcashback_remains_an_optimisation(self):
+                  optimisation = next(text for classes, text in self.parser.sections if "cashback-section" in classes)
+                  self.assertIn("Economia antes do pagamento", optimisation)
+                  self.assertIn("TopCashback", optimisation)
+                  self.assertIn("/blog/topcashback-economia-viagem/", self.parser.links)
+
+              def test_finder_copy_distinguishes_editorial_map(self):
+                  self.assertIn("Esta página entrega o mapa editorial base", self.html)
+                  self.assertIn("A recomendação personalizada ficará na ferramenta", self.html)
+                  self.assertNotIn("entrega o mesmo mapa", self.html)
+
+              def test_arq_article_points_to_complete_system(self):
+                  arq = self.registry["article-arq-saques-exterior"]
+                  self.assertEqual(arq["primaryNext"], "guide-pagamentos-no-exterior")
+                  self.assertEqual(arq["related"], [
+                      "guide-bybit-pay-vietqr",
+                      "guide-abastecer-moreta-usdt",
+                      "guide-etherfi-cash-viagem",
+                  ])
+                  self.assertIn("article-arq-saques-exterior", self.registry["guide-pagamentos-no-exterior"]["related"])
+
+
+          if __name__ == "__main__":
+              unittest.main()
+          PY
+
+          python3 -m unittest tests.test_pagamentos_no_exterior tests.test_pagamentos_no_exterior_arq tests.test_arq_saques_exterior -v
+          python3 validate_registry.py
+          python3 security_check.py .
+          python3 -m unittest discover -s tests -p 'test_*.py' -v
+          for file in js/*.js blog/js/*.js; do node --check "$file"; done
+          git diff --check
+
+          git rm .github/workflows/temp-fix-pagamentos.yml
+          git add pagamentos-no-exterior/index.html tests/test_pagamentos_no_exterior_arq.py js/content-registry.js
+          git commit -m "Ajusta página-pilar de pagamentos e conecta ARQ"
+          git push origin HEAD:agent/pagina-pilar-pagamentos
