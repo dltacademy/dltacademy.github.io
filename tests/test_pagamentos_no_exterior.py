@@ -45,14 +45,16 @@ class PagamentosNoExteriorTests(unittest.TestCase):
             "/guias/abastecer-moreta-usdt/",
             "/guias/assinaturas-ia-bybit/",
             "/blog/topcashback-economia-viagem/",
+            "/blog/arq-saques-exterior/",
         ):
             with self.subTest(href=href):
                 self.assertIn(f'href="{href}"', self.html)
 
-    def test_arq_slot_is_visible_without_a_dead_link(self) -> None:
-        self.assertIn('data-future-guide="arq-bank-saques"', self.html)
-        self.assertIn("Guia do ARQ Bank em preparação", self.html)
-        self.assertNotRegex(self.html, r'href="[^"]*arq[^"]*"')
+    def test_arq_article_replaces_the_old_future_slot(self) -> None:
+        self.assertGreaterEqual(self.html.count('href="/blog/arq-saques-exterior/"'), 2)
+        self.assertNotIn('data-future-guide="arq-bank-saques"', self.html)
+        self.assertNotIn("Guia do ARQ Bank em preparação", self.html)
+        self.assertNotIn("ARQ · guia chegando", self.html)
 
     def test_registry_routes_cluster_to_the_pillar(self) -> None:
         by_id = {entry["id"]: entry for entry in self.entries}
@@ -62,6 +64,7 @@ class PagamentosNoExteriorTests(unittest.TestCase):
             "guide-bybit-pay-vietqr",
             "guide-etherfi-cash-viagem",
             "article-topcashback-economia-viagem",
+            "article-arq-saques-exterior",
         ):
             with self.subTest(entry_id=entry_id):
                 self.assertEqual(
