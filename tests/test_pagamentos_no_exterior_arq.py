@@ -2,6 +2,7 @@ import json
 import unittest
 from html.parser import HTMLParser
 from pathlib import Path
+from urllib.parse import urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -24,6 +25,17 @@ def load_registry():
     raw = REGISTRY.read_text(encoding="utf-8")
     items = json.loads(raw[raw.index("["):raw.rindex("]") + 1])
     return {item["id"]: item for item in items}
+
+
+def internal_target(href):
+    path = urlsplit(href).path
+    if not path or not path.startswith("/"):
+        return None
+    if path == "/":
+        return ROOT / "index.html"
+    relative = path.lstrip("/")
+    target = ROOT / relative
+    return target / "index.html" if path.endswith("/") else target
 
 
 class PagamentosNoExteriorArqTests(unittest.TestCase):
@@ -80,6 +92,14 @@ class PagamentosNoExteriorArqTests(unittest.TestCase):
         )
         pillar = self.registry["guide-pagamentos-no-exterior"]
         self.assertIn("article-arq-saques-exterior", pillar["related"])
+
+    def test_all_internal_links_resolve_in_repository(self):
+        for href in self.links:
+            target = internal_target(href)
+            if target is None:
+                continue
+            with self.subTest(href=href):
+                self.assertTrue(target.is_file(), f"Destino interno ausente: {href}")
 
 
 if __name__ == "__main__":
