@@ -18,10 +18,7 @@ const CONTENT = [
     "tag": "Proteção de patrimônio",
     "tone": "green",
     "icon": "🛡️",
-    "related": [
-      "tool-vender-ou-segurar",
-      "tool-quanto-em-taxas"
-    ]
+    "related": ["tool-vender-ou-segurar", "tool-quanto-em-taxas"]
   },
   {
     "id": "tool-quanto-em-taxas",
@@ -44,9 +41,7 @@ const CONTENT = [
     "tone": "blue",
     "icon": "🧭",
     "primaryNext": "guide-conta-binance",
-    "related": [
-      "tool-quanto-em-taxas"
-    ]
+    "related": ["tool-quanto-em-taxas"]
   },
   {
     "id": "tool-vender-ou-segurar",
@@ -69,9 +64,7 @@ const CONTENT = [
     "tone": "green",
     "icon": "🧭",
     "primaryNext": "tool-sobrevive-ou-quebra",
-    "related": [
-      "tool-vender-ou-segurar"
-    ]
+    "related": ["tool-vender-ou-segurar"]
   },
   {
     "id": "guide-conta-binance",
@@ -88,16 +81,12 @@ const CONTENT = [
     "id": "guide-pagamentos-no-exterior",
     "type": "guide",
     "title": "Como pagar no exterior gastando menos",
-    "description": "Um mapa prático de cartão, QR, saques, backup, funding e cashback para montar um setup de viagem sem depender de uma solução só.",
+    "description": "Um mapa prático de cartão, QR, saques, backup, funding e otimizações para montar um setup de viagem sem depender de uma solução só.",
     "url": "/pagamentos-no-exterior/",
     "tag": "Guia central de viagem",
     "tone": "green",
     "icon": "🌍",
-    "related": [
-      "guide-etherfi-cash-viagem",
-      "guide-bybit-pay-vietqr",
-      "article-topcashback-economia-viagem"
-    ]
+    "related": ["article-arq-saques-exterior", "guide-etherfi-cash-viagem", "guide-bybit-pay-vietqr"]
   },
   {
     "id": "guide-bybit-pay-vietqr",
@@ -108,12 +97,7 @@ const CONTENT = [
     "tag": "Guia de viagem",
     "tone": "green",
     "icon": "📱",
-    "primaryNext": "guide-pagamentos-no-exterior",
-    "related": [
-      "article-bybit-pay-vs-moreta-vietqr",
-      "guide-abastecer-moreta-usdt",
-      "guide-assinaturas-ia-bybit"
-    ]
+    "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt", "guide-assinaturas-ia-bybit"]
   },
   {
     "id": "guide-assinaturas-ia-bybit",
@@ -125,9 +109,7 @@ const CONTENT = [
     "tone": "blue",
     "icon": "🤖",
     "primaryNext": "guide-bybit-pay-vietqr",
-    "related": [
-      "article-bybit-pay-vs-moreta-vietqr"
-    ]
+    "related": ["article-bybit-pay-vs-moreta-vietqr"]
   },
   {
     "id": "guide-abastecer-moreta-usdt",
@@ -138,11 +120,7 @@ const CONTENT = [
     "tag": "Guia de viagem",
     "tone": "blue",
     "icon": "💱",
-    "related": [
-      "guide-bybit-pay-vietqr",
-      "article-bybit-pay-vs-moreta-vietqr",
-      "guide-pagamentos-no-exterior"
-    ]
+    "related": ["guide-bybit-pay-vietqr", "article-bybit-pay-vs-moreta-vietqr", "guide-pagamentos-no-exterior"]
   },
   {
     "id": "guide-etherfi-cash-viagem",
@@ -154,11 +132,7 @@ const CONTENT = [
     "tone": "green",
     "icon": "💳",
     "primaryNext": "guide-pagamentos-no-exterior",
-    "related": [
-      "article-bybit-pay-vs-moreta-vietqr",
-      "guide-abastecer-moreta-usdt",
-      "guide-assinaturas-ia-bybit"
-    ]
+    "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt", "article-arq-saques-exterior"]
   },
   {
     "id": "article-bem-vindo",
@@ -189,10 +163,18 @@ const CONTENT = [
     "tag": "Economia em viagem",
     "publishedAt": "2026-07-29",
     "primaryNext": "guide-pagamentos-no-exterior",
-    "related": [
-      "article-bybit-pay-vs-moreta-vietqr",
-      "guide-abastecer-moreta-usdt"
-    ]
+    "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt"]
+  },
+  {
+    "id": "article-arq-saques-exterior",
+    "type": "article",
+    "title": "Por que uso o ARQ para sacar dinheiro no exterior",
+    "description": "Experiência real com o antigo DolarApp: taxa atual do saque, tarifa do ATM, DCC, cartão físico e Revolut como backup.",
+    "url": "/blog/arq-saques-exterior/",
+    "tag": "Dinheiro em viagem",
+    "publishedAt": "2026-07-29",
+    "primaryNext": "guide-pagamentos-no-exterior",
+    "related": ["guide-bybit-pay-vietqr", "guide-abastecer-moreta-usdt", "guide-etherfi-cash-viagem"]
   },
   {
     "id": "article-fomo-investimentos-depois-da-alta",
@@ -203,9 +185,6 @@ const CONTENT = [
     "tag": "Decisão sob emoção",
     "publishedAt": "2026-07-28",
     "primaryNext": "protocolo-medo-de-ficar-de-fora",
-    "related": [
-      "tool-primeiros-passos-cripto",
-      "tool-sobrevive-ou-quebra"
-    ]
+    "related": ["tool-primeiros-passos-cripto", "tool-sobrevive-ou-quebra"]
   }
 ];
