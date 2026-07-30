@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGE = ROOT / "pagamentos-no-exterior" / "index.html"
+OG_IMAGE = ROOT / "pagamentos-no-exterior" / "og-image.svg"
 REGISTRY = ROOT / "js" / "content-registry.js"
 
 
@@ -21,6 +22,7 @@ class PagamentosNoExteriorTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.html = PAGE.read_text(encoding="utf-8")
+        cls.og_svg = OG_IMAGE.read_text(encoding="utf-8")
         cls.entries = load_registry()
 
     def test_page_has_canonical_social_metadata_and_json_ld(self) -> None:
@@ -36,6 +38,14 @@ class PagamentosNoExteriorTests(unittest.TestCase):
         )
         self.assertIsNotNone(match)
         self.assertEqual(expected, json.loads(match.group(1))["url"])
+
+    def test_social_image_matches_the_five_operational_layers(self) -> None:
+        self.assertIn("CARTÃO", self.og_svg)
+        self.assertIn("QR", self.og_svg)
+        self.assertIn("SAQUE", self.og_svg)
+        self.assertIn("BACKUP", self.og_svg)
+        self.assertIn("FUNDING", self.og_svg)
+        self.assertNotIn(">CASHBACK<", self.og_svg)
 
     def test_page_links_every_published_part_of_the_setup(self) -> None:
         for href in (
