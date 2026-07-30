@@ -95,12 +95,20 @@ class ArqAtmArticleTests(unittest.TestCase):
         self.assertIn("Não gaste US$ 150 apenas para buscar US$ 10", self.html)
 
     def test_registry_sitemap_and_etherfi_connection(self) -> None:
-        entry = next(item for item in self.registry if item["id"] == CONTENT_ID)
+        by_id = {item["id"]: item for item in self.registry}
+        entry = by_id[CONTENT_ID]
         self.assertEqual(entry["url"], "/blog/arq-saques-exterior/")
-        self.assertEqual(entry["primaryNext"], "guide-etherfi-cash-viagem")
-        self.assertIn(CONTENT_ID, next(
-            item for item in self.registry if item["id"] == "guide-etherfi-cash-viagem"
-        )["related"])
+        self.assertEqual(entry["primaryNext"], "guide-pagamentos-no-exterior")
+        self.assertEqual(
+            entry["related"],
+            [
+                "guide-bybit-pay-vietqr",
+                "guide-abastecer-moreta-usdt",
+                "guide-etherfi-cash-viagem",
+            ],
+        )
+        self.assertIn(CONTENT_ID, by_id["guide-pagamentos-no-exterior"]["related"])
+        self.assertIn(CONTENT_ID, by_id["guide-etherfi-cash-viagem"]["related"])
         self.assertIn('/blog/arq-saques-exterior/', self.etherfi_html)
 
         root = ElementTree.parse(SITEMAP).getroot()
