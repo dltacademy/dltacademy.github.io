@@ -44,14 +44,14 @@ class ArqAtmArticleTests(unittest.TestCase):
         self.assertIn(f'data-content-id="{CONTENT_ID}"', self.html)
         self.assertIn('"mainEntityOfPage": "' + URL + '"', self.html)
         self.assertIn('"datePublished": "2026-07-29"', self.html)
-        self.assertIn('"dateModified": "2026-07-30"', self.html)
-        self.assertIn("Atualizado em 30 de julho de 2026", self.html)
+        self.assertIn('"dateModified": "2026-07-31"', self.html)
+        self.assertIn("Atualizado em 31 de julho de 2026", self.html)
 
     def test_current_fee_is_presented_without_an_unverified_history(self) -> None:
         required = (
             "A tarifa do saque no ARQ Standard é de 1%",
             "1% sobre o valor retirado",
-            "Tarifa do dono do ATM",
+            "Tarifa do ATM",
             "não encontrei um teto oficial por número de saques",
             "Escolha a moeda local e recuse a conversão do caixa",
         )
