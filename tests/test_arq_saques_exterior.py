@@ -44,8 +44,9 @@ class ArqAtmArticleTests(unittest.TestCase):
         self.assertIn(f'data-content-id="{CONTENT_ID}"', self.html)
         self.assertIn('"mainEntityOfPage": "' + URL + '"', self.html)
         self.assertIn('"datePublished": "2026-07-29"', self.html)
-        self.assertIn('"dateModified": "2026-07-31"', self.html)
-        self.assertIn("Atualizado em 31 de julho de 2026", self.html)
+        self.assertIn('"dateModified": "2026-08-01"', self.html)
+        self.assertIn("Atualizado em 1º de agosto de 2026", self.html)
+        self.assertIn("O cartão que usamos para sacar dinheiro no exterior", self.html)
 
     def test_current_fee_is_presented_without_an_unverified_history(self) -> None:
         required = (
