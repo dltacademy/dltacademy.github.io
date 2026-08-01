@@ -7,7 +7,7 @@
 - [x] CTA principal do ARQ preservado;
 - [x] link da Wise reduzido a alternativa discreta depois da comparação;
 - [x] metadados, JSON-LD, registry e sitemap atualizados;
-- [x] security check, registry e testes aprovados no workflow Validate #65.
+- [x] security check, registry e testes aprovados no workflow Validate.
 
 ## Antes de futuras divulgações
 
