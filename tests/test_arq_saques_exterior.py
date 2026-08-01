@@ -38,7 +38,7 @@ class ArqAtmArticleTests(unittest.TestCase):
         self.assertIn("/blog/arq-saques-exterior/og-image.svg", self.html)
         self.assertIn('<meta property="og:image:type" content="image/svg+xml">', self.html)
 
-    def test_canonical_metadata_dates_and_mount_match(self) -> None:
+    def test_canonical_metadata_dates_title_and_mount_match(self) -> None:
         self.assertIn(f'<link rel="canonical" href="{URL}">', self.html)
         self.assertIn(f'<meta property="og:url" content="{URL}">', self.html)
         self.assertIn(f'data-content-id="{CONTENT_ID}"', self.html)
@@ -52,7 +52,7 @@ class ArqAtmArticleTests(unittest.TestCase):
         required = (
             "A tarifa do saque no ARQ Standard é de 1%",
             "1% sobre o valor retirado",
-            "Tarifa do ATM",
+            "tarifa do dono do ATM",
             "não encontrei um teto oficial por número de saques",
             "Escolha a moeda local e recuse a conversão do caixa",
         )
@@ -61,13 +61,13 @@ class ArqAtmArticleTests(unittest.TestCase):
                 self.assertIn(text, self.html)
         self.assertNotIn("Minha referência inicial para o ARQ era", self.html)
 
-    def test_personal_setup_and_revolut_backup_are_explicit(self) -> None:
+    def test_personal_experience_and_setup_are_explicit(self) -> None:
         required = (
-            "já foi meu cartão principal para praticamente tudo na América Latina",
+            "Quando ainda se chamava DolarApp",
+            "foi meu cartão principal para praticamente tudo",
             "ether.fi para pagar; ARQ para sacar.",
-            "Dinheiro físico:</strong> ARQ",
-            "Primeira retirada ou franquias:</strong> Wise e Revolut",
             "R$ 1.600 ou cinco saques por mês",
+            "o cartão que usamos para sacar dinheiro no exterior",
         )
         for text in required:
             with self.subTest(text=text):
@@ -91,14 +91,15 @@ class ArqAtmArticleTests(unittest.TestCase):
 
     def test_offer_follows_the_educational_content(self) -> None:
         self.assertLess(
-            self.html.index("O custo real tem quatro partes"),
+            self.html.index("O custo real do saque"),
             self.html.index("A oferta de indicação"),
         )
-        self.assertIn("Não gaste US$ 150 apenas para buscar US$ 10", self.html)
+        self.assertIn("Não vale gastar US$ 150 só para receber US$ 10", self.html)
 
     def test_registry_sitemap_and_etherfi_connection(self) -> None:
         by_id = {item["id"]: item for item in self.registry}
         entry = by_id[CONTENT_ID]
+        self.assertEqual(entry["title"], "O cartão que usamos para sacar dinheiro no exterior")
         self.assertEqual(entry["url"], "/blog/arq-saques-exterior/")
         self.assertEqual(entry["primaryNext"], "guide-pagamentos-no-exterior")
         self.assertEqual(
