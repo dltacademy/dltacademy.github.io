@@ -1,6 +1,15 @@
 # Checklist de publicação e atualização
 
-## Antes de divulgar
+## Estado da publicação em 01/08/2026
+
+- [x] artigo reformulado com tom pessoal e orientado à experiência;
+- [x] título atualizado para “O cartão que usamos para sacar dinheiro no exterior”;
+- [x] CTA principal do ARQ preservado;
+- [x] link da Wise reduzido a alternativa discreta depois da comparação;
+- [x] metadados, JSON-LD, registry e sitemap atualizados;
+- [x] security check, registry e testes aprovados no workflow Validate #65.
+
+## Antes de futuras divulgações
 
 - [ ] abrir o link de indicação do ARQ e confirmar a campanha atribuída;
 - [ ] conferir se o novo usuário recebe US$ 10 após US$ 150 em gastos no primeiro mês;
