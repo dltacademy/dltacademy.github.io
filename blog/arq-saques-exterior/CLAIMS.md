@@ -16,6 +16,10 @@ Este arquivo registra o que precisa ser revalidado. As fontes públicas continua
 | Promoção de indicação ARQ | oferta de US$ 10 após US$ 150 em gastos elegíveis no primeiro mês, informada para o link em 29/07/2026 | antes de cada divulgação e, no máximo, 05/08/2026 |
 | Uso durante viagens | experiência pessoal do Tiago com cartão emitido ainda na fase DolarApp; não tratar como compatibilidade universal | revisar após novos testes |
 
+## Nota editorial de 01/08/2026
+
+A redação foi reorganizada para começar pela experiência real com o DolarApp/ARQ e deixar as comparações como apoio. O título publicado é **“O cartão que usamos para sacar dinheiro no exterior”**. Essa revisão não altera os claims nem suas datas de verificação.
+
 ## Blocos de promoção e indicação
 
 A oferta temporária do ARQ está delimitada no HTML por:
@@ -40,7 +44,7 @@ Ao revisar o link da Wise:
 
 1. abrir `https://wise.com/invite/irhc/tiagon100` e conferir o benefício mostrado para a região;
 2. não transformar transferência gratuita, cartão gratuito ou crédito em tarifas em promessa universal;
-3. preservar o CTA como alternativa secundária, depois da comparação;
+3. manter o link como alternativa discreta depois da comparação, sem competir com o CTA principal do ARQ;
 4. manter `rel="sponsored nofollow noopener noreferrer"` e `referrerpolicy="no-referrer"`;
 5. atualizar a data `data-verified-at` somente depois de conferir a página personalizada.
 

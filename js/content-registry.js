@@ -169,8 +169,8 @@ const CONTENT = [
   {
     "id": "article-arq-saques-exterior",
     "type": "article",
-    "title": "Por que uso o ARQ para sacar dinheiro no exterior",
-    "description": "Experiência real com o antigo DolarApp: taxa de 1%, tarifa do ATM, DCC e comparação com Wise e Revolut.",
+    "title": "O cartão que usamos para sacar dinheiro no exterior",
+    "description": "Como o ARQ saiu da função de cartão para tudo e virou nossa opção para saques: taxa de 1%, ATM, DCC e comparação com Wise e Revolut.",
     "url": "/blog/arq-saques-exterior/",
     "tag": "Dinheiro em viagem",
     "publishedAt": "2026-07-29",
