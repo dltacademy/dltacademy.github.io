@@ -8,7 +8,7 @@ Este arquivo registra o que precisa ser revalidado. As fontes públicas continua
 | Quantidade de saques | documentação Standard não publica franquia por número; não converter isso em promessa de saques ilimitados | 29/08/2026 |
 | Disponibilidade por país | página geral informa saques globais; página Premium contém nota restritiva a Colômbia e México | 05/08/2026 ou após resposta oficial |
 | ARQ Premium e Prestige | franquias publicadas de 500 e 700 USDc; preços e disponibilidade dependem do plano e país | 29/08/2026 |
-| Cartão físico | envio Standard de 4,99 USD e entrega em Argentina, Brasil, Colômbia e México | 29/08/2026 |
+| Cartão físico | página geral: envio Standard de 4,99 USD; página de rebranding: primeiro físico grátis para quem nunca teve cartão e mantém mais de 100 USDc. Confirmar a condição mostrada no app | 03/09/2026 |
 | Conversão no Brasil | custo total aproximado de 0,5% entre BRL e USDc/EURc informado pela ARQ | 29/08/2026 |
 | Wise cartão emitido no Brasil | uma retirada gratuita por mês; depois tarifa fixa de R$ 20 por retirada; conversão e tarifa do ATM podem ser adicionais | 29/08/2026 |
 | Wise programa de indicação | programas e benefícios variam por região; o benefício válido é o exibido na página personalizada no momento do cadastro | antes de cada divulgação e, no máximo, 05/08/2026 |
@@ -16,9 +16,9 @@ Este arquivo registra o que precisa ser revalidado. As fontes públicas continua
 | Promoção de indicação ARQ | oferta de US$ 10 após US$ 150 em gastos elegíveis no primeiro mês, informada para o link em 29/07/2026 | antes de cada divulgação e, no máximo, 05/08/2026 |
 | Uso durante viagens | experiência pessoal do Tiago com cartão emitido ainda na fase DolarApp; não tratar como compatibilidade universal | revisar após novos testes |
 
-## Nota editorial de 01/08/2026
+## Nota editorial de 03/08/2026
 
-A redação foi reorganizada para começar pela experiência real com o DolarApp/ARQ e deixar as comparações como apoio. O título publicado é **“O cartão que usamos para sacar dinheiro no exterior”**. Essa revisão não altera os claims nem suas datas de verificação.
+A redação preserva a experiência real com o DolarApp/ARQ e deixa as comparações como apoio. O título continua **“O cartão que usamos para sacar dinheiro no exterior”**. Nesta revisão, o link afiliado concorrente e disclosures locais foram removidos, o custo total foi explicitado e a condição do primeiro cartão físico foi reconferida em fonte oficial.
 
 ## Blocos de promoção e indicação
 
@@ -38,14 +38,4 @@ Ao revisar a promoção do ARQ:
 4. não prometer a recompensa até a pessoa confirmar a campanha na página e cumprir as condições;
 5. manter a distinção entre documentação oficial e experiência pessoal com o cartão.
 
-## Link de indicação da Wise
-
-Ao revisar o link da Wise:
-
-1. abrir `https://wise.com/invite/irhc/tiagon100` e conferir o benefício mostrado para a região;
-2. não transformar transferência gratuita, cartão gratuito ou crédito em tarifas em promessa universal;
-3. manter o link como alternativa discreta depois da comparação, sem competir com o CTA principal do ARQ;
-4. manter `rel="sponsored nofollow noopener noreferrer"` e `referrerpolicy="no-referrer"`;
-5. atualizar a data `data-verified-at` somente depois de conferir a página personalizada.
-
-Se uma revisão vencer, não atualizar apenas a data: conferir a fonte e registrar qualquer mudança material no histórico do Git.
+Se uma revisão vencer, não atualizar apenas a data: conferir a fonte e registrar qualquer mudança material no histórico do Git. Wise e Revolut permanecem como comparação editorial, sem link afiliado concorrente nesta peça.
