@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Cheguei tarde? Protocolo de decisão — DLT Academy</title>
+  <desc id="desc">Protocolo para separar decisão do medo de ficar de fora.</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#06090F"/><stop offset="1" stop-color="#0E2148"/></linearGradient><radialGradient id="glow" cx="80%" cy="18%" r="55%"><stop stop-color="#1E4FD8" stop-opacity=".45"/><stop offset="1" stop-color="#1E4FD8" stop-opacity="0"/></radialGradient></defs>
+  <rect width="1200" height="630" fill="url(#bg)"/><rect width="1200" height="630" fill="url(#glow)"/>
+  <g fill="none" stroke="#4A8DF8" stroke-opacity=".25"><path d="M930 108l96 55v111l-96 55-96-55V163z"/><path d="M1026 163l96-55 96 55v111l-96 55-96-55"/><circle cx="930" cy="108" r="7" fill="#8FBBFF"/><circle cx="1122" cy="108" r="7" fill="#8FBBFF"/><circle cx="1026" cy="274" r="7" fill="#8FBBFF"/></g>
+  <text x="84" y="112" fill="#8FBBFF" font-family="Sora,Arial,sans-serif" font-size="24" font-weight="700" letter-spacing="3">PROTOCOLO DE DECISÃO</text>
+  <text x="84" y="235" fill="#E8EDF7" font-family="Sora,Arial,sans-serif" font-size="66" font-weight="800">Cheguei tarde?</text>
+  <text x="84" y="315" fill="#E8EDF7" font-family="Sora,Arial,sans-serif" font-size="46" font-weight="700">Decida sem o aperto</text>
+  <text x="84" y="375" fill="#E8EDF7" font-family="Sora,Arial,sans-serif" font-size="46" font-weight="700">de ficar de fora.</text>
+  <text x="84" y="500" fill="#9AA7C2" font-family="Manrope,Arial,sans-serif" font-size="24">6 passos · cerca de 3 minutos · sem cadastro</text>
+  <text x="84" y="565" fill="#4A8DF8" font-family="Sora,Arial,sans-serif" font-size="26" font-weight="700">DLT ACADEMY</text>
+</svg>
