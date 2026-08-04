@@ -107,6 +107,7 @@ const PROTOCOL = {
     // Próximo passo é utilidade educacional, nunca presente afiliado.
     if (a.dinheiro === "nao_tenho") {
       return {
+        tone: "bad",
         verdict: "O passo de hoje é não dar o passo.",
         body: [
           "Entrar devendo ou alavancado por causa de um aperto de pressa é o roteiro mais clássico de transformar FOMO em prejuízo — e em dívida, que dói muito depois que a euforia passa.",
@@ -128,6 +129,7 @@ const PROTOCOL = {
     // Ramo 2 — tiraria de reserva/meta. Só utilidade educacional.
     if (a.dinheiro === "tirar") {
       return {
+        tone: "mixed",
         verdict: "Antes de tirar de outro lugar, olhe o que você trocaria.",
         body: [
           "Tirar da reserva, das contas ou de uma meta que você já tinha para correr atrás desta é trocar um plano por um impulso. Às vezes vale — mas é uma decisão grande demais para ser tomada no aperto.",
@@ -149,6 +151,7 @@ const PROTOCOL = {
     // Ramo 3 — dinheiro que sobra, mas quem decide é o aperto.
     if (a.sentimento !== "tranquilo") {
       return {
+        tone: "mixed",
         verdict: "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
         body: [
           "Essa é a situação mais escorregadia: como o dinheiro sobra, parece seguro entrar. E pode até ser. Mas você marcou que o que está no comando é a pressa, a inveja ou o medo de ficar pra trás — e nenhum desses é um bom analista.",
@@ -174,6 +177,7 @@ const PROTOCOL = {
     // A continuação ainda é utilidade; o fluxo não confirmou necessidade
     // nem elegibilidade para uma plataforma, então não há presente direto.
     return {
+      tone: "good",
       verdict: "Decidir com calma, com dinheiro que sobra, é legítimo — inclusive decidir sim.",
       body: [
         "Você marcou que não há aperto e que o dinheiro já está sobrando. Essa é a única combinação em que entrar não é FOMO — é escolha. Aqui o protocolo não te segura.",

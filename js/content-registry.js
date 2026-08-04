@@ -73,6 +73,7 @@ const CONTENT = [
     "tone": "green",
     "sit": ["comecar", "posicao"],
     "mark": "CT",
+    "effort": "6 passos · cerca de 3 minutos",
     "primaryNext": "tool-sobrevive-ou-quebra",
     "related": ["tool-vender-ou-segurar"]
   },
@@ -110,6 +111,7 @@ const CONTENT = [
     "tone": "green",
     "sit": ["viagem", "taxas"],
     "mark": "QR",
+    "effort": "4 passos principais",
     "primaryNext": "guide-pagamentos-no-exterior",
     "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt", "guide-assinaturas-ia-bybit"]
   },
@@ -159,6 +161,9 @@ const CONTENT = [
     "url": "/blog/bem-vindo/",
     "tag": "Institucional",
     "publishedAt": "2026-07-15",
+    "sit": ["comecar"],
+    "mark": "BV",
+    "effort": "3 min de leitura",
     "primaryNext": "tool-primeiros-passos-cripto"
   },
   {
@@ -169,6 +174,9 @@ const CONTENT = [
     "url": "/blog/bybit-pay-vs-moreta-vietqr/",
     "tag": "Teste real",
     "publishedAt": "2026-07-17",
+    "sit": ["viagem", "taxas"],
+    "mark": "BM",
+    "effort": "8 min de leitura",
     "primaryNext": "guide-bybit-pay-vietqr"
   },
   {
@@ -179,6 +187,9 @@ const CONTENT = [
     "url": "/blog/topcashback-economia-viagem/",
     "tag": "Economia em viagem",
     "publishedAt": "2026-07-29",
+    "sit": ["viagem", "taxas"],
+    "mark": "TC",
+    "effort": "9 min de leitura",
     "primaryNext": "guide-pagamentos-no-exterior",
     "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt"]
   },
@@ -190,6 +201,9 @@ const CONTENT = [
     "url": "/blog/arq-saques-exterior/",
     "tag": "Dinheiro em viagem",
     "publishedAt": "2026-07-29",
+    "sit": ["viagem", "taxas"],
+    "mark": "AR",
+    "effort": "7 min de leitura",
     "primaryNext": "guide-pagamentos-no-exterior",
     "related": ["guide-bybit-pay-vietqr", "guide-abastecer-moreta-usdt", "guide-etherfi-cash-viagem"]
   },
@@ -201,6 +215,9 @@ const CONTENT = [
     "url": "/blog/fomo-investimentos-depois-da-alta/",
     "tag": "Decisão sob emoção",
     "publishedAt": "2026-07-28",
+    "sit": ["comecar", "posicao"],
+    "mark": "FM",
+    "effort": "6 min de leitura",
     "primaryNext": "protocolo-medo-de-ficar-de-fora",
     "related": ["tool-primeiros-passos-cripto", "tool-sobrevive-ou-quebra"]
   }

@@ -137,6 +137,17 @@ class ValidateRegistryTests(unittest.TestCase):
         )
         self.assertEqual([], validate_repository(self.root))
 
+    def test_artigo_pode_usar_campos_visuais_do_catalogo(self):
+        entry = self.valid_tool(
+            type="article",
+            publishedAt="2026-08-04",
+            sit=["viagem", "taxas"],
+            mark="AR",
+            effort="7 min de leitura",
+        )
+        self.write_fixture([entry])
+        self.assertEqual([], validate_repository(self.root))
+
     def test_situacao_desconhecida_reprova(self):
         self.write_fixture([self.valid_tool(sit=["cassino"])])
         self.assert_has_error(validate_repository(self.root), "situação inválida")
@@ -211,6 +222,16 @@ class ValidateRegistryTests(unittest.TestCase):
         self.write_fixture(
             [self.valid_tool()],
             sitemap_urls=["https://dlt.academy/sobre/"],
+        )
+        self.assertEqual([], validate_repository(self.root))
+
+    def test_catalogos_publicos_da_allowlist_sao_aceitos(self):
+        self.write_fixture(
+            [self.valid_tool()],
+            sitemap_urls=[
+                "https://dlt.academy/ferramentas/",
+                "https://dlt.academy/guias/",
+            ],
         )
         self.assertEqual([], validate_repository(self.root))
 

@@ -20,11 +20,13 @@ TYPE_FIELDS = {
     "tool": COMMON_FIELDS | CATALOG_FIELDS | EDGE_FIELDS,
     "guide": COMMON_FIELDS | CATALOG_FIELDS | EDGE_FIELDS,
     "protocolo": COMMON_FIELDS | CATALOG_FIELDS | EDGE_FIELDS,
-    "article": COMMON_FIELDS | {"publishedAt"} | EDGE_FIELDS,
+    "article": COMMON_FIELDS | CATALOG_FIELDS | {"publishedAt"} | EDGE_FIELDS,
 }
 INSTITUTIONAL_URLS = {
     "https://dlt.academy/",
     "https://dlt.academy/blog/",
+    "https://dlt.academy/ferramentas/",
+    "https://dlt.academy/guias/",
     "https://dlt.academy/sobre/",
     "https://dlt.academy/transparencia/",
     "https://dlt.academy/comunidade/",
