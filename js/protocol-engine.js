@@ -43,6 +43,22 @@ function runProtocol(protocol, mountId) {
   // reformulado, em vez de descrever o movimento em abstrato.
   const resolve = (v) => (typeof v === "function" ? v(state.answers) : v);
 
+  const planStorageKey = "dlt-protocol-plan:" + protocol.id;
+  function readPlanState() {
+    try {
+      return JSON.parse(window.localStorage.getItem(planStorageKey) || "{}");
+    } catch (error) {
+      return {};
+    }
+  }
+  function writePlanState(value) {
+    try {
+      window.localStorage.setItem(planStorageKey, JSON.stringify(value));
+    } catch (error) {
+      // A private window or a blocked storage context still leaves the plan usable in memory.
+    }
+  }
+
   function currentStep(index) {
     return protocol.steps[index];
   }
@@ -67,6 +83,22 @@ function runProtocol(protocol, mountId) {
 
     const step = currentStep(index);
     const card = el("div", "protocol-card flow-card");
+
+    const progress = el("div", "protocol-progress");
+    progress.setAttribute("role", "progressbar");
+    progress.setAttribute("aria-valuemin", "1");
+    progress.setAttribute("aria-valuemax", String(protocol.steps.length));
+    progress.setAttribute("aria-valuenow", String(Math.min(index + 1, protocol.steps.length)));
+    const progressLabel = el("span", "protocol-progress-label", "Passo " + Math.min(index + 1, protocol.steps.length) + " de " + protocol.steps.length);
+    progress.appendChild(progressLabel);
+    const progressDots = el("span", "protocol-progress-dots");
+    protocol.steps.forEach((_, dotIndex) => {
+      const dot = el("span", "protocol-progress-dot" + (dotIndex < index ? " is-done" : dotIndex === index ? " is-current" : ""));
+      dot.setAttribute("aria-hidden", "true");
+      progressDots.appendChild(dot);
+    });
+    progress.appendChild(progressDots);
+    card.appendChild(progress);
 
     if (step.eyebrow) card.appendChild(el("p", "protocol-eyebrow", step.eyebrow));
     card.appendChild(el("h2", "protocol-q", resolve(step.prompt)));
@@ -108,16 +140,17 @@ function runProtocol(protocol, mountId) {
       card.appendChild(row);
     }
 
-    // Voltar
-    if (state.path.length) {
-      const back = el("button", "protocol-back", "← Voltar");
-      back.type = "button";
-      back.addEventListener("click", () => {
-        const prev = state.path.pop();
-        render(prev);
-      });
-      card.appendChild(back);
-    }
+    // Voltar fica visível em todas as telas. No primeiro passo ele não
+    // tem histórico, mas a affordance continua previsível para teclado e mobile.
+    const back = el("button", "protocol-back", "← Voltar");
+    back.type = "button";
+    back.setAttribute("aria-disabled", String(!state.path.length));
+    back.addEventListener("click", () => {
+      if (!state.path.length) return;
+      const prev = state.path.pop();
+      render(prev);
+    });
+    card.appendChild(back);
 
     mount.appendChild(card);
   }
@@ -125,7 +158,7 @@ function runProtocol(protocol, mountId) {
   function renderResult() {
     const result = protocol.result(state.answers);
     const toneClass = result.tone === "good" ? "is-good" : result.tone === "bad" ? "is-bad" : "is-mixed";
-    const card = el("div", "protocol-card protocol-result flow-result " + toneClass);
+    const card = el("div", "protocol-card protocol-result flow-result result-hero " + toneClass);
 
     card.appendChild(el("p", "protocol-eyebrow", result.eyebrow || "Seu resultado"));
 
@@ -136,6 +169,41 @@ function runProtocol(protocol, mountId) {
     const copy = el("div", "protocol-result-copy");
     (result.body || []).forEach((p) => copy.appendChild(el("p", "protocol-body", p)));
     card.appendChild(copy);
+
+    if (result.plan && result.plan.length) {
+      const planState = readPlanState();
+      const plan = el("section", "protocol-plan");
+      plan.setAttribute("aria-labelledby", "protocol-plan-title");
+      const planTitle = el("h3", null, "Seu plano a partir de agora");
+      planTitle.id = "protocol-plan-title";
+      plan.appendChild(planTitle);
+      plan.appendChild(el("p", "protocol-plan-intro", "Marque conforme fizer. A lista fica somente neste navegador e pode ser retomada depois."));
+      const list = el("div", "protocol-plan-list");
+      result.plan.forEach((item, index) => {
+        const key = result.tone + ":" + result.verdict + ":" + (item.id || index);
+        const label = el("label", "protocol-plan-item");
+        const check = el("input");
+        check.type = "checkbox";
+        check.checked = Boolean(planState[key]);
+        check.setAttribute("data-plan-key", key);
+        const textWrap = el("span");
+        textWrap.appendChild(el("span", "protocol-plan-num", "Passo " + (index + 1)));
+        textWrap.appendChild(el("strong", "protocol-plan-title", item.title));
+        textWrap.appendChild(el("span", "protocol-plan-text", item.text));
+        label.appendChild(check);
+        label.appendChild(textWrap);
+        if (check.checked) label.classList.add("is-done");
+        check.addEventListener("change", () => {
+          const next = readPlanState();
+          next[key] = check.checked;
+          writePlanState(next);
+          label.classList.toggle("is-done", check.checked);
+        });
+        list.appendChild(label);
+      });
+      plan.appendChild(list);
+      card.appendChild(plan);
+    }
 
     // Registro pessoal do que a pessoa escreveu/escolheu.
     if (result.record && result.record.length) {
@@ -216,12 +284,68 @@ function runProtocol(protocol, mountId) {
       buildMarkdown(protocol, result, state.answers)
     ));
 
+    const copyResult = el("button", "btn btn-secondary", "Copiar resultado");
+    copyResult.type = "button";
+    copyResult.addEventListener("click", () => {
+      const text = buildMarkdown(protocol, result, state.answers);
+      const done = () => {
+        copyResult.textContent = "Resultado copiado";
+        window.setTimeout(() => { if (copyResult.isConnected) copyResult.textContent = "Copiar resultado"; }, 1800);
+      };
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, done);
+      else done();
+    });
+
+    const restart = el("button", "btn btn-secondary", "Refazer o protocolo");
+    restart.type = "button";
+    restart.addEventListener("click", () => {
+      state.answers = {};
+      state.path = [];
+      render(0);
+      window.scrollTo({ top: mount.offsetTop - 20, behavior: "smooth" });
+    });
+
     actions.appendChild(pdf);
     actions.appendChild(md);
+    actions.appendChild(copyResult);
+    actions.appendChild(restart);
     delivery.appendChild(actions);
     delivery.appendChild(el("p", "protocol-privacy privacy-line",
       "Tudo isto rodou no seu navegador. Nenhuma resposta foi enviada a lugar nenhum — os arquivos são gerados no seu dispositivo."));
     card.appendChild(delivery);
+
+    const share = el("section", "share-row protocol-share");
+    share.setAttribute("aria-label", "Compartilhar o protocolo");
+    share.appendChild(el("p", null, "Compartilhe a ferramenta, não as suas respostas."));
+    const shareActions = el("div", "share-actions");
+    const shareCopy = el("button", null, "Copiar link");
+    shareCopy.type = "button";
+    const publicUrl = window.location.origin + window.location.pathname;
+    const shareTitle = document.title.replace(/ — DLT Academy$/, "");
+    const shareLinks = {
+      telegram: "https://t.me/share/url?url=" + encodeURIComponent(publicUrl) + "&text=" + encodeURIComponent(shareTitle),
+      whatsapp: "https://wa.me/?text=" + encodeURIComponent(shareTitle + " " + publicUrl),
+    };
+    shareCopy.addEventListener("click", () => {
+      const done = () => {
+        shareCopy.textContent = "Link copiado";
+        shareCopy.classList.add("is-done");
+        window.setTimeout(() => { if (shareCopy.isConnected) { shareCopy.textContent = "Copiar link"; shareCopy.classList.remove("is-done"); } }, 1800);
+      };
+      if (navigator.clipboard) navigator.clipboard.writeText(publicUrl).then(done, done);
+      else done();
+    });
+    shareActions.appendChild(shareCopy);
+    Object.keys(shareLinks).forEach((channel) => {
+      const link = el("a", null, channel === "telegram" ? "Telegram" : "WhatsApp");
+      link.href = shareLinks[channel];
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.setAttribute("referrerpolicy", "no-referrer");
+      shareActions.appendChild(link);
+    });
+    share.appendChild(shareActions);
+    card.appendChild(share);
 
     mount.replaceChildren(card);
 
@@ -374,6 +498,14 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
   doc.text("SEU RESULTADO", margin, y);
   y += 7;
 
+  writeLines(protocol.title, { fontSize: 11, lineHeight: 5.2, fontStyle: "bold", color: ink });
+  writeLines("Gerado em " + new Intl.DateTimeFormat("pt-BR", { dateStyle: "short" }).format(new Date()), {
+    fontSize: 8.8,
+    lineHeight: 4.4,
+    color: muted,
+  });
+  y += 3;
+
   writeLines(result.verdict, {
     fontSize: 18,
     lineHeight: 7.6,
@@ -386,6 +518,29 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
     writeLines(paragraph, { fontSize: 10.5, lineHeight: 5.2, color: ink });
     y += 3.2;
   });
+
+  const plan = result.plan || [];
+  if (plan.length) {
+    ensureSpace(18);
+    y += 2;
+    doc.setDrawColor(...border);
+    doc.setLineWidth(0.4);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 9;
+    writeLines("Seu plano", { fontSize: 14, lineHeight: 6.5, fontStyle: "bold", color: ink });
+    y += 2;
+    plan.forEach((item, index) => {
+      ensureSpace(15);
+      writeLines("[ ] Passo " + (index + 1) + ": " + item.title, {
+        fontSize: 9.5,
+        lineHeight: 4.8,
+        fontStyle: "bold",
+        color: blue,
+      });
+      writeLines(item.text, { fontSize: 9.5, lineHeight: 4.8, color: ink });
+      y += 2.5;
+    });
+  }
 
   const records = (result.record || []).filter((item) => item.value);
   if (records.length) {
@@ -453,7 +608,7 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
 
   const totalPages = doc.getNumberOfPages();
   const pageUrl = "dlt.academy/protocolos/medo-de-ficar-de-fora";
-  const disclaimer = "Reflexão estruturada — não é terapia nem recomendação de investimento";
+  const disclaimer = "Conteúdo educacional · Reflexão estruturada — não é terapia nem recomendação de investimento";
 
   for (let page = 1; page <= totalPages; page += 1) {
     doc.setPage(page);
@@ -481,10 +636,20 @@ function safePdfText(value) {
 function buildMarkdown(protocol, result, answers) {
   const linhas = [];
   linhas.push("# " + protocol.title);
+  linhas.push("Gerado em " + new Intl.DateTimeFormat("pt-BR", { dateStyle: "short" }).format(new Date()));
   linhas.push("");
   linhas.push("> " + result.verdict);
   linhas.push("");
   (result.body || []).forEach((p) => { linhas.push(p); linhas.push(""); });
+  if (result.plan && result.plan.length) {
+    linhas.push("## Seu plano");
+    linhas.push("");
+    result.plan.forEach((item, index) => {
+      linhas.push("- [ ] Passo " + (index + 1) + ": " + item.title);
+      linhas.push("  " + item.text);
+    });
+    linhas.push("");
+  }
   if (result.record && result.record.length) {
     linhas.push("## O que você registrou");
     linhas.push("");

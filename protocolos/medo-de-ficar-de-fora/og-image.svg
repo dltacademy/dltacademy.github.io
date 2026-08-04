@@ -1,13 +1,35 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
-  <title id="title">Cheguei tarde? Protocolo de decisão — DLT Academy</title>
-  <desc id="desc">Protocolo para separar decisão do medo de ficar de fora.</desc>
-  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#06090F"/><stop offset="1" stop-color="#0E2148"/></linearGradient><radialGradient id="glow" cx="80%" cy="18%" r="55%"><stop stop-color="#1E4FD8" stop-opacity=".45"/><stop offset="1" stop-color="#1E4FD8" stop-opacity="0"/></radialGradient></defs>
-  <rect width="1200" height="630" fill="url(#bg)"/><rect width="1200" height="630" fill="url(#glow)"/>
-  <g fill="none" stroke="#4A8DF8" stroke-opacity=".25"><path d="M930 108l96 55v111l-96 55-96-55V163z"/><path d="M1026 163l96-55 96 55v111l-96 55-96-55"/><circle cx="930" cy="108" r="7" fill="#8FBBFF"/><circle cx="1122" cy="108" r="7" fill="#8FBBFF"/><circle cx="1026" cy="274" r="7" fill="#8FBBFF"/></g>
-  <text x="84" y="112" fill="#8FBBFF" font-family="Sora,Arial,sans-serif" font-size="24" font-weight="700" letter-spacing="3">PROTOCOLO DE DECISÃO</text>
-  <text x="84" y="235" fill="#E8EDF7" font-family="Sora,Arial,sans-serif" font-size="66" font-weight="800">Cheguei tarde?</text>
-  <text x="84" y="315" fill="#E8EDF7" font-family="Sora,Arial,sans-serif" font-size="46" font-weight="700">Decida sem o aperto</text>
-  <text x="84" y="375" fill="#E8EDF7" font-family="Sora,Arial,sans-serif" font-size="46" font-weight="700">de ficar de fora.</text>
-  <text x="84" y="500" fill="#9AA7C2" font-family="Manrope,Arial,sans-serif" font-size="24">6 passos · cerca de 3 minutos · sem cadastro</text>
-  <text x="84" y="565" fill="#4A8DF8" font-family="Sora,Arial,sans-serif" font-size="26" font-weight="700">DLT ACADEMY</text>
+
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Cheguei tarde? Protocolo DLT Academy">
+  <defs>
+    <radialGradient id="glow" cx="18%" cy="0%" r="70%">
+      <stop offset="0%" stop-color="#1E4FD8" stop-opacity="0.42"></stop>
+      <stop offset="100%" stop-color="#1E4FD8" stop-opacity="0"></stop>
+    </radialGradient>
+    <linearGradient id="rule" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#7FB2FF"></stop>
+      <stop offset="100%" stop-color="#1E4FD8"></stop>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="#06090F"></rect>
+  <rect width="1200" height="630" fill="url(#glow)"></rect>
+  <rect x="0" y="0" width="1200" height="6" fill="url(#rule)"></rect>
+
+
+  <rect x="80" y="92" width="251" height="46" rx="23" fill="#1E4FD8" fill-opacity="0.16" stroke="#4A8DF8" stroke-opacity="0.45"></rect>
+  <text x="108" y="122" font-family="Sora, &#39;Trebuchet MS&#39;, sans-serif" font-size="21" font-weight="700" letter-spacing="1.8" fill="#8FBBFF">PROTOCOLO</text>
+
+
+  <text font-family="Sora, &#39;Trebuchet MS&#39;, sans-serif" font-size="70" font-weight="700" letter-spacing="-1.6" fill="#E8EDF7">
+    <tspan x="80" y="272">Cheguei tarde?</tspan>
+    <tspan x="80" y="352">Decidir sem</tspan>
+    <tspan x="80" y="432">ficar de fora</tspan>
+  </text>
+
+
+  <rect x="80" y="486" width="1040" height="1" fill="#1E2C4E"></rect>
+  <rect x="80" y="522" width="54" height="54" rx="14" fill="#1E4FD8" fill-opacity="0.16" stroke="#4A8DF8" stroke-opacity="0.4"></rect>
+  <text x="107" y="557" text-anchor="middle" font-family="Sora, &#39;Trebuchet MS&#39;, sans-serif" font-size="22" font-weight="700" fill="#8FBBFF">DA</text>
+  <text x="152" y="557" font-family="Sora, &#39;Trebuchet MS&#39;, sans-serif" font-size="25" font-weight="700" letter-spacing="3.4" fill="#E8EDF7">DLT ACADEMY</text>
+  <text x="1120" y="557" text-anchor="end" font-family="Sora, &#39;Trebuchet MS&#39;, sans-serif" font-size="21" font-weight="500" fill="#7C8AA6">dlt.academy</text>
 </svg>
