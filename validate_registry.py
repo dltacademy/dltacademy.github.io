@@ -14,11 +14,12 @@ from xml.etree import ElementTree
 REGISTRY_MARKER = "const CONTENT = "
 COMMON_FIELDS = {"id", "type", "title", "description", "url", "tag"}
 EDGE_FIELDS = {"primaryNext", "related"}
+CATALOG_FIELDS = {"tone", "icon", "sit", "mark", "effort"}
 MAX_RELATED = 3
 TYPE_FIELDS = {
-    "tool": COMMON_FIELDS | {"tone", "icon"} | EDGE_FIELDS,
-    "guide": COMMON_FIELDS | {"tone", "icon"} | EDGE_FIELDS,
-    "protocolo": COMMON_FIELDS | {"tone", "icon"} | EDGE_FIELDS,
+    "tool": COMMON_FIELDS | CATALOG_FIELDS | EDGE_FIELDS,
+    "guide": COMMON_FIELDS | CATALOG_FIELDS | EDGE_FIELDS,
+    "protocolo": COMMON_FIELDS | CATALOG_FIELDS | EDGE_FIELDS,
     "article": COMMON_FIELDS | {"publishedAt"} | EDGE_FIELDS,
 }
 INSTITUTIONAL_URLS = {
@@ -29,6 +30,8 @@ INSTITUTIONAL_URLS = {
     "https://dlt.academy/comunidade/",
 }
 ID_PATTERN = re.compile(r"^[a-z0-9-]+$")
+MARK_PATTERN = re.compile(r"^[A-Z0-9]{1,2}$")
+SITUATIONS = {"comecar", "posicao", "viagem", "taxas"}
 
 
 def _reject_non_finite(value: str) -> None:
@@ -282,6 +285,40 @@ def validate_repository(root: Path | str) -> list[str]:
         icon = entry.get("icon")
         if icon is not None and (not isinstance(icon, str) or not icon.strip()):
             errors.append(f"{label}, campo 'icon': deve ser string não vazia")
+
+        mark = entry.get("mark")
+        if mark is not None and (
+            not isinstance(mark, str) or not MARK_PATTERN.fullmatch(mark)
+        ):
+            errors.append(
+                f"{label}, campo 'mark': deve ter 1–2 letras maiúsculas ou números"
+            )
+
+        effort = entry.get("effort")
+        if effort is not None and (
+            not isinstance(effort, str) or not effort.strip() or len(effort) > 40
+        ):
+            errors.append(
+                f"{label}, campo 'effort': deve ser texto não vazio de até 40 caracteres"
+            )
+
+        situations = entry.get("sit")
+        if situations is not None:
+            if not isinstance(situations, list) or not situations:
+                errors.append(f"{label}, campo 'sit': deve ser array não vazio")
+            else:
+                seen_situations: set[str] = set()
+                for situation in situations:
+                    if not isinstance(situation, str) or situation not in SITUATIONS:
+                        errors.append(
+                            f"{label}, campo 'sit': situação inválida {situation!r}"
+                        )
+                        continue
+                    if situation in seen_situations:
+                        errors.append(
+                            f"{label}, campo 'sit': valor duplicado {situation!r}"
+                        )
+                    seen_situations.add(situation)
 
         if entry_type == "article" and "publishedAt" in entry:
             published_at = entry["publishedAt"]

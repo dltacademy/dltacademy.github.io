@@ -125,6 +125,34 @@ class ValidateRegistryTests(unittest.TestCase):
         self.write_fixture([self.valid_tool(tone="red")])
         self.assert_has_error(validate_repository(self.root), "'green' ou 'blue'")
 
+    def test_campos_visuais_do_catalogo_sao_validados(self):
+        self.write_fixture(
+            [
+                self.valid_tool(
+                    sit=["comecar", "taxas"],
+                    mark="TX",
+                    effort="menos de 30 segundos",
+                )
+            ]
+        )
+        self.assertEqual([], validate_repository(self.root))
+
+    def test_situacao_desconhecida_reprova(self):
+        self.write_fixture([self.valid_tool(sit=["cassino"])])
+        self.assert_has_error(validate_repository(self.root), "situação inválida")
+
+    def test_situacao_duplicada_reprova(self):
+        self.write_fixture([self.valid_tool(sit=["taxas", "taxas"])])
+        self.assert_has_error(validate_repository(self.root), "valor duplicado")
+
+    def test_monograma_invalido_reprova(self):
+        self.write_fixture([self.valid_tool(mark="LONGO")])
+        self.assert_has_error(validate_repository(self.root), "1–2 letras")
+
+    def test_effort_vazio_reprova(self):
+        self.write_fixture([self.valid_tool(effort="")])
+        self.assert_has_error(validate_repository(self.root), "até 40 caracteres")
+
     def test_url_interna_sem_index_reprova(self):
         self.write_fixture([self.valid_tool(type="guide", url="/guias/exemplo/")])
         self.assert_has_error(validate_repository(self.root), "sem index.html")
