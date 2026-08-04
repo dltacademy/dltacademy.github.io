@@ -61,6 +61,31 @@ class ArqAtmArticleTests(unittest.TestCase):
                 self.assertIn(text, self.html)
         self.assertNotIn("Minha referência inicial para o ARQ era", self.html)
 
+    def test_calculator_sums_known_costs_and_disclaims_variable_atm(self) -> None:
+        required = (
+            'data-arq-calculator',
+            'id="arq-wise-iof-rate"',
+            'id="arq-wise-conversion-rate"',
+            'id="arq-revolut-iof-rate"',
+            'data-calc-total',
+            'data-calc-detail',
+            'conversão, IOF e tarifa própria',
+            'tarifa do operador do ATM',
+            'DCC',
+            '3,50%',
+            'não informa uma franquia monetária adicional',
+            'blog/js/arq-calculator.js',
+        )
+        for marker in required:
+            with self.subTest(marker=marker):
+                self.assertIn(marker, self.html)
+
+        script = (PAGE.parent / ".." / "js" / "arq-calculator.js").resolve()
+        source = script.read_text(encoding="utf-8")
+        for marker in ("wiseIof", "revolutIof", "wiseIofPercent", "revolutIofPercent", "arqConversion", "3.5", "0.78", "0.005", "0.014"):
+            with self.subTest(script_marker=marker):
+                self.assertIn(marker, source)
+
     def test_personal_experience_and_setup_are_explicit(self) -> None:
         required = (
             "Quando ainda se chamava DolarApp",

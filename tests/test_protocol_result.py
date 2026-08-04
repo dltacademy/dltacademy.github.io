@@ -32,13 +32,32 @@ class ProtocolResultTests(unittest.TestCase):
         start = self.engine.index("function downloadProtocolPdf")
         end = self.engine.index("function safePdfText")
         pdf_builder = self.engine[start:end]
-        for field in ("result.verdict", "result.body", "result.record", "result.safety"):
+        for field in ("result.verdict", "result.body", "result.record", "result.plan", "result.safety"):
             self.assertIn(field, pdf_builder)
+        self.assertIn("Gerado em", pdf_builder)
         self.assertIn("dlt.academy/protocolos/medo-de-ficar-de-fora", pdf_builder)
         self.assertIn("Reflexão estruturada — não é terapia nem recomendação de investimento", pdf_builder)
         self.assertNotIn("result.cta", pdf_builder)
         self.assertNotIn("cta.href", pdf_builder)
         self.assertNotIn("disclosure", pdf_builder)
+
+    def test_modelo_tem_progresso_plano_persistente_e_acoes_publicas(self):
+        for marker in (
+            "protocol-progress",
+            "protocol-progress-dot",
+            "result-hero",
+            "protocol-plan",
+            "protocol-plan-item",
+            "localStorage",
+            "Copiar resultado",
+            "Refazer o protocolo",
+            "protocol-share",
+            "Compartilhe a ferramenta, não as suas respostas",
+            "window.location.origin + window.location.pathname",
+        ):
+            self.assertIn(marker, self.engine)
+        self.assertIn("plan:", self.protocol)
+        self.assertIn("dlt-patterns.css", self.index)
 
     def test_todos_os_quatro_vereditos_tem_proximo_passo_util(self):
         self.assertEqual(4, self.protocol.count('tipo: "artigo"'))
