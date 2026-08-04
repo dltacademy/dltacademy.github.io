@@ -50,7 +50,7 @@ class DesignSystemTests(unittest.TestCase):
         start = source.index("const CONTENT = ") + len("const CONTENT = ")
         end = source.rindex("];" ) + 1
         entries = json.loads(source[start:end])
-        catalog = [entry for entry in entries if entry["type"] in {"tool", "guide", "protocolo"}]
+        catalog = [entry for entry in entries if entry["type"] in {"tool", "guide", "protocolo", "article"}]
         self.assertTrue(catalog)
         for entry in catalog:
             with self.subTest(entry=entry["id"]):

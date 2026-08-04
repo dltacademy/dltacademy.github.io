@@ -66,7 +66,7 @@ function runProtocol(protocol, mountId) {
     if (index >= protocol.steps.length) return renderResult();
 
     const step = currentStep(index);
-    const card = el("div", "protocol-card");
+    const card = el("div", "protocol-card flow-card");
 
     if (step.eyebrow) card.appendChild(el("p", "protocol-eyebrow", step.eyebrow));
     card.appendChild(el("h2", "protocol-q", resolve(step.prompt)));
@@ -74,7 +74,7 @@ function runProtocol(protocol, mountId) {
     if (help) card.appendChild(el("p", "protocol-help", help));
 
     if (step.type === "choice") {
-      const group = el("div", "protocol-options");
+      const group = el("div", "protocol-options flow-options");
       group.setAttribute("role", "group");
       step.options.forEach((opt) => {
         const b = el("button", "btn btn-secondary", opt.label);
@@ -124,7 +124,8 @@ function runProtocol(protocol, mountId) {
 
   function renderResult() {
     const result = protocol.result(state.answers);
-    const card = el("div", "protocol-card protocol-result");
+    const toneClass = result.tone === "good" ? "is-good" : result.tone === "bad" ? "is-bad" : "is-mixed";
+    const card = el("div", "protocol-card protocol-result flow-result " + toneClass);
 
     card.appendChild(el("p", "protocol-eyebrow", result.eyebrow || "Seu resultado"));
 
@@ -138,16 +139,16 @@ function runProtocol(protocol, mountId) {
 
     // Registro pessoal do que a pessoa escreveu/escolheu.
     if (result.record && result.record.length) {
-      const rec = el("section", "protocol-record");
+      const rec = el("section", "protocol-record answer-record");
       rec.setAttribute("aria-labelledby", "protocol-record-title");
       const recTitle = el("h3", null, "O que você registrou");
       recTitle.id = "protocol-record-title";
       rec.appendChild(recTitle);
       result.record.forEach((r) => {
         if (!r.value) return;
-        const item = el("div", "protocol-record-item");
-        item.appendChild(el("span", "protocol-record-q", r.q));
-        item.appendChild(el("span", "protocol-record-a", r.value));
+        const item = el("div", "protocol-record-item answer-item");
+        item.appendChild(el("span", "protocol-record-q answer-q", r.q));
+        item.appendChild(el("span", "protocol-record-a answer-a", r.value));
         rec.appendChild(item);
       });
       card.appendChild(rec);
@@ -155,12 +156,12 @@ function runProtocol(protocol, mountId) {
 
     if (result.safety) card.appendChild(el("p", "protocol-safety", result.safety));
 
-    const delivery = el("section", "protocol-delivery");
-    delivery.appendChild(el("h3", "protocol-delivery-title", "Leve este resultado com você"));
+    const delivery = el("section", "protocol-delivery result-actions");
+    delivery.appendChild(el("h3", "protocol-delivery-title result-actions-title", "Leve este resultado com você"));
     delivery.appendChild(el("p", "protocol-delivery-text",
       "Os arquivos são montados localmente no seu navegador e não incluem recomendações ou ofertas exibidas depois do resultado."));
 
-    const actions = el("div", "protocol-actions");
+    const actions = el("div", "protocol-actions result-actions-row");
     const pdf = el("button", "btn btn-primary", "Preparando o PDF…");
     pdf.type = "button";
     pdf.disabled = true;
@@ -218,7 +219,7 @@ function runProtocol(protocol, mountId) {
     actions.appendChild(pdf);
     actions.appendChild(md);
     delivery.appendChild(actions);
-    delivery.appendChild(el("p", "protocol-privacy",
+    delivery.appendChild(el("p", "protocol-privacy privacy-line",
       "Tudo isto rodou no seu navegador. Nenhuma resposta foi enviada a lugar nenhum — os arquivos são gerados no seu dispositivo."));
     card.appendChild(delivery);
 
@@ -229,10 +230,11 @@ function runProtocol(protocol, mountId) {
     // ferramenta de utilidade; "presente" é reservado a oferta elegível.
     const cta = result.cta;
     if (cta && cta.tipo && cta.tipo !== "none") {
-      const box = el("section", "protocol-cta");
-      box.appendChild(el("p", "protocol-cta-eyebrow",
+      const box = el("section", "protocol-cta cta-verdict");
+      box.dataset.tone = result.tone === "bad" ? "risk" : result.tone === "mixed" ? "warn" : "good";
+      box.appendChild(el("p", "protocol-cta-eyebrow cta-eyebrow",
         cta.tipo === "presente" ? "Um presente por ter chegado até aqui" : "Próximo passo útil"));
-      if (cta.headline) box.appendChild(el("p", "protocol-cta-headline", cta.headline));
+      if (cta.headline) box.appendChild(el("p", "protocol-cta-headline cta-headline", cta.headline));
       if (cta.texto) box.appendChild(el("p", "protocol-cta-texto", cta.texto));
       const a = el("a", "btn btn-primary", cta.label);
       a.href = cta.href;

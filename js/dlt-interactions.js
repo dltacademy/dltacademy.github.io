@@ -152,13 +152,57 @@
     apply();
   }
 
-  /* ---------- 6 · Calculadoras específicas ------------------
+  /* ---------- 6 · Progresso de guia -------------------------
+     <main data-guide-progress="slug">
+       <span data-guide-progress-fill></span>
+       <span data-guide-progress-label></span>
+       <section class="guide-step"><input data-guide-check> …
+     O estado fica somente no navegador e a página funciona sem JS. */
+  function initGuideProgress() {
+    var root = document.querySelector("[data-guide-progress]");
+    if (!root) return;
+    var checks = Array.prototype.slice.call(root.querySelectorAll("[data-guide-check]"));
+    if (!checks.length) return;
+    var storageKey = "dlt-guide:" + (root.getAttribute("data-guide-progress") || window.location.pathname);
+    var saved = {};
+    try { saved = JSON.parse(window.localStorage.getItem(storageKey) || "{}"); }
+    catch (e) { saved = {}; }
+
+    var fill = root.querySelector("[data-guide-progress-fill]");
+    var label = root.querySelector("[data-guide-progress-label]");
+
+    function update() {
+      var done = 0;
+      checks.forEach(function (check, index) {
+        var id = check.getAttribute("data-guide-check") || String(index + 1);
+        check.checked = Boolean(saved[id]);
+        var step = check.closest(".guide-step");
+        if (step) step.classList.toggle("is-done", check.checked);
+        if (check.checked) done++;
+      });
+      if (fill) fill.style.width = Math.round(done / checks.length * 100) + "%";
+      if (label) label.textContent = done + " de " + checks.length + " concluídos";
+    }
+
+    checks.forEach(function (check, index) {
+      var id = check.getAttribute("data-guide-check") || String(index + 1);
+      check.addEventListener("change", function () {
+        saved[id] = check.checked;
+        try { window.localStorage.setItem(storageKey, JSON.stringify(saved)); }
+        catch (e) { /* progresso continua na sessão mesmo sem storage */ }
+        update();
+      });
+    });
+    update();
+  }
+
+  /* ---------- 7 · Calculadoras específicas ------------------
      O núcleo compartilhado não contém tarifas, franquias ou fórmulas de
      produto. Uma calculadora usa o padrão visual .calc, mas sua lógica vive
      num arquivo externo da própria peça, com fonte, data e testes. Isso evita
      que um claim volátil seja propagado silenciosamente para todo o ecossistema. */
 
-  /* ---------- 7 · FAQ: um aberto por vez -------------------
+  /* ---------- 8 · FAQ: um aberto por vez -------------------
      <div class="faq" data-faq-exclusive> */
   function initFaq() {
     var wrap = document.querySelector("[data-faq-exclusive]");
@@ -172,7 +216,7 @@
     });
   }
 
-  /* ---------- 8 · Compartilhar (padrão 28) ------------------
+  /* ---------- 9 · Compartilhar (padrão 28) ------------------
      <div class="share-row" data-share>
        <button data-share-copy>Copiar link</button>
        <a data-share-telegram></a> <a data-share-whatsapp></a> <a data-share-x></a>
@@ -210,7 +254,7 @@
     });
   }
 
-  /* ---------- 9 · Copiar o resultado (padrão 29) ------------
+  /* ---------- 10 · Copiar o resultado (padrão 29) -----------
      <button data-copy-result="#resultado">Copiar como texto</button>
      Lê o texto visível do bloco apontado — nada é enviado. */
   function initCopyResult() {
@@ -239,7 +283,7 @@
 
   function boot() {
     initProgress(); initToc(); initReveal(); initCounters();
-    initFilters(); initFaq(); initShare(); initCopyResult();
+    initFilters(); initGuideProgress(); initFaq(); initShare(); initCopyResult();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
