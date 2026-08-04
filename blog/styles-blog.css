@@ -135,6 +135,7 @@
 }
 .calc .calc-rows { display: grid; gap: 12px; margin-bottom: 18px; }
 .calc .calc-rows.bar-chart { grid-auto-flow: row; height: auto; }
+.calc .calc-assumption-note { color: var(--text-faint); font-size: 12.5px; line-height: 1.55; margin: -4px 0 18px; }
 .calc .calc-rows + .calc-verdict { margin-bottom: 18px; }
 .calc .calc-verdict { min-height: 2.8em; }
 .calc .btn { margin-top: 4px; }

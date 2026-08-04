@@ -11,8 +11,10 @@ Este arquivo registra o que precisa ser revalidado. As fontes públicas continua
 | Cartão físico | página geral: envio Standard de 4,99 USD; página de rebranding: primeiro físico grátis para quem nunca teve cartão e mantém mais de 100 USDc. Confirmar a condição mostrada no app | 03/09/2026 |
 | Conversão no Brasil | custo total aproximado de 0,5% entre BRL e USDc/EURc informado pela ARQ | 29/08/2026 |
 | Wise cartão emitido no Brasil | uma retirada gratuita por mês; depois tarifa fixa de R$ 20 por retirada; conversão e tarifa do ATM podem ser adicionais | 29/08/2026 |
+| Wise conversão e IOF | tarifa de conversão a partir de 0,78% e 1,1% de IOF na conversão da conta global; o piso da tarifa varia por moeda e valor | 29/08/2026 |
 | Wise programa de indicação | programas e benefícios variam por região; o benefício válido é o exibido na página personalizada no momento do cadastro | antes de cada divulgação e, no máximo, 05/08/2026 |
 | Revolut Standard Brasil | R$ 1.600 ou cinco saques sem tarifa própria; depois 2% ou R$ 6, o maior | 29/08/2026 |
+| Revolut conversão BRL | câmbio sem tarifa até R$ 1.000/mês; depois 1,4% para BRL→moeda estrangeira; IOF deve ser confirmado no app | 29/08/2026 |
 | Promoção de indicação ARQ | oferta de US$ 10 após US$ 150 em gastos elegíveis no primeiro mês; nenhuma data final é publicada, portanto a campanha é tratada como por tempo indeterminado | antes de cada divulgação |
 | Uso durante viagens | experiência pessoal do Tiago com cartão emitido ainda na fase DolarApp; não tratar como compatibilidade universal | revisar após novos testes |
 

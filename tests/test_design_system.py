@@ -27,6 +27,9 @@ class DesignSystemTests(unittest.TestCase):
             "initAtmCalc",
             "04/08/2026",
             "tarifa própria",
+            "custo conhecido",
+            "IOF",
+            "tarifa do operador do ATM",
         ):
             with self.subTest(marker=marker):
                 self.assertIn(marker, script)

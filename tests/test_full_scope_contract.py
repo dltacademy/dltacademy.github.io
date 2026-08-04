@@ -117,7 +117,7 @@ class FullScopeContractTests(unittest.TestCase):
         ):
             self.assertTrue(has_class(html, marker) or marker in html, marker)
         self.assertIn('src="/blog/js/arq-calculator.js"', html)
-        self.assertEqual(2, len(re.findall(r'<input[^>]+type="range"', html)))
+        self.assertEqual(4, len(re.findall(r'<input[^>]+type="range"', html)))
         self.assertEqual(3, len(re.findall(r'data-calc-row="(?:arq|wise|revolut)"', html)))
         self.assertEqual(7, len(re.findall(r'class="figure-cell"', html)))
         self.assertEqual(4, len(re.findall(r'class="figure-cell"', re.search(r'class="figure-row cost-parts".*?</div>\s*</div>', html, re.DOTALL).group(0))))
