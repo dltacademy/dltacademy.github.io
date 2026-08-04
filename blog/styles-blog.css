@@ -102,6 +102,59 @@
 }
 .article-body .article-callout p:last-child { margin-bottom: 0; }
 
+/* Complementos do modelo de artigo ARQ. A estrutura comum vive em
+   dlt-patterns.css; estes detalhes só organizam controles e a decomposição
+   do custo sem introduzir tokens visuais novos. */
+.arq-source-note {
+  color: var(--text-faint);
+  font-size: 12.5px;
+  line-height: 1.55;
+  margin: -10px 0 24px;
+}
+.calc .calc-control {
+  display: grid;
+  gap: 8px;
+}
+.calc .calc-control label {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--text-dim);
+  font-size: 14px;
+  font-weight: 600;
+}
+.calc .calc-control output {
+  color: var(--text);
+  font-family: var(--font-head);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.calc .calc-control input[type="range"] {
+  width: 100%;
+  accent-color: var(--accent);
+}
+.calc .calc-rows { display: grid; gap: 12px; margin-bottom: 18px; }
+.calc .calc-rows.bar-chart { grid-auto-flow: row; height: auto; }
+.calc .calc-rows + .calc-verdict { margin-bottom: 18px; }
+.calc .calc-verdict { min-height: 2.8em; }
+.calc .btn { margin-top: 4px; }
+.compare caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.cost-parts .figure-cell { padding: 16px; }
+.cost-parts .figure-value { font-size: 25px; color: var(--sky-light); }
+
+@media (max-width: 560px) {
+  .calc .calc-control label { display: block; }
+  .calc .calc-control output { display: block; margin-top: 4px; }
+  .cost-parts { grid-template-columns: 1fr 1fr; }
+}
+
 @media (max-width: 480px) {
   #posts-grid { grid-template-columns: 1fr; }
 }

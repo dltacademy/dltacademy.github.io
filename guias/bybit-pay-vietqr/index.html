@@ -66,15 +66,14 @@
 
     <h2>Redes suportadas por país</h2>
     <p>Verificado em 17/07/2026. A cobertura muda por país e por atualização do app — confirme sempre na tela antes de assumir suporte:</p>
-    <ul class="guide-list">
-      <li><strong>Vietnã</strong> — VietQR</li>
-      <li><strong>Filipinas</strong> — QR PH</li>
-      <li><strong>Brasil</strong> — PIX</li>
-      <li><strong>Argentina</strong> — Mercado Pago</li>
-      <li><strong>Armênia</strong> — Idram</li>
-      <li><strong>Peru</strong> — Yape</li>
-      <li>Rede adicional multi-país — MoneyBadger</li>
-    </ul>
+    <div class="compare" aria-labelledby="vietqr-reference-title"><div class="compare-scroll"><table><caption id="vietqr-reference-title">Países e redes de QR Pay documentadas pela Bybit</caption><thead><tr><th scope="col">País ou região</th><th scope="col">Rede reconhecida</th><th scope="col">Como conferir</th></tr></thead><tbody>
+      <tr><th scope="row">Vietnã</th><td><strong>VietQR</strong></td><td>Peça “VietQR” ao comerciante</td></tr>
+      <tr><th scope="row">Filipinas</th><td>QR PH</td><td>Confirme a rede na tela do QR Pay</td></tr>
+      <tr><th scope="row">Brasil</th><td>PIX</td><td>Não confunda com qualquer QR proprietário</td></tr>
+      <tr><th scope="row">Argentina</th><td>Mercado Pago</td><td>O parceiro precisa aparecer no app</td></tr>
+      <tr><th scope="row">Armênia / Peru</th><td>Idram / Yape</td><td>Disponibilidade pode depender da conta</td></tr>
+      <tr><th scope="row">Multi-país</th><td>MoneyBadger</td><td>Confira a cobertura atual antes de viajar</td></tr>
+    </tbody></table></div><p class="compare-foot">Referência verificada em 17/07/2026. A lista e os parceiros podem mudar; a confirmação final é a tela atual do Bybit Pay.</p></div>
 
     <h2>Por que um QR pode ser recusado</h2>
     <p>Motivos oficiais documentados pela Bybit para uma leitura de QR não ser concluída:</p>
@@ -125,8 +124,9 @@
     </ul>
     <div class="note is-info"><p>Fontes verificadas em 17/07/2026</p><p><a href="https://www.bybit.com/en/help-center/article/FAQ-QR-Pay-and-Bank-Transfer" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">FAQ QR Pay and Bank Transfer</a> · <a href="https://www.bybit.com/en/help-center/article/FAQ-Bybit-Pay" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">FAQ Bybit Pay</a> · <a href="https://www.bybit.com/en/help-center/article/FAQ-Bybit-Pay-Rewards" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">FAQ Bybit Pay Rewards</a> · <a href="https://www.bybit.com/en/help-center/article/How-to-Make-Payment-using-Bybit-Pay-QRPay" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">How to Make Payment using Bybit Pay QRPay</a>. Taxas e limites mudam; confirme a tela atual.</p></div>
 
-    <h2>Erros comuns e o que fazer</h2>
-    <ul class="guide-list">
+    <h2 id="quando-da-errado">Quando dá errado</h2>
+    <div class="note is-warn"><p>Diagnóstico rápido</p><p>Não tente repetir o mesmo QR indefinidamente. Identifique se o problema é a rede, o valor, o limite, o saldo ou o parceiro; depois siga o plano B.</p></div>
+    <ul class="guide-list guide-errors">
       <li><strong>QR sem valor incorporado</strong> — peça ao comerciante um QR com o valor já embutido, ou informe o valor manualmente se o app permitir.</li>
       <li><strong>QR já pago</strong> — confirme com o comerciante e peça um código novo.</li>
       <li><strong>QR expirado</strong> — códigos VietQR têm validade curta; peça para gerar de novo.</li>
@@ -139,25 +139,27 @@
       <li><strong>Rejeição do parceiro</strong> — recusa do lado bancário do comerciante; sem solução do seu lado além do fallback.</li>
     </ul>
 
-    <h2>Quando o Bybit não reconhecer: o fallback</h2>
-    <p>Primeira alternativa: <strong>Moreta Pay</strong>. No <a href="/blog/bybit-pay-vs-moreta-vietqr/">nosso comparativo de 100.000 VND</a>, com saldo Moreta abastecido via transferência de USDT, o custo final ficou praticamente igual ao do Bybit — então cair para esse fallback não saiu caro. Ressalva obrigatória: isso funcionou nesta conta e neste teste; confirme as condições no seu próprio aplicativo, e lembre que o resultado vale para saldo em cripto, não para depósito por cartão ou conta bancária.</p>
-    <p>Para preservar esse custo, veja <a href="/guias/abastecer-moreta-usdt/">como abastecer o Moreta com USDT pela Solana</a>. Se o Moreta também não resolver, a ordem seguinte é <strong>cartão</strong> e, por último, <strong>dinheiro</strong>.</p>
+    <h2 id="plano-b">Plano B quando o Bybit não reconhecer</h2>
+    <section class="note is-info plan-b"><p>Ordem de fallback</p><p><strong>1. Moreta Pay:</strong> no <a href="/blog/bybit-pay-vs-moreta-vietqr/">comparativo de 100.000 VND</a>, com saldo abastecido via USDT, o custo final ficou praticamente igual ao do Bybit. <strong>2. Cartão:</strong> use o cartão compatível já preparado. <strong>3. Dinheiro:</strong> último recurso, com o custo do saque conferido antes.</p><p>Isso funcionou nesta conta e neste teste; confirme as condições no seu próprio aplicativo. Para preparar a primeira alternativa, veja <a href="/guias/abastecer-moreta-usdt/">como abastecer o Moreta com USDT pela Solana</a>.</p></section>
 
-    <h2>Checklist de segurança antes de confirmar</h2>
-    <ul class="guide-list">
+    <h2 id="verificacao-final">Verificação final antes de confirmar</h2>
+    <section class="guide-final-check note is-warn"><p>Última leitura</p><ul class="guide-list">
       <li>Confira o nome do comerciante e o valor exibidos na tela antes de confirmar qualquer pagamento.</li>
       <li>Desconfie de QR impresso solto, colado por cima de outro código, ou entregue fora do balcão — QR adulterado é um golpe conhecido.</li>
       <li>Guarde o comprovante da transação até confirmar que o pagamento chegou ao comerciante.</li>
       <li>Na primeira vez que usar o QR Pay num país novo, teste com uma transação pequena antes de confiar o valor cheio da compra.</li>
-    </ul>
+    </ul><p class="privacy-line">O progresso dos quatro passos fica somente no navegador, para você continuar de onde parou. Nada é enviado pela DLT Academy.</p></section>
 
     <h2>Bybit Pay é pra você?</h2>
     <p>Se você ainda não tem conta na Bybit, o QR Pay é só a porta de entrada — o benefício maior fica nos pontos e no tier que se acumulam com o uso contínuo do Card + Pay em transações elegíveis (pagamentos em cripto).</p>
-    <div class="offer" data-reveal>
+    <!-- PROMO_ATUAL -->
+    <div class="offer cta-verdict" data-tone="good" data-promotion="bybit-referral" data-verified-at="2026-07-18" data-reveal>
       <div class="offer-flags"><span class="offer-verified">Conferir condição atual</span></div>
       <h3>Abra a conta apenas se o QR Pay resolver uma tarefa real</h3>
       <a class="btn btn-primary" href="https://www.bybit.com/invite?ref=O0YDQDM" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Abra sua conta Bybit e confira o bônus disponível</a>
+      <p class="offer-fine">Link de indicação. A condição, elegibilidade e qualquer benefício devem ser conferidos na página oficial antes do cadastro.</p>
     </div>
+    <!-- /PROMO_ATUAL -->
     <p>Se você já tem conta, o próximo passo não é abrir outra: confira se o Bybit Pay está habilitado nas configurações, confirme a Funding Account como fonte padrão de pagamento e revise a prioridade de ativo (USDT primeiro) antes da próxima viagem.</p>
 
     <h2>Continue por estes guias</h2>
@@ -165,6 +167,10 @@
       <li><a href="/blog/bybit-pay-vs-moreta-vietqr/"><strong>Bybit Pay ou Moreta Pay:</strong> veja o custo líquido de uma compra real e aprenda a repetir a comparação em qualquer moeda.</a></li>
       <li><a href="/guias/abastecer-moreta-usdt/"><strong>Abastecer o Moreta com USDT:</strong> prepare o fallback pela Solana sem depender do depósito por cartão.</a></li>
     </ul>
+
+    <section class="share-row" data-share><p>Este guia é mais útil quando o plano B já está pronto.</p><div class="share-actions"><button type="button" data-share-copy>Copiar link</button><a data-share-telegram target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Telegram</a><a data-share-whatsapp target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">WhatsApp</a></div></section>
+
+    <section class="sources"><h2>Fontes e escopo</h2><p class="sources-when">Rede, limites e recompensas verificados em 17/07/2026; a estrutura do guia foi revisada em 04/08/2026.</p><ul><li><a href="https://www.bybit.com/en/help-center/article/FAQ-QR-Pay-and-Bank-Transfer" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Bybit: FAQ QR Pay e transferência bancária</a></li><li><a href="https://www.bybit.com/en/help-center/article/FAQ-Bybit-Pay" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Bybit Pay: FAQ</a></li><li><a href="https://www.bybit.com/en/help-center/article/How-to-Make-Payment-using-Bybit-Pay-QRPay" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Bybit: como fazer um pagamento com QR Pay</a></li></ul><p class="sources-own">Relatos de teste, custos do Moreta e ordem de fallback são experiências desta conta, não garantia de resultado. Taxas, redes, limites e elegibilidade podem mudar.</p></section>
   </article>
 
   <section class="guide-faq faq" data-faq-exclusive aria-labelledby="faq-titulo">
