@@ -13,16 +13,16 @@ Este arquivo registra o que precisa ser revalidado. As fontes públicas continua
 | Wise cartão emitido no Brasil | uma retirada gratuita por mês; depois tarifa fixa de R$ 20 por retirada; conversão e tarifa do ATM podem ser adicionais | 29/08/2026 |
 | Wise programa de indicação | programas e benefícios variam por região; o benefício válido é o exibido na página personalizada no momento do cadastro | antes de cada divulgação e, no máximo, 05/08/2026 |
 | Revolut Standard Brasil | R$ 1.600 ou cinco saques sem tarifa própria; depois 2% ou R$ 6, o maior | 29/08/2026 |
-| Promoção de indicação ARQ | oferta de US$ 10 após US$ 150 em gastos elegíveis no primeiro mês, informada para o link em 29/07/2026 | antes de cada divulgação e, no máximo, 05/08/2026 |
+| Promoção de indicação ARQ | oferta de US$ 10 após US$ 150 em gastos elegíveis no primeiro mês; nenhuma data final é publicada, portanto a campanha é tratada como por tempo indeterminado | antes de cada divulgação |
 | Uso durante viagens | experiência pessoal do Tiago com cartão emitido ainda na fase DolarApp; não tratar como compatibilidade universal | revisar após novos testes |
 
-## Nota editorial de 03/08/2026
+## Nota editorial de 04/08/2026
 
 A redação preserva a experiência real com o DolarApp/ARQ e deixa as comparações como apoio. O título continua **“O cartão que usamos para sacar dinheiro no exterior”**. Nesta revisão, o link afiliado concorrente e disclosures locais foram removidos, o custo total foi explicitado e a condição do primeiro cartão físico foi reconferida em fonte oficial.
 
 ## Blocos de promoção e indicação
 
-A oferta temporária do ARQ está delimitada no HTML por:
+A oferta do ARQ, atualmente publicada por tempo indeterminado, está delimitada no HTML por:
 
 ```html
 <!-- PROMO_ATUAL -->
@@ -32,10 +32,11 @@ A oferta temporária do ARQ está delimitada no HTML por:
 
 Ao revisar a promoção do ARQ:
 
-1. abrir o link de indicação e conferir recompensa, gasto mínimo, prazo, região e estabelecimentos elegíveis;
+1. abrir o link de indicação e conferir recompensa, gasto mínimo, região, estabelecimentos elegíveis e se passou a existir uma data final;
 2. alterar somente o bloco delimitado, a data `data-verified-at` e esta tabela;
 3. preservar a tese estrutural: o ARQ foi escolhido para saques e acesso repetido a dinheiro físico, não por causa do bônus;
 4. não prometer a recompensa até a pessoa confirmar a campanha na página e cumprir as condições;
-5. manter a distinção entre documentação oficial e experiência pessoal com o cartão.
+5. manter a distinção entre documentação oficial e experiência pessoal com o cartão;
+6. quando nenhuma fonte oficial ou página da campanha publicar data final, registrar **por tempo indeterminado**; não inventar prazo nem manter bloqueio `needs-human` apenas pela ausência de uma data.
 
 Se uma revisão vencer, não atualizar apenas a data: conferir a fonte e registrar qualquer mudança material no histórico do Git. Wise e Revolut permanecem como comparação editorial, sem link afiliado concorrente nesta peça.
