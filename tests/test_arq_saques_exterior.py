@@ -44,8 +44,8 @@ class ArqAtmArticleTests(unittest.TestCase):
         self.assertIn(f'data-content-id="{CONTENT_ID}"', self.html)
         self.assertIn('"mainEntityOfPage": "' + URL + '"', self.html)
         self.assertIn('"datePublished": "2026-07-29"', self.html)
-        self.assertIn('"dateModified": "2026-08-03"', self.html)
-        self.assertIn("Atualizado em 3 de agosto de 2026", self.html)
+        self.assertIn('"dateModified": "2026-08-04"', self.html)
+        self.assertIn("Atualizado em 4 de agosto de 2026", self.html)
         self.assertIn("O cartão que usamos para sacar dinheiro no exterior", self.html)
 
     def test_current_fee_is_presented_without_an_unverified_history(self) -> None:
@@ -79,6 +79,7 @@ class ArqAtmArticleTests(unittest.TestCase):
         self.assertIn('data-promotion="arq-referral"', self.html)
         self.assertIn('data-verified-at="2026-07-29"', self.html)
         self.assertIn("US$ 10 depois de fazer US$ 150", self.html)
+        self.assertIn("por tempo indeterminado", self.html)
         match = re.search(
             rf'<a href="{re.escape(REFERRAL_URL)}"([^>]*)>',
             self.html,
