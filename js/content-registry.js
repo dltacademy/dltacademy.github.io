@@ -4,7 +4,9 @@
 // Schema: Registry Core V1. O array é JSON ESTRITO (aspas duplas,
 // sem comentários dentro, sem trailing comma) — validado por
 // validate_registry.py. IDs publicados NUNCA são renomeados.
-// type: "tool" | "guide" | "article".
+// type: "tool" | "guide" | "protocolo" | "article".
+// sit: situações opcionais do catálogo: comecar | posicao | viagem | taxas.
+// mark: monograma opcional de 1–2 caracteres; effort: esforço real medido.
 // publishedAt: ISO YYYY-MM-DD, obrigatório para article.
 // ============================================================
 
@@ -17,7 +19,8 @@ const CONTENT = [
     "url": "https://sobrevive-ou-quebra.dlt.academy/",
     "tag": "Proteção de patrimônio",
     "tone": "green",
-    "icon": "🛡️",
+    "sit": ["posicao"],
+    "mark": "SQ",
     "related": ["tool-vender-ou-segurar", "tool-quanto-em-taxas"]
   },
   {
@@ -28,7 +31,9 @@ const CONTENT = [
     "url": "https://quanto-em-taxas.dlt.academy/",
     "tag": "Custos e taxas",
     "tone": "blue",
-    "icon": "💸",
+    "sit": ["taxas", "posicao"],
+    "mark": "TX",
+    "effort": "menos de 30 segundos",
     "primaryNext": "tool-sobrevive-ou-quebra"
   },
   {
@@ -39,7 +44,9 @@ const CONTENT = [
     "url": "https://primeiros-passos-cripto.dlt.academy/",
     "tag": "Iniciante",
     "tone": "blue",
-    "icon": "🧭",
+    "sit": ["comecar"],
+    "mark": "PP",
+    "effort": "6 perguntas",
     "primaryNext": "guide-conta-binance",
     "related": ["tool-quanto-em-taxas"]
   },
@@ -51,7 +58,9 @@ const CONTENT = [
     "url": "https://vender-ou-segurar.dlt.academy/",
     "tag": "Já tem posição",
     "tone": "green",
-    "icon": "⚖️",
+    "sit": ["posicao"],
+    "mark": "VS",
+    "effort": "4 perguntas",
     "primaryNext": "tool-sobrevive-ou-quebra"
   },
   {
@@ -62,7 +71,8 @@ const CONTENT = [
     "url": "/protocolos/medo-de-ficar-de-fora/",
     "tag": "Decisão sob emoção",
     "tone": "green",
-    "icon": "🧭",
+    "sit": ["comecar", "posicao"],
+    "mark": "CT",
     "primaryNext": "tool-sobrevive-ou-quebra",
     "related": ["tool-vender-ou-segurar"]
   },
@@ -74,7 +84,8 @@ const CONTENT = [
     "url": "/guias/conta-binance/",
     "tag": "Guia interativo",
     "tone": "blue",
-    "icon": "🔐",
+    "sit": ["comecar"],
+    "mark": "CS",
     "primaryNext": "tool-quanto-em-taxas"
   },
   {
@@ -85,7 +96,8 @@ const CONTENT = [
     "url": "/pagamentos-no-exterior/",
     "tag": "Guia central de viagem",
     "tone": "green",
-    "icon": "🌍",
+    "sit": ["viagem", "taxas"],
+    "mark": "VI",
     "related": ["article-arq-saques-exterior", "guide-etherfi-cash-viagem", "guide-bybit-pay-vietqr"]
   },
   {
@@ -96,7 +108,8 @@ const CONTENT = [
     "url": "/guias/bybit-pay-vietqr/",
     "tag": "Guia de viagem",
     "tone": "green",
-    "icon": "📱",
+    "sit": ["viagem", "taxas"],
+    "mark": "QR",
     "primaryNext": "guide-pagamentos-no-exterior",
     "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt", "guide-assinaturas-ia-bybit"]
   },
@@ -108,7 +121,8 @@ const CONTENT = [
     "url": "/guias/assinaturas-ia-bybit/",
     "tag": "Guia de pagamentos",
     "tone": "blue",
-    "icon": "🤖",
+    "sit": ["taxas"],
+    "mark": "IA",
     "primaryNext": "guide-bybit-pay-vietqr",
     "related": ["article-bybit-pay-vs-moreta-vietqr"]
   },
@@ -120,7 +134,8 @@ const CONTENT = [
     "url": "/guias/abastecer-moreta-usdt/",
     "tag": "Guia de viagem",
     "tone": "blue",
-    "icon": "💱",
+    "sit": ["viagem", "taxas"],
+    "mark": "MP",
     "related": ["guide-bybit-pay-vietqr", "article-bybit-pay-vs-moreta-vietqr", "guide-pagamentos-no-exterior"]
   },
   {
@@ -131,7 +146,8 @@ const CONTENT = [
     "url": "/guias/etherfi-cash-viagem/",
     "tag": "Guia de viagem",
     "tone": "green",
-    "icon": "💳",
+    "sit": ["viagem", "taxas"],
+    "mark": "EF",
     "primaryNext": "guide-pagamentos-no-exterior",
     "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt", "article-arq-saques-exterior"]
   },
