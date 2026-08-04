@@ -13,8 +13,8 @@
 <meta property="og:title" content="Como pagar VietQR e outros QR Codes no exterior com Bybit Pay">
 <meta property="og:description" content="Passo a passo para pagar QR Codes locais com Bybit Pay em viagem: taxas reais, limites, por que alguns códigos falham e o que usar quando não funcionar.">
 <meta property="og:url" content="https://dlt.academy/guias/bybit-pay-vietqr/">
-<meta property="og:image" content="https://dlt.academy/guias/bybit-pay-vietqr/og-image.png">
-<meta property="og:image:type" content="image/png">
+<meta property="og:image" content="https://dlt.academy/guias/bybit-pay-vietqr/og-image.svg">
+<meta property="og:image:type" content="image/svg+xml">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Guia Bybit Pay e VietQR — DLT Academy">
@@ -22,13 +22,14 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Como pagar VietQR e outros QR Codes no exterior com Bybit Pay">
 <meta name="twitter:description" content="Passo a passo para pagar QR Codes locais com Bybit Pay em viagem: taxas reais, limites, por que alguns códigos falham e o que usar quando não funcionar.">
-<meta name="twitter:image" content="https://dlt.academy/guias/bybit-pay-vietqr/og-image.png">
+<meta name="twitter:image" content="https://dlt.academy/guias/bybit-pay-vietqr/og-image.svg">
 <meta name="twitter:image:alt" content="Guia Bybit Pay e VietQR — DLT Academy">
 <meta name="theme-color" content="#06090F">
 <link rel="icon" type="image/png" href="/assets/dlt-mark.png">
 <link rel="stylesheet" href="/styles-base.css">
 <link rel="stylesheet" href="/styles-portal.css">
 <link rel="stylesheet" href="/guias/styles-guides.css">
+<link rel="stylesheet" href="/dlt-patterns.css">
 
 <!-- Dados estruturados (JSON-LD é bloco de dados, não executa — ok com o CSP) -->
 <script type="application/ld+json">
@@ -41,22 +42,25 @@
   "dateModified": "2026-07-18",
   "inLanguage": "pt-BR",
   "mainEntityOfPage": "https://dlt.academy/guias/bybit-pay-vietqr/",
-  "image": "https://dlt.academy/guias/bybit-pay-vietqr/og-image.png",
+  "image": "https://dlt.academy/guias/bybit-pay-vietqr/og-image.svg",
   "author": { "@type": "Organization", "name": "DLT Academy", "url": "https://dlt.academy/" },
   "publisher": { "@type": "Organization", "name": "DLT Academy", "url": "https://dlt.academy/", "logo": { "@type": "ImageObject", "url": "https://dlt.academy/assets/dlt-logo-light.png" } }
 }
 </script>
 </head>
 <body>
-<header class="top"><div class="wrap header-row"><a class="brand" href="/"><img src="/assets/dlt-logo-light.png" alt="DLT Academy"></a><nav class="header-nav" aria-label="Navegação principal"><a href="/#ferramentas">Ferramentas</a><a href="/#guias">Guias</a><a href="/blog/">Blog</a><a href="/sobre/">Sobre</a></nav></div></header>
-<main><div class="guide-wrap">
-  <section class="guide-hero">
-    <p class="eyebrow">Guia de viagem</p>
+<header class="top"><div class="wrap header-row"><a class="brand" href="/"><img src="/assets/dlt-logo-light.png" alt="DLT Academy"></a><nav class="header-nav" aria-label="Navegação principal"><a class="nav-catalog" href="/ferramentas/">Ferramentas</a><a class="nav-catalog" href="/guias/">Guias</a><a href="/blog/">Blog</a><a href="/sobre/">Sobre</a></nav></div></header>
+<main data-guide-progress="bybit-pay-vietqr"><div class="guide-wrap">
+  <section class="guide-hero piece-head">
+    <div class="piece-meta"><span class="tag s1">Guia de viagem</span><time datetime="2026-07-17">17 jul 2026</time><span class="sep" aria-hidden="true"></span><span>4 passos principais</span></div>
     <h1>Como pagar VietQR e outros QR Codes no exterior com Bybit Pay</h1>
-    <p class="subtitle">Bybit Pay não paga "qualquer QR" — depende de rede, país e parceiro bancário. Quando funciona e você paga em cripto, o gasto gera pontos e conta para o seu tier; quando não funciona, existe um fallback.</p>
+    <p class="piece-lede">Ao terminar, você terá preparado a Funding Account, conferido o QR correto, feito o pagamento e deixado um plano B pronto.</p>
+    <div class="guide-progress-bar" aria-hidden="true"><span data-guide-progress-fill></span></div><p class="privacy-line" data-guide-progress-label aria-live="polite">0 de 4 concluídos</p>
   </section>
 
   <article class="guide-reference">
+    <section class="key-points" data-reveal><p>Antes de começar</p><ul><li>Bybit Pay não lê qualquer QR; a rede e o parceiro precisam ser compatíveis.</li><li>O pagamento sai da Funding Account e o ativo deve ser conferido antes de confirmar.</li><li>Zero tarifa de transação não significa zero spread cambial.</li><li>Quando o QR falhar, Moreta Pay, cartão e dinheiro formam o plano B.</li></ul></section>
+    <nav class="piece-toc" data-toc-watch=".guide-reference > h2"><p>Neste guia</p><ol></ol></nav>
     <h2>O que é QR Pay (e o que ele não é)</h2>
     <p>QR Pay é o recurso do app Bybit que lê um código de pagamento local — como o VietQR no Vietnã — e debita o valor direto da sua Funding Account, em cripto. Não é uma carteira universal: o QR só funciona quando a rede daquele país e o parceiro bancário do comerciante são reconhecidos pelo Bybit. "Aceita QR Code" no estabelecimento não significa "aceita Bybit Pay".</p>
 
@@ -91,12 +95,10 @@
     <p>Nem todo QR no Vietnã é VietQR. MoMo e ZaloPay são carteiras proprietárias fechadas, e muitos QRs "bancários" genéricos não estão na rede que o Bybit reconhece. Antes de tentar escanear, pergunte diretamente ao comerciante: <strong>"Pode gerar VietQR?"</strong> — é o pedido certo, porque é o padrão interbancário que o Bybit Pay efetivamente lê.</p>
 
     <h2>Como pagar: o fluxo no app</h2>
-    <ol>
-      <li>Confirme a <strong>Funding Account</strong> como origem do pagamento — é dela que o Bybit Pay debita.</li>
-      <li>Verifique a <strong>prioridade de pagamento</strong> configurada (qual ativo é debitado primeiro quando há mais de um saldo disponível).</li>
-      <li>Abra o QR Pay e <strong>escaneie</strong> o código do comerciante.</li>
-      <li>Antes de confirmar, <strong>confira o valor e o ativo</strong> exibidos na tela — o comerciante recebe o valor normal em VND (ou moeda local), você paga em cripto.</li>
-    </ol>
+    <section class="guide-step" data-reveal><div class="guide-step-top"><span class="guide-step-num">01</span><span class="guide-step-state">Preparar</span></div><h2>Confirme a Funding Account</h2><p>Ela é a origem do pagamento. Garanta saldo suficiente antes de abrir o QR Pay.</p><label class="guide-check"><input type="checkbox" data-guide-check="funding"><span>Funding Account confirmada e com saldo</span></label></section>
+    <section class="guide-step" data-reveal><div class="guide-step-top"><span class="guide-step-num">02</span><span class="guide-step-state">Prioridade</span></div><h2>Escolha qual ativo sai primeiro</h2><p>Revise a prioridade de pagamento quando houver mais de um saldo. No teste real, USDT evitou conversão intermediária.</p><label class="guide-check"><input type="checkbox" data-guide-check="ativo"><span>Ativo e prioridade conferidos</span></label></section>
+    <section class="guide-step" data-reveal><div class="guide-step-top"><span class="guide-step-num">03</span><span class="guide-step-state">Escanear</span></div><h2>Peça e leia o QR compatível</h2><p>No Vietnã, peça VietQR. MoMo, ZaloPay e códigos proprietários não são a mesma rede.</p><label class="guide-check"><input type="checkbox" data-guide-check="qr"><span>Nome da rede e comerciante conferidos</span></label></section>
+    <section class="guide-step" data-reveal><div class="guide-step-top"><span class="guide-step-num">04</span><span class="guide-step-state">Confirmar</span></div><h2>Confira valor, moeda e ativo</h2><p>O comerciante recebe em moeda local; você paga em cripto. Só confirme depois de comparar o valor exibido e guardar o comprovante.</p><label class="guide-check"><input type="checkbox" data-guide-check="confirmar"><span>Valor e ativo conferidos antes do pagamento</span></label></section>
 
     <h2>USDT ou USDC?</h2>
     <p>Os dois são suportados pelo QR Pay. Na prática, <strong>USDT é o padrão operacional</strong>: foi o ativo do nosso teste real, e evita uma conversão intermediária dentro do app. A documentação da Bybit cita uma taxa de conversão de aproximadamente 1% ao trocar outras criptomoedas para USDT dentro do Pay — confirme esse número na própria tela antes de generalizá-lo, porque taxas de conversão mudam.</p>
@@ -121,7 +123,7 @@
       <li><strong>Limite diário:</strong> 15.000 USD.</li>
       <li>A maioria das transações conclui em cerca de 15 segundos.</li>
     </ul>
-    <p class="guide-note">Fontes oficiais (verificado em 17/07/2026): <a href="https://www.bybit.com/en/help-center/article/FAQ-QR-Pay-and-Bank-Transfer" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">FAQ QR Pay and Bank Transfer</a> · <a href="https://www.bybit.com/en/help-center/article/FAQ-Bybit-Pay" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">FAQ Bybit Pay</a> · <a href="https://www.bybit.com/en/help-center/article/FAQ-Bybit-Pay-Rewards" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">FAQ Bybit Pay Rewards</a> · <a href="https://www.bybit.com/en/help-center/article/How-to-Make-Payment-using-Bybit-Pay-QRPay" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">How to Make Payment using Bybit Pay QRPay</a>. Taxas e limites mudam — confira sempre a versão atual antes de generalizar.</p>
+    <div class="note is-info"><p>Fontes verificadas em 17/07/2026</p><p><a href="https://www.bybit.com/en/help-center/article/FAQ-QR-Pay-and-Bank-Transfer" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">FAQ QR Pay and Bank Transfer</a> · <a href="https://www.bybit.com/en/help-center/article/FAQ-Bybit-Pay" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">FAQ Bybit Pay</a> · <a href="https://www.bybit.com/en/help-center/article/FAQ-Bybit-Pay-Rewards" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">FAQ Bybit Pay Rewards</a> · <a href="https://www.bybit.com/en/help-center/article/How-to-Make-Payment-using-Bybit-Pay-QRPay" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">How to Make Payment using Bybit Pay QRPay</a>. Taxas e limites mudam; confirme a tela atual.</p></div>
 
     <h2>Erros comuns e o que fazer</h2>
     <ul class="guide-list">
@@ -151,9 +153,10 @@
 
     <h2>Bybit Pay é pra você?</h2>
     <p>Se você ainda não tem conta na Bybit, o QR Pay é só a porta de entrada — o benefício maior fica nos pontos e no tier que se acumulam com o uso contínuo do Card + Pay em transações elegíveis (pagamentos em cripto).</p>
-    <div class="guide-hero-cta">
+    <div class="offer" data-reveal>
+      <div class="offer-flags"><span class="offer-verified">Conferir condição atual</span></div>
+      <h3>Abra a conta apenas se o QR Pay resolver uma tarefa real</h3>
       <a class="btn btn-primary" href="https://www.bybit.com/invite?ref=O0YDQDM" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Abra sua conta Bybit e confira o bônus disponível</a>
-      <p>Transparência: este guia contém um link de indicação da Bybit. Se você abrir conta nova por ele, podemos receber uma comissão, sem custo extra para você. Isso não muda nenhuma informação técnica deste guia.</p>
     </div>
     <p>Se você já tem conta, o próximo passo não é abrir outra: confira se o Bybit Pay está habilitado nas configurações, confirme a Funding Account como fonte padrão de pagamento e revise a prioridade de ativo (USDT primeiro) antes da próxima viagem.</p>
 
@@ -164,7 +167,7 @@
     </ul>
   </article>
 
-  <section class="guide-faq" aria-labelledby="faq-titulo">
+  <section class="guide-faq faq" data-faq-exclusive aria-labelledby="faq-titulo">
     <h2 id="faq-titulo">Perguntas frequentes</h2>
     <details><summary>O Bybit Pay funciona com qualquer QR Code?</summary><p>Não. Só funciona quando a rede do país e o parceiro bancário do comerciante são reconhecidos pelo Bybit — ver a lista de redes suportadas por país acima.</p></details>
     <details><summary>Quais redes de QR o Bybit Pay reconhece no Vietnã?</summary><p>VietQR, o padrão interbancário do país. QRs de carteiras proprietárias como MoMo e ZaloPay não são a mesma coisa.</p></details>
@@ -187,5 +190,6 @@
 <footer><div class="wrap"><p>Conteúdo educacional. Não é recomendação de investimento.</p><p><a href="/sobre/">Sobre a DLT Academy</a> · <a href="/transparencia/">Transparência</a></p><p class="footer-social"><a href="/comunidade/">Comunidade</a>: <a href="https://t.me/dltacademyc" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Canal no Telegram</a> · <a href="https://t.me/dltacademy" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Grupo</a> · <a href="https://www.youtube.com/c/DLTAcademy" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">YouTube</a></p><p>© 2026 DLT Academy</p></div></footer>
 <script src="/js/content-registry.js"></script>
 <script src="/js/next-step.js"></script>
+<script src="/js/dlt-interactions.js"></script>
 </body>
 </html>

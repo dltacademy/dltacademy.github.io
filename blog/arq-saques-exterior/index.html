@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="/styles-base.css">
 <link rel="stylesheet" href="/styles-portal.css">
 <link rel="stylesheet" href="../styles-blog.css">
+<link rel="stylesheet" href="/dlt-patterns.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -44,18 +45,32 @@
   "publisher": { "@type": "Organization", "name": "DLT Academy", "url": "https://dlt.academy/", "logo": { "@type": "ImageObject", "url": "https://dlt.academy/assets/dlt-logo-light.png" } }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "Quanto o ARQ cobra por saque no plano Standard?", "acceptedAnswer": { "@type": "Answer", "text": "A tarifa publicada é de 1% sobre o valor retirado, além de eventuais custos do caixa e do caminho usado para formar o saldo." } },
+    { "@type": "Question", "name": "Saque sem tarifa é sempre mais barato?", "acceptedAnswer": { "@type": "Answer", "text": "Não. O custo total também inclui formar o saldo, conversão, spread, IOF aplicável, tarifa do ATM e a escolha de câmbio na tela." } },
+    { "@type": "Question", "name": "Que moeda devo escolher no caixa eletrônico?", "acceptedAnswer": { "@type": "Answer", "text": "Escolha a moeda local e recuse a conversão dinâmica oferecida pelo caixa." } },
+    { "@type": "Question", "name": "A promoção do ARQ tem prazo final?", "acceptedAnswer": { "@type": "Answer", "text": "A campanha estava publicada sem data final na última verificação e, por isso, é tratada como por tempo indeterminado." } }
+  ]
+}
+</script>
 </head>
 <body>
-<header class="top"><div class="wrap"><a class="brand" href="/"><img src="/assets/dlt-logo-light.png" alt="DLT Academy"></a></div></header>
+<div class="read-progress" data-progress-for=".article-body" aria-hidden="true"><span></span></div>
+<header class="top"><div class="wrap header-row"><a class="brand" href="/"><img src="/assets/dlt-logo-light.png" alt="DLT Academy"></a><nav class="header-nav" aria-label="Navegação principal"><a class="nav-catalog" href="/ferramentas/">Ferramentas</a><a class="nav-catalog" href="/guias/">Guias</a><a href="/blog/">Blog</a><a href="/sobre/">Sobre</a></nav></div></header>
 <main>
   <div class="article-wrap article">
-    <div class="article-meta">
-      <span class="tag s2">Dinheiro em viagem</span>
-      <time datetime="2026-07-29">29 de julho de 2026</time>
-      <span>Atualizado em 4 de agosto de 2026</span>
-    </div>
-    <h1>O cartão que usamos para sacar dinheiro no exterior</h1>
+    <section class="piece-head">
+      <div class="piece-meta"><span class="tag s2">Dinheiro em viagem</span><time datetime="2026-07-29">29 jul 2026</time><span class="sep" aria-hidden="true"></span><span>Atualizado em 4 de agosto de 2026</span><span class="sep" aria-hidden="true"></span><span>7 min de leitura</span></div>
+      <h1>O cartão que usamos para sacar dinheiro no exterior</h1>
+      <p class="piece-lede">O ARQ começou como meu cartão para tudo e acabou encontrando sua melhor função: saques simples de calcular, depois de considerar franquias e o custo total da rota.</p>
+    </section>
     <div class="article-body">
+<section class="key-points" data-reveal><p>O essencial</p><ul><li>No ARQ Standard, a tarifa publicada é de 1% do valor retirado.</li><li>Wise e Revolut podem vencer enquanto a franquia própria estiver disponível.</li><li>O custo real inclui formar o saldo, cartão, caixa eletrônico e conversão da tela.</li><li>No ATM, escolha a moeda local e recuse a conversão do caixa.</li></ul></section>
+<nav class="piece-toc" data-toc-watch=".article-body > h2"><p>Neste artigo</p><ol></ol></nav>
 <p>Quando ainda se chamava DolarApp, esse cartão me acompanhou por boa parte da América Latina. Durante um tempo foi meu cartão principal para praticamente tudo: compras, emergências e saques. Ele me salvou mais de uma vez quando eu precisava de dinheiro físico e não queria depender de uma única conta.</p>
 <p>Com o tempo, fui separando melhor as funções. Hoje uso o <a href="/guias/etherfi-cash-viagem/">ether.fi para compras</a>, o <a href="/guias/bybit-pay-vietqr/">Bybit Pay quando existe QR local compatível</a> ou o <a href="/guias/abastecer-moreta-usdt/">Moreta abastecido com USDT</a>, e deixo o ARQ — antigo DolarApp — preparado para os caixas eletrônicos. Foi assim que ele virou o cartão que usamos para sacar dinheiro no exterior.</p>
 <p>Não é porque o ARQ sempre vence. A franquia de retirada da Wise e a do Revolut entram na comparação, mas o resultado depende do custo total de cada rota. O que mantém o ARQ no meu setup é outra coisa: depois dessas franquias, a taxa de 1% é simples de entender e costuma funcionar melhor para retiradas menores ou repetidas.</p>
@@ -99,16 +114,21 @@
 <p>Para quem nunca teve um cartão físico da DolarApp/ARQ, a página oficial da mudança de marca informa que o primeiro cartão físico pode ser gratuito ao manter mais de 100 USDc de saldo. Confirme essa condição no aplicativo antes de pedir, porque a página geral de tarifas ainda mostra frete de US$ 4,99 para o plano Standard.</p>
 
 <!-- PROMO_ATUAL -->
-<div class="article-callout" data-promotion="arq-referral" data-verified-at="2026-07-29">
-  <p><strong>Oferta verificada em 29/07/2026 — por tempo indeterminado</strong></p>
+<div class="offer" data-promotion="arq-referral" data-verified-at="2026-07-29" data-reveal>
+  <div class="offer-flags"><span class="offer-verified">Verificada em 29/07/2026</span><span class="tag s2">Por tempo indeterminado</span></div>
+  <h3>US$ 10 depois de US$ 150 em gastos elegíveis</h3>
   <p>Ganhe US$ 10 depois de fazer US$ 150 em gastos elegíveis com o cartão no primeiro mês.</p>
-  <p><a href="https://www.arqfinance.com/referrals/general?referralCode=tiagohyd_I6p&amp;pid=referral&amp;c=general&amp;is_retargeting=true" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer"><strong>Conferir a campanha atual e criar a conta no ARQ</strong></a></p>
+  <a href="https://www.arqfinance.com/referrals/general?referralCode=tiagohyd_I6p&amp;pid=referral&amp;c=general&amp;is_retargeting=true" class="btn btn-primary" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Conferir a campanha atual e criar a conta no ARQ</a>
 </div>
 <!-- /PROMO_ATUAL -->
 
 <p>A promoção faz sentido quando esses US$ 150 já fariam parte dos seus gastos de viagem e o ARQ resolve a necessidade de acesso a dinheiro físico.</p>
 
-<h2>Fontes</h2>
+<section class="faq" data-faq-exclusive aria-labelledby="faq-arq"><h2 id="faq-arq">Perguntas frequentes</h2><details><summary>Quanto o ARQ cobra por saque no Standard?</summary><p>A tarifa publicada é de 1% sobre o valor retirado. A taxa do ATM e o custo para formar o saldo continuam separados.</p></details><details><summary>Saque sem tarifa é sempre mais barato?</summary><p>Não. Franquia cobre uma linha; conversão, spread, IOF aplicável e a tarifa do caixa podem mudar o custo total.</p></details><details><summary>Que moeda escolho no caixa?</summary><p>A moeda local. Recuse a conversão dinâmica oferecida pelo ATM.</p></details><details><summary>A promoção tem prazo?</summary><p>Na última verificação não havia data final pública; por isso a condição correta é “por tempo indeterminado”.</p></details></section>
+
+<section class="share-row" data-share><p>Este artigo pode evitar uma conversão cara no próximo saque.</p><div class="share-actions"><button type="button" data-share-copy>Copiar link</button><a data-share-telegram target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Telegram</a><a data-share-whatsapp target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">WhatsApp</a></div></section>
+
+<section class="sources"><h2>Fontes</h2>
 <p>As taxas e condições abaixo foram verificadas em páginas oficiais em <strong>29/07/2026</strong>; a condição do cartão físico foi reconferida em <strong>03/08/2026</strong>. A estrutura e a redação do artigo foram revisadas em 04/08/2026.</p>
 <ul>
   <li><a href="https://help.arqfinance.com/en/articles/13551411-atm-withdrawal-fees-and-how-to-avoid-surprise-fees" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: tarifas de ATM e DCC</a></li>
@@ -121,6 +141,7 @@
   <li><a href="https://help.arqfinance.com/en/articles/13864096-referrals-if-you-haven-t-received-the-reward-it-can-take-up-to-5-days-also-your-merchant-might-be-excluded" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: condições e prazo da indicação</a></li>
 </ul>
 <p>O uso do cartão na América Latina, a facilidade de obtenção e a escolha do ARQ para saques são relatos da minha experiência. O ARQ trabalha com saldos como USDc e EURc, descritos pela empresa como ativos virtuais, não moeda fiduciária. Produtos, emissores, tarifas e limites podem mudar.</p>
+</section>
     </div>
     <div id="next-step-mount" data-content-id="article-arq-saques-exterior"></div>
   </div>
@@ -135,5 +156,6 @@
 </footer>
 <script src="/js/content-registry.js"></script>
 <script src="/js/next-step.js"></script>
+<script src="/js/dlt-interactions.js"></script>
 </body>
 </html>
