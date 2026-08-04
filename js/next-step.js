@@ -75,7 +75,7 @@ const COMMUNITY_ENTRY = {
     "Canal para acompanhar, grupo para conversar e YouTube. Gratuitos, sem cadastro — e com os links oficiais num lugar só, para reconhecer golpe quando ele chegar.",
   tag: "Grátis",
   tone: "green",
-  icon: "💬",
+  icon: "CM",
 };
 
 function renderNextStep() {

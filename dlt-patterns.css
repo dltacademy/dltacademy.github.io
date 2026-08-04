@@ -416,7 +416,7 @@
 .calc header p { color: var(--text-dim); font-size: 14.5px; line-height: 1.6; margin: 0; }
 .calc .calc-controls { display: grid; gap: 18px; margin-bottom: 22px; }
 .calc .calc-row { display: grid; grid-template-columns: 90px minmax(0, 1fr) 120px; gap: 14px; align-items: center; }
-.calc .calc-name { font-size: 14px; color: var(--text-dim); }
+.calc .calc-name { min-width: 0; overflow-wrap: anywhere; font-size: 14px; color: var(--text-dim); }
 .calc .calc-track { height: 10px; border-radius: 999px; background: var(--bg-elev-2); overflow: hidden; }
 .calc .calc-track > span {
   display: block; height: 100%; width: 0; border-radius: 999px;
@@ -425,6 +425,8 @@
 .calc .calc-track > span.is-best { background: var(--green); }
 @media (prefers-reduced-motion: reduce) { .calc .calc-track > span { transition: none; } }
 .calc .calc-out { font-family: var(--font-head); font-size: 16px; font-weight: 700; text-align: right; color: var(--text-dim); }
+.calc .calc-out { min-width: 0; display: grid; gap: 2px; }
+.calc .calc-out [data-calc-detail] { color: var(--text-faint); font-family: var(--font-body); font-size: 10px; font-weight: 500; line-height: 1.25; }
 .calc .calc-row.is-best .calc-out, .calc .calc-row.is-best .calc-name { color: var(--green); }
 .calc .calc-verdict {
   border-top: 1px solid var(--border); padding-top: 16px; margin: 0;
@@ -733,6 +735,11 @@
 
 /* ---------- Responsivo ----------------------------------- */
 @media (max-width: 560px) {
+  .calc { padding: 20px 16px; }
+  .calc .calc-row { grid-template-columns: 82px minmax(0, 1fr) 92px; gap: 8px; }
+  .calc .calc-name { font-size: 12px; }
+  .calc .calc-out { font-size: 14px; }
+  .calc .calc-out [data-calc-detail] { font-size: 9px; }
   .cta-verdict { padding: 20px 18px 22px; }
   .cta-verdict .btn, .result-actions .btn { width: 100%; justify-content: center; }
   .result-actions .result-actions-row { flex-direction: column; }

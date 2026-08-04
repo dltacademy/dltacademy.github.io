@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="/styles-base.css">
 <link rel="stylesheet" href="/styles-portal.css">
 <link rel="stylesheet" href="/guias/styles-guides.css">
+<link rel="stylesheet" href="/dlt-patterns.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -47,16 +48,22 @@
 </head>
 <body>
 <header class="top"><div class="wrap header-row"><a class="brand" href="/"><img src="/assets/dlt-logo-light.png" alt="DLT Academy"></a><nav class="header-nav" aria-label="Navegação principal"><a href="/#ferramentas">Ferramentas</a><a href="/#guias">Guias</a><a href="/blog/">Blog</a><a href="/sobre/">Sobre</a></nav></div></header>
-<main><div class="guide-wrap">
-  <section class="guide-hero">
+<main data-guide-progress="etherfi-cash-viagem"><div class="guide-wrap">
+  <section class="guide-hero piece-head">
     <p class="eyebrow">Pesquisa e experiência real</p>
     <h1>Por que uso o ether.fi Cash como meu cartão principal no exterior</h1>
-    <p class="subtitle">Depois de comparar Wise, Revolut, Bybit Card e cartões brasileiros, foi o cartão que mais reduziu meu custo real. Os 3% de cashback cobrem as poucas taxas que ainda existem e, nas compras elegíveis, ainda deixam dinheiro de volta.</p>
+    <p class="subtitle piece-lede">Depois de comparar Wise, Revolut, Bybit Card e cartões brasileiros, foi o cartão que mais reduziu meu custo real. Os 3% de cashback cobrem as poucas taxas que ainda existem e, nas compras elegíveis, ainda deixam dinheiro de volta.</p>
     <div class="guide-hero-cta">
       <a class="btn btn-primary" href="#por-que-escolhi">Entender por que escolhi</a>
       <p>Relato baseado na minha pesquisa e no meu uso. Condições verificadas em 29/07/2026.</p>
     </div>
   </section>
+
+  <section class="key-points" data-reveal aria-labelledby="etherfi-essencial"><p id="etherfi-essencial" class="key-points-title">Objetivo e pré-requisitos</p><ul><li>A conclusão vale para compras internacionais elegíveis, não para saques ou funding.</li><li>Confira residência, KYC, Direct Pay, saldo em USDC e faixa de cashback.</li><li>O custo para formar o saldo entra antes do retorno.</li><li>Mantenha cartão físico e dinheiro como plano B para ATM e falhas.</li></ul></section>
+  <nav class="piece-toc" data-toc-watch=".guide-reference > h2"><p>Neste guia</p><ol></ol></nav>
+  <section class="guide-step" data-reveal aria-labelledby="etherfi-passo-1"><div class="guide-step-top"><span class="guide-step-num">01</span><span class="guide-step-state">Confirmar</span></div><h2 id="etherfi-passo-1">Confirme elegibilidade e modo de pagamento</h2><p>Revise residência, KYC, Direct Pay e o saldo operacional. Não use Borrow Mode apenas para financiar uma viagem.</p><label class="guide-check"><input type="checkbox" data-guide-check="elegibilidade"><span>Residência, KYC e Direct Pay conferidos</span></label></section>
+  <section class="guide-step" data-reveal aria-labelledby="etherfi-passo-2"><div class="guide-step-top"><span class="guide-step-num">02</span><span class="guide-step-state">Testar</span></div><h2 id="etherfi-passo-2">Faça uma compra pequena</h2><p>Compre na moeda local, recuse DCC, espere a liquidação e confira se o cashback entrou. Não trate a autorização como custo final.</p><label class="guide-check"><input type="checkbox" data-guide-check="compra"><span>Compra pequena liquidada e cashback verificado</span></label></section>
+  <section class="guide-step" data-reveal aria-labelledby="etherfi-passo-3"><div class="guide-step-top"><span class="guide-step-num">03</span><span class="guide-step-state">Redundância</span></div><h2 id="etherfi-passo-3">Mantenha um cartão para o que o Cash não resolve</h2><p>Use outro cartão para saque e emergência. Se o custo de funding ou a aceitação não compensarem, a opção mais simples vence.</p><label class="guide-check"><input type="checkbox" data-guide-check="backup"><span>Cartão físico e plano B separados</span></label></section>
 
   <article class="guide-reference">
     <h2 id="por-que-escolhi">A resposta curta</h2>
@@ -180,7 +187,7 @@
     <p>Quando conheci o ether.fi, cheguei ao cartão por uma recomendação com link de indicação. Na época, o link mostrava uma promoção de <strong>15% de cashback em alimentação, restaurantes e até corridas de Uber</strong> por um período limitado.</p>
     <p>Eu cliquei no link, mas continuei o cadastro diretamente pelo aplicativo. Achei que abrir o link antes seria suficiente para manter a indicação vinculada. No meu caso, não foi.</p>
     <p>Eu deveria ter concluído primeiro a criação da conta pelo navegador, sem mudar para o app no meio do processo. Só depois de o cadastro estar finalizado deveria entrar no aplicativo com a mesma conta.</p>
-    <p>Por causa disso, deixei de receber alguns dólares da promoção. A pessoa que me indicou também deixou de receber a recompensa pela recomendação. Essa própria explicação é a transparência sobre o link: você pode receber a oferta disponível e eu posso ser remunerado se a conta ficar corretamente vinculada e cumprir as regras atuais.</p>
+    <p>Por causa disso, deixei de receber alguns dólares da promoção. A pessoa que me indicou também deixou de receber a recompensa naquela vinculação. A experiência mostra por que o cadastro deve ser concluído no fluxo e no ambiente indicados pela própria oferta; condições e vínculo podem mudar.</p>
     <p>Para evitar o mesmo problema:</p>
     <ol>
       <li>abra meu link no navegador;</li>
@@ -220,11 +227,11 @@
     <p>A razão principal é mais simples: <strong>depois de comparar o custo completo, foi o cartão que menos tirou dinheiro de mim e mais devolveu sobre gastos que eu já teria</strong>.</p>
     <p>A única lacuna importante continua sendo o dinheiro físico. Para isso, mantenho outro cartão. Para as compras internacionais, o ether.fi permanece como meu principal.</p>
 
-    <h2>Fontes, evidência e data</h2>
-    <p>As regras de produto, faixas de cashback, margem cambial, elegibilidade e tarifas foram conferidas em fontes oficiais em <strong>29/07/2026</strong>. A experiência de cadastro, a perda da promoção e a escolha do cartão são relatos do meu uso. A promoção atual foi informada pela oferta vinculada ao link e deve ser conferida novamente no momento do cadastro.</p>
+    <section class="sources"><h2>Fontes, evidência e data</h2>
+    <p>As regras de produto, faixas de cashback, margem cambial, elegibilidade e tarifas foram conferidas em fontes oficiais em <strong>29/07/2026</strong>. A experiência de cadastro, a perda da promoção e a escolha do cartão são relatos do meu uso. A promoção atual foi informada pela oferta vinculada ao link e deve ser conferida novamente no momento do cadastro.</p></section>
   </article>
 
-  <section class="guide-faq" aria-labelledby="faq-titulo">
+  <section class="guide-faq faq" data-faq-exclusive aria-labelledby="faq-titulo">
     <h2 id="faq-titulo">Perguntas frequentes</h2>
     <details><summary>O ether.fi Cash dá 3% em todas as compras?</summary><p>Não. O cashback é progressivo e depende da faixa mensal e da elegibilidade da transação. No Core, a taxa padrão é 3% nos primeiros US$ 2.000 mensais.</p></details>
     <details><summary>O cashback realmente fica acima das taxas?</summary><p>No meu uso, sim: a margem cambial adicional publicada para o Core é de 0% a 0,5%, e o cashback elegível pode ser 3%. Ainda é necessário incluir o custo para comprar e transferir USDC.</p></details>
@@ -236,6 +243,8 @@
     <details><summary>Por que devo terminar o cadastro no navegador?</summary><p>No meu cadastro, mudar para o aplicativo no meio do processo impediu o vínculo correto da indicação. Para reduzir esse risco, conclua a criação da conta no navegador e só depois entre no app.</p></details>
     <details><summary>Quem já possui ether.fi deve usar o link?</summary><p>Não. O link é voltado a uma nova conta. Quem já possui deve revisar Direct Pay, funding, cashback e a própria configuração atual.</p></details>
   </section>
+
+  <section class="share-row" data-share><p>Compartilhe o método de teste e a limitação do saque.</p><div class="share-actions"><button type="button" data-share-copy>Copiar link</button><a data-share-telegram target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Telegram</a><a data-share-whatsapp target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">WhatsApp</a></div></section>
 
   <div id="next-step-mount" data-content-id="guide-etherfi-cash-viagem"></div>
 </div></main>
@@ -249,5 +258,6 @@
 </footer>
 <script src="/js/content-registry.js"></script>
 <script src="/js/next-step.js"></script>
+<script src="/js/dlt-interactions.js"></script>
 </body>
 </html>

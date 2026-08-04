@@ -21,6 +21,7 @@ const CONTENT = [
     "tone": "green",
     "sit": ["posicao"],
     "mark": "SQ",
+    "effort": "4 rotas · 1.000 trajetórias",
     "related": ["tool-vender-ou-segurar", "tool-quanto-em-taxas"]
   },
   {
@@ -40,13 +41,13 @@ const CONTENT = [
     "id": "tool-primeiros-passos-cripto",
     "type": "tool",
     "title": "Primeiros Passos no Cripto",
-    "description": "Responda 6 perguntas e receba seu plano de entrada personalizado.",
+    "description": "Responda 8 perguntas e receba seu plano de entrada personalizado.",
     "url": "https://primeiros-passos-cripto.dlt.academy/",
     "tag": "Iniciante",
     "tone": "blue",
     "sit": ["comecar"],
     "mark": "PP",
-    "effort": "6 perguntas",
+    "effort": "8 perguntas · cerca de 3 minutos",
     "primaryNext": "guide-conta-binance",
     "related": ["tool-quanto-em-taxas"]
   },
@@ -54,13 +55,13 @@ const CONTENT = [
     "id": "tool-vender-ou-segurar",
     "type": "tool",
     "title": "Vender ou Segurar?",
-    "description": "4 perguntas pra descobrir se vender agora é decisão ou pânico — e o que fazer a seguir.",
+    "description": "6 perguntas para descobrir se vender agora é decisão ou pânico — e o que fazer a seguir.",
     "url": "https://vender-ou-segurar.dlt.academy/",
     "tag": "Já tem posição",
     "tone": "green",
     "sit": ["posicao"],
     "mark": "VS",
-    "effort": "4 perguntas",
+    "effort": "6 perguntas · cerca de 2 minutos",
     "primaryNext": "tool-sobrevive-ou-quebra"
   },
   {
@@ -87,6 +88,7 @@ const CONTENT = [
     "tone": "blue",
     "sit": ["comecar"],
     "mark": "CS",
+    "effort": "5 passos",
     "primaryNext": "tool-quanto-em-taxas"
   },
   {
@@ -125,6 +127,7 @@ const CONTENT = [
     "tone": "blue",
     "sit": ["taxas"],
     "mark": "IA",
+    "effort": "6 etapas de checagem",
     "primaryNext": "guide-bybit-pay-vietqr",
     "related": ["article-bybit-pay-vs-moreta-vietqr"]
   },
@@ -138,6 +141,7 @@ const CONTENT = [
     "tone": "blue",
     "sit": ["viagem", "taxas"],
     "mark": "MP",
+    "effort": "2 rotas · 3 verificações",
     "related": ["guide-bybit-pay-vietqr", "article-bybit-pay-vs-moreta-vietqr", "guide-pagamentos-no-exterior"]
   },
   {
@@ -150,6 +154,7 @@ const CONTENT = [
     "tone": "green",
     "sit": ["viagem", "taxas"],
     "mark": "EF",
+    "effort": "8 passos de teste",
     "primaryNext": "guide-pagamentos-no-exterior",
     "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt", "article-arq-saques-exterior"]
   },

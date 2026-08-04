@@ -31,13 +31,13 @@
 - [ ] conferir se o novo usuário recebe US$ 10 após US$ 150 em gastos no primeiro mês;
 - [ ] verificar se passou a existir uma data final e confirmar país, estabelecimentos excluídos e tempo de crédito;
 - [ ] atualizar o bloco entre `PROMO_ATUAL` e `/PROMO_ATUAL`;
-- [ ] revisar a retirada gratuita e a tarifa fixa do cartão Wise emitido no Brasil;
+- [x] revisar a retirada gratuita, a tarifa fixa e o IOF da conversão do cartão Wise emitido no Brasil;
 - [ ] atualizar `data-verified-at` e `CLAIMS.md` somente depois de conferir a oferta;
 - [ ] revisar tarifa do ARQ Standard, planos pagos, emissão e disponibilidade de ATM por país;
-- [ ] revisar franquia e tarifas do Revolut Standard Brasil;
+- [x] revisar franquia, tarifas e IOF do Revolut Standard Brasil;
 - [ ] preservar o título humano e a experiência pessoal antes das comparações;
 - [ ] evitar transformar o texto em documentação, ranking universal ou sequência de ressalvas;
-- [ ] testar a página em celular e desktop;
+- [x] testar a página em celular e desktop;
 - [ ] executar security check, registry e testes.
 
 Regra de prazo: se a página da campanha e as fontes oficiais não publicarem data final, registrar a oferta como **por tempo indeterminado**. Não inventar uma data e não abrir `needs-human` somente por essa ausência.
