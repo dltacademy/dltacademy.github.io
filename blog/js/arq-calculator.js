@@ -6,12 +6,15 @@
 
   var valueInput = root.querySelector("#arq-withdrawal-value");
   var countInput = root.querySelector("#arq-withdrawal-count");
-  var iofInput = root.querySelector("#arq-iof-rate");
+  var legacyIofInput = root.querySelector("#arq-iof-rate");
+  var wiseIofInput = root.querySelector("#arq-wise-iof-rate") || legacyIofInput;
   var wiseConversionInput = root.querySelector("#arq-wise-conversion-rate");
+  var revolutIofInput = root.querySelector("#arq-revolut-iof-rate") || legacyIofInput;
   var valueOutput = root.querySelector("#arq-withdrawal-value-output");
   var countOutput = root.querySelector("#arq-withdrawal-count-output");
-  var iofOutput = root.querySelector("#arq-iof-rate-output");
+  var wiseIofOutput = root.querySelector("#arq-wise-iof-rate-output") || root.querySelector("#arq-iof-rate-output");
   var wiseConversionOutput = root.querySelector("#arq-wise-conversion-rate-output");
+  var revolutIofOutput = root.querySelector("#arq-revolut-iof-rate-output");
   var verdict = root.querySelector("[data-calc-verdict]");
   var rows = {};
   Array.prototype.forEach.call(root.querySelectorAll("[data-calc-row]"), function (row) {
@@ -36,16 +39,17 @@
     return Number.isFinite(value) && value >= 0 ? value : fallback;
   }
 
-  function costModel(value, count, iofPercent, wiseConversionPercent) {
+  function costModel(value, count, wiseIofPercent, wiseConversionPercent, revolutIofPercent) {
     var totalValue = value * count;
-    var iofRate = iofPercent / 100;
+    var wiseIofRate = wiseIofPercent / 100;
     var wiseConversionRate = wiseConversionPercent / 100;
+    var revolutIofRate = revolutIofPercent / 100;
     var arqConversion = totalValue * 0.005;
     var arqCard = totalValue * 0.01;
     var wiseConversion = totalValue * wiseConversionRate;
-    var wiseIof = totalValue * iofRate;
+    var wiseIof = totalValue * wiseIofRate;
     var wiseCard = Math.max(count - 1, 0) * 20;
-    var revolutIof = totalValue * iofRate;
+    var revolutIof = totalValue * revolutIofRate;
     var revolutExchange = Math.max(totalValue - 1000, 0) * 0.014;
     var revolutCard = 0;
     var accumulated = 0;
@@ -75,9 +79,10 @@
   function render() {
     var value = Math.max(Number(valueInput.value) || 0, 0);
     var count = Math.max(Math.floor(Number(countInput.value) || 1), 1);
-    var iofPercent = readPercent(iofInput, 1.1);
+    var wiseIofPercent = readPercent(wiseIofInput, 3.5);
     var wiseConversionPercent = readPercent(wiseConversionInput, 0.78);
-    var costs = costModel(value, count, iofPercent, wiseConversionPercent);
+    var revolutIofPercent = readPercent(revolutIofInput, 3.5);
+    var costs = costModel(value, count, wiseIofPercent, wiseConversionPercent, revolutIofPercent);
     var keys = Object.keys(costs);
     var max = Math.max.apply(null, keys.map(function (key) { return costs[key].total; }).concat(1));
     var best = keys.reduce(function (key, candidate) {
@@ -86,8 +91,9 @@
 
     valueOutput.textContent = money.format(value);
     countOutput.textContent = count + (count === 1 ? " retirada" : " retiradas");
-    iofOutput.textContent = percentage(iofPercent);
+    if (wiseIofOutput) wiseIofOutput.textContent = percentage(wiseIofPercent);
     wiseConversionOutput.textContent = percentage(wiseConversionPercent);
+    if (revolutIofOutput) revolutIofOutput.textContent = percentage(revolutIofPercent);
 
     keys.forEach(function (key) {
       var entry = rows[key];
@@ -108,7 +114,7 @@
       : bestLabel + " tem o menor custo conhecido nesta simulação: " + money.format(costs[best].total) + ". A diferença para o " + (second === "arq" ? "ARQ" : second === "wise" ? "Wise" : "Revolut Standard") + " é de " + money.format(difference) + ". A tarifa variável do ATM e o DCC ficam fora.";
   }
 
-  [valueInput, countInput, iofInput, wiseConversionInput].forEach(function (input) {
+  [valueInput, countInput, legacyIofInput, wiseIofInput, wiseConversionInput, revolutIofInput].forEach(function (input) {
     if (input) input.addEventListener("input", render);
   });
   render();
