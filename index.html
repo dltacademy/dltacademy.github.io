@@ -28,6 +28,7 @@
 <link rel="icon" type="image/png" href="assets/dlt-mark.png">
 <link rel="stylesheet" href="styles-base.css">
 <link rel="stylesheet" href="styles-portal.css">
+<link rel="stylesheet" href="dlt-patterns.css">
 
 <!-- Dados estruturados (JSON-LD é bloco de dados, não executa — ok com o CSP) -->
 <script type="application/ld+json">
@@ -65,9 +66,9 @@
   <div class="wrap header-row">
     <a class="brand" href="#top"><img src="assets/dlt-logo-light.png" alt="DLT Academy"></a>
     <nav class="header-nav" aria-label="Navegação principal">
-      <a href="#ferramentas">Ferramentas</a>
-      <a href="#guias">Guias</a>
-      <a href="#artigos">Blog</a>
+      <a class="nav-catalog" href="/ferramentas/">Ferramentas</a>
+      <a class="nav-catalog" href="/guias/">Guias</a>
+      <a href="/blog/">Blog</a>
       <a href="/sobre/">Sobre</a>
       <a class="header-cta" href="#ferramentas">Começar grátis</a>
     </nav>
@@ -121,18 +122,22 @@
     <section id="ferramentas" aria-labelledby="ferramentas-titulo">
       <div class="section-heading reveal">
         <p class="eyebrow">Escolha por onde começar</p>
-        <h2 id="ferramentas-titulo">Ferramentas</h2>
-        <p>Respostas práticas para decisões que importam.</p>
+        <h2 id="ferramentas-titulo">Ferramentas, protocolos e guias</h2>
+        <p>Escolha pelo problema que você quer resolver, não pelo formato.</p>
       </div>
+      <div class="situation-chips" data-filter-group aria-label="Filtrar catálogo por situação"></div>
+      <p class="catalog-count" data-filter-count aria-live="polite"></p>
       <noscript>
         <p>Este catálogo interativo precisa de JavaScript. Acesso direto:
           <a href="https://sobrevive-ou-quebra.dlt.academy/">Sobrevive ou Quebra?</a> ·
           <a href="https://quanto-em-taxas.dlt.academy/">Quanto você paga para operar?</a> ·
           <a href="https://primeiros-passos-cripto.dlt.academy/">Primeiros Passos no Cripto</a> ·
           <a href="https://vender-ou-segurar.dlt.academy/">Vender ou Segurar?</a> ·
+          <a href="/protocolos/medo-de-ficar-de-fora/">Cheguei tarde?</a> ·
           <a href="/guias/conta-binance/">Criar conta com segurança</a> ·
           <a href="/guias/bybit-pay-vietqr/">Pagar com QR Code no exterior</a> ·
           <a href="/guias/abastecer-moreta-usdt/">Abastecer o Moreta Pay com USDT</a> ·
+          <a href="/guias/etherfi-cash-viagem/">Usar o ether.fi Cash no exterior</a> ·
           <a href="/blog/">Blog</a>.
         </p>
       </noscript>
@@ -178,8 +183,8 @@
     <nav class="footer-nav" aria-label="Links do rodapé">
       <div class="footer-nav-col">
         <strong>Explorar</strong>
-        <a href="#ferramentas">Ferramentas</a>
-        <a href="#guias">Guias</a>
+        <a href="/ferramentas/">Ferramentas</a>
+        <a href="/guias/">Guias</a>
         <a href="/blog/">Blog</a>
       </div>
       <div class="footer-nav-col">
@@ -204,5 +209,6 @@
 
 <script src="js/content-registry.js"></script>
 <script src="js/portal.js"></script>
+<script src="js/dlt-interactions.js"></script>
 </body>
 </html>

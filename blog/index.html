@@ -29,25 +29,37 @@
 <link rel="stylesheet" href="/styles-base.css">
 <link rel="stylesheet" href="/styles-portal.css">
 <link rel="stylesheet" href="styles-blog.css">
+<link rel="stylesheet" href="/dlt-patterns.css">
 </head>
 <body>
 
-<header class="top">
-  <div class="wrap">
-    <a class="brand" href="/"><img src="/assets/dlt-logo-light.png" alt="DLT Academy"></a>
-  </div>
-</header>
+<header class="top"><div class="wrap header-row"><a class="brand" href="/"><img src="/assets/dlt-logo-light.png" alt="DLT Academy"></a><nav class="header-nav" aria-label="Navegação principal"><a class="nav-catalog" href="/ferramentas/">Ferramentas</a><a class="nav-catalog" href="/guias/">Guias</a><a href="/blog/">Blog</a><a href="/sobre/">Sobre</a></nav></div></header>
 
 <main id="top">
   <div class="wrap">
 
-    <section class="portal-hero">
-      <h1>Blog</h1>
-      <p class="subtitle">Cripto, mercado e gestão de risco — educacional, sem enrolação, sem promessa de lucro.</p>
+    <section class="page-hero">
+      <p class="eyebrow">Blog</p>
+      <h1>Decisões, custos e experiências reais.</h1>
+      <p class="subtitle">O lede e o bloco “O essencial” entregam a conclusão. O restante mostra o raciocínio, as fontes e as condições em que a resposta muda.</p>
+      <div class="situation-chips" data-filter-group aria-label="Filtrar artigos por situação">
+        <button type="button" data-filter="comecar" aria-pressed="false">Estou começando</button>
+        <button type="button" data-filter="posicao" aria-pressed="false">Já tenho posição</button>
+        <button type="button" data-filter="viagem" aria-pressed="false">Vou viajar</button>
+        <button type="button" data-filter="taxas" aria-pressed="false">Custos e taxas</button>
+      </div>
+      <p class="catalog-count" data-filter-count aria-live="polite"></p>
     </section>
 
-    <section>
-      <div id="posts-grid"></div>
+    <section class="page-section">
+      <div id="posts-grid" class="entry-grid"></div>
+    </section>
+
+    <section class="page-section">
+      <div class="principles">
+        <div><p class="eyebrow">Como lemos por aqui</p><h2>Todo artigo abre com o essencial.</h2></div>
+        <div class="principles-copy"><p>Se você só tem dois minutos, leia a resposta curta e os pontos principais. A profundidade existe para você conferir o raciocínio e discordar com informação.</p><a class="btn btn-secondary" href="/ferramentas/">Ver ferramentas gratuitas</a></div>
+      </div>
     </section>
 
   </div>
@@ -63,5 +75,6 @@
 
 <script src="../js/content-registry.js"></script>
 <script src="js/blog.js"></script>
+<script src="/js/dlt-interactions.js"></script>
 </body>
 </html>
