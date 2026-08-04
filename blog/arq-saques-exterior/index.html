@@ -80,7 +80,7 @@
   <div class="figure-cell"><p class="figure-value">R$ 20</p><p class="figure-label">Wise após a franquia</p><p class="figure-source">Fonte: Wise · conferido em 04/08/2026 · escopo: cartão no Brasil</p></div>
   <div class="figure-cell"><p class="figure-value">2% / R$ 6</p><p class="figure-label">Revolut Standard após o limite</p><p class="figure-source">Fonte: Revolut · conferido em 04/08/2026 · escopo: plano Standard no Brasil</p></div>
 </div>
-<p class="arq-source-note">Os três números são tarifas próprias do emissor. Taxa do operador do caixa, câmbio, spread, IOF aplicável e custo para formar o saldo não entram nesta linha de comparação.</p>
+<p class="arq-source-note">Os três números acima são tarifas próprias do emissor. A calculadora abaixo também soma conversão e IOF quando a regra publicada permite representar esses custos. A tarifa do operador do caixa e o DCC continuam fora por variarem a cada operação.</p>
 
 <h2>Por que o ARQ ficou com essa função</h2>
 <p>Em uma viagem longa, não basta olhar qual cartão parece mais barato numa tabela. O cartão precisa estar comigo, funcionar em caixas diferentes e não transformar cada retirada pequena numa tarifa fixa pesada.</p>
@@ -92,23 +92,26 @@
 <p>Também vale lembrar que o dinheiro precisa chegar à conta antes do saque. O custo para converter, recarregar ou formar o saldo depende do caminho e do plano; por isso eu confiro o valor exibido no app e não o misturo com a tarifa do ATM. A tarifa do caixa também pode ser adicionada pelo operador.</p>
 
 <section class="calc" id="arq-calc" data-arq-calculator aria-labelledby="arq-calc-title">
-  <header><p class="calc-kicker">Calculadora local</p><h3 id="arq-calc-title">Quanto custa repetir o mesmo saque?</h3><p>Escolha um valor por retirada e quantas vezes você sacaria no mês. A conta compara só a tarifa própria publicada — não promete o custo final no caixa.</p></header>
+  <header><p class="calc-kicker">Calculadora local</p><h3 id="arq-calc-title">Quanto custa repetir o mesmo saque?</h3><p>Escolha o valor, a quantidade e ajuste as premissas que variam por rota. A conta soma conversão, IOF e tarifa própria; a tarifa do operador do ATM e o DCC ficam no disclaimer.</p></header>
   <div class="calc-controls">
     <div class="calc-control"><label for="arq-withdrawal-value">Valor de cada retirada <output id="arq-withdrawal-value-output" for="arq-withdrawal-value">R$ 500</output></label><input id="arq-withdrawal-value" type="range" min="100" max="3000" step="50" value="500"></div>
     <div class="calc-control"><label for="arq-withdrawal-count">Retiradas no mês <output id="arq-withdrawal-count-output" for="arq-withdrawal-count">2</output></label><input id="arq-withdrawal-count" type="range" min="1" max="8" step="1" value="2"></div>
+    <div class="calc-control"><label for="arq-iof-rate">IOF da conversão (Wise/Revolut) <output id="arq-iof-rate-output" for="arq-iof-rate">1,10%</output></label><input id="arq-iof-rate" type="range" min="0" max="5" step="0.01" value="1.1"></div>
+    <div class="calc-control"><label for="arq-wise-conversion-rate">Tarifa de conversão Wise <output id="arq-wise-conversion-rate-output" for="arq-wise-conversion-rate">0,78%</output></label><input id="arq-wise-conversion-rate" type="range" min="0" max="3" step="0.01" value="0.78"></div>
   </div>
-  <div class="calc-rows bar-chart" aria-live="polite" aria-label="Comparação visual das tarifas próprias">
-    <div class="calc-row" data-calc-row="arq"><span class="calc-name">ARQ · 1%</span><span class="calc-track"><span></span></span><output class="calc-out">R$ 0</output></div>
-    <div class="calc-row" data-calc-row="wise"><span class="calc-name">Wise · após 1 grátis</span><span class="calc-track"><span></span></span><output class="calc-out">R$ 0</output></div>
-    <div class="calc-row" data-calc-row="revolut"><span class="calc-name">Revolut · após franquia</span><span class="calc-track"><span></span></span><output class="calc-out">R$ 0</output></div>
+  <p class="calc-assumption-note">Premissas verificadas em 04/08/2026: ARQ usa aproximadamente 0,5% no total de IOF, spread e serviço; Wise parte de 0,78% de conversão + IOF; Revolut não cobra câmbio BRL até R$ 1.000/mês e cobra 1,4% depois. Ajuste o IOF e a tarifa Wise se o app mostrar outra rota ou alíquota.</p>
+  <div class="calc-rows bar-chart" aria-live="polite" aria-label="Comparação visual do custo conhecido">
+    <div class="calc-row" data-calc-row="arq"><span class="calc-name">ARQ · custo conhecido</span><span class="calc-track"><span></span></span><output class="calc-out"><span data-calc-total>R$ 0</span><small data-calc-detail></small></output></div>
+    <div class="calc-row" data-calc-row="wise"><span class="calc-name">Wise · custo conhecido</span><span class="calc-track"><span></span></span><output class="calc-out"><span data-calc-total>R$ 0</span><small data-calc-detail></small></output></div>
+    <div class="calc-row" data-calc-row="revolut"><span class="calc-name">Revolut · custo conhecido</span><span class="calc-track"><span></span></span><output class="calc-out"><span data-calc-total>R$ 0</span><small data-calc-detail></small></output></div>
   </div>
   <p class="calc-verdict" data-calc-verdict>Informe o valor e o número de retiradas para ver a comparação.</p>
   <button class="btn btn-secondary" type="button" data-copy-result="#arq-calc">Copiar esta simulação</button>
-  <p class="calc-fine">Escopo da conta: Brasil, tarifa própria do cartão. Wise: 1 retirada gratuita/mês e R$ 20 nas seguintes. Revolut Standard: até R$ 1.600 ou 5 retiradas, o que ocorrer primeiro; depois 2% ou R$ 6, o maior. ARQ Standard: 1% em cada retirada. ATM, conversão, spread e outros custos ficam fora. Fontes conferidas em 04/08/2026.</p>
+  <p class="calc-fine">Escopo da conta: Brasil, equivalente em BRL, planos Standard e rota de conta global pré-financiada. Incluídos: conversão, IOF e tarifa própria do cartão. Wise: 1 retirada gratuita/mês e R$ 20 nas seguintes. Revolut Standard: até R$ 1.600 ou 5 retiradas, o que ocorrer primeiro; depois 2% ou R$ 6, o maior. Fora da fórmula: tarifa do operador do ATM, DCC, custos extraordinários de funding e qualquer taxa que o app mostre fora destas premissas. Fontes conferidas em 04/08/2026.</p>
 </section>
 
 <h2>Antes de usar o ARQ, eu olho a Wise e o Revolut</h2>
-<p>Se ainda tenho a retirada gratuita da Wise disponível, considero essa franquia primeiro — mas não decido por ela isoladamente. Para cartões no Brasil, a empresa publica uma retirada gratuita por mês e depois cobra R$ 20 por retirada, além de eventual conversão e da taxa do caixa. A tarifa de conversão varia conforme a moeda e o caminho de saldo e não entra na calculadora acima.</p>
+<p>Se ainda tenho a retirada gratuita da Wise disponível, considero essa franquia primeiro — mas não decido por ela isoladamente. Para cartões no Brasil, a empresa publica uma retirada gratuita por mês e depois cobra R$ 20 por retirada, além da conversão e do IOF. A tarifa do operador do caixa é variável, não entra nesta fórmula e permanece como disclaimer. A calculadora usa o piso publicado para a tarifa de conversão e permite ajustar o IOF e a tarifa de conversão quando a simulação da conta mostrar outra condição.</p>
 <p>Esses R$ 20 pesam bastante quando o saque é pequeno. Numa retirada equivalente a R$ 500, por exemplo, 1% no ARQ seria algo perto de R$ 5. Depois da franquia, a Wise cobraria R$ 20 antes das outras despesas. Em um saque grande, a tarifa fixa pode voltar a fazer sentido — desde que o caixa permita retirar aquele valor.</p>
 <p>O Revolut Standard brasileiro publica até R$ 1.600 ou cinco saques por mês sem tarifa própria, o que acontecer primeiro. Dentro dessa franquia, ele pode sair melhor. Depois dela, a cobrança passa a ser de 2% ou R$ 6 por saque, prevalecendo o maior valor.</p>
 <p>Por isso não tento escolher um vencedor por uma linha da tabela. Uso a franquia quando ela reduz o custo total e mantenho o ARQ para quando preciso continuar sacando sem pagar uma tarifa fixa alta em cada tentativa.</p>
@@ -130,7 +133,7 @@
 
 <h2>O custo real do saque</h2>
 <p>Quando comparo uma retirada, junto quatro coisas: o custo para formar o saldo, a tarifa do cartão, a tarifa do dono do ATM e a conversão escolhida na tela. “Saque grátis” cobre, no máximo, uma dessas partes.</p>
-<p>Uma retirada gratuita na Wise ainda pode carregar IOF na conversão aplicável, spread, custo para formar o saldo e tarifa do ATM. Um saque de 1% no ARQ também pode ficar ruim se eu abastecer a conta por um caminho caro. E qualquer cartão pode perder se eu aceitar DCC. É por isso que “saque grátis” não significa automaticamente “saque mais barato”.</p>
+<p>Uma retirada gratuita na Wise ainda carrega IOF e tarifa de conversão na formação do saldo, além da tarifa do ATM. Um saque de 1% no ARQ também pode ficar ruim se eu abastecer a conta por um caminho caro. A calculadora soma os custos publicados que consegue representar; qualquer custo extraordinário de funding e o DCC continuam fora, com aviso explícito. É por isso que “saque grátis” não significa automaticamente “saque mais barato”.</p>
 
 <div class="figure-row cost-parts" aria-label="As quatro partes do custo real do saque">
   <div class="figure-cell"><p class="figure-value">01</p><p class="figure-label">Formar o saldo</p><p class="figure-source">Compra, conversão, recarga ou transferência</p></div>
@@ -180,6 +183,9 @@
   <li><a href="https://help.arqfinance.com/en/articles/13546968-can-i-make-cash-withdrawals-with-my-arq-card" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: disponibilidade de saques</a></li>
   <li><a href="https://help.arqfinance.com/en/articles/13901053-what-is-arq-premium" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: Premium e franquia de ATM</a></li>
   <li><a href="https://help.arqfinance.com/en/articles/13897054-meet-our-new-brand-dolarapp-is-now-arq" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: mudança de marca e condição do primeiro cartão físico</a></li>
+  <li><a href="https://help.arqfinance.com/pt-BR/articles/14627024-o-que-e-a-campanha-taxa-de-conversao-zero" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: total aproximado de IOF, spread e serviço na conversão</a></li>
+  <li><a href="https://wise.com/br/pricing/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Wise: tarifa de conversão a partir de 0,78%</a></li>
+  <li><a href="https://wise.com/br" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Wise: 1,1% de IOF na conversão da conta global</a></li>
   <li><a href="https://wise.com/pt/help/articles/3GuSCwDgRqiYrsUc2eo7MN/estrutura-e-tarifas-de-saque-em-caixas-eletronicos" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Wise: estrutura e tarifas de saque em caixas eletrônicos</a></li>
   <li><a href="https://www.revolut.com/pt-BR/legal/standard-fees/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Revolut: tarifas do plano Standard no Brasil</a></li>
   <li><a href="https://help.arqfinance.com/en/articles/13864096-referrals-if-you-haven-t-received-the-reward-it-can-take-up-to-5-days-also-your-merchant-might-be-excluded" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: condições e prazo da indicação</a></li>
