@@ -19,16 +19,17 @@ class DesignSystemTests(unittest.TestCase):
         self.assertEqual(set(range(1, 23)) | set(range(24, 32)), numbers)
         self.assertTrue((ROOT / "og-template.svg").is_file())
 
-    def test_shared_interactions_contain_no_volatile_product_rules(self) -> None:
+    def test_shared_interactions_ship_the_small_atm_pattern_with_scope(self) -> None:
         script = (ROOT / "js" / "dlt-interactions.js").read_text(encoding="utf-8")
         for marker in (
-            "ARQ Standard",
-            "Wise (BR)",
-            "Revolut Std",
+            "atmTariffs",
             "atmMonthlyCost",
+            "initAtmCalc",
+            "04/08/2026",
+            "tarifa própria",
         ):
             with self.subTest(marker=marker):
-                self.assertNotIn(marker, script)
+                self.assertIn(marker, script)
 
     def test_home_uses_unified_catalog_and_situation_filter(self) -> None:
         html = (ROOT / "index.html").read_text(encoding="utf-8")

@@ -81,6 +81,10 @@ class FullScopeContractTests(unittest.TestCase):
                 self.assertNotIn('og-image.png', html)
                 self.assertNotIn('name="keywords"', html)
 
+    def test_retired_png_og_assets_are_not_tracked(self) -> None:
+        retired = sorted(ROOT.rglob("og-image.png"))
+        self.assertEqual([], retired, "OG PNG antigo ainda presente: " + ", ".join(str(path.relative_to(ROOT)) for path in retired))
+
     def test_home_and_catalogs_cover_the_portal_hub_model(self) -> None:
         home = self.read("index.html")
         for marker in ("home-hero", "hub-pillars", "tools-grid", "latest-posts-grid", "principles"):
@@ -142,13 +146,16 @@ class FullScopeContractTests(unittest.TestCase):
         protocol = self.read("protocolos/medo-de-ficar-de-fora/js/protocol.js")
         for marker in ("protocol-mount", "tool-facts", "flow-card", "flow-result", "result-hero", "answer-record", "result-actions"):
             self.assertTrue(marker in html or marker in engine, marker)
-        for marker in ("protocol-progress", "aria-disabled", "protocol-plan", "localStorage", "result-actions", "downloadProtocolPdf", "buildMarkdown", "Refazer o protocolo", "share-row", "cta-verdict"):
+        for marker in ("protocol-progress", "aria-disabled", "protocol-result-stats", "protocol-plan", "localStorage", "result-actions", "downloadProtocolPdf", "buildMarkdown", "Refazer o protocolo", "share-row", "cta-verdict"):
             self.assertIn(marker, engine, marker)
         for tone in ('tone: "bad"', 'tone: "mixed"', 'tone: "good"'):
             self.assertIn(tone, protocol)
+        self.assertIn("stats:", protocol)
         self.assertIn("Gerado em", engine)
         self.assertIn("Conteúdo educacional", engine)
         self.assertIn("window.location.origin + window.location.pathname", engine)
+        self.assertLess(engine.index("// Registro pessoal"), engine.index("if (result.plan"))
+        self.assertLess(engine.index("id = \"next-step-mount\""), engine.index("const cta = result.cta"))
 
 
 if __name__ == "__main__":

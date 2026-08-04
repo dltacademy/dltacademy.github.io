@@ -166,9 +166,38 @@ function runProtocol(protocol, mountId) {
     verdictPanel.appendChild(el("h2", "protocol-verdict", result.verdict));
     card.appendChild(verdictPanel);
 
+    if (result.stats && result.stats.length) {
+      const stats = el("div", "result-stats protocol-result-stats");
+      stats.setAttribute("aria-label", "Indicadores do resultado");
+      result.stats.slice(0, 3).forEach((stat) => {
+        const cell = el("div");
+        cell.appendChild(el("strong", null, stat.value));
+        cell.appendChild(el("span", null, stat.label));
+        stats.appendChild(cell);
+      });
+      card.appendChild(stats);
+    }
+
     const copy = el("div", "protocol-result-copy");
     (result.body || []).forEach((p) => copy.appendChild(el("p", "protocol-body", p)));
     card.appendChild(copy);
+
+    // Registro pessoal do que a pessoa escreveu/escolheu.
+    if (result.record && result.record.length) {
+      const rec = el("section", "protocol-record answer-record");
+      rec.setAttribute("aria-labelledby", "protocol-record-title");
+      const recTitle = el("h3", null, "O que você registrou");
+      recTitle.id = "protocol-record-title";
+      rec.appendChild(recTitle);
+      result.record.forEach((r) => {
+        if (!r.value) return;
+        const item = el("div", "protocol-record-item answer-item");
+        item.appendChild(el("span", "protocol-record-q answer-q", r.q));
+        item.appendChild(el("span", "protocol-record-a answer-a", r.value));
+        rec.appendChild(item);
+      });
+      card.appendChild(rec);
+    }
 
     if (result.plan && result.plan.length) {
       const planState = readPlanState();
@@ -203,23 +232,6 @@ function runProtocol(protocol, mountId) {
       });
       plan.appendChild(list);
       card.appendChild(plan);
-    }
-
-    // Registro pessoal do que a pessoa escreveu/escolheu.
-    if (result.record && result.record.length) {
-      const rec = el("section", "protocol-record answer-record");
-      rec.setAttribute("aria-labelledby", "protocol-record-title");
-      const recTitle = el("h3", null, "O que você registrou");
-      recTitle.id = "protocol-record-title";
-      rec.appendChild(recTitle);
-      result.record.forEach((r) => {
-        if (!r.value) return;
-        const item = el("div", "protocol-record-item answer-item");
-        item.appendChild(el("span", "protocol-record-q answer-q", r.q));
-        item.appendChild(el("span", "protocol-record-a answer-a", r.value));
-        rec.appendChild(item);
-      });
-      card.appendChild(rec);
     }
 
     if (result.safety) card.appendChild(el("p", "protocol-safety", result.safety));
@@ -349,6 +361,15 @@ function runProtocol(protocol, mountId) {
 
     mount.replaceChildren(card);
 
+    // Próximo passo pelo grafo do registry (mesmo componente dos guias).
+    // Ele vem antes do CTA contextual para manter a ordem do modelo:
+    // reflexão → registro → próximo passo útil → presente/CTA.
+    const nextMount = el("div");
+    nextMount.id = "next-step-mount";
+    nextMount.dataset.contentId = protocol.id;
+    mount.appendChild(nextMount);
+    if (typeof renderNextStep === "function") renderNextStep();
+
     // CTA por veredito — bloco separado, só na tela, nunca no arquivo nem
     // tecido na reflexão. O modo "artigo" também pode apontar para guia ou
     // ferramenta de utilidade; "presente" é reservado a oferta elegível.
@@ -371,13 +392,6 @@ function runProtocol(protocol, mountId) {
       if (cta.disclosure) box.appendChild(el("p", "protocol-cta-disclosure", cta.disclosure));
       mount.appendChild(box);
     }
-
-    // Próximo passo pelo grafo do registry (mesmo componente dos guias).
-    const nextMount = el("div");
-    nextMount.id = "next-step-mount";
-    nextMount.dataset.contentId = protocol.id;
-    mount.appendChild(nextMount);
-    if (typeof renderNextStep === "function") renderNextStep();
   }
 
   render(0);
@@ -514,33 +528,32 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
   });
   y += 4;
 
+  const stats = (result.stats || []).slice(0, 3);
+  if (stats.length) {
+    ensureSpace(25);
+    const gap = 4;
+    const boxWidth = (contentWidth - gap * (stats.length - 1)) / stats.length;
+    stats.forEach((stat, index) => {
+      const x = margin + (boxWidth + gap) * index;
+      doc.setFillColor(246, 248, 252);
+      doc.setDrawColor(...border);
+      doc.roundedRect(x, y - 3, boxWidth, 17, 2, 2, "FD");
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(12);
+      doc.setTextColor(...blue);
+      doc.text(safePdfText(stat.value), x + 4, y + 4);
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(7.2);
+      doc.setTextColor(...muted);
+      doc.text(safePdfText(stat.label), x + 4, y + 10);
+    });
+    y += 22;
+  }
+
   (result.body || []).forEach((paragraph) => {
     writeLines(paragraph, { fontSize: 10.5, lineHeight: 5.2, color: ink });
     y += 3.2;
   });
-
-  const plan = result.plan || [];
-  if (plan.length) {
-    ensureSpace(18);
-    y += 2;
-    doc.setDrawColor(...border);
-    doc.setLineWidth(0.4);
-    doc.line(margin, y, pageWidth - margin, y);
-    y += 9;
-    writeLines("Seu plano", { fontSize: 14, lineHeight: 6.5, fontStyle: "bold", color: ink });
-    y += 2;
-    plan.forEach((item, index) => {
-      ensureSpace(15);
-      writeLines("[ ] Passo " + (index + 1) + ": " + item.title, {
-        fontSize: 9.5,
-        lineHeight: 4.8,
-        fontStyle: "bold",
-        color: blue,
-      });
-      writeLines(item.text, { fontSize: 9.5, lineHeight: 4.8, color: ink });
-      y += 2.5;
-    });
-  }
 
   const records = (result.record || []).filter((item) => item.value);
   if (records.length) {
@@ -579,6 +592,29 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
         color: ink,
       });
       y += 5;
+    });
+  }
+
+  const plan = result.plan || [];
+  if (plan.length) {
+    ensureSpace(18);
+    y += 2;
+    doc.setDrawColor(...border);
+    doc.setLineWidth(0.4);
+    doc.line(margin, y, pageWidth - margin, y);
+    y += 9;
+    writeLines("Seu plano", { fontSize: 14, lineHeight: 6.5, fontStyle: "bold", color: ink });
+    y += 2;
+    plan.forEach((item, index) => {
+      ensureSpace(15);
+      writeLines("[ ] Passo " + (index + 1) + ": " + item.title, {
+        fontSize: 9.5,
+        lineHeight: 4.8,
+        fontStyle: "bold",
+        color: blue,
+      });
+      writeLines(item.text, { fontSize: 9.5, lineHeight: 4.8, color: ink });
+      y += 2.5;
     });
   }
 
@@ -640,16 +676,15 @@ function buildMarkdown(protocol, result, answers) {
   linhas.push("");
   linhas.push("> " + result.verdict);
   linhas.push("");
-  (result.body || []).forEach((p) => { linhas.push(p); linhas.push(""); });
-  if (result.plan && result.plan.length) {
-    linhas.push("## Seu plano");
+  if (result.stats && result.stats.length) {
+    linhas.push("## Resumo");
     linhas.push("");
-    result.plan.forEach((item, index) => {
-      linhas.push("- [ ] Passo " + (index + 1) + ": " + item.title);
-      linhas.push("  " + item.text);
+    result.stats.slice(0, 3).forEach((stat) => {
+      linhas.push("- **" + stat.value + "** — " + stat.label);
     });
     linhas.push("");
   }
+  (result.body || []).forEach((p) => { linhas.push(p); linhas.push(""); });
   if (result.record && result.record.length) {
     linhas.push("## O que você registrou");
     linhas.push("");
@@ -659,6 +694,15 @@ function buildMarkdown(protocol, result, answers) {
       linhas.push(r.value);
       linhas.push("");
     });
+  }
+  if (result.plan && result.plan.length) {
+    linhas.push("## Seu plano");
+    linhas.push("");
+    result.plan.forEach((item, index) => {
+      linhas.push("- [ ] Passo " + (index + 1) + ": " + item.title);
+      linhas.push("  " + item.text);
+    });
+    linhas.push("");
   }
   linhas.push("---");
   linhas.push("Reflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.");
