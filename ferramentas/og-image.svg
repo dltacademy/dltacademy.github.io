@@ -1,5 +1,5 @@
 
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Cheguei tarde? Protocolo DLT Academy">
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Ferramentas DLT Academy">
   <defs>
     <radialGradient id="glow" cx="18%" cy="0%" r="70%">
       <stop offset="0%" stop-color="#1E4FD8" stop-opacity="0.42"></stop>
@@ -17,13 +17,13 @@
 
 
   <rect x="80" y="92" width="251" height="46" rx="23" fill="#1E4FD8" fill-opacity="0.16" stroke="#4A8DF8" stroke-opacity="0.45"></rect>
-  <text x="108" y="122" font-family="Sora, &#39;Trebuchet MS&#39;, sans-serif" font-size="21" font-weight="700" letter-spacing="1.8" fill="#8FBBFF">PROTOCOLO</text>
+  <text x="108" y="122" font-family="Sora, &#39;Trebuchet MS&#39;, sans-serif" font-size="21" font-weight="700" letter-spacing="1.8" fill="#8FBBFF">FERRAMENTAS</text>
 
 
   <text font-family="Sora, &#39;Trebuchet MS&#39;, sans-serif" font-size="70" font-weight="700" letter-spacing="-1.6" fill="#E8EDF7">
-    <tspan x="80" y="272">Cheguei tarde?</tspan>
-    <tspan x="80" y="352">Decidir sem</tspan>
-    <tspan x="80" y="432">ficar de fora</tspan>
+    <tspan x="80" y="272">Respostas para</tspan>
+    <tspan x="80" y="352">o seu caso</tspan>
+    <tspan x="80" y="432">em minutos</tspan>
   </text>
 
 

@@ -45,7 +45,14 @@ Leia este arquivo antes de criar ou alterar uma peça pública.
 
 ## Gates
 
-Antes do PR, confira editorial, visual, mobile, teclado, contraste e claims. Depois execute:
+Carregar `dlt-patterns.css` e `dlt-interactions.js` é pré-requisito, não prova de
+implementação. Antes do PR, compare cada peça com o modelo correspondente e
+registre a evidência: componentes presentes, adaptações justificadas, entradas
+que mudam a saída, exportação/partilha quando aplicável e limites explícitos.
+Confira editorial, visual, mobile, teclado, contraste, overflow, share sem dados
+sensíveis e console. Valide em 1440 px, 390 px e 320 px quando a peça for
+interativa; não aceite um screenshot como substituto para medir `scrollWidth`.
+Depois execute:
 
 ```bash
 python3 -m unittest discover -s tests -p 'test_*.py' -v
@@ -54,3 +61,5 @@ python3 security_check.py .
 find . -name '*.js' -not -path './.git/*' -print0 | xargs -0 -n1 node --check
 ```
 
+O gate editorial e a matriz privada do projeto devem ser atualizados no mesmo
+ciclo do PR. Presença da biblioteca não comprova implementação do modelo.

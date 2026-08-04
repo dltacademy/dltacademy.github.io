@@ -7,14 +7,13 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.goatcounter.com; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
 <title>Como criar uma conta na Binance com segurança — Passo a passo</title>
 <meta name="description" content="Passo a passo para criar uma conta na Binance com segurança: cadastro, confirmação, verificação e proteção com passkey ou autenticador.">
-<meta name="keywords" content="como criar conta na binance, cadastro binance, binance 2fa, passkey binance, segurança conta binance">
 <link rel="canonical" href="https://dlt.academy/guias/conta-binance/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Como criar uma conta na Binance com segurança">
 <meta property="og:description" content="Cadastro, confirmação e proteção da conta em um guia interativo passo a passo.">
 <meta property="og:url" content="https://dlt.academy/guias/conta-binance/">
-<meta property="og:image" content="https://dlt.academy/guias/conta-binance/og-image.png">
-<meta property="og:image:type" content="image/png">
+<meta property="og:image" content="https://dlt.academy/guias/conta-binance/og-image.svg">
+<meta property="og:image:type" content="image/svg+xml">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Guia interativo para criar uma conta na Binance com segurança — DLT Academy">
@@ -22,26 +21,34 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Como criar uma conta na Binance com segurança">
 <meta name="twitter:description" content="Cadastro, confirmação e proteção da conta em um guia interativo passo a passo.">
-<meta name="twitter:image" content="https://dlt.academy/guias/conta-binance/og-image.png">
+<meta name="twitter:image" content="https://dlt.academy/guias/conta-binance/og-image.svg">
 <meta name="twitter:image:alt" content="Guia interativo para criar uma conta na Binance com segurança — DLT Academy">
 <meta name="theme-color" content="#06090F">
 <link rel="icon" type="image/png" href="/assets/dlt-mark.png">
 <link rel="stylesheet" href="/styles-base.css">
 <link rel="stylesheet" href="/styles-portal.css">
 <link rel="stylesheet" href="/guias/styles-guides.css">
+<link rel="stylesheet" href="/dlt-patterns.css">
 </head>
 <body>
 <header class="top"><div class="wrap header-row"><a class="brand" href="/"><img src="/assets/dlt-logo-light.png" alt="DLT Academy"></a><nav class="header-nav" aria-label="Navegação principal"><a href="/#ferramentas">Ferramentas</a><a href="/#guias">Guias</a><a href="/blog/">Blog</a><a href="/sobre/">Sobre</a></nav></div></header>
-<main><div class="guide-wrap" itemscope itemtype="https://schema.org/HowTo">
-  <section class="guide-hero">
+<main data-guide-progress="conta-binance"><div class="guide-wrap" itemscope itemtype="https://schema.org/HowTo">
+  <section class="guide-hero piece-head">
     <p class="eyebrow">Guia interativo</p>
     <h1 itemprop="name">Como criar uma conta na Binance com segurança</h1>
-    <p class="subtitle">Um passo por vez, sem compartilhar senha, código de confirmação ou dados pessoais com ninguém.</p>
-    <div class="guide-hero-cta">
+    <p class="subtitle piece-lede">Um passo por vez, sem compartilhar senha, código de confirmação ou dados pessoais com ninguém.</p>
+    <!-- PROMO_ATUAL -->
+    <div class="guide-hero-cta offer" data-promotion="binance-referral" data-verified-at="2026-07-15">
+      <div class="offer-flags"><span class="offer-verified">Condições conferidas em 15/07/2026</span><span class="tag s2">Por tempo indeterminado</span></div>
       <a class="btn btn-primary" href="https://www.binance.com/register?ref=BOSS2026" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Criar conta na Binance</a>
       <p>Cadastre-se pelo link de indicação e receba cashback vitalício em parte das taxas elegíveis. Válido para contas novas e elegíveis.</p>
     </div>
+    <!-- /PROMO_ATUAL -->
   </section>
+  <section class="key-points" data-reveal aria-labelledby="conta-essencial"><p id="conta-essencial" class="key-points-title">Objetivo e pré-requisitos</p><ul><li>Criar uma conta apenas no domínio ou aplicativo oficial.</li><li>Ter um e-mail ou telefone sob seu controle e uma senha exclusiva.</li><li>Fazer KYC somente dentro da plataforma oficial, se for solicitado.</li><li>Separar a criação da conta de qualquer depósito ou operação.</li></ul></section>
+  <nav class="piece-toc" data-toc-watch=".guide-reference > h2"><p>Neste guia</p><ol></ol></nav>
+  <section class="guide-step" data-reveal aria-labelledby="conta-passo-1"><div class="guide-step-top"><span class="guide-step-num">01</span><span class="guide-step-state">Preparar</span></div><h2 id="conta-passo-1">Confirme o ambiente oficial</h2><p>Confira o endereço antes de digitar qualquer dado. Nenhum atendente, grupo ou pessoa da DLT Academy precisa da sua senha, código, documento ou chave de recuperação.</p></section>
+  <section class="guide-step" data-reveal aria-labelledby="conta-passo-2"><div class="guide-step-top"><span class="guide-step-num">02</span><span class="guide-step-state">Proteger</span></div><h2 id="conta-passo-2">Conclua o cadastro e ative a segurança</h2><p>Use senha exclusiva, passkey quando disponível ou autenticador. Guarde a recuperação offline e pare se alguém pedir um código fora da tela oficial.</p></section>
   <div id="guide-root" aria-live="polite"></div>
   <article class="guide-reference">
     <h2>Passo a passo para criar sua conta</h2>
@@ -53,7 +60,10 @@
       <li itemprop="step" itemscope itemtype="https://schema.org/HowToStep"><strong itemprop="name">Pare antes de agir por pressão.</strong> Criar uma conta não obriga depósito ou operação. Estude os riscos antes de qualquer decisão.</li>
     </ol>
   </article>
-  <section class="guide-faq" aria-labelledby="faq-titulo">
+  <section class="guide-step" data-reveal aria-labelledby="conta-verificacao"><div class="guide-step-top"><span class="guide-step-num">03</span><span class="guide-step-state">Verificar</span></div><h2 id="conta-verificacao">Verificação final</h2><ul class="guide-list"><li><label class="guide-check"><input type="checkbox" data-guide-check="dominio"><span>Usei somente o domínio ou aplicativo oficial.</span></label></li><li><label class="guide-check"><input type="checkbox" data-guide-check="seguranca"><span>Ativei passkey ou autenticador e guardei a recuperação offline.</span></label></li><li><label class="guide-check"><input type="checkbox" data-guide-check="sem-operar"><span>Entendi que criar a conta não me obriga a depositar ou operar.</span></label></li></ul><p class="guide-note">Se algo parecer diferente, pare e retorne ao canal oficial. O plano B é não prosseguir até confirmar o domínio e a instrução.</p></section>
+  <section class="sources"><h2>Fontes e limites</h2><p>O fluxo descreve ações que continuam válidas mesmo quando a interface muda. Benefícios, disponibilidade de passkey, KYC e condições de indicação precisam ser conferidos nas páginas oficiais em cada cadastro.</p><ul><li><a href="https://www.binance.com/en/support/faq" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Central oficial de ajuda da Binance</a></li><li><a href="https://www.binance.com/register?ref=BOSS2026" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Página oficial de cadastro</a></li></ul></section>
+  <section class="share-row" data-share><p>Compartilhe o checklist de segurança, não seus códigos.</p><div class="share-actions"><button type="button" data-share-copy>Copiar link</button><a data-share-telegram target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Telegram</a><a data-share-whatsapp target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">WhatsApp</a></div></section>
+  <section class="guide-faq faq" data-faq-exclusive aria-labelledby="faq-titulo">
     <h2 id="faq-titulo">Dúvidas rápidas</h2>
     <details><summary>Este guia recebe meus dados?</summary><p>Não. Não há formulário, cadastro ou coleta de senha, código, documento ou resposta neste guia.</p></details>
     <details><summary>Posso compartilhar o código de confirmação?</summary><p>Não. Senhas, códigos de confirmação, códigos 2FA e chaves de recuperação não devem ser enviados a ninguém.</p></details>
@@ -66,5 +76,6 @@
 <script src="/guias/conta-binance/js/guide.js"></script>
 <script src="/js/content-registry.js"></script>
 <script src="/js/next-step.js"></script>
+<script src="/js/dlt-interactions.js"></script>
 </body>
 </html>
