@@ -44,8 +44,8 @@ class ArqAtmArticleTests(unittest.TestCase):
         self.assertIn(f'data-content-id="{CONTENT_ID}"', self.html)
         self.assertIn('"mainEntityOfPage": "' + URL + '"', self.html)
         self.assertIn('"datePublished": "2026-07-29"', self.html)
-        self.assertIn('"dateModified": "2026-08-01"', self.html)
-        self.assertIn("Atualizado em 1º de agosto de 2026", self.html)
+        self.assertIn('"dateModified": "2026-08-04"', self.html)
+        self.assertIn("Atualizado em 4 de agosto de 2026", self.html)
         self.assertIn("O cartão que usamos para sacar dinheiro no exterior", self.html)
 
     def test_current_fee_is_presented_without_an_unverified_history(self) -> None:
@@ -79,6 +79,7 @@ class ArqAtmArticleTests(unittest.TestCase):
         self.assertIn('data-promotion="arq-referral"', self.html)
         self.assertIn('data-verified-at="2026-07-29"', self.html)
         self.assertIn("US$ 10 depois de fazer US$ 150", self.html)
+        self.assertIn("por tempo indeterminado", self.html)
         match = re.search(
             rf'<a href="{re.escape(REFERRAL_URL)}"([^>]*)>',
             self.html,
@@ -94,7 +95,28 @@ class ArqAtmArticleTests(unittest.TestCase):
             self.html.index("O custo real do saque"),
             self.html.index("A oferta de indicação"),
         )
-        self.assertIn("Não vale gastar US$ 150 só para receber US$ 10", self.html)
+        self.assertIn("A promoção faz sentido quando esses US$ 150", self.html)
+
+    def test_editorial_handoff_rules_are_enforced(self) -> None:
+        for href in (
+            "/guias/etherfi-cash-viagem/",
+            "/guias/bybit-pay-vietqr/",
+            "/guias/abastecer-moreta-usdt/",
+            "/guias/conta-binance/",
+        ):
+            with self.subTest(href=href):
+                self.assertIn(f'href="{href}"', self.html)
+
+        self.assertIn("“saque grátis” não significa automaticamente “saque mais barato”", self.html)
+        self.assertIn("mais de 100 USDc de saldo", self.html)
+        for prohibited in (
+            "wise.com/invite",
+            "Este é um link de indicação",
+            "Este conteúdo contém links de indicação",
+            "restritiva para Colômbia e México",
+        ):
+            with self.subTest(prohibited=prohibited):
+                self.assertNotIn(prohibited, self.html)
 
     def test_registry_sitemap_and_etherfi_connection(self) -> None:
         by_id = {item["id"]: item for item in self.registry}
