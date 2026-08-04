@@ -11,6 +11,14 @@
 //   5 Clarear o valor (escrever) elicitação real, não uma linha
 //   6 Dar o passo (escrever)     compromisso concreto e com prazo
 
+function resultStats(plan) {
+  return [
+    { value: "6", label: "perguntas respondidas" },
+    { value: "24h", label: "prazo antes de executar" },
+    { value: String(plan.length), label: "passos no plano" },
+  ];
+}
+
 const PROTOCOL = {
   id: "protocolo-medo-de-ficar-de-fora",
   slug: "medo-de-ficar-de-fora",
@@ -136,7 +144,7 @@ const PROTOCOL = {
           "Isso não fecha a porta pra sempre. Fecha a porta pra decidir isso agora, com dinheiro que você não tem, empurrado pela sensação. Se a tese for boa, ela continua boa quando você tiver capital que possa perder sem quebrar.",
           eco, ecoPasso,
         ],
-        record, safety: safetyNote, plan: plans.debt,
+        record, safety: safetyNote, plan: plans.debt, stats: resultStats(plans.debt),
         cta: {
           tipo: "artigo",
           headline: "Antes de qualquer entrada, monte um plano que não dependa de dívida.",
@@ -158,7 +166,7 @@ const PROTOCOL = {
           "O teste é simples: se amanhã, sem a pressa de hoje, você ainda achar que faz sentido mover esse dinheiro, ele continua disponível. O que o FOMO não suporta é esperar 24 horas — porque ele sabe que não sobrevive à calma.",
           eco, ecoPasso,
         ],
-        record, safety: safetyNote, plan: plans.reserve,
+        record, safety: safetyNote, plan: plans.reserve, stats: resultStats(plans.reserve),
         cta: {
           tipo: "artigo",
           headline: "Transforme essa troca num plano antes de mexer na reserva ou em outra meta.",
@@ -183,7 +191,7 @@ const PROTOCOL = {
           "Faça o teste das 24 horas. Se amanhã, sem o aperto, a ideia ainda fizer sentido, entre — mas com um tamanho que você aguente ver cair 50% no dia seguinte sem perder o sono. Se o aperto passar e a vontade sumir junto, você acabou de economizar o preço de uma lição.",
           eco, ecoPasso,
         ],
-        record, safety: safetyNote, plan: plans.pressure,
+        record, safety: safetyNote, plan: plans.pressure, stats: resultStats(plans.pressure),
         cta: {
           tipo: "artigo",
           headline: "Se a ideia continuar fazendo sentido amanhã, teste primeiro o tamanho que você suportaria.",
@@ -206,7 +214,7 @@ const PROTOCOL = {
         "Se for entrar, entre pensando no tamanho, não no timing: um valor que você aguente ver cair pela metade amanhã sem que isso mude a sua vida. O que protege você não é acertar a hora — é o tamanho da aposta.",
         eco, ecoPasso,
       ],
-      record, safety: safetyNote, plan: plans.calm,
+      record, safety: safetyNote, plan: plans.calm, stats: resultStats(plans.calm),
       cta: {
         tipo: "artigo",
         headline: "Se for agir, veja quanto a sua exposição aguenta antes de decidir o tamanho.",
