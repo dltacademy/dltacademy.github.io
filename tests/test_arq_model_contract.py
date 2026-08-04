@@ -40,10 +40,11 @@ class ArqModelContractTests(unittest.TestCase):
         self.assertRegex(HTML, r"Fontes oficiais conferidas em 04/08/2026")
 
     def test_calculator_uses_verified_scoped_rules(self):
-        for marker in ["costModel", "arqConversion", "wiseIof", "revolutIof", "0.005", "0.78", "0.014", "0.01", "1600", "20", "0.02", "6"]:
+        for marker in ["costModel", "arqConversion", "wiseIof", "revolutIof", "wiseIofPercent", "revolutIofPercent", "3.5", "0.005", "0.78", "0.014", "0.01", "1600", "20", "0.02", "6"]:
             self.assertIn(marker, CALC, marker)
         self.assertIn("conversão, IOF e tarifa própria", HTML)
         self.assertIn("tarifa do operador do ATM", HTML)
+        self.assertIn("IOF acontece na conversão", HTML)
         self.assertIn("3GuSCwDgRqiYrsUc2eo7MN", HTML)
 
 
