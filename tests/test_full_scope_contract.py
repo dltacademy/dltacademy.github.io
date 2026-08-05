@@ -113,19 +113,23 @@ class FullScopeContractTests(unittest.TestCase):
         for marker in (
             "read-progress", "piece-head", "key-points", "piece-toc", "figure-row", "figure-cell",
             "calc", "calc-controls", "calc-rows", "calc-verdict", "compare", "compare-scroll",
-            "cost-parts", "note is-risk", "steps", "verdict", "offer", "faq", "sources", "share-row",
+            "note is-risk", "steps", "verdict", "offer", "faq", "sources", "share-row",
         ):
             self.assertTrue(has_class(html, marker) or marker in html, marker)
         self.assertIn('src="/blog/js/arq-calculator.js"', html)
-        self.assertEqual(5, len(re.findall(r'<input[^>]+type="range"', html)))
+        self.assertEqual(11, len(re.findall(r'<input[^>]+type="range"', html)))
+        self.assertEqual(1, len(re.findall(r'<select[^>]+id="arq-balance-source"', html)))
         self.assertEqual(3, len(re.findall(r'data-calc-row="(?:arq|wise|revolut)"', html)))
-        self.assertEqual(7, len(re.findall(r'class="figure-cell"', html)))
-        self.assertEqual(4, len(re.findall(r'class="figure-cell"', re.search(r'class="figure-row cost-parts".*?</div>\s*</div>', html, re.DOTALL).group(0))))
+        self.assertEqual(4, len(re.findall(r'class="figure-cell"', html)))
         self.assertEqual(3, len(re.findall(r'class="step"', html)))
         self.assertIn("Wise", html)
         self.assertIn("Revolut", html)
         self.assertIn("DCC", html)
-        self.assertIn("conferido em 04/08/2026", html)
+        self.assertIn("05/08/2026", html)
+        self.assertIn("Já tenho a moeda local do saque", html)
+        self.assertIn("Tenho outra moeda estrangeira", html)
+        self.assertIn("opções básicas gratuitas", html)
+        self.assertIn("Nenhum plano pago entra no cálculo", html)
 
     def test_vietqr_guide_implements_the_full_guide_model(self) -> None:
         html = self.read("guias/bybit-pay-vietqr/index.html")
