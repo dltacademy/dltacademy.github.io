@@ -18,6 +18,7 @@ REFERRAL_URL = (
     "https://www.arqfinance.com/referrals/general?"
     "referralCode=tiagohyd_I6p&amp;pid=referral&amp;c=general&amp;is_retargeting=true"
 )
+WISE_REFERRAL_URL = "https://wise.com/invite/irhc/tiagon100"
 
 
 class ArqAtmArticleTests(unittest.TestCase):
@@ -43,13 +44,14 @@ class ArqAtmArticleTests(unittest.TestCase):
         self.assertIn('"datePublished": "2026-07-29"', self.html)
         self.assertIn('"dateModified": "2026-08-05"', self.html)
         self.assertIn("Atualizado em 5 de agosto de 2026", self.html)
-        self.assertIn("ARQ para saques no exterior", self.html)
+        self.assertIn("ARQ Global para saques", self.html)
 
     def test_current_fees_and_total_cost_are_explicit(self) -> None:
         required = (
             "ARQ Global: 0% de IOF",
             "aproximadamente 0,5%",
             "1% sobre o valor retirado",
+            "ajuste cambial até a moeda do saque",
             "3,5% de IOF",
             "a partir de 0,78%",
             "R$ 20 por operação",
@@ -69,22 +71,20 @@ class ArqAtmArticleTests(unittest.TestCase):
 
     def test_free_basic_scope_is_explicit(self) -> None:
         for marker in (
-            "apenas as opções básicas gratuitas",
-            "sem mensalidade, anuidade ou assinatura paga",
+            "opções básicas gratuitas",
             "ARQ Standard Global",
             "Wise padrão gratuito",
             "Revolut Standard Brasil",
-            "Nenhum benefício de plano pago entra nesta tabela",
-            "Nenhum plano pago entra no cálculo",
+            "A tabela usa somente os cartões básicos gratuitos",
         ):
             with self.subTest(marker=marker):
                 self.assertIn(marker, self.html)
 
-    def test_calculator_includes_all_standard_components(self) -> None:
+    def test_calculator_includes_the_brl_route_and_local_fx_adjustment(self) -> None:
         required = (
             'data-arq-calculator',
-            'id="arq-balance-source"',
             'id="arq-conversion-rate"',
+            'id="arq-local-fx-rate"',
             'id="arq-wise-iof-rate"',
             'id="arq-wise-conversion-rate"',
             'id="arq-revolut-iof-rate"',
@@ -93,19 +93,20 @@ class ArqAtmArticleTests(unittest.TestCase):
             'id="arq-revolut-spread-rate"',
             'id="arq-atm-fee"',
             'id="arq-dcc-rate"',
-            "Já tenho a moeda local do saque",
-            "Tenho outra moeda estrangeira",
+            "BRL → saldo internacional → saque",
             "ATM e DCC são editáveis",
             "blog/js/arq-calculator.js",
         )
         for marker in required:
             with self.subTest(marker=marker):
                 self.assertIn(marker, self.html)
+        self.assertNotIn('id="arq-balance-source"', self.html)
 
         script = (PAGE.parent / ".." / "js" / "arq-calculator.js").resolve()
         source = script.read_text(encoding="utf-8")
         for marker in (
             "arqConversion",
+            "arqLocalFx",
             "wiseIof",
             "wiseConversion",
             "revolutIof",
@@ -120,31 +121,33 @@ class ArqAtmArticleTests(unittest.TestCase):
             with self.subTest(script_marker=marker):
                 self.assertIn(marker, source)
 
-    def test_referral_is_dated_but_not_promised_indefinitely(self) -> None:
+    def test_referral_is_dated_and_contextual_links_are_protected(self) -> None:
         self.assertEqual(self.html.count("<!-- PROMO_ATUAL -->"), 1)
         self.assertEqual(self.html.count("<!-- /PROMO_ATUAL -->"), 1)
         self.assertIn('data-verified-at="2026-07-29"', self.html)
         self.assertIn("Condição vista em 29/07/2026", self.html)
-        self.assertIn("Confirme no link", self.html)
+        self.assertIn("Criar conta no ARQ e conferir os US$ 10", self.html)
         self.assertNotIn("por tempo indeterminado", self.html.lower())
-        match = re.search(rf'<a href="{re.escape(REFERRAL_URL)}"([^>]*)>', self.html)
-        self.assertIsNotNone(match)
-        attrs = match.group(1)
-        self.assertIn('rel="sponsored nofollow noopener noreferrer"', attrs)
+
+        for url in (REFERRAL_URL, WISE_REFERRAL_URL):
+            match = re.search(rf'<a href="{re.escape(url)}"([^>]*)>', self.html)
+            self.assertIsNotNone(match)
+            self.assertIn('rel="sponsored nofollow noopener noreferrer"', match.group(1))
 
     def test_editorial_links_and_registry_connection(self) -> None:
         for href in (
             "/guias/etherfi-cash-viagem/",
             "/guias/bybit-pay-vietqr/",
             "/guias/abastecer-moreta-usdt/",
-            "/guias/conta-binance/",
-            "/pagamentos-no-exterior/",
         ):
             self.assertIn(f'href="{href}"', self.html)
 
         by_id = {item["id"]: item for item in self.registry}
         entry = by_id[CONTENT_ID]
+        self.assertEqual(entry["title"], "ARQ Global para saques: custos reais contra Wise e Revolut")
+        self.assertEqual(entry["effort"], "10 min de leitura")
         self.assertEqual(entry["url"], "/blog/arq-saques-exterior/")
+        self.assertEqual(entry["primaryNext"], "guide-pagamentos-no-exterior")
         self.assertIn(CONTENT_ID, by_id["guide-pagamentos-no-exterior"]["related"])
         self.assertIn('/blog/arq-saques-exterior/', self.etherfi_html)
 
