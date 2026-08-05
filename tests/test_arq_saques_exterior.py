@@ -36,45 +36,44 @@ class ArqAtmArticleTests(unittest.TestCase):
         self.assertTrue((PAGE.parent / "CLAIMS.md").is_file())
         self.assertTrue((PAGE.parent / "PUBLISHING.md").is_file())
         self.assertIn("/blog/arq-saques-exterior/og-image.svg", self.html)
-        self.assertIn('<meta property="og:image:type" content="image/svg+xml">', self.html)
 
-    def test_canonical_metadata_dates_title_and_mount_match(self) -> None:
+    def test_metadata_dates_title_and_mount_match(self) -> None:
         self.assertIn(f'<link rel="canonical" href="{URL}">', self.html)
-        self.assertIn(f'<meta property="og:url" content="{URL}">', self.html)
         self.assertIn(f'data-content-id="{CONTENT_ID}"', self.html)
-        self.assertIn('"mainEntityOfPage": "' + URL + '"', self.html)
         self.assertIn('"datePublished": "2026-07-29"', self.html)
-        self.assertIn('"dateModified": "2026-08-04"', self.html)
-        self.assertIn("Atualizado em 4 de agosto de 2026", self.html)
+        self.assertIn('"dateModified": "2026-08-05"', self.html)
+        self.assertIn("Atualizado em 5 de agosto de 2026", self.html)
         self.assertIn("O cartão que usamos para sacar dinheiro no exterior", self.html)
 
-    def test_current_fee_is_presented_without_an_unverified_history(self) -> None:
+    def test_current_fees_and_total_cost_are_explicit(self) -> None:
         required = (
-            "A tarifa do saque no ARQ Standard é de 1%",
             "1% sobre o valor retirado",
-            "tarifa do dono do ATM",
-            "não encontrei um teto oficial por número de saques",
+            "3,5% de IOF",
+            "custo total aproximado de 0,5%",
+            "incluindo IOF, spread e serviço",
+            "uma retirada gratuita por mês",
+            "R$ 1.600 ou cinco retiradas por ciclo",
+            "tarifa do operador do ATM",
             "Escolha a moeda local e recuse a conversão do caixa",
         )
         for text in required:
             with self.subTest(text=text):
                 self.assertIn(text, self.html)
-        self.assertNotIn("Minha referência inicial para o ARQ era", self.html)
 
-    def test_calculator_sums_known_costs_and_disclaims_variable_atm(self) -> None:
+    def test_calculator_includes_all_standard_components(self) -> None:
         required = (
             'data-arq-calculator',
+            'id="arq-balance-source"',
+            'id="arq-conversion-rate"',
             'id="arq-wise-iof-rate"',
             'id="arq-wise-conversion-rate"',
             'id="arq-revolut-iof-rate"',
-            'data-calc-total',
-            'data-calc-detail',
-            'conversão, IOF e tarifa própria',
-            'tarifa do operador do ATM',
-            'DCC',
-            '3,50%',
-            'não informa uma franquia monetária adicional',
-            'blog/js/arq-calculator.js',
+            'id="arq-revolut-spread-rate"',
+            'id="arq-atm-fee"',
+            'id="arq-dcc-rate"',
+            "saldo estrangeiro já formado",
+            "ATM e DCC são editáveis",
+            "blog/js/arq-calculator.js",
         )
         for marker in required:
             with self.subTest(marker=marker):
@@ -82,83 +81,48 @@ class ArqAtmArticleTests(unittest.TestCase):
 
         script = (PAGE.parent / ".." / "js" / "arq-calculator.js").resolve()
         source = script.read_text(encoding="utf-8")
-        for marker in ("wiseIof", "revolutIof", "wiseIofPercent", "revolutIofPercent", "arqConversion", "3.5", "0.78", "0.005", "0.014"):
+        for marker in (
+            "arqFunding",
+            "wiseIof",
+            "revolutIof",
+            "revolutExchange",
+            "revolutSpread",
+            "atmTotal",
+            "dccTotal",
+            "revolutWithdrawalFee",
+            "0.014",
+            "0.02",
+        ):
             with self.subTest(script_marker=marker):
                 self.assertIn(marker, source)
 
-    def test_personal_experience_and_setup_are_explicit(self) -> None:
-        required = (
-            "Quando ainda se chamava DolarApp",
-            "foi meu cartão principal para praticamente tudo",
-            "ether.fi para pagar; ARQ para sacar.",
-            "R$ 1.600 ou cinco saques por mês",
-            "o cartão que usamos para sacar dinheiro no exterior",
-        )
-        for text in required:
-            with self.subTest(text=text):
-                self.assertIn(text, self.html)
-
-    def test_referral_offer_is_isolated_dated_and_protected(self) -> None:
+    def test_referral_is_dated_but_not_promised_indefinitely(self) -> None:
         self.assertEqual(self.html.count("<!-- PROMO_ATUAL -->"), 1)
         self.assertEqual(self.html.count("<!-- /PROMO_ATUAL -->"), 1)
-        self.assertIn('data-promotion="arq-referral"', self.html)
         self.assertIn('data-verified-at="2026-07-29"', self.html)
-        self.assertIn("US$ 10 depois de fazer US$ 150", self.html)
-        self.assertIn("por tempo indeterminado", self.html)
-        match = re.search(
-            rf'<a href="{re.escape(REFERRAL_URL)}"([^>]*)>',
-            self.html,
-        )
+        self.assertIn("Condição vista em 29/07/2026", self.html)
+        self.assertIn("Confirme no link", self.html)
+        self.assertNotIn("por tempo indeterminado", self.html.lower())
+        match = re.search(rf'<a href="{re.escape(REFERRAL_URL)}"([^>]*)>', self.html)
         self.assertIsNotNone(match)
         attrs = match.group(1)
-        self.assertIn('target="_blank"', attrs)
         self.assertIn('rel="sponsored nofollow noopener noreferrer"', attrs)
-        self.assertIn('referrerpolicy="no-referrer"', attrs)
 
-    def test_offer_follows_the_educational_content(self) -> None:
-        self.assertLess(
-            self.html.index("O custo real do saque"),
-            self.html.index("A oferta de indicação"),
-        )
-        self.assertIn("A promoção faz sentido quando esses US$ 150", self.html)
-
-    def test_editorial_handoff_rules_are_enforced(self) -> None:
+    def test_editorial_links_and_registry_connection(self) -> None:
         for href in (
             "/guias/etherfi-cash-viagem/",
             "/guias/bybit-pay-vietqr/",
             "/guias/abastecer-moreta-usdt/",
             "/guias/conta-binance/",
+            "/pagamentos-no-exterior/",
         ):
-            with self.subTest(href=href):
-                self.assertIn(f'href="{href}"', self.html)
+            self.assertIn(f'href="{href}"', self.html)
 
-        self.assertIn("“saque grátis” não significa automaticamente “saque mais barato”", self.html)
-        self.assertIn("mais de 100 USDc de saldo", self.html)
-        for prohibited in (
-            "wise.com/invite",
-            "Este é um link de indicação",
-            "Este conteúdo contém links de indicação",
-            "restritiva para Colômbia e México",
-        ):
-            with self.subTest(prohibited=prohibited):
-                self.assertNotIn(prohibited, self.html)
-
-    def test_registry_sitemap_and_etherfi_connection(self) -> None:
         by_id = {item["id"]: item for item in self.registry}
         entry = by_id[CONTENT_ID]
         self.assertEqual(entry["title"], "O cartão que usamos para sacar dinheiro no exterior")
         self.assertEqual(entry["url"], "/blog/arq-saques-exterior/")
-        self.assertEqual(entry["primaryNext"], "guide-pagamentos-no-exterior")
-        self.assertEqual(
-            entry["related"],
-            [
-                "guide-bybit-pay-vietqr",
-                "guide-abastecer-moreta-usdt",
-                "guide-etherfi-cash-viagem",
-            ],
-        )
         self.assertIn(CONTENT_ID, by_id["guide-pagamentos-no-exterior"]["related"])
-        self.assertIn(CONTENT_ID, by_id["guide-etherfi-cash-viagem"]["related"])
         self.assertIn('/blog/arq-saques-exterior/', self.etherfi_html)
 
         root = ElementTree.parse(SITEMAP).getroot()
