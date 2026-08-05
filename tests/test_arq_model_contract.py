@@ -16,6 +16,8 @@ class ArqModelContractTests(unittest.TestCase):
             'id="arq-withdrawal-value"',
             'id="arq-withdrawal-count"',
             'id="arq-balance-source"',
+            'id="arq-revolut-brl-fee-rate"',
+            'id="arq-revolut-extra-fx-rate"',
             'id="arq-atm-fee"',
             'id="arq-dcc-rate"',
             'class="calc-row"',
@@ -39,24 +41,29 @@ class ArqModelContractTests(unittest.TestCase):
         self.assertNotIn("onclick=", HTML.lower())
         self.assertNotIn("oninput=", HTML.lower())
         self.assertNotIn("onchange=", HTML.lower())
-        self.assertRegex(HTML, r"Fontes oficiais conferidas em 05/08/2026")
+        self.assertRegex(HTML, r"Taxas e condições verificadas em páginas oficiais em <strong>05/08/2026</strong>")
         self.assertNotIn("por tempo indeterminado", HTML.lower())
 
     def test_calculator_uses_verified_scoped_rules(self):
         for marker in [
             "costModel",
-            "arqFunding",
+            "arqConversion",
             "wiseIof",
+            "wiseConversion",
             "revolutIof",
+            "revolutBrlFee",
+            "revolutExtraFx",
+            "revolutSpread",
             "wiseIofPercent",
             "revolutIofPercent",
+            "revolutBrlFeePercent",
+            "revolutExtraFxPercent",
             "revolutWithdrawalFee",
             "atmTotal",
             "dccTotal",
             "3.5",
             "0.5",
             "0.78",
-            "0.014",
             "0.01",
             "1600",
             "20",
@@ -64,12 +71,17 @@ class ArqModelContractTests(unittest.TestCase):
             "6",
         ]:
             self.assertIn(marker, CALC, marker)
-        self.assertIn("conversão, IOF, saque, ATM e DCC", HTML)
+        self.assertIn("ARQ Global: 0% de IOF", HTML)
+        self.assertIn("1% para câmbio entre moedas estrangeiras no fim de semana", HTML)
+        self.assertIn("0,5% sobre o volume acima de R$ 10.000", HTML)
         self.assertIn("tarifa do operador do ATM", HTML)
-        self.assertIn("O Cartão Global usa USDc ou EURc comprados sem IOF", HTML)
-        self.assertIn("ARQ: custo de conversão, sem IOF", HTML)
-        self.assertIn("conversão sem IOF", CALC)
         self.assertIn("3GuSCwDgRqiYrsUc2eo7MN", HTML)
+        self.assertNotIn("0,5% já incluindo IOF", HTML)
+
+    def test_social_asset_highlights_zero_iof(self):
+        svg = (ROOT / "blog/arq-saques-exterior/og-image.svg").read_text()
+        self.assertIn("0% DE IOF", svg)
+        self.assertIn("SAQUE STANDARD · 1%", svg)
 
 
 if __name__ == "__main__":
