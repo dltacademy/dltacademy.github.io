@@ -201,14 +201,14 @@ const CONTENT = [
   {
     "id": "article-arq-saques-exterior",
     "type": "article",
-    "title": "O cartão que usamos para sacar dinheiro no exterior",
-    "description": "Como o ARQ saiu da função de cartão para tudo e virou nossa opção para saques: taxa de 1%, ATM, DCC e comparação com Wise e Revolut.",
+    "title": "ARQ Global para saques: custos reais contra Wise e Revolut",
+    "description": "Compare a rota de BRL até o saque com ARQ Global, Wise e Revolut, incluindo IOF, câmbio, franquias, ATM e DCC.",
     "url": "/blog/arq-saques-exterior/",
     "tag": "Dinheiro em viagem",
     "publishedAt": "2026-07-29",
     "sit": ["viagem", "taxas"],
     "mark": "AR",
-    "effort": "7 min de leitura",
+    "effort": "10 min de leitura",
     "primaryNext": "guide-pagamentos-no-exterior",
     "related": ["guide-bybit-pay-vietqr", "guide-abastecer-moreta-usdt", "guide-etherfi-cash-viagem"]
   },
