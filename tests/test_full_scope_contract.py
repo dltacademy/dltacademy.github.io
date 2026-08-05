@@ -117,7 +117,7 @@ class FullScopeContractTests(unittest.TestCase):
         ):
             self.assertTrue(has_class(html, marker) or marker in html, marker)
         self.assertIn('src="/blog/js/arq-calculator.js"', html)
-        self.assertEqual(9, len(re.findall(r'<input[^>]+type="range"', html)))
+        self.assertEqual(11, len(re.findall(r'<input[^>]+type="range"', html)))
         self.assertEqual(1, len(re.findall(r'<select[^>]+id="arq-balance-source"', html)))
         self.assertEqual(3, len(re.findall(r'data-calc-row="(?:arq|wise|revolut)"', html)))
         self.assertEqual(4, len(re.findall(r'class="figure-cell"', html)))
@@ -125,9 +125,10 @@ class FullScopeContractTests(unittest.TestCase):
         self.assertIn("Wise", html)
         self.assertIn("Revolut", html)
         self.assertIn("DCC", html)
-        self.assertIn("conferido em 05/08/2026", html)
-        self.assertIn("saldo estrangeiro já formado", html)
-        self.assertIn("0% de IOF", html)
+        self.assertIn("05/08/2026", html)
+        self.assertIn("Já tenho a moeda local do saque", html)
+        self.assertIn("Tenho outra moeda estrangeira", html)
+        self.assertIn("ARQ Global: 0% de IOF", html)
 
     def test_vietqr_guide_implements_the_full_guide_model(self) -> None:
         html = self.read("guias/bybit-pay-vietqr/index.html")
