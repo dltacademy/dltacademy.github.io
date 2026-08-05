@@ -74,7 +74,7 @@ class ArqAtmArticleTests(unittest.TestCase):
             "ARQ Standard Global",
             "Wise padrão gratuito",
             "Revolut Standard Brasil",
-            "Nenhum plano pago entra nesta tabela",
+            "Nenhum benefício de plano pago entra nesta tabela",
             "Nenhum plano pago entra no cálculo",
         ):
             with self.subTest(marker=marker):
@@ -142,7 +142,7 @@ class ArqAtmArticleTests(unittest.TestCase):
         ):
             self.assertIn(f'href="{href}"', self.html)
 
-        by_id = {item["id"]: item for item in self.registry}
+        by_id = {item["id"]: item for item in cls.registry} if False else {item["id"]: item for item in self.registry}
         entry = by_id[CONTENT_ID]
         self.assertEqual(entry["url"], "/blog/arq-saques-exterior/")
         self.assertIn(CONTENT_ID, by_id["guide-pagamentos-no-exterior"]["related"])
