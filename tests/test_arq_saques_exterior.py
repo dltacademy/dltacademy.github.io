@@ -49,8 +49,10 @@ class ArqAtmArticleTests(unittest.TestCase):
         required = (
             "1% sobre o valor retirado",
             "3,5% de IOF",
+            "0% de IOF",
+            "USDc ou EURc comprados sem IOF",
             "custo total aproximado de 0,5%",
-            "incluindo IOF, spread e serviço",
+            "não uma cobrança de IOF",
             "uma retirada gratuita por mês",
             "R$ 1.600 ou cinco retiradas por ciclo",
             "tarifa do operador do ATM",
@@ -59,6 +61,7 @@ class ArqAtmArticleTests(unittest.TestCase):
         for text in required:
             with self.subTest(text=text):
                 self.assertIn(text, self.html)
+        self.assertNotIn("incluindo IOF, spread e serviço", self.html)
 
     def test_calculator_includes_all_standard_components(self) -> None:
         required = (
@@ -72,6 +75,7 @@ class ArqAtmArticleTests(unittest.TestCase):
             'id="arq-atm-fee"',
             'id="arq-dcc-rate"',
             "saldo estrangeiro já formado",
+            "ARQ: custo de conversão, sem IOF",
             "ATM e DCC são editáveis",
             "blog/js/arq-calculator.js",
         )
@@ -90,6 +94,7 @@ class ArqAtmArticleTests(unittest.TestCase):
             "atmTotal",
             "dccTotal",
             "revolutWithdrawalFee",
+            "conversão sem IOF",
             "0.014",
             "0.02",
         ):
