@@ -4,6 +4,42 @@
   var root = document.querySelector("[data-arq-calculator]");
   if (!root) return;
 
+  var planLabels = {
+    arq: "ARQ Standard Global",
+    wise: "Wise padrão gratuito",
+    revolut: "Revolut Standard",
+  };
+
+  var scopeNote = document.querySelector(".arq-source-note");
+  if (scopeNote) {
+    scopeNote.textContent = "Escopo: apenas as opções básicas gratuitas, sem mensalidade, anuidade ou assinatura paga — ARQ Standard Global, cartão Wise padrão para clientes brasileiros e Revolut Standard Brasil. O dinheiro parte de BRL e o saque é internacional. O Cartão Local ARQ segue outra regra e pode sofrer IOF de 3,5%.";
+  }
+
+  var comparisonTitle = document.querySelector("#arq-fees-title");
+  if (comparisonTitle) {
+    comparisonTitle.textContent = "Custos das opções básicas gratuitas para clientes brasileiros";
+    var comparisonTable = comparisonTitle.closest("table");
+    var headers = comparisonTable ? comparisonTable.querySelectorAll("thead th") : [];
+    if (headers.length >= 4) {
+      headers[1].textContent = planLabels.arq;
+      headers[2].textContent = planLabels.wise;
+      headers[3].textContent = planLabels.revolut;
+    }
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll(".figure-label"), function (label) {
+    if (label.textContent.trim() === "Saque ARQ Standard") {
+      label.textContent = "Saque ARQ Standard Global";
+    }
+  });
+
+  var calculatorKicker = root.querySelector(".calc-kicker");
+  var calculatorIntro = root.querySelector("header > p:last-child");
+  if (calculatorKicker) calculatorKicker.textContent = "Cartões básicos gratuitos";
+  if (calculatorIntro) {
+    calculatorIntro.textContent = "Compara somente ARQ Standard Global, Wise padrão gratuito e Revolut Standard. Nenhum plano pago entra no cálculo; ajuste apenas custos que variam por rota, cotação ou caixa.";
+  }
+
   var valueInput = root.querySelector("#arq-withdrawal-value");
   var countInput = root.querySelector("#arq-withdrawal-count");
   var sourceInput = root.querySelector("#arq-balance-source");
@@ -32,8 +68,13 @@
   var rows = {};
 
   Array.prototype.forEach.call(root.querySelectorAll("[data-calc-row]"), function (row) {
+    var key = row.getAttribute("data-calc-row");
     var output = row.querySelector(".calc-out");
-    rows[row.getAttribute("data-calc-row")] = {
+    var name = row.querySelector(".calc-name");
+    if (name && planLabels[key]) {
+      name.textContent = planLabels[key] + " · custo total estimado";
+    }
+    rows[key] = {
       root: row,
       track: row.querySelector(".calc-track > span"),
       total: output.querySelector("[data-calc-total]"),
@@ -185,7 +226,6 @@
       return costs[a].total - costs[b].total;
     })[0];
     var difference = costs[second].total - costs[best].total;
-    var labels = { arq: "ARQ", wise: "Wise", revolut: "Revolut Standard" };
     var sourceLabels = {
       brl: "partindo de BRL",
       target: "com a moeda local do saque já disponível",
@@ -194,7 +234,7 @@
 
     verdict.textContent = difference <= 0.01
       ? "Empate nesse cenário " + sourceLabels[options.source] + ". Confira a cotação e a disponibilidade do caixa."
-      : labels[best] + " tem o menor custo total estimado " + sourceLabels[options.source] + ": " + money.format(costs[best].total) + ". A diferença para o " + labels[second] + " é de " + money.format(difference) + ".";
+      : planLabels[best] + " tem o menor custo total estimado " + sourceLabels[options.source] + ": " + money.format(costs[best].total) + ". A diferença para o " + planLabels[second] + " é de " + money.format(difference) + ".";
   }
 
   [
