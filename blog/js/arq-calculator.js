@@ -11,6 +11,8 @@
   var wiseIofInput = root.querySelector("#arq-wise-iof-rate");
   var wiseConversionInput = root.querySelector("#arq-wise-conversion-rate");
   var revolutIofInput = root.querySelector("#arq-revolut-iof-rate");
+  var revolutBrlFeeInput = root.querySelector("#arq-revolut-brl-fee-rate");
+  var revolutExtraFxInput = root.querySelector("#arq-revolut-extra-fx-rate");
   var revolutSpreadInput = root.querySelector("#arq-revolut-spread-rate");
   var atmFeeInput = root.querySelector("#arq-atm-fee");
   var dccInput = root.querySelector("#arq-dcc-rate");
@@ -21,6 +23,8 @@
   var wiseIofOutput = root.querySelector("#arq-wise-iof-rate-output");
   var wiseConversionOutput = root.querySelector("#arq-wise-conversion-rate-output");
   var revolutIofOutput = root.querySelector("#arq-revolut-iof-rate-output");
+  var revolutBrlFeeOutput = root.querySelector("#arq-revolut-brl-fee-rate-output");
+  var revolutExtraFxOutput = root.querySelector("#arq-revolut-extra-fx-rate-output");
   var revolutSpreadOutput = root.querySelector("#arq-revolut-spread-rate-output");
   var atmFeeOutput = root.querySelector("#arq-atm-fee-output");
   var dccOutput = root.querySelector("#arq-dcc-rate-output");
@@ -77,47 +81,69 @@
 
   function costModel(options) {
     var totalValue = options.value * options.count;
-    var includeFunding = options.source === "brl";
+    var startsInBrl = options.source === "brl";
+    var alreadyTargetCurrency = options.source === "target";
+    var startsInOtherForeignCurrency = options.source === "foreign";
     var atmTotal = options.atmFee * options.count;
     var dccTotal = totalValue * (options.dccPercent / 100);
 
-    var arqFunding = includeFunding ? totalValue * (options.arqConversionPercent / 100) : 0;
+    var arqConversion = startsInBrl
+      ? totalValue * (options.arqConversionPercent / 100)
+      : 0;
     var arqCard = totalValue * 0.01;
 
-    var wiseConversion = includeFunding ? totalValue * (options.wiseConversionPercent / 100) : 0;
-    var wiseIof = includeFunding ? totalValue * (options.wiseIofPercent / 100) : 0;
+    var wiseConversion = alreadyTargetCurrency
+      ? 0
+      : totalValue * (options.wiseConversionPercent / 100);
+    var wiseIof = startsInBrl
+      ? totalValue * (options.wiseIofPercent / 100)
+      : 0;
     var wiseCard = Math.max(options.count - 1, 0) * 20;
 
-    var revolutIof = includeFunding ? totalValue * (options.revolutIofPercent / 100) : 0;
-    var revolutExchange = includeFunding ? Math.max(totalValue - 1000, 0) * 0.014 : 0;
-    var revolutSpread = includeFunding ? totalValue * (options.revolutSpreadPercent / 100) : 0;
+    var revolutIof = startsInBrl
+      ? totalValue * (options.revolutIofPercent / 100)
+      : 0;
+    var revolutBrlFee = startsInBrl
+      ? totalValue * (options.revolutBrlFeePercent / 100)
+      : 0;
+    var revolutExtraFx = startsInOtherForeignCurrency
+      ? totalValue * (options.revolutExtraFxPercent / 100)
+      : 0;
+    var revolutSpread = alreadyTargetCurrency
+      ? 0
+      : totalValue * (options.revolutSpreadPercent / 100);
     var revolutCard = revolutWithdrawalFee(options.value, options.count);
 
     return {
       arq: {
-        total: arqFunding + arqCard + atmTotal + dccTotal,
-        detail: "conversão sem IOF " + money.format(arqFunding) + " · cartão " + money.format(arqCard) + " · ATM " + money.format(atmTotal) + " · DCC " + money.format(dccTotal),
+        total: arqConversion + arqCard + atmTotal + dccTotal,
+        detail: "conversão sem IOF " + money.format(arqConversion) + " · saque " + money.format(arqCard) + " · ATM " + money.format(atmTotal) + " · DCC " + money.format(dccTotal),
       },
       wise: {
         total: wiseConversion + wiseIof + wiseCard + atmTotal + dccTotal,
-        detail: "conversão " + money.format(wiseConversion) + " · IOF " + money.format(wiseIof) + " · cartão " + money.format(wiseCard) + " · ATM " + money.format(atmTotal) + " · DCC " + money.format(dccTotal),
+        detail: "conversão " + money.format(wiseConversion) + " · IOF " + money.format(wiseIof) + " · saque " + money.format(wiseCard) + " · ATM " + money.format(atmTotal) + " · DCC " + money.format(dccTotal),
       },
       revolut: {
-        total: revolutIof + revolutExchange + revolutSpread + revolutCard + atmTotal + dccTotal,
-        detail: "IOF " + money.format(revolutIof) + " · tarifa cambial " + money.format(revolutExchange) + " · ajuste " + money.format(revolutSpread) + " · cartão " + money.format(revolutCard) + " · ATM " + money.format(atmTotal) + " · DCC " + money.format(dccTotal),
+        total: revolutIof + revolutBrlFee + revolutExtraFx + revolutSpread + revolutCard + atmTotal + dccTotal,
+        detail: "IOF " + money.format(revolutIof) + " · tarifa BRL " + money.format(revolutBrlFee) + " · adicional entre moedas " + money.format(revolutExtraFx) + " · spread " + money.format(revolutSpread) + " · saque " + money.format(revolutCard) + " · ATM " + money.format(atmTotal) + " · DCC " + money.format(dccTotal),
       },
     };
   }
 
   function render() {
+    var source = sourceInput && ["brl", "target", "foreign"].indexOf(sourceInput.value) >= 0
+      ? sourceInput.value
+      : "brl";
     var options = {
       value: Math.max(readNumber(valueInput, 500), 0),
       count: Math.max(Math.floor(readNumber(countInput, 2)), 1),
-      source: sourceInput && sourceInput.value === "foreign" ? "foreign" : "brl",
+      source: source,
       arqConversionPercent: readNumber(arqConversionInput, 0.5),
       wiseIofPercent: readNumber(wiseIofInput, 3.5),
       wiseConversionPercent: readNumber(wiseConversionInput, 0.78),
       revolutIofPercent: readNumber(revolutIofInput, 3.5),
+      revolutBrlFeePercent: readNumber(revolutBrlFeeInput, 0),
+      revolutExtraFxPercent: readNumber(revolutExtraFxInput, 0),
       revolutSpreadPercent: readNumber(revolutSpreadInput, 0),
       atmFee: readNumber(atmFeeInput, 0),
       dccPercent: readNumber(dccInput, 0),
@@ -138,6 +164,8 @@
     wiseIofOutput.textContent = percentage(options.wiseIofPercent);
     wiseConversionOutput.textContent = percentage(options.wiseConversionPercent);
     revolutIofOutput.textContent = percentage(options.revolutIofPercent);
+    revolutBrlFeeOutput.textContent = percentage(options.revolutBrlFeePercent);
+    revolutExtraFxOutput.textContent = percentage(options.revolutExtraFxPercent);
     revolutSpreadOutput.textContent = percentage(options.revolutSpreadPercent);
     atmFeeOutput.textContent = money.format(options.atmFee);
     dccOutput.textContent = percentage(options.dccPercent);
@@ -158,11 +186,15 @@
     })[0];
     var difference = costs[second].total - costs[best].total;
     var labels = { arq: "ARQ", wise: "Wise", revolut: "Revolut Standard" };
-    var sourceLabel = options.source === "brl" ? "partindo de BRL" : "com saldo estrangeiro já formado";
+    var sourceLabels = {
+      brl: "partindo de BRL",
+      target: "com a moeda local do saque já disponível",
+      foreign: "partindo de outra moeda estrangeira",
+    };
 
     verdict.textContent = difference <= 0.01
-      ? "Empate nesse cenário " + sourceLabel + ". Confira a cotação e a disponibilidade do caixa."
-      : labels[best] + " tem o menor custo total estimado " + sourceLabel + ": " + money.format(costs[best].total) + ". A diferença para o " + labels[second] + " é de " + money.format(difference) + ".";
+      ? "Empate nesse cenário " + sourceLabels[options.source] + ". Confira a cotação e a disponibilidade do caixa."
+      : labels[best] + " tem o menor custo total estimado " + sourceLabels[options.source] + ": " + money.format(costs[best].total) + ". A diferença para o " + labels[second] + " é de " + money.format(difference) + ".";
   }
 
   [
@@ -173,6 +205,8 @@
     wiseIofInput,
     wiseConversionInput,
     revolutIofInput,
+    revolutBrlFeeInput,
+    revolutExtraFxInput,
     revolutSpreadInput,
     atmFeeInput,
     dccInput,
