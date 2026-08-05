@@ -15,7 +15,8 @@ class ArqModelContractTests(unittest.TestCase):
             'id="arq-calc"',
             'id="arq-withdrawal-value"',
             'id="arq-withdrawal-count"',
-            'id="arq-balance-source"',
+            'id="arq-conversion-rate"',
+            'id="arq-local-fx-rate"',
             'id="arq-revolut-brl-fee-rate"',
             'id="arq-revolut-extra-fx-rate"',
             'id="arq-atm-fee"',
@@ -35,6 +36,7 @@ class ArqModelContractTests(unittest.TestCase):
         for marker in required:
             self.assertIn(marker, HTML, marker)
         self.assertRegex(HTML, r'class="[^"]*bar-chart[^"]*"')
+        self.assertNotIn('id="arq-balance-source"', HTML)
 
     def test_model_has_no_unresolved_copy_or_inline_calculator(self):
         self.assertNotRegex(HTML, r"\[(?:a confirmar|placeholder|TODO)\]")
@@ -48,6 +50,8 @@ class ArqModelContractTests(unittest.TestCase):
         for marker in [
             "costModel",
             "arqConversion",
+            "arqLocalFx",
+            "arqLocalFxPercent",
             "wiseIof",
             "wiseConversion",
             "revolutIof",
@@ -72,6 +76,7 @@ class ArqModelContractTests(unittest.TestCase):
         ]:
             self.assertIn(marker, CALC, marker)
         self.assertIn("ARQ Global: 0% de IOF", HTML)
+        self.assertIn("ajuste cambial até a moeda do saque", HTML)
         self.assertIn("<strong>1%</strong> para câmbio entre moedas estrangeiras no fim de semana", HTML)
         self.assertIn("<strong>0,5%</strong> sobre o volume acima de R$ 10.000", HTML)
         self.assertIn("tarifa do operador do ATM", HTML)
@@ -83,9 +88,7 @@ class ArqModelContractTests(unittest.TestCase):
             "ARQ Standard Global",
             "Wise padrão gratuito",
             "Revolut Standard",
-            "apenas as opções básicas gratuitas",
-            "Nenhum plano pago entra no cálculo",
-            "sem mensalidade, anuidade ou assinatura paga",
+            "opções básicas gratuitas",
         ):
             with self.subTest(marker=marker):
                 self.assertTrue(marker in HTML or marker in CALC, marker)
