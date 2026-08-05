@@ -64,9 +64,11 @@ class ArqModelContractTests(unittest.TestCase):
             "6",
         ]:
             self.assertIn(marker, CALC, marker)
-        self.assertIn("IOF, conversão, tarifa do cartão, ATM e DCC", HTML)
+        self.assertIn("conversão, IOF, saque, ATM e DCC", HTML)
         self.assertIn("tarifa do operador do ATM", HTML)
-        self.assertIn("o campo de aproximadamente 0,5% já reúne IOF, spread e serviço", HTML)
+        self.assertIn("O Cartão Global usa USDc ou EURc comprados sem IOF", HTML)
+        self.assertIn("ARQ: custo de conversão, sem IOF", HTML)
+        self.assertIn("conversão sem IOF", CALC)
         self.assertIn("3GuSCwDgRqiYrsUc2eo7MN", HTML)
 
 
