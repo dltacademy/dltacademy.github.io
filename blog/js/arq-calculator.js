@@ -96,7 +96,7 @@
     return {
       arq: {
         total: arqFunding + arqCard + atmTotal + dccTotal,
-        detail: "saldo " + money.format(arqFunding) + " · cartão " + money.format(arqCard) + " · ATM " + money.format(atmTotal) + " · DCC " + money.format(dccTotal),
+        detail: "conversão sem IOF " + money.format(arqFunding) + " · cartão " + money.format(arqCard) + " · ATM " + money.format(atmTotal) + " · DCC " + money.format(dccTotal),
       },
       wise: {
         total: wiseConversion + wiseIof + wiseCard + atmTotal + dccTotal,
