@@ -56,6 +56,8 @@ class PublicPatternTests(unittest.TestCase):
             'class="share-row"',
             'class="sources"',
             "Confirme no link",
+            "opções básicas gratuitas",
+            "Nenhum plano pago entra no cálculo",
         ):
             with self.subTest(marker=marker):
                 self.assertIn(marker, html)
