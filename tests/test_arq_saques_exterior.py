@@ -19,6 +19,10 @@ REFERRAL_URL = (
     "referralCode=tiagohyd_I6p&amp;pid=referral&amp;c=general&amp;is_retargeting=true"
 )
 WISE_REFERRAL_URL = "https://wise.com/invite/irhc/tiagon100"
+REVOLUT_REFERRAL_URL = (
+    "https://revolut.com/referral/?"
+    "referral-code=tiago327k!AUG1-26-AR-BR-H3&amp;geo-redirect"
+)
 
 
 class ArqAtmArticleTests(unittest.TestCase):
@@ -127,12 +131,20 @@ class ArqAtmArticleTests(unittest.TestCase):
         self.assertIn('data-verified-at="2026-07-29"', self.html)
         self.assertIn("Condição vista em 29/07/2026", self.html)
         self.assertIn("Criar conta no ARQ e conferir os US$ 10", self.html)
+        self.assertIn("Criar conta na Revolut e conferir os planos", self.html)
         self.assertNotIn("por tempo indeterminado", self.html.lower())
 
-        for url in (REFERRAL_URL, WISE_REFERRAL_URL):
+        for url in (REFERRAL_URL, WISE_REFERRAL_URL, REVOLUT_REFERRAL_URL):
             match = re.search(rf'<a href="{re.escape(url)}"([^>]*)>', self.html)
             self.assertIsNotNone(match)
             self.assertIn('rel="sponsored nofollow noopener noreferrer"', match.group(1))
+
+    def test_revolut_paid_plan_positioning_is_conditional_and_sourced(self) -> None:
+        self.assertIn("segunda alternativa mais forte para saques", self.html)
+        self.assertIn("pode virar a melhor para quem já paga um plano", self.html)
+        self.assertIn("R$ 2.000 no Plus até R$ 14.000 no exterior no Ultra", self.html)
+        self.assertIn("https://www.revolut.com/pt-BR/our-pricing-plans/", self.html)
+        self.assertIn("Nenhum plano pago entra no cálculo", self.html)
 
     def test_editorial_links_and_registry_connection(self) -> None:
         for href in (
