@@ -55,10 +55,11 @@ class PublicPatternTests(unittest.TestCase):
             'class="faq"',
             'class="share-row"',
             'class="sources"',
-            "Por tempo indeterminado",
+            "Confirme no link",
         ):
             with self.subTest(marker=marker):
                 self.assertIn(marker, html)
+        self.assertNotIn("Por tempo indeterminado", html)
 
     def test_qr_guide_has_persistent_four_step_checklist(self) -> None:
         html = self.read("guias/bybit-pay-vietqr/index.html")
