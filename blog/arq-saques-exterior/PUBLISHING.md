@@ -1,45 +1,37 @@
 # Checklist de publicação e atualização
 
-## Estado da revisão em 04/08/2026
+## Estado da revisão em 05/08/2026
 
-- [x] artigo reformulado com tom pessoal e orientado à experiência;
-- [x] título atualizado para “O cartão que usamos para sacar dinheiro no exterior”;
-- [x] CTA principal do ARQ preservado;
-- [x] link afiliado concorrente da Wise removido;
-- [x] disclosure mantido somente no contrato global do portal;
-- [x] links internos para ether.fi, Bybit Pay, Moreta e conta segura adicionados;
-- [x] custo total explicitado, incluindo formação do saldo, IOF aplicável, spread e ATM;
-- [x] caveat regional fora do escopo removido do artigo;
-- [x] metadados, JSON-LD, registry e sitemap atualizados;
-- [x] campanha registrada como por tempo indeterminado, pois nenhuma data final é publicada;
-- [x] security check, registry, sintaxe JavaScript e 83 testes aprovados nesta revisão.
+- [x] comparação limitada às opções básicas gratuitas, sem mensalidade, anuidade ou assinatura paga;
+- [x] escopo nomeado como ARQ Standard Global, cartão Wise padrão gratuito para clientes brasileiros e Revolut Standard Brasil;
+- [x] Cartão Global ARQ identificado como rota sem IOF;
+- [x] custo aproximado de 0,5% do ARQ tratado como conversão, não imposto;
+- [x] tarifa de saque ARQ Standard de 1% confirmada;
+- [x] Wise: 3,5% de IOF, conversão variável e R$ 20 após a primeira retirada;
+- [x] Revolut Standard: IOF, spread, 1,4% após franquia BRL, 1% no fim de semana, 0,5% de uso justo e regra de saque;
+- [x] tarifa do ATM e DCC mantidos como custos externos editáveis;
+- [x] três origens de saldo adicionadas: BRL, moeda local e outra moeda estrangeira;
+- [x] custos de funding e emissão separados da comparação recorrente;
+- [x] inconsistência entre páginas da ARQ registrada em `CLAIMS.md`;
+- [x] CTA de indicação preservado e campanha descrita como condição datada;
+- [x] metadados, FAQ e imagem social alinhados ao destaque de 0% de IOF;
+- [x] calculadora e tabela identificam explicitamente os três cartões básicos gratuitos;
+- [x] testes atualizados para impedir regressões.
 
-## Gate Editorial registrado em 04/08/2026
+## Antes de cada divulgação
 
-- [x] objetivo, leitor e promessa coerentes: explicar por que o ARQ ocupa a função de saque e levar ao CTA ARQ;
-- [x] primeira pessoa com experiência concreta na América Latina e no setup atual;
-- [x] conclusão clara, sem texto genérico ou frase que anula a oferta;
-- [x] custo total compara formação do saldo, IOF aplicável, spread, cartão, ATM e DCC;
-- [x] uma oferta primária: ARQ; nenhum link afiliado concorrente;
-- [x] disclosure somente global no rodapé e em `/transparencia/`;
-- [x] links internos e `#next-step-mount` conectam a peça ao cluster;
-- [x] prazo registrado como por tempo indeterminado; ausência de data pública não bloqueia o merge.
+- [ ] confirmar que nenhum benefício de plano pago entrou na tabela ou na calculadora;
+- [ ] abrir o link de indicação do ARQ;
+- [ ] confirmar se a campanha atribuída continua ativa;
+- [ ] conferir recompensa, gasto mínimo, prazo, país, exclusões e tempo de crédito;
+- [ ] conferir a tabela oficial de tarifas de ARQ Standard, Wise pessoal padrão e Revolut Standard;
+- [ ] conferir se o IOF brasileiro continua em 3,5% nas rotas aplicáveis;
+- [ ] testar a calculadora nos três tipos de origem de saldo;
+- [ ] simular Revolut Standard dentro e fora da franquia, com 0%, 0,5%, 1% e 1,5% adicionais;
+- [ ] testar uma tarifa real de ATM;
+- [ ] executar a validação geral do repositório;
+- [ ] revisar a página em celular e desktop.
 
-## Antes de futuras divulgações
+Regra editorial: **“Standard” significa a opção básica gratuita, sem assinatura paga**. A Wise não usa esse nome de plano; no artigo ela deve aparecer como **cartão Wise padrão gratuito para clientes brasileiros**. Benefícios de ARQ Premium, Revolut Plus/Premium/Metal/Ultra ou qualquer plano pago ficam fora da comparação.
 
-- [ ] abrir o link de indicação do ARQ e confirmar a campanha atribuída;
-- [ ] conferir se o novo usuário recebe US$ 10 após US$ 150 em gastos no primeiro mês;
-- [ ] verificar se passou a existir uma data final e confirmar país, estabelecimentos excluídos e tempo de crédito;
-- [ ] atualizar o bloco entre `PROMO_ATUAL` e `/PROMO_ATUAL`;
-- [x] revisar a retirada gratuita, a tarifa fixa e o IOF da conversão do cartão Wise emitido no Brasil;
-- [ ] atualizar `data-verified-at` e `CLAIMS.md` somente depois de conferir a oferta;
-- [ ] revisar tarifa do ARQ Standard, planos pagos, emissão e disponibilidade de ATM por país;
-- [x] revisar franquia, tarifas e IOF do Revolut Standard Brasil;
-- [ ] preservar o título humano e a experiência pessoal antes das comparações;
-- [ ] evitar transformar o texto em documentação, ranking universal ou sequência de ressalvas;
-- [x] testar a página em celular e desktop;
-- [ ] executar security check, registry e testes.
-
-Regra de prazo: se a página da campanha e as fontes oficiais não publicarem data final, registrar a oferta como **por tempo indeterminado**. Não inventar uma data e não abrir `needs-human` somente por essa ausência.
-
-O link de indicação nunca substitui a experiência real nem a tese estrutural: o ARQ é usado para acesso repetido a dinheiro em viagens; Wise e Revolut entram como comparação sem link afiliado concorrente. A comparação deve apoiar o relato, não dominar o artigo.
+Regra de custo: **0% de IOF não significa custo zero**. O texto deve sempre mostrar conversão, saque, ATM e DCC separadamente.
