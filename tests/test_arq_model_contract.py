@@ -72,8 +72,8 @@ class ArqModelContractTests(unittest.TestCase):
         ]:
             self.assertIn(marker, CALC, marker)
         self.assertIn("ARQ Global: 0% de IOF", HTML)
-        self.assertIn("1% para câmbio entre moedas estrangeiras no fim de semana", HTML)
-        self.assertIn("0,5% sobre o volume acima de R$ 10.000", HTML)
+        self.assertIn("<strong>1%</strong> para câmbio entre moedas estrangeiras no fim de semana", HTML)
+        self.assertIn("<strong>0,5%</strong> sobre o volume acima de R$ 10.000", HTML)
         self.assertIn("tarifa do operador do ATM", HTML)
         self.assertIn("3GuSCwDgRqiYrsUc2eo7MN", HTML)
         self.assertNotIn("0,5% já incluindo IOF", HTML)
