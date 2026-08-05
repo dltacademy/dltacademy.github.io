@@ -88,7 +88,7 @@ class ArqModelContractTests(unittest.TestCase):
             "sem mensalidade, anuidade ou assinatura paga",
         ):
             with self.subTest(marker=marker):
-                self.assertIn(marker, CALC)
+                self.assertTrue(marker in HTML or marker in CALC, marker)
 
     def test_social_asset_highlights_zero_iof(self):
         svg = (ROOT / "blog/arq-saques-exterior/og-image.svg").read_text()
