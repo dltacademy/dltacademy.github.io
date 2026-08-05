@@ -120,13 +120,14 @@ class FullScopeContractTests(unittest.TestCase):
         self.assertEqual(9, len(re.findall(r'<input[^>]+type="range"', html)))
         self.assertEqual(1, len(re.findall(r'<select[^>]+id="arq-balance-source"', html)))
         self.assertEqual(3, len(re.findall(r'data-calc-row="(?:arq|wise|revolut)"', html)))
-        self.assertEqual(3, len(re.findall(r'class="figure-cell"', html)))
+        self.assertEqual(4, len(re.findall(r'class="figure-cell"', html)))
         self.assertEqual(3, len(re.findall(r'class="step"', html)))
         self.assertIn("Wise", html)
         self.assertIn("Revolut", html)
         self.assertIn("DCC", html)
         self.assertIn("conferido em 05/08/2026", html)
         self.assertIn("saldo estrangeiro já formado", html)
+        self.assertIn("0% de IOF", html)
 
     def test_vietqr_guide_implements_the_full_guide_model(self) -> None:
         html = self.read("guias/bybit-pay-vietqr/index.html")
