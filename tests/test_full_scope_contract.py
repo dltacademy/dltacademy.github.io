@@ -117,8 +117,9 @@ class FullScopeContractTests(unittest.TestCase):
         ):
             self.assertTrue(has_class(html, marker) or marker in html, marker)
         self.assertIn('src="/blog/js/arq-calculator.js"', html)
-        self.assertEqual(11, len(re.findall(r'<input[^>]+type="range"', html)))
-        self.assertEqual(1, len(re.findall(r'<select[^>]+id="arq-balance-source"', html)))
+        self.assertEqual(12, len(re.findall(r'<input[^>]+type="range"', html)))
+        self.assertNotIn('id="arq-balance-source"', html)
+        self.assertIn('id="arq-local-fx-rate"', html)
         self.assertEqual(3, len(re.findall(r'data-calc-row="(?:arq|wise|revolut)"', html)))
         self.assertEqual(4, len(re.findall(r'class="figure-cell"', html)))
         self.assertEqual(3, len(re.findall(r'class="step"', html)))
@@ -126,8 +127,7 @@ class FullScopeContractTests(unittest.TestCase):
         self.assertIn("Revolut", html)
         self.assertIn("DCC", html)
         self.assertIn("05/08/2026", html)
-        self.assertIn("Já tenho a moeda local do saque", html)
-        self.assertIn("Tenho outra moeda estrangeira", html)
+        self.assertIn("BRL → saldo internacional → saque", html)
         self.assertIn("opções básicas gratuitas", html)
         self.assertIn("Nenhum plano pago entra no cálculo", html)
 
