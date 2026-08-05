@@ -43,25 +43,29 @@ class ArqAtmArticleTests(unittest.TestCase):
         self.assertIn('"datePublished": "2026-07-29"', self.html)
         self.assertIn('"dateModified": "2026-08-05"', self.html)
         self.assertIn("Atualizado em 5 de agosto de 2026", self.html)
-        self.assertIn("O cartão que usamos para sacar dinheiro no exterior", self.html)
+        self.assertIn("ARQ para saques no exterior", self.html)
 
     def test_current_fees_and_total_cost_are_explicit(self) -> None:
         required = (
+            "ARQ Global: 0% de IOF",
+            "aproximadamente 0,5%",
             "1% sobre o valor retirado",
             "3,5% de IOF",
-            "0% de IOF",
-            "USDc ou EURc comprados sem IOF",
-            "custo total aproximado de 0,5%",
-            "não uma cobrança de IOF",
-            "uma retirada gratuita por mês",
-            "R$ 1.600 ou cinco retiradas por ciclo",
+            "a partir de 0,78%",
+            "R$ 20 por operação",
+            "1,4%",
+            "1% para câmbio entre moedas estrangeiras no fim de semana",
+            "0,5% sobre o volume acima de R$ 10.000",
+            "2% ou R$ 6",
             "tarifa do operador do ATM",
             "Escolha a moeda local e recuse a conversão do caixa",
         )
         for text in required:
             with self.subTest(text=text):
                 self.assertIn(text, self.html)
-        self.assertNotIn("incluindo IOF, spread e serviço", self.html)
+
+        self.assertNotIn("0,5% já incluindo IOF", self.html)
+        self.assertNotIn("0,5% no total de IOF", self.html)
 
     def test_calculator_includes_all_standard_components(self) -> None:
         required = (
@@ -71,11 +75,13 @@ class ArqAtmArticleTests(unittest.TestCase):
             'id="arq-wise-iof-rate"',
             'id="arq-wise-conversion-rate"',
             'id="arq-revolut-iof-rate"',
+            'id="arq-revolut-brl-fee-rate"',
+            'id="arq-revolut-extra-fx-rate"',
             'id="arq-revolut-spread-rate"',
             'id="arq-atm-fee"',
             'id="arq-dcc-rate"',
-            "saldo estrangeiro já formado",
-            "ARQ: custo de conversão, sem IOF",
+            "Já tenho a moeda local do saque",
+            "Tenho outra moeda estrangeira",
             "ATM e DCC são editáveis",
             "blog/js/arq-calculator.js",
         )
@@ -86,16 +92,16 @@ class ArqAtmArticleTests(unittest.TestCase):
         script = (PAGE.parent / ".." / "js" / "arq-calculator.js").resolve()
         source = script.read_text(encoding="utf-8")
         for marker in (
-            "arqFunding",
+            "arqConversion",
             "wiseIof",
+            "wiseConversion",
             "revolutIof",
-            "revolutExchange",
+            "revolutBrlFee",
+            "revolutExtraFx",
             "revolutSpread",
             "atmTotal",
             "dccTotal",
             "revolutWithdrawalFee",
-            "conversão sem IOF",
-            "0.014",
             "0.02",
         ):
             with self.subTest(script_marker=marker):
@@ -125,7 +131,6 @@ class ArqAtmArticleTests(unittest.TestCase):
 
         by_id = {item["id"]: item for item in self.registry}
         entry = by_id[CONTENT_ID]
-        self.assertEqual(entry["title"], "O cartão que usamos para sacar dinheiro no exterior")
         self.assertEqual(entry["url"], "/blog/arq-saques-exterior/")
         self.assertIn(CONTENT_ID, by_id["guide-pagamentos-no-exterior"]["related"])
         self.assertIn('/blog/arq-saques-exterior/', self.etherfi_html)
