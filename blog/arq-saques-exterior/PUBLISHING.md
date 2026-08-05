@@ -15,6 +15,7 @@
 - [x] inconsistência entre páginas da ARQ registrada em `CLAIMS.md`;
 - [x] CTA de indicação preservado e campanha descrita como condição datada;
 - [x] metadados, FAQ e imagem social alinhados ao destaque de 0% de IOF;
+- [x] calculadora e tabela identificam explicitamente os três cartões básicos gratuitos;
 - [x] testes atualizados para impedir regressões.
 
 ## Antes de cada divulgação
