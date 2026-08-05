@@ -1,45 +1,27 @@
 # Checklist de publicação e atualização
 
-## Estado da revisão em 04/08/2026
+## Estado da revisão em 05/08/2026
 
-- [x] artigo reformulado com tom pessoal e orientado à experiência;
-- [x] título atualizado para “O cartão que usamos para sacar dinheiro no exterior”;
-- [x] CTA principal do ARQ preservado;
-- [x] link afiliado concorrente da Wise removido;
-- [x] disclosure mantido somente no contrato global do portal;
-- [x] links internos para ether.fi, Bybit Pay, Moreta e conta segura adicionados;
-- [x] custo total explicitado, incluindo formação do saldo, IOF aplicável, spread e ATM;
-- [x] caveat regional fora do escopo removido do artigo;
-- [x] metadados, JSON-LD, registry e sitemap atualizados;
-- [x] campanha registrada como por tempo indeterminado, pois nenhuma data final é publicada;
-- [x] security check, registry, sintaxe JavaScript e 83 testes aprovados nesta revisão.
+- [x] tarifas próprias de ARQ, Wise e Revolut revalidadas em fontes oficiais;
+- [x] IOF de 3,5% mantido na rota BRL de Wise e Revolut;
+- [x] custo aproximado de 0,5% do ARQ identificado como total de IOF, spread e serviço;
+- [x] tarifa do ATM incluída como campo editável por retirada;
+- [x] DCC incluído como campo editável, com padrão de 0% e orientação para recusá-lo;
+- [x] cenário “saldo estrangeiro já formado” adicionado para evitar dupla cobrança de conversão e IOF;
+- [x] franquias e tarifas próprias mantidas na fórmula;
+- [x] campanha de indicação retirada da classificação “por tempo indeterminado”;
+- [x] CTA principal do ARQ preservado com confirmação da campanha no link;
+- [x] metadados e JSON-LD atualizados para 05/08/2026;
 
-## Gate Editorial registrado em 04/08/2026
+## Antes de cada divulgação
 
-- [x] objetivo, leitor e promessa coerentes: explicar por que o ARQ ocupa a função de saque e levar ao CTA ARQ;
-- [x] primeira pessoa com experiência concreta na América Latina e no setup atual;
-- [x] conclusão clara, sem texto genérico ou frase que anula a oferta;
-- [x] custo total compara formação do saldo, IOF aplicável, spread, cartão, ATM e DCC;
-- [x] uma oferta primária: ARQ; nenhum link afiliado concorrente;
-- [x] disclosure somente global no rodapé e em `/transparencia/`;
-- [x] links internos e `#next-step-mount` conectam a peça ao cluster;
-- [x] prazo registrado como por tempo indeterminado; ausência de data pública não bloqueia o merge.
+- [ ] abrir o link de indicação do ARQ;
+- [ ] confirmar se a campanha atribuída continua ativa;
+- [ ] conferir recompensa, gasto mínimo, prazo, país, exclusões e tempo de crédito;
+- [ ] atualizar o bloco entre `PROMO_ATUAL` e `/PROMO_ATUAL` somente após a verificação;
+- [ ] testar a calculadora com uma tarifa real de ATM;
+- [ ] conferir no app se as taxas de conversão continuam iguais às premissas;
+- [ ] executar os testes do artigo e a validação geral do repositório;
+- [ ] revisar a página em celular e desktop.
 
-## Antes de futuras divulgações
-
-- [ ] abrir o link de indicação do ARQ e confirmar a campanha atribuída;
-- [ ] conferir se o novo usuário recebe US$ 10 após US$ 150 em gastos no primeiro mês;
-- [ ] verificar se passou a existir uma data final e confirmar país, estabelecimentos excluídos e tempo de crédito;
-- [ ] atualizar o bloco entre `PROMO_ATUAL` e `/PROMO_ATUAL`;
-- [x] revisar a retirada gratuita, a tarifa fixa e o IOF da conversão do cartão Wise emitido no Brasil;
-- [ ] atualizar `data-verified-at` e `CLAIMS.md` somente depois de conferir a oferta;
-- [ ] revisar tarifa do ARQ Standard, planos pagos, emissão e disponibilidade de ATM por país;
-- [x] revisar franquia, tarifas e IOF do Revolut Standard Brasil;
-- [ ] preservar o título humano e a experiência pessoal antes das comparações;
-- [ ] evitar transformar o texto em documentação, ranking universal ou sequência de ressalvas;
-- [x] testar a página em celular e desktop;
-- [ ] executar security check, registry e testes.
-
-Regra de prazo: se a página da campanha e as fontes oficiais não publicarem data final, registrar a oferta como **por tempo indeterminado**. Não inventar uma data e não abrir `needs-human` somente por essa ausência.
-
-O link de indicação nunca substitui a experiência real nem a tese estrutural: o ARQ é usado para acesso repetido a dinheiro em viagens; Wise e Revolut entram como comparação sem link afiliado concorrente. A comparação deve apoiar o relato, não dominar o artigo.
+Regra editorial: uma campanha sem data final exibida deve ser descrita como **“sem data final exibida”**, nunca como garantia de duração indefinida. A condição válida é a mostrada no link e no aplicativo no momento do cadastro.
