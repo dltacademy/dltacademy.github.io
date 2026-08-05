@@ -15,6 +15,9 @@ class ArqModelContractTests(unittest.TestCase):
             'id="arq-calc"',
             'id="arq-withdrawal-value"',
             'id="arq-withdrawal-count"',
+            'id="arq-balance-source"',
+            'id="arq-atm-fee"',
+            'id="arq-dcc-rate"',
             'class="calc-row"',
             'class="compare"',
             'class="note is-risk"',
@@ -30,21 +33,40 @@ class ArqModelContractTests(unittest.TestCase):
         for marker in required:
             self.assertIn(marker, HTML, marker)
         self.assertRegex(HTML, r'class="[^"]*bar-chart[^"]*"')
-        self.assertRegex(HTML, r'class="[^"]*cost-parts[^"]*"')
 
     def test_model_has_no_unresolved_copy_or_inline_calculator(self):
         self.assertNotRegex(HTML, r"\[(?:a confirmar|placeholder|TODO)\]")
         self.assertNotIn("onclick=", HTML.lower())
         self.assertNotIn("oninput=", HTML.lower())
         self.assertNotIn("onchange=", HTML.lower())
-        self.assertRegex(HTML, r"Fontes oficiais conferidas em 04/08/2026")
+        self.assertRegex(HTML, r"Fontes oficiais conferidas em 05/08/2026")
+        self.assertNotIn("por tempo indeterminado", HTML.lower())
 
     def test_calculator_uses_verified_scoped_rules(self):
-        for marker in ["costModel", "arqConversion", "wiseIof", "revolutIof", "wiseIofPercent", "revolutIofPercent", "3.5", "0.005", "0.78", "0.014", "0.01", "1600", "20", "0.02", "6"]:
+        for marker in [
+            "costModel",
+            "arqFunding",
+            "wiseIof",
+            "revolutIof",
+            "wiseIofPercent",
+            "revolutIofPercent",
+            "revolutWithdrawalFee",
+            "atmTotal",
+            "dccTotal",
+            "3.5",
+            "0.5",
+            "0.78",
+            "0.014",
+            "0.01",
+            "1600",
+            "20",
+            "0.02",
+            "6",
+        ]:
             self.assertIn(marker, CALC, marker)
-        self.assertIn("conversão, IOF e tarifa própria", HTML)
+        self.assertIn("IOF, tarifa de conversão, tarifa própria do cartão, tarifa do ATM e DCC", HTML)
         self.assertIn("tarifa do operador do ATM", HTML)
-        self.assertIn("IOF acontece na conversão", HTML)
+        self.assertIn("o campo de aproximadamente 0,5% já reúne IOF, spread e serviço", HTML)
         self.assertIn("3GuSCwDgRqiYrsUc2eo7MN", HTML)
 
 
