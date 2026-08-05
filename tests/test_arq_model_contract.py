@@ -78,6 +78,18 @@ class ArqModelContractTests(unittest.TestCase):
         self.assertIn("3GuSCwDgRqiYrsUc2eo7MN", HTML)
         self.assertNotIn("0,5% já incluindo IOF", HTML)
 
+    def test_comparison_is_limited_to_free_basic_cards(self):
+        for marker in (
+            "ARQ Standard Global",
+            "Wise padrão gratuito",
+            "Revolut Standard",
+            "apenas as opções básicas gratuitas",
+            "Nenhum plano pago entra no cálculo",
+            "sem mensalidade, anuidade ou assinatura paga",
+        ):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, CALC)
+
     def test_social_asset_highlights_zero_iof(self):
         svg = (ROOT / "blog/arq-saques-exterior/og-image.svg").read_text()
         self.assertIn("0% DE IOF", svg)
