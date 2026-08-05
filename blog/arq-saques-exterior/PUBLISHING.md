@@ -8,6 +8,8 @@
 - [x] calculadora limitada à rota BRL até o saque;
 - [x] ajuste cambial do ARQ adicionado como campo editável;
 - [x] link de indicação da Wise restaurado como link textual secundário;
+- [x] link de indicação da Revolut adicionado no texto e em CTA secundário;
+- [x] planos pagos da Revolut posicionados como alternativa condicional, fora da calculadora Standard;
 - [x] CTA do ARQ simplificado e com benefício visível;
 - [x] link da Binance removido do ponto anterior à oferta;
 - [x] registry alinhado ao título, descrição e tempo de leitura atuais;
@@ -17,11 +19,11 @@
 
 - [ ] abrir o link do ARQ e confirmar a campanha atribuída;
 - [ ] conferir as tarifas atuais de ARQ Global, Wise e Revolut Standard;
+- [ ] conferir as franquias atuais dos planos pagos da Revolut;
 - [ ] preencher o ajuste cambial do ARQ com uma cotação ou saque real quando disponível;
 - [ ] testar a calculadora dentro e fora das franquias da Revolut;
-- [ ] confirmar o link contextual da Wise;
-- [ ] inserir o link da Revolut somente quando o URL exato estiver disponível;
+- [ ] confirmar os links contextuais da Wise e da Revolut;
 - [ ] executar security check, registry, sintaxe JavaScript e testes;
 - [ ] revisar a página em celular e desktop.
 
-Regra editorial: o ARQ continua como oferta principal. Wise e Revolut podem receber links textuais discretos porque a peça é um comparativo explícito, mas não recebem caixas ou botões concorrentes.
+Regra editorial: o ARQ continua como oferta principal. Wise recebe apenas link textual. Revolut recebe um CTA breve e secundário porque é a alternativa de backup mais forte no texto e os planos pagos ampliam as franquias, mas a calculadora continua comparando somente os cartões básicos gratuitos.
