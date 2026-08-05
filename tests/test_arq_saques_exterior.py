@@ -67,6 +67,19 @@ class ArqAtmArticleTests(unittest.TestCase):
         self.assertNotIn("0,5% já incluindo IOF", self.html)
         self.assertNotIn("0,5% no total de IOF", self.html)
 
+    def test_free_basic_scope_is_explicit(self) -> None:
+        for marker in (
+            "apenas as opções básicas gratuitas",
+            "sem mensalidade, anuidade ou assinatura paga",
+            "ARQ Standard Global",
+            "Wise padrão gratuito",
+            "Revolut Standard Brasil",
+            "Nenhum plano pago entra nesta tabela",
+            "Nenhum plano pago entra no cálculo",
+        ):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, self.html)
+
     def test_calculator_includes_all_standard_components(self) -> None:
         required = (
             'data-arq-calculator',
