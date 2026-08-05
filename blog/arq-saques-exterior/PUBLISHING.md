@@ -2,11 +2,13 @@
 
 ## Estado da revisão em 05/08/2026
 
+- [x] comparação limitada às opções básicas gratuitas, sem mensalidade, anuidade ou assinatura paga;
+- [x] escopo nomeado como ARQ Standard Global, cartão Wise padrão gratuito para clientes brasileiros e Revolut Standard Brasil;
 - [x] Cartão Global ARQ identificado como rota sem IOF;
 - [x] custo aproximado de 0,5% do ARQ tratado como conversão, não imposto;
 - [x] tarifa de saque ARQ Standard de 1% confirmada;
 - [x] Wise: 3,5% de IOF, conversão variável e R$ 20 após a primeira retirada;
-- [x] Revolut: IOF, spread, 1,4% após franquia BRL, 1% no fim de semana, 0,5% de uso justo e regra de saque;
+- [x] Revolut Standard: IOF, spread, 1,4% após franquia BRL, 1% no fim de semana, 0,5% de uso justo e regra de saque;
 - [x] tarifa do ATM e DCC mantidos como custos externos editáveis;
 - [x] três origens de saldo adicionadas: BRL, moeda local e outra moeda estrangeira;
 - [x] custos de funding e emissão separados da comparação recorrente;
@@ -17,15 +19,18 @@
 
 ## Antes de cada divulgação
 
+- [ ] confirmar que nenhum benefício de plano pago entrou na tabela ou na calculadora;
 - [ ] abrir o link de indicação do ARQ;
 - [ ] confirmar se a campanha atribuída continua ativa;
 - [ ] conferir recompensa, gasto mínimo, prazo, país, exclusões e tempo de crédito;
-- [ ] conferir a tabela oficial de tarifas de ARQ, Wise e Revolut;
+- [ ] conferir a tabela oficial de tarifas de ARQ Standard, Wise pessoal padrão e Revolut Standard;
 - [ ] conferir se o IOF brasileiro continua em 3,5% nas rotas aplicáveis;
 - [ ] testar a calculadora nos três tipos de origem de saldo;
-- [ ] simular Revolut dentro e fora da franquia, com 0%, 0,5%, 1% e 1,5% adicionais;
+- [ ] simular Revolut Standard dentro e fora da franquia, com 0%, 0,5%, 1% e 1,5% adicionais;
 - [ ] testar uma tarifa real de ATM;
 - [ ] executar a validação geral do repositório;
 - [ ] revisar a página em celular e desktop.
 
-Regra editorial: **0% de IOF não significa custo zero**. O texto deve sempre mostrar conversão, saque, ATM e DCC separadamente.
+Regra editorial: **“Standard” significa a opção básica gratuita, sem assinatura paga**. A Wise não usa esse nome de plano; no artigo ela deve aparecer como **cartão Wise padrão gratuito para clientes brasileiros**. Benefícios de ARQ Premium, Revolut Plus/Premium/Metal/Ultra ou qualquer plano pago ficam fora da comparação.
+
+Regra de custo: **0% de IOF não significa custo zero**. O texto deve sempre mostrar conversão, saque, ATM e DCC separadamente.
