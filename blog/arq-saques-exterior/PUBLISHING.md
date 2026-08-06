@@ -2,36 +2,28 @@
 
 ## Estado da revisão em 05/08/2026
 
-- [x] comparação limitada às opções básicas gratuitas, sem mensalidade, anuidade ou assinatura paga;
-- [x] escopo nomeado como ARQ Standard Global, cartão Wise padrão gratuito para clientes brasileiros e Revolut Standard Brasil;
-- [x] Cartão Global ARQ identificado como rota sem IOF;
-- [x] custo aproximado de 0,5% do ARQ tratado como conversão, não imposto;
-- [x] tarifa de saque ARQ Standard de 1% confirmada;
-- [x] Wise: 3,5% de IOF, conversão variável e R$ 20 após a primeira retirada;
-- [x] Revolut Standard: IOF, spread, 1,4% após franquia BRL, 1% no fim de semana, 0,5% de uso justo e regra de saque;
-- [x] tarifa do ATM e DCC mantidos como custos externos editáveis;
-- [x] três origens de saldo adicionadas: BRL, moeda local e outra moeda estrangeira;
-- [x] custos de funding e emissão separados da comparação recorrente;
-- [x] inconsistência entre páginas da ARQ registrada em `CLAIMS.md`;
-- [x] CTA de indicação preservado e campanha descrita como condição datada;
-- [x] metadados, FAQ e imagem social alinhados ao destaque de 0% de IOF;
-- [x] calculadora e tabela identificam explicitamente os três cartões básicos gratuitos;
-- [x] testes atualizados para impedir regressões.
+- [x] comparação limitada aos cartões básicos gratuitos;
+- [x] promessa de 0% de IOF ligada ao Cartão Global e à formação do saldo;
+- [x] cotação até a moeda local separada da formação de USDc/EURc;
+- [x] calculadora limitada à rota BRL até o saque;
+- [x] ajuste cambial do ARQ adicionado como campo editável;
+- [x] link de indicação da Wise restaurado como link textual secundário;
+- [x] link de indicação da Revolut adicionado no texto e em CTA secundário;
+- [x] planos pagos da Revolut posicionados como alternativa condicional, fora da calculadora Standard;
+- [x] CTA do ARQ simplificado e com benefício visível;
+- [x] link da Binance removido do ponto anterior à oferta;
+- [x] registry alinhado ao título, descrição e tempo de leitura atuais;
+- [x] fontes, FAQ e testes atualizados sem repetir ressalvas no corpo.
 
 ## Antes de cada divulgação
 
-- [ ] confirmar que nenhum benefício de plano pago entrou na tabela ou na calculadora;
-- [ ] abrir o link de indicação do ARQ;
-- [ ] confirmar se a campanha atribuída continua ativa;
-- [ ] conferir recompensa, gasto mínimo, prazo, país, exclusões e tempo de crédito;
-- [ ] conferir a tabela oficial de tarifas de ARQ Standard, Wise pessoal padrão e Revolut Standard;
-- [ ] conferir se o IOF brasileiro continua em 3,5% nas rotas aplicáveis;
-- [ ] testar a calculadora nos três tipos de origem de saldo;
-- [ ] simular Revolut Standard dentro e fora da franquia, com 0%, 0,5%, 1% e 1,5% adicionais;
-- [ ] testar uma tarifa real de ATM;
-- [ ] executar a validação geral do repositório;
+- [ ] abrir o link do ARQ e confirmar a campanha atribuída;
+- [ ] conferir as tarifas atuais de ARQ Global, Wise e Revolut Standard;
+- [ ] conferir as franquias atuais dos planos pagos da Revolut;
+- [ ] preencher o ajuste cambial do ARQ com uma cotação ou saque real quando disponível;
+- [ ] testar a calculadora dentro e fora das franquias da Revolut;
+- [ ] confirmar os links contextuais da Wise e da Revolut;
+- [ ] executar security check, registry, sintaxe JavaScript e testes;
 - [ ] revisar a página em celular e desktop.
 
-Regra editorial: **“Standard” significa a opção básica gratuita, sem assinatura paga**. A Wise não usa esse nome de plano; no artigo ela deve aparecer como **cartão Wise padrão gratuito para clientes brasileiros**. Benefícios de ARQ Premium, Revolut Plus/Premium/Metal/Ultra ou qualquer plano pago ficam fora da comparação.
-
-Regra de custo: **0% de IOF não significa custo zero**. O texto deve sempre mostrar conversão, saque, ATM e DCC separadamente.
+Regra editorial: o ARQ continua como oferta principal. Wise recebe apenas link textual. Revolut recebe um CTA breve e secundário porque é a alternativa de backup mais forte no texto e os planos pagos ampliam as franquias, mas a calculadora continua comparando somente os cartões básicos gratuitos.
