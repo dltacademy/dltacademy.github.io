@@ -16,7 +16,7 @@ CONTENT_ID = "article-arq-saques-exterior"
 URL = "https://dlt.academy/blog/arq-saques-exterior/"
 REFERRAL_URL = (
     "https://www.arqfinance.com/referrals/general?"
-    "referralCode=tiagohyd_I6p&amp;pid=referral&amp;c=general&amp;is_retargeting=true"
+    "referralCode=tiagohyd_qVz&amp;pid=referral&amp;c=general&amp;is_retargeting=true"
 )
 
 
@@ -44,8 +44,8 @@ class ArqAtmArticleTests(unittest.TestCase):
         self.assertIn(f'data-content-id="{CONTENT_ID}"', self.html)
         self.assertIn('"mainEntityOfPage": "' + URL + '"', self.html)
         self.assertIn('"datePublished": "2026-07-29"', self.html)
-        self.assertIn('"dateModified": "2026-08-04"', self.html)
-        self.assertIn("Atualizado em 4 de agosto de 2026", self.html)
+        self.assertIn('"dateModified": "2026-08-05"', self.html)
+        self.assertIn("Atualizado em 5 de agosto de 2026", self.html)
         self.assertIn("O cartão que usamos para sacar dinheiro no exterior", self.html)
 
     def test_current_fee_is_presented_without_an_unverified_history(self) -> None:
@@ -102,9 +102,10 @@ class ArqAtmArticleTests(unittest.TestCase):
         self.assertEqual(self.html.count("<!-- PROMO_ATUAL -->"), 1)
         self.assertEqual(self.html.count("<!-- /PROMO_ATUAL -->"), 1)
         self.assertIn('data-promotion="arq-referral"', self.html)
-        self.assertIn('data-verified-at="2026-07-29"', self.html)
+        self.assertIn('data-verified-at="2026-08-05"', self.html)
         self.assertIn("US$ 10 depois de fazer US$ 150", self.html)
-        self.assertIn("por tempo indeterminado", self.html)
+        self.assertIn("Confira o prazo no convite", self.html)
+        self.assertIn("página personalizada da indicação", self.html)
         match = re.search(
             rf'<a href="{re.escape(REFERRAL_URL)}"([^>]*)>',
             self.html,

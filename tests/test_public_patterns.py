@@ -55,7 +55,7 @@ class PublicPatternTests(unittest.TestCase):
             'class="faq"',
             'class="share-row"',
             'class="sources"',
-            "Por tempo indeterminado",
+            "Confira o prazo no convite",
         ):
             with self.subTest(marker=marker):
                 self.assertIn(marker, html)
