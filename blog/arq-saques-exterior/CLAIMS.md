@@ -1,4 +1,4 @@
-# Claims voláteis — revisão de 29/07/2026
+# Claims voláteis — revisão de 05/08/2026
 
 Este arquivo registra o que precisa ser revalidado. As fontes públicas continuam vinculadas no próprio artigo.
 
@@ -16,16 +16,16 @@ Este arquivo registra o que precisa ser revalidado. As fontes públicas continua
 | Wise programa de indicação | programas e benefícios variam por região; o benefício válido é o exibido na página personalizada no momento do cadastro | antes de cada divulgação e, no máximo, 05/08/2026 |
 | Revolut Standard Brasil | R$ 1.600 ou cinco saques sem tarifa própria; depois 2% ou R$ 6, o maior | 29/08/2026 |
 | Revolut conversão BRL | câmbio sem tarifa até R$ 1.000/mês; depois 1,4% para BRL→moeda estrangeira; IOF deve ser confirmado no app | 29/08/2026 |
-| Promoção de indicação ARQ | oferta de US$ 10 após US$ 150 em gastos elegíveis no primeiro mês; nenhuma data final é publicada, portanto a campanha é tratada como por tempo indeterminado | antes de cada divulgação |
+| Promoção de indicação ARQ | página personalizada conferida em 05/08/2026: código `tiagohyd_qVz`, US$ 10 após US$ 150 em gastos elegíveis no primeiro mês; prazo, país, estabelecimentos e tempo de crédito dependem da campanha exibida no convite | antes de cada divulgação |
 | Uso durante viagens | experiência pessoal do Tiago com cartão emitido ainda na fase DolarApp; não tratar como compatibilidade universal | revisar após novos testes |
 
-## Nota editorial de 04/08/2026
+## Nota editorial de 05/08/2026
 
-A redação preserva a experiência real com o DolarApp/ARQ e deixa as comparações como apoio. O título continua **“O cartão que usamos para sacar dinheiro no exterior”**. Nesta revisão, o link afiliado concorrente e disclosures locais foram removidos, o custo total foi explicitado, a Wise foi revalidada após a mudança de 01/05/2026 e a condição do primeiro cartão físico foi reconferida em fonte oficial.
+A redação preserva a experiência real com o DolarApp/ARQ e deixa as comparações como apoio. O título continua **“O cartão que usamos para sacar dinheiro no exterior”**. Nesta revisão, o CTA foi alinhado ao código de indicação vigente, a condição pública do novo usuário foi reconfirmada (US$ 10 após US$ 150 no primeiro mês) e o prazo foi deslocado para a página personalizada da campanha, sem prometer uma condição que pode mudar por conta ou país.
 
 ## Blocos de promoção e indicação
 
-A oferta do ARQ, atualmente publicada por tempo indeterminado, está delimitada no HTML por:
+A oferta do ARQ está delimitada no HTML por:
 
 ```html
 <!-- PROMO_ATUAL -->
@@ -40,6 +40,6 @@ Ao revisar a promoção do ARQ:
 3. preservar a tese estrutural: o ARQ foi escolhido para saques e acesso repetido a dinheiro físico, não por causa do bônus;
 4. não prometer a recompensa até a pessoa confirmar a campanha na página e cumprir as condições;
 5. manter a distinção entre documentação oficial e experiência pessoal com o cartão;
-6. quando nenhuma fonte oficial ou página da campanha publicar data final, registrar **por tempo indeterminado**; não inventar prazo nem manter bloqueio `needs-human` apenas pela ausência de uma data.
+6. se a página personalizada não exibir uma data final verificável, registrar **por tempo indeterminado**; se exibir, registrar a data junto da condição. Não inventar prazo nem transformar a ausência de data em promessa.
 
 Se uma revisão vencer, não atualizar apenas a data: conferir a fonte e registrar qualquer mudança material no histórico do Git. Wise e Revolut permanecem como comparação editorial, sem link afiliado concorrente nesta peça.
