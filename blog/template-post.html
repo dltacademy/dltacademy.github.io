@@ -9,14 +9,14 @@
 <meta name="description" content="{{POST_DESCRIPTION}}">
 <link rel="canonical" href="https://dlt.academy/blog/{{POST_SLUG}}/">
 
-<!-- Open Graph -->
+<!-- Open Graph — og-image.svg vem do template em kit-brand/og-template.svg (~2 KB) -->
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="DLT Academy">
 <meta property="og:title" content="{{POST_TITLE}}">
 <meta property="og:description" content="{{POST_DESCRIPTION}}">
 <meta property="og:url" content="https://dlt.academy/blog/{{POST_SLUG}}/">
-<meta property="og:image" content="https://dlt.academy/blog/{{POST_SLUG}}/og-image.png">
-<meta property="og:image:type" content="image/png">
+<meta property="og:image" content="https://dlt.academy/blog/{{POST_SLUG}}/og-image.svg">
+<meta property="og:image:type" content="image/svg+xml">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="{{POST_OG_ALT}}">
@@ -26,14 +26,14 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{POST_TITLE}}">
 <meta name="twitter:description" content="{{POST_DESCRIPTION}}">
-<meta name="twitter:image" content="https://dlt.academy/blog/{{POST_SLUG}}/og-image.png">
+<meta name="twitter:image" content="https://dlt.academy/blog/{{POST_SLUG}}/og-image.svg">
 <meta name="twitter:image:alt" content="{{POST_OG_ALT}}">
 
 <meta name="theme-color" content="#06090F">
 <link rel="icon" type="image/png" href="/assets/dlt-mark.png">
 <link rel="stylesheet" href="/styles-base.css">
 <link rel="stylesheet" href="../styles-blog.css">
-
+<link rel="stylesheet" href="/dlt-patterns.css">
 
 <!-- Dados estruturados (JSON-LD é bloco de dados, não executa — ok com o CSP) -->
 <script type="application/ld+json">
@@ -46,13 +46,33 @@
   "dateModified": "{{POST_MODIFIED_ISO}}",
   "inLanguage": "pt-BR",
   "mainEntityOfPage": "https://dlt.academy/blog/{{POST_SLUG}}/",
-  "image": "https://dlt.academy/blog/{{POST_SLUG}}/og-image.png",
+  "image": "https://dlt.academy/blog/{{POST_SLUG}}/og-image.svg",
   "author": { "@type": "Organization", "name": "DLT Academy", "url": "https://dlt.academy/" },
   "publisher": { "@type": "Organization", "name": "DLT Academy", "url": "https://dlt.academy/", "logo": { "@type": "ImageObject", "url": "https://dlt.academy/assets/dlt-logo-light.png" } }
 }
 </script>
+
+<!-- FAQ: espelhe aqui as MESMAS perguntas e respostas do bloco .faq abaixo.
+     Se a peça não tiver FAQ, apague este script inteiro. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "{{FAQ_1_PERGUNTA}}",
+      "acceptedAnswer": { "@type": "Answer", "text": "{{FAQ_1_RESPOSTA}}" }
+    }
+  ]
+}
+</script>
 </head>
 <body>
+
+<!-- Padrão 15 · progresso de leitura. Aponta para o corpo do texto, não para a
+     página: senão rodapé e CTA contam como leitura. -->
+<div class="read-progress" data-progress-for=".article-body"><span></span></div>
 
 <header class="top">
   <div class="wrap">
@@ -63,20 +83,114 @@
 <main>
   <div class="article-wrap article">
 
-    <div class="article-meta">
-      <span class="tag s2">{{POST_TAG}}</span>
-      <time datetime="{{POST_DATE_ISO}}">{{POST_DATE}}</time>
-      <span>Atualizado em {{POST_MODIFIED}}</span>
+    <!-- Padrão 01 · cabeçalho de peça -->
+    <div class="piece-head">
+      <div class="piece-meta article-meta">
+        <span class="tag s2">{{POST_TAG}}</span>
+        <time datetime="{{POST_DATE_ISO}}">{{POST_DATE}}</time>
+        <span class="sep"></span>
+        <span>atualizado em {{POST_MODIFIED}}</span>
+        <span class="sep"></span>
+        <span>{{POST_READ_TIME}} de leitura</span>
+      </div>
+      <h1>{{POST_TITLE}}</h1>
+      <!-- Lede: a resposta curta, antes do primeiro parágrafo. Nunca repita o título. -->
+      <p class="piece-lede">{{POST_LEDE}}</p>
     </div>
-    <h1>{{POST_TITLE}}</h1>
 
+    <!-- Padrão 02 · O essencial. 3 a 4 conclusões, uma frase cada.
+         É o que o leitor apressado leva embora. Obrigatório. -->
+    <div class="key-points" data-reveal>
+      <p class="key-points-title">O essencial</p>
+      <ul>
+        <li>{{ESSENCIAL_1}}</li>
+        <li>{{ESSENCIAL_2}}</li>
+        <li>{{ESSENCIAL_3}}</li>
+      </ul>
+    </div>
+
+    <!-- Padrão 03 · sumário. Só em peça com 5+ seções: a lista é montada pelo JS
+         a partir dos <h2> do corpo. Apague o <nav> se a peça for curta. -->
+    <nav class="piece-toc" data-toc-watch=".article-body h2">
+      <p>Neste artigo</p>
+    </nav>
+
+    <!-- Corpo. Blocos disponíveis, com a folha de padrões como referência:
+           .figure-row / .figure-cell   número-chave com fonte e data (04)
+           .note.is-info|is-warn|is-risk  nota, máx. 2 por seção (05)
+           .compare                      tabela comparativa (06)
+           .steps > .step                passo numerado (07)
+         Regra: no máximo 3 blocos destacados na peça inteira. -->
     <div class="article-body">
 {{POST_BODY}}
     </div>
 
+    <!-- Padrão 08 · veredito. Fecha peça de análise: a posição da casa em uma
+         frase + as condições em que ela muda. Apague em peça só explicativa. -->
+    <div class="verdict" data-reveal>
+      <p>Nosso veredito</p>
+      <p class="verdict-line">{{VEREDITO_FRASE}}</p>
+      <p>{{VEREDITO_CONDICAO}}</p>
+    </div>
 
-    <!-- Próximo passo pelo grafo do registry + comunidade. O bloco é montado
-         por /js/next-step.js: NÃO escrever CTA de canal na mão aqui.
+    <!-- Padrão 09 · oferta verificada. UM por peça, e só onde há link de
+         indicação. Sem oferta, apague o bloco inteiro — não deixe vazio.
+         PRESERVE os marcadores PROMO_ATUAL, o data-promotion e o
+         data-verified-at: é por eles que a promoção é localizada e
+         atualizada depois, sem reescrever a peça.
+         .article-callout fica junto para não perder o estilo antigo
+         em peças que ainda não carregam dlt-patterns.css. -->
+    <!-- PROMO_ATUAL -->
+    <div class="offer article-callout" data-promotion="{{OFERTA_ID}}" data-verified-at="{{OFERTA_DATA_ISO}}">
+      <div class="offer-flags">
+        <span class="offer-verified">Verificado em {{OFERTA_DATA}}</span>
+        <!-- Sem data final publicada? Mantenha o rótulo abaixo. Com data,
+             troque por "Válida até DD/MM/AAAA". -->
+        <span class="offer-disclosure-flag">Por tempo indeterminado</span>
+      </div>
+      <h3>{{OFERTA_TITULO}}</h3>
+      <p>{{OFERTA_CONDICAO}}</p>
+      <a class="btn btn-primary" href="{{OFERTA_URL}}" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">{{OFERTA_CTA}} <span aria-hidden="true">→</span></a>
+    </div>
+    <!-- /PROMO_ATUAL -->
+
+    <!-- Padrão 10 · FAQ. Máx. 6, <details> nativo, sem JS obrigatório.
+         data-faq-exclusive mantém um aberto por vez.
+         Espelhe as perguntas no JSON-LD de FAQPage no <head>. -->
+    <div class="faq" data-faq-exclusive>
+      <h2>Perguntas frequentes</h2>
+      <details>
+        <summary>{{FAQ_1_PERGUNTA}}</summary>
+        <p>{{FAQ_1_RESPOSTA}}</p>
+      </details>
+    </div>
+
+    <!-- Padrão 11 · fontes e transparência. Obrigatório em peça com dado
+         externo. Domínio visível + data de verificação, e a separação entre
+         documento oficial e experiência própria. -->
+    <div class="sources">
+      <h2>Fontes e transparência</h2>
+      <p class="sources-when">Páginas oficiais consultadas em {{FONTES_DATA}} · redação revisada em {{POST_MODIFIED}}</p>
+      <ol>
+        <li>{{FONTE_1_DESCRICAO}} <span class="host">{{FONTE_1_DOMINIO}}</span></li>
+      </ol>
+      <p class="sources-own">{{RELATO_PROPRIO}}</p>
+      <!-- Quando a peça envolve saldo em ativo virtual (USDc, EURc, stablecoin),
+           a ressalva de que não é moeda fiduciária entra aqui. -->
+    </div>
+
+    <!-- Padrão 28 · compartilhar. Links diretos, sem SDK e sem pixel. -->
+    <div class="share-row" data-share>
+      <p>Isso resolveu uma dúvida sua? Manda para quem precisa.</p>
+      <div class="share-actions">
+        <button type="button" class="is-primary" data-share-copy>Copiar link</button>
+        <a data-share-telegram target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Telegram</a>
+        <a data-share-whatsapp target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">WhatsApp</a>
+      </div>
+    </div>
+
+    <!-- Padrão 12 · próximo passo pelo grafo do registry + comunidade.
+         Montado por /js/next-step.js: NÃO escrever CTA de canal na mão aqui.
          data-content-id tem que bater com o "id" desta peça no registry. -->
     <div id="next-step-mount" data-content-id="article-SLUG-DO-ARTIGO"></div>
 
@@ -93,5 +207,6 @@
 
 <script src="/js/content-registry.js"></script>
 <script src="/js/next-step.js"></script>
+<script src="/js/dlt-interactions.js"></script>
 </body>
 </html>

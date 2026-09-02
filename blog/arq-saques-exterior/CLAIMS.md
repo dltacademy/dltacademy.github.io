@@ -1,47 +1,45 @@
-# Claims voláteis — revisão de 29/07/2026
+# Claims voláteis — revisão de 05/08/2026
 
 Este arquivo registra o que precisa ser revalidado. As fontes públicas continuam vinculadas no próprio artigo.
 
+## Escopo fixo
+
+A comparação usa somente as opções pessoais básicas gratuitas para clientes brasileiros:
+
+- **ARQ Standard Global**;
+- **cartão Wise padrão gratuito**;
+- **Revolut Standard Brasil**.
+
 | Bloco | Evidência usada | Próxima revisão |
 |---|---|---|
-| Saques ARQ Standard | páginas oficiais de tarifas e ATM: 1% sobre o valor retirado; taxa do operador pode ser adicional | 29/08/2026 |
-| Quantidade de saques | documentação Standard não publica franquia por número; não converter isso em promessa de saques ilimitados | 29/08/2026 |
-| Disponibilidade por país | página geral informa saques globais; página Premium contém nota restritiva a Colômbia e México | 05/08/2026 ou após resposta oficial |
-| ARQ Premium e Prestige | franquias publicadas de 500 e 700 USDc; preços e disponibilidade dependem do plano e país | 29/08/2026 |
-| Cartão físico | envio Standard de 4,99 USD e entrega em Argentina, Brasil, Colômbia e México | 29/08/2026 |
-| Conversão no Brasil | custo total aproximado de 0,5% entre BRL e USDc/EURc informado pela ARQ | 29/08/2026 |
-| Wise cartão emitido no Brasil | uma retirada gratuita por mês; depois tarifa fixa de R$ 20 por retirada; conversão e tarifa do ATM podem ser adicionais | 29/08/2026 |
-| Wise programa de indicação | programas e benefícios variam por região; o benefício válido é o exibido na página personalizada no momento do cadastro | antes de cada divulgação e, no máximo, 05/08/2026 |
-| Revolut Standard Brasil | R$ 1.600 ou cinco saques sem tarifa própria; depois 2% ou R$ 6, o maior | 29/08/2026 |
-| Promoção de indicação ARQ | oferta de US$ 10 após US$ 150 em gastos elegíveis no primeiro mês, informada para o link em 29/07/2026 | antes de cada divulgação e, no máximo, 05/08/2026 |
-| Uso durante viagens | experiência pessoal do Tiago com cartão emitido ainda na fase DolarApp; não tratar como compatibilidade universal | revisar após novos testes |
+| IOF ARQ Global | USDc/EURc comprados sem IOF nas páginas específicas do Cartão Global | 05/09/2026 |
+| Formação do saldo ARQ | custo aproximado de 0,5% informado pela empresa | 05/09/2026 |
+| Câmbio até a moeda do saque | varia conforme a cotação aplicada; fica editável na calculadora | revisar após novo saque real |
+| Saque ARQ Standard | 1% sobre o valor retirado; ATM pode cobrar por fora | 05/09/2026 |
+| Cartão Local ARQ | não entra na comparação do Cartão Global | 05/09/2026 |
+| Wise Brasil | 3,5% de IOF na rota BRL, conversão a partir de 0,78%, uma retirada grátis e R$ 20 nas seguintes | 05/09/2026 |
+| Revolut Standard Brasil | IOF aplicável, spread, franquia de câmbio, R$ 1.600 ou cinco saques e cobrança posterior | 05/09/2026 |
+| Revolut planos pagos | franquias oficiais de saque de R$ 2.000 no Plus, R$ 3.000 no Premium, R$ 6.000 no Metal e R$ 14.000 no exterior no Ultra | 05/09/2026 |
+| ATM e DCC | valores variáveis; campos editáveis na calculadora | revisar após novos testes |
+| Promoção ARQ | em 29/07/2026 o convite mostrava US$ 10 após US$ 150 em gastos elegíveis no primeiro mês | antes de cada divulgação |
 
-## Blocos de promoção e indicação
+## Regra da calculadora
 
-A oferta temporária do ARQ está delimitada no HTML por:
+A calculadora foca na rota central do artigo: **BRL → saldo internacional → saque**.
 
-```html
-<!-- PROMO_ATUAL -->
-...
-<!-- /PROMO_ATUAL -->
-```
+- ARQ: formação de USDc/EURc + ajuste cambial até a moeda do saque + 1% de retirada;
+- Wise: IOF + conversão + regra mensal de retirada;
+- Revolut: IOF + spread/tarifas de câmbio + regra de retirada;
+- todos: tarifa do ATM e DCC quando aplicáveis.
 
-Ao revisar a promoção do ARQ:
+O ajuste cambial do ARQ começa em zero e deve ser preenchido com a diferença observada na cotação ou no débito liquidado. Os planos pagos da Revolut não entram na calculadora; aparecem apenas como alternativa contextual.
 
-1. abrir o link de indicação e conferir recompensa, gasto mínimo, prazo, região e estabelecimentos elegíveis;
-2. alterar somente o bloco delimitado, a data `data-verified-at` e esta tabela;
-3. preservar a tese estrutural: o ARQ foi escolhido para saques e acesso repetido a dinheiro físico, não por causa do bônus;
-4. não prometer a recompensa até a pessoa confirmar a campanha na página e cumprir as condições;
-5. manter a distinção entre documentação oficial e experiência pessoal com o cartão.
+## Links de indicação
 
-## Link de indicação da Wise
+- ARQ: botão principal da oferta, com a campanha datada;
+- Wise: link contextual `https://wise.com/invite/irhc/tiagon100`, sem CTA concorrente;
+- Revolut: link contextual e CTA secundário `https://revolut.com/referral/?referral-code=tiago327k!AUG1-26-AR-BR-H3&geo-redirect`.
 
-Ao revisar o link da Wise:
+## Bloco de promoção
 
-1. abrir `https://wise.com/invite/irhc/tiagon100` e conferir o benefício mostrado para a região;
-2. não transformar transferência gratuita, cartão gratuito ou crédito em tarifas em promessa universal;
-3. preservar o CTA como alternativa secundária, depois da comparação;
-4. manter `rel="sponsored nofollow noopener noreferrer"` e `referrerpolicy="no-referrer"`;
-5. atualizar a data `data-verified-at` somente depois de conferir a página personalizada.
-
-Se uma revisão vencer, não atualizar apenas a data: conferir a fonte e registrar qualquer mudança material no histórico do Git.
+A oferta do ARQ está delimitada por `PROMO_ATUAL`. Antes de divulgar, abrir o link, confirmar a condição exibida e atualizar `data-verified-at` apenas depois da verificação.

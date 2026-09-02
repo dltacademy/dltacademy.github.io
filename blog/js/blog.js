@@ -32,12 +32,23 @@ function renderPosts() {
 
   articles.reverse().forEach((entry) => {
     const card = document.createElement("a");
-    card.className = "post-card";
+    card.className = "entry-card";
     card.href = entry.url;
+    card.dataset.type = "article";
+    card.dataset.situations = (entry.sit || []).join(" ");
+
+    const top = document.createElement("span");
+    top.className = "entry-top";
+
+    const mark = document.createElement("span");
+    mark.className = "entry-mark";
+    mark.textContent = entry.mark || "AR";
 
     const tag = document.createElement("span");
-    tag.className = "tag s2";
+    tag.className = "entry-type";
     tag.textContent = entry.tag;
+    top.appendChild(mark);
+    top.appendChild(tag);
 
     const title = document.createElement("h3");
     title.textContent = entry.title;
@@ -46,13 +57,22 @@ function renderPosts() {
     desc.textContent = entry.description;
 
     const date = document.createElement("span");
-    date.className = "post-card-date";
-    date.textContent = formatDatePtBr(entry.publishedAt);
+    date.className = "entry-effort";
+    date.textContent = formatDatePtBr(entry.publishedAt) + (entry.effort ? " · " + entry.effort : "");
 
-    card.appendChild(tag);
+    const cta = document.createElement("span");
+    cta.className = "entry-cta";
+    cta.append("Ler artigo ");
+    const arrow = document.createElement("span");
+    arrow.className = "arrow";
+    arrow.textContent = "→";
+    cta.appendChild(arrow);
+
+    card.appendChild(top);
     card.appendChild(title);
     card.appendChild(desc);
     card.appendChild(date);
+    card.appendChild(cta);
     grid.appendChild(card);
   });
 }
