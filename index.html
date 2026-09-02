@@ -7,7 +7,6 @@
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.goatcounter.com; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
 <title>DLT Academy — Educação financeira inteligente</title>
 <meta name="description" content="Ferramentas interativas, guias e artigos para aprender, testar e decidir melhor sobre finanças — grátis, sem cadastro e com respostas processadas no seu navegador.">
-<meta name="keywords" content="dlt academy, educação financeira, ferramentas financeiras, gestão de risco, finanças pessoais, calculadora cripto, simulador de risco">
 <link rel="canonical" href="https://dlt.academy/">
 
 <!-- Open Graph -->
@@ -15,19 +14,25 @@
 <meta property="og:title" content="DLT Academy — Educação financeira inteligente">
 <meta property="og:description" content="Ferramentas interativas, guias e artigos para aprender, testar e decidir melhor sobre finanças.">
 <meta property="og:url" content="https://dlt.academy/">
-<meta property="og:image" content="https://dlt.academy/og-image.png">
+<meta property="og:image" content="https://dlt.academy/og-image.svg">
+<meta property="og:image:type" content="image/svg+xml">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ferramentas para decidir melhor com seu dinheiro — DLT Academy">
 <meta property="og:locale" content="pt_BR">
 
 <!-- Twitter/X -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="DLT Academy — Educação financeira inteligente">
 <meta name="twitter:description" content="Ferramentas interativas, guias e artigos para aprender, testar e decidir melhor sobre finanças.">
-<meta name="twitter:image" content="https://dlt.academy/og-image.png">
+<meta name="twitter:image" content="https://dlt.academy/og-image.svg">
+<meta name="twitter:image:alt" content="Ferramentas para decidir melhor com seu dinheiro — DLT Academy">
 
 <meta name="theme-color" content="#06090F">
 <link rel="icon" type="image/png" href="assets/dlt-mark.png">
 <link rel="stylesheet" href="styles-base.css">
 <link rel="stylesheet" href="styles-portal.css">
+<link rel="stylesheet" href="dlt-patterns.css">
 
 <!-- Dados estruturados (JSON-LD é bloco de dados, não executa — ok com o CSP) -->
 <script type="application/ld+json">
@@ -65,9 +70,9 @@
   <div class="wrap header-row">
     <a class="brand" href="#top"><img src="assets/dlt-logo-light.png" alt="DLT Academy"></a>
     <nav class="header-nav" aria-label="Navegação principal">
-      <a href="#ferramentas">Ferramentas</a>
-      <a href="#guias">Guias</a>
-      <a href="#artigos">Blog</a>
+      <a class="nav-catalog" href="/ferramentas/">Ferramentas</a>
+      <a class="nav-catalog" href="/guias/">Guias</a>
+      <a href="/blog/">Blog</a>
       <a href="/sobre/">Sobre</a>
       <a class="header-cta" href="#ferramentas">Começar grátis</a>
     </nav>
@@ -121,18 +126,22 @@
     <section id="ferramentas" aria-labelledby="ferramentas-titulo">
       <div class="section-heading reveal">
         <p class="eyebrow">Escolha por onde começar</p>
-        <h2 id="ferramentas-titulo">Ferramentas</h2>
-        <p>Respostas práticas para decisões que importam.</p>
+        <h2 id="ferramentas-titulo">Ferramentas, protocolos e guias</h2>
+        <p>Escolha pelo problema que você quer resolver, não pelo formato.</p>
       </div>
+      <div class="situation-chips" data-filter-group aria-label="Filtrar catálogo por situação"></div>
+      <p class="catalog-count" data-filter-count aria-live="polite"></p>
       <noscript>
         <p>Este catálogo interativo precisa de JavaScript. Acesso direto:
           <a href="https://sobrevive-ou-quebra.dlt.academy/">Sobrevive ou Quebra?</a> ·
           <a href="https://quanto-em-taxas.dlt.academy/">Quanto você paga para operar?</a> ·
           <a href="https://primeiros-passos-cripto.dlt.academy/">Primeiros Passos no Cripto</a> ·
           <a href="https://vender-ou-segurar.dlt.academy/">Vender ou Segurar?</a> ·
+          <a href="/protocolos/medo-de-ficar-de-fora/">Cheguei tarde?</a> ·
           <a href="/guias/conta-binance/">Criar conta com segurança</a> ·
           <a href="/guias/bybit-pay-vietqr/">Pagar com QR Code no exterior</a> ·
           <a href="/guias/abastecer-moreta-usdt/">Abastecer o Moreta Pay com USDT</a> ·
+          <a href="/guias/etherfi-cash-viagem/">Usar o ether.fi Cash no exterior</a> ·
           <a href="/blog/">Blog</a>.
         </p>
       </noscript>
@@ -178,8 +187,8 @@
     <nav class="footer-nav" aria-label="Links do rodapé">
       <div class="footer-nav-col">
         <strong>Explorar</strong>
-        <a href="#ferramentas">Ferramentas</a>
-        <a href="#guias">Guias</a>
+        <a href="/ferramentas/">Ferramentas</a>
+        <a href="/guias/">Guias</a>
         <a href="/blog/">Blog</a>
       </div>
       <div class="footer-nav-col">
@@ -204,5 +213,6 @@
 
 <script src="js/content-registry.js"></script>
 <script src="js/portal.js"></script>
+<script src="js/dlt-interactions.js"></script>
 </body>
 </html>

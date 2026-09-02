@@ -13,8 +13,8 @@
 <meta property="og:title" content="Como abastecer o Moreta Pay com USDT e fugir das taxas de depósito">
 <meta property="og:description" content="Compare Solana com depósito por cartão brasileiro: taxa do Moreta, IOF, spread e o custo observado da transferência em USDT.">
 <meta property="og:url" content="https://dlt.academy/guias/abastecer-moreta-usdt/">
-<meta property="og:image" content="https://dlt.academy/guias/abastecer-moreta-usdt/og-image.png">
-<meta property="og:image:type" content="image/png">
+<meta property="og:image" content="https://dlt.academy/guias/abastecer-moreta-usdt/og-image.svg">
+<meta property="og:image:type" content="image/svg+xml">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Como abastecer o Moreta Pay com USDT — DLT Academy">
@@ -22,13 +22,14 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Como abastecer o Moreta Pay com USDT e fugir das taxas de depósito">
 <meta name="twitter:description" content="Compare Solana com depósito por cartão brasileiro: taxa do Moreta, IOF, spread e o custo observado da transferência em USDT.">
-<meta name="twitter:image" content="https://dlt.academy/guias/abastecer-moreta-usdt/og-image.png">
+<meta name="twitter:image" content="https://dlt.academy/guias/abastecer-moreta-usdt/og-image.svg">
 <meta name="twitter:image:alt" content="Como abastecer o Moreta Pay com USDT — DLT Academy">
 <meta name="theme-color" content="#06090F">
 <link rel="icon" type="image/png" href="/assets/dlt-mark.png">
 <link rel="stylesheet" href="/styles-base.css">
 <link rel="stylesheet" href="/styles-portal.css">
 <link rel="stylesheet" href="/guias/styles-guides.css">
+<link rel="stylesheet" href="/dlt-patterns.css">
 
 <!-- Dados estruturados (JSON-LD é bloco de dados, não executa — ok com o CSP) -->
 <script type="application/ld+json">
@@ -41,7 +42,7 @@
   "dateModified": "2026-07-18",
   "inLanguage": "pt-BR",
   "mainEntityOfPage": "https://dlt.academy/guias/abastecer-moreta-usdt/",
-  "image": "https://dlt.academy/guias/abastecer-moreta-usdt/og-image.png",
+  "image": "https://dlt.academy/guias/abastecer-moreta-usdt/og-image.svg",
   "author": { "@type": "Organization", "name": "DLT Academy", "url": "https://dlt.academy/" },
   "publisher": { "@type": "Organization", "name": "DLT Academy", "url": "https://dlt.academy/", "logo": { "@type": "ImageObject", "url": "https://dlt.academy/assets/dlt-logo-light.png" } }
 }
@@ -49,12 +50,18 @@
 </head>
 <body>
 <header class="top"><div class="wrap header-row"><a class="brand" href="/"><img src="/assets/dlt-logo-light.png" alt="DLT Academy"></a><nav class="header-nav" aria-label="Navegação principal"><a href="/#ferramentas">Ferramentas</a><a href="/#guias">Guias</a><a href="/blog/">Blog</a><a href="/sobre/">Sobre</a></nav></div></header>
-<main><div class="guide-wrap">
-  <section class="guide-hero">
+<main data-guide-progress="abastecer-moreta-usdt"><div class="guide-wrap">
+  <section class="guide-hero piece-head">
     <p class="eyebrow">Guia de viagem</p>
     <h1>Como abastecer o Moreta Pay com USDT e fugir das taxas de depósito</h1>
-    <p class="subtitle">O depósito convencional no Moreta Pay (cartão) cobra 2,5% com mínimo de 1,50 USD. Transferir USDT credita saldo equivalente com custo bem menor — foi exatamente esse funding que sustentou o resultado do nosso teste real comparando Bybit Pay e Moreta Pay.</p>
+    <p class="subtitle piece-lede">O depósito convencional no Moreta Pay (cartão) cobra 2,5% com mínimo de 1,50 USD. Transferir USDT credita saldo equivalente com custo bem menor — foi exatamente esse funding que sustentou o resultado do nosso teste real comparando Bybit Pay e Moreta Pay.</p>
   </section>
+
+  <section class="key-points" data-reveal aria-labelledby="moreta-essencial"><p id="moreta-essencial" class="key-points-title">Objetivo e pré-requisitos</p><ul><li>Você precisa de uma conta na exchange, saldo em USDT, endereço de depósito e rede compatíveis.</li><li>O ativo e a rede devem ser exatamente os mesmos nos dois aplicativos.</li><li>O teste pequeno vem antes do valor completo.</li><li>Tarifa de compra, saque, rede e spread ficam separados na conta.</li></ul></section>
+  <nav class="piece-toc" data-toc-watch=".guide-reference > h2"><p>Neste guia</p><ol></ol></nav>
+  <section class="guide-step" data-reveal aria-labelledby="moreta-passo-1"><div class="guide-step-top"><span class="guide-step-num">01</span><span class="guide-step-state">Preparar</span></div><h2 id="moreta-passo-1">Gere o endereço de depósito no Moreta</h2><p>Abra o depósito em cripto, confirme que o ativo é USDT e anote a rede mostrada. Se Solana não aparecer, não tente adivinhar: use a alternativa que o app declarar.</p><label class="guide-check"><input type="checkbox" data-guide-check="endereco"><span>Ativo, endereço e rede conferidos</span></label></section>
+  <section class="guide-step" data-reveal aria-labelledby="moreta-passo-2"><div class="guide-step-top"><span class="guide-step-num">02</span><span class="guide-step-state">Enviar</span></div><h2 id="moreta-passo-2">Envie um teste pequeno pela mesma rede</h2><p>Na Binance ou Bybit, selecione USDT e a mesma rede, cole o endereço completo e confira antes de confirmar. Só envie o restante após o crédito.</p><label class="guide-check"><input type="checkbox" data-guide-check="teste"><span>Teste pequeno enviado e creditado</span></label></section>
+  <section class="guide-step" data-reveal aria-labelledby="moreta-passo-3"><div class="guide-step-top"><span class="guide-step-num">03</span><span class="guide-step-state">Verificar</span></div><h2 id="moreta-passo-3">Confirme o custo e o saldo final</h2><p>Registre o preço de compra, a tarifa de saque e o valor efetivamente creditado. Se o QR for reconhecido, tente Bybit Pay antes de transferir para um fallback.</p><label class="guide-check"><input type="checkbox" data-guide-check="custo"><span>Custo líquido e saldo final conferidos</span></label></section>
 
   <article class="guide-reference">
     <h2>Resposta curta</h2>
@@ -172,16 +179,21 @@
 
     <h2>Onde comprar USDT</h2>
     <p>Abra conta numa das duas para comprar o USDT que vai virar saldo no Moreta:</p>
-    <div class="guide-hero-cta">
+    <!-- PROMO_ATUAL -->
+    <div class="guide-hero-cta offer" data-promotion="binance-bybit-funding" data-verified-at="2026-07-18">
+      <div class="offer-flags"><span class="offer-verified">Condições conferidas em 18/07/2026</span><span class="tag s2">Por tempo indeterminado</span></div>
       <div class="btn-row">
         <a class="btn btn-primary" href="https://www.binance.com/register?ref=BOSS2026" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Abra sua conta Binance com cashback vitalício nas taxas spot</a>
         <a class="btn btn-secondary" href="https://www.bybit.com/invite?ref=O0YDQDM" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Abra sua conta Bybit e receba US$20 de bônus</a>
       </div>
-      <p>Transparência: os dois links acima são de indicação (Binance e Bybit). Se você abrir conta nova por eles, podemos receber uma comissão, sem custo extra para você. Cashback, bônus, elegibilidade e verificação de identidade seguem os termos vigentes de cada corretora na hora do seu cadastro — confira as condições atuais na própria tela antes de decidir. Isso não muda nenhuma informação técnica deste guia.</p>
+      <p class="offer-fine">São ofertas separadas e voltadas a contas novas e elegíveis. Confira bônus, cashback, KYC, moeda e prazo na tela de cada cadastro; não abra uma segunda conta para tentar qualificar.</p>
     </div>
+    <!-- /PROMO_ATUAL -->
   </article>
 
-  <section class="guide-faq" aria-labelledby="faq-titulo">
+  <section class="sources"><h2>Fontes e limites</h2><p>Taxas e regras deste guia foram observadas em 18/07/2026 nas páginas oficiais e nas telas das contas usadas no teste. A ausência de tarifa no depósito USDT/Solana é observação desta conta, não promessa do Moreta; confirme o valor final no seu aplicativo.</p><ul><li><a href="https://www.binance.com/en/fee/cryptoFee" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Tarifas oficiais de saque da Binance</a></li><li><a href="https://www.bybit.com/en/help-center/article/Fees-and-Spending-Limits-Bybit-Card" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Tarifas e limites da Bybit</a></li><li><a href="/blog/bybit-pay-vs-moreta-vietqr/">Teste de custo líquido no VietQR</a></li></ul></section>
+
+  <section class="guide-faq faq" data-faq-exclusive aria-labelledby="faq-titulo">
     <h2 id="faq-titulo">Perguntas frequentes</h2>
     <details><summary>Qual rede eu uso para transferir USDT para o Moreta Pay?</summary><p>Solana (SOL) — é a única rede que o Moreta aceita para depósito de USDT no momento deste guia. Confirme sempre no seu app antes de sacar.</p></details>
     <details><summary>Quanto custa depositar por cartão no Moreta Pay?</summary><p>2,5% do valor, com mínimo de 1,50 USD — taxa documentada oficialmente pelo Moreta (moretapay.com/fees, verificado em 18/07/2026).</p></details>
@@ -198,11 +210,14 @@
     <details><summary>Esse resultado vale pra sempre?</summary><p>Não. Taxas de saque e as condições de depósito do Moreta mudam com o tempo. Os números aqui são datados de 18/07/2026 — confirme sempre a versão atual antes de decidir.</p></details>
   </section>
 
+  <section class="share-row" data-share><p>Compartilhe o passo a passo de rede e teste pequeno.</p><div class="share-actions"><button type="button" data-share-copy>Copiar link</button><a data-share-telegram target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Telegram</a><a data-share-whatsapp target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">WhatsApp</a></div></section>
+
   <div id="next-step-mount" data-content-id="guide-abastecer-moreta-usdt"></div>
   </div>
 </main>
 <footer><div class="wrap"><p>Conteúdo educacional. Não é recomendação de investimento.</p><p><a href="/sobre/">Sobre a DLT Academy</a> · <a href="/transparencia/">Transparência</a></p><p class="footer-social"><a href="/comunidade/">Comunidade</a>: <a href="https://t.me/dltacademyc" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Canal no Telegram</a> · <a href="https://t.me/dltacademy" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Grupo</a> · <a href="https://www.youtube.com/c/DLTAcademy" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">YouTube</a></p><p>© 2026 DLT Academy</p></div></footer>
 <script src="/js/content-registry.js"></script>
 <script src="/js/next-step.js"></script>
+<script src="/js/dlt-interactions.js"></script>
 </body>
 </html>

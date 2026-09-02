@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="/styles-base.css">
 <link rel="stylesheet" href="/styles-portal.css">
 <link rel="stylesheet" href="/pagamentos-no-exterior/styles.css">
+<link rel="stylesheet" href="/dlt-patterns.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -65,12 +66,12 @@
   </div>
 </header>
 
-<main>
+<main data-guide-progress="pagamentos-no-exterior">
   <div class="payment-wrap">
-    <section class="payment-hero">
+    <section class="payment-hero piece-head">
       <p class="hero-badge"><span class="pulse-dot" aria-hidden="true"></span> Guia central de pagamentos em viagem</p>
       <h1>Como pagar no exterior <span class="grad">gastando menos</span></h1>
-      <p class="subtitle">Não existe um método vencedor para tudo. O cartão mais barato pode não sacar, o QR pode falhar e uma recarga cara pode apagar a economia. O melhor setup dá um trabalho claro para cada solução e trata cashback como otimização, não como infraestrutura.</p>
+      <p class="subtitle piece-lede">Não existe um método vencedor para tudo. O cartão mais barato pode não sacar, o QR pode falhar e uma recarga cara pode apagar a economia. O melhor setup dá um trabalho claro para cada solução e trata cashback como otimização, não como infraestrutura.</p>
       <div class="hero-actions">
         <a class="btn btn-primary btn-lg" href="#mapa">Escolher por situação <span aria-hidden="true">→</span></a>
         <a class="btn btn-ghost btn-lg" href="#setup">Ver o setup completo</a>
@@ -82,6 +83,13 @@
         <li>Custos e afiliados declarados</li>
       </ul>
     </section>
+
+    <section class="key-points" data-reveal aria-labelledby="pagamentos-essencial"><p id="pagamentos-essencial" class="key-points-title">O objetivo e os pré-requisitos</p><ul><li>Você precisa comparar o custo completo da viagem, não apenas uma tarifa anunciada.</li><li>Tenha um método principal, um backup independente e uma pequena reserva para falhas.</li><li>Antes de abrir conta, confirme residência, rede, limites, funding e aceitação do destino.</li><li>Teste cada rota com valor pequeno antes de depender dela.</li></ul></section>
+    <nav class="piece-toc" data-toc-watch=".payment-wrap > section h2, .payment-wrap > section .section-heading h2"><p>Neste guia</p><ol></ol></nav>
+
+    <section class="guide-step" data-reveal aria-labelledby="pagamentos-passo-1"><div class="guide-step-top"><span class="guide-step-num">01</span><span class="guide-step-state">Escolher</span></div><h2 id="pagamentos-passo-1">Comece pela situação real</h2><p>Defina se você precisa comprar, pagar QR, sacar, abastecer saldo ou apenas reduzir o preço de uma reserva. Só depois escolha a rota correspondente no mapa.</p></section>
+    <section class="guide-step" data-reveal aria-labelledby="pagamentos-passo-2"><div class="guide-step-top"><span class="guide-step-num">02</span><span class="guide-step-state">Preparar</span></div><h2 id="pagamentos-passo-2">Monte uma combinação com plano B</h2><p>Separe cartão, QR, ATM, backup e funding. Não deixe toda a viagem depender de um único emissor, aplicativo, rede ou saldo.</p></section>
+    <section class="guide-step" data-reveal aria-labelledby="pagamentos-passo-3"><div class="guide-step-top"><span class="guide-step-num">03</span><span class="guide-step-state">Verificar</span></div><h2 id="pagamentos-passo-3">Faça um teste pequeno e compare o débito final</h2><p>Registre o valor de origem, taxas, rede, câmbio e cashback confirmado. Se o método falhar, siga para o backup em vez de aumentar a exposição.</p></section>
 
     <section class="pillar-intro" aria-labelledby="resposta-curta">
       <p class="eyebrow">A resposta curta</p>
@@ -106,7 +114,7 @@
       <div class="payment-map">
         <article class="payment-card">
           <div class="payment-card-top">
-            <span class="payment-icon" aria-hidden="true">💳</span>
+            <span class="payment-icon" aria-hidden="true">CC</span>
             <span class="tag s1">Aceita cartão</span>
           </div>
           <h3>Comprar na moeda local</h3>
@@ -116,7 +124,7 @@
 
         <article class="payment-card">
           <div class="payment-card-top">
-            <span class="payment-icon" aria-hidden="true">📱</span>
+            <span class="payment-icon" aria-hidden="true">QR</span>
             <span class="tag s2">Aceita QR local</span>
           </div>
           <h3>Pagar sem cartão</h3>
@@ -127,7 +135,7 @@
 
         <article class="payment-card">
           <div class="payment-card-top">
-            <span class="payment-icon" aria-hidden="true">🏧</span>
+            <span class="payment-icon" aria-hidden="true">ATM</span>
             <span class="tag s1">Precisa de dinheiro</span>
           </div>
           <h3>Sacar em caixa eletrônico</h3>
@@ -137,7 +145,7 @@
 
         <article class="payment-card">
           <div class="payment-card-top">
-            <span class="payment-icon" aria-hidden="true">🛏️</span>
+            <span class="payment-icon" aria-hidden="true">HT</span>
             <span class="tag s2">Vai reservar</span>
           </div>
           <h3>Reduzir o custo da hospedagem</h3>
@@ -147,7 +155,7 @@
 
         <article class="payment-card">
           <div class="payment-card-top">
-            <span class="payment-icon" aria-hidden="true">💱</span>
+            <span class="payment-icon" aria-hidden="true">US</span>
             <span class="tag s2">Precisa abastecer</span>
           </div>
           <h3>Formar o saldo sem destruir a economia</h3>
@@ -157,7 +165,7 @@
 
         <article class="payment-card">
           <div class="payment-card-top">
-            <span class="payment-icon" aria-hidden="true">🤖</span>
+            <span class="payment-icon" aria-hidden="true">IA</span>
             <span class="tag s2">Cobrança em BRL</span>
           </div>
           <h3>Pagar assinaturas e serviços online</h3>
@@ -316,24 +324,25 @@
       <p class="finder-note">Esta página entrega o mapa editorial base. A recomendação personalizada ficará na ferramenta, sem pedir saldo, documento, UID ou qualquer dado sensível.</p>
     </section>
 
-    <section id="checklist" aria-labelledby="checklist-titulo">
+    <section id="checklist" aria-labelledby="checklist-titulo" data-reveal>
       <div class="section-heading">
         <p class="eyebrow">Antes de viajar</p>
         <h2 id="checklist-titulo">Checklist de um setup que não quebra na primeira falha</h2>
       </div>
       <ul class="travel-checklist">
-        <li>Testar cartão, QR e saque com valores pequenos.</li>
-        <li>Recusar conversão dinâmica de moeda quando ela piorar a cotação.</li>
-        <li>Guardar os cartões principal e reserva em lugares diferentes.</li>
-        <li>Conhecer limites diários, tarifas e canais de suporte.</li>
-        <li>Levar dinheiro suficiente para uma emergência curta.</li>
-        <li>Não deixar todo o saldo de viagem num único aplicativo.</li>
-        <li>Comparar o preço direto antes de ativar cashback.</li>
-        <li>Revalidar promoções e regras perto da data de uso.</li>
+        <li><label class="guide-check"><input type="checkbox" data-guide-check="teste"><span>Testar cartão, QR e saque com valores pequenos.</span></label></li>
+        <li><label class="guide-check"><input type="checkbox" data-guide-check="dcc"><span>Recusar conversão dinâmica de moeda quando ela piorar a cotação.</span></label></li>
+        <li><label class="guide-check"><input type="checkbox" data-guide-check="backup"><span>Guardar os cartões principal e reserva em lugares diferentes.</span></label></li>
+        <li><label class="guide-check"><input type="checkbox" data-guide-check="limites"><span>Conhecer limites diários, tarifas e canais de suporte.</span></label></li>
+        <li><label class="guide-check"><input type="checkbox" data-guide-check="dinheiro"><span>Levar dinheiro suficiente para uma emergência curta.</span></label></li>
+        <li><label class="guide-check"><input type="checkbox" data-guide-check="saldo"><span>Não deixar todo o saldo de viagem num único aplicativo.</span></label></li>
+        <li><label class="guide-check"><input type="checkbox" data-guide-check="preco"><span>Comparar o preço direto antes de ativar cashback.</span></label></li>
+        <li><label class="guide-check"><input type="checkbox" data-guide-check="revalidar"><span>Revalidar promoções e regras perto da data de uso.</span></label></li>
       </ul>
+      <div class="guide-progress" data-guide-progress-fill aria-hidden="true"></div><p data-guide-progress-label>0 de 8 concluídos</p>
     </section>
 
-    <section class="payment-faq" aria-labelledby="faq-titulo">
+    <section class="payment-faq faq" data-faq-exclusive aria-labelledby="faq-titulo">
       <h2 id="faq-titulo">Perguntas frequentes</h2>
       <details>
         <summary>Qual é o melhor cartão para usar no exterior?</summary>
@@ -352,6 +361,9 @@
         <p>Caixas, QRs, internet, aplicativos e cartões falham. Uma pequena reserva em espécie reduz o impacto dessas falhas sem exigir que toda a viagem seja financiada em dinheiro.</p>
       </details>
     </section>
+
+    <section class="sources"><h2>Fontes e atualização</h2><p>O mapa conecta páginas com suas próprias fontes, datas e limites. Tarifas, disponibilidade, elegibilidade e campanhas precisam ser reconferidas no parceiro antes do uso; nenhum valor do guia é uma tarifa universal.</p><ul><li><a href="/guias/etherfi-cash-viagem/">Pesquisa do ether.fi Cash</a>, com fontes oficiais e data de verificação.</li><li><a href="/guias/bybit-pay-vietqr/">Guia de Bybit Pay e VietQR</a>, com falhas reais e plano B.</li><li><a href="/blog/arq-saques-exterior/">Comparação de saques com ARQ</a>, Wise e Revolut.</li></ul></section>
+    <section class="share-row" data-share><p>Compartilhe este mapa antes de montar a carteira de viagem.</p><div class="share-actions"><button type="button" data-share-copy>Copiar link</button><a data-share-telegram target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Telegram</a><a data-share-whatsapp target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">WhatsApp</a></div></section>
 
     <div id="next-step-mount" data-content-id="guide-pagamentos-no-exterior"></div>
   </div>
@@ -386,5 +398,6 @@
 
 <script src="/js/content-registry.js"></script>
 <script src="/js/next-step.js"></script>
+<script src="/js/dlt-interactions.js"></script>
 </body>
 </html>

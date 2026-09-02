@@ -4,6 +4,8 @@ Portal público da DLT Academy em **https://dlt.academy/**. Reúne ferramentas, 
 
 O repositório especial continua se chamando `dltacademy.github.io`, mas o domínio canônico é `dlt.academy`.
 
+Agentes devem ler [AGENTS.md](./AGENTS.md) antes de editar conteúdo ou componentes.
+
 ## O que existe hoje
 
 - home registry-driven;
@@ -38,11 +40,13 @@ Exemplo de ferramenta:
   "url": "https://nome.dlt.academy/",
   "tag": "Público-alvo",
   "tone": "green",
-  "icon": "✦"
+  "sit": ["comecar", "taxas"],
+  "mark": "NF",
+  "effort": "6 perguntas"
 }
 ```
 
-IDs publicados não são renomeados. Relações usam `primaryNext` e `related`.
+`sit` aceita `comecar`, `posicao`, `viagem` e `taxas`. `mark` é um monograma de até duas letras/números. `effort` só entra quando o esforço está medido na própria peça. IDs publicados não são renomeados; relações usam `primaryNext` e `related`.
 
 ## Publicar conteúdo novo no portal
 
@@ -101,6 +105,9 @@ index.html                   home
 js/content-registry.js       registry único
 js/portal.js                 cards da home
 js/next-step.js              grafo + comunidade
+js/dlt-interactions.js       comportamentos opt-in dos componentes
+dlt-patterns.css             biblioteca visual de 31 padrões
+og-template.svg              base social 1200 × 630 por peça
 blog/                        artigos e template
 protocolos/                  protocolos interativos
 js/protocol-engine.js        motor compartilhado
@@ -120,7 +127,7 @@ sitemap-index.xml            portal + 4 ferramentas
 
 - zero backend e zero coleta de respostas pessoais;
 - JavaScript executável somente em arquivos externos;
-- links afiliados identificados e com disclosure;
+- artigo e guia usam disclosure global; ferramenta e protocolo interativo declaram junto da recomendação;
 - comunidade pública, nunca contato pessoal como CTA;
 - conteúdo novo sempre termina com próximo passo coerente;
 - nenhuma referência ao vault ou contexto privado em repositório público.

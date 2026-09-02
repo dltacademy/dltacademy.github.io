@@ -1,17 +1,29 @@
 # Checklist de publicação e atualização
 
-## Antes de divulgar
+## Estado da revisão em 05/08/2026
 
-- [ ] abrir o link de indicação do ARQ e confirmar a campanha atribuída;
-- [ ] conferir se o novo usuário recebe US$ 10 após US$ 150 em gastos no primeiro mês;
-- [ ] confirmar prazo, país, estabelecimentos excluídos e tempo de crédito;
-- [ ] atualizar o bloco entre `PROMO_ATUAL` e `/PROMO_ATUAL`;
-- [ ] abrir o link de convite da Wise e confirmar o benefício exibido para a região, sem presumir que a campanha anterior continua ativa;
-- [ ] revisar a retirada gratuita e a tarifa fixa do cartão Wise emitido no Brasil;
-- [ ] atualizar `data-verified-at` e `CLAIMS.md`;
-- [ ] revisar tarifa do ARQ Standard, planos pagos, emissão e disponibilidade de ATM por país;
-- [ ] revisar franquia e tarifas do Revolut Standard Brasil;
-- [ ] testar a página em celular e desktop;
-- [ ] executar security check, registry e testes.
+- [x] comparação limitada aos cartões básicos gratuitos;
+- [x] promessa de 0% de IOF ligada ao Cartão Global e à formação do saldo;
+- [x] cotação até a moeda local separada da formação de USDc/EURc;
+- [x] calculadora limitada à rota BRL até o saque;
+- [x] ajuste cambial do ARQ adicionado como campo editável;
+- [x] link de indicação da Wise restaurado como link textual secundário;
+- [x] link de indicação da Revolut adicionado no texto e em CTA secundário;
+- [x] planos pagos da Revolut posicionados como alternativa condicional, fora da calculadora Standard;
+- [x] CTA do ARQ simplificado e com benefício visível;
+- [x] link da Binance removido do ponto anterior à oferta;
+- [x] registry alinhado ao título, descrição e tempo de leitura atuais;
+- [x] fontes, FAQ e testes atualizados sem repetir ressalvas no corpo.
 
-Os links de indicação nunca substituem a tese estrutural: o ARQ é usado pelo Tiago para acesso repetido a dinheiro em viagens; Wise e Revolut entram quando suas franquias ou redundância forem mais vantajosas.
+## Antes de cada divulgação
+
+- [ ] abrir o link do ARQ e confirmar a campanha atribuída;
+- [ ] conferir as tarifas atuais de ARQ Global, Wise e Revolut Standard;
+- [ ] conferir as franquias atuais dos planos pagos da Revolut;
+- [ ] preencher o ajuste cambial do ARQ com uma cotação ou saque real quando disponível;
+- [ ] testar a calculadora dentro e fora das franquias da Revolut;
+- [ ] confirmar os links contextuais da Wise e da Revolut;
+- [ ] executar security check, registry, sintaxe JavaScript e testes;
+- [ ] revisar a página em celular e desktop.
+
+Regra editorial: o ARQ continua como oferta principal. Wise recebe apenas link textual. Revolut recebe um CTA breve e secundário porque é a alternativa de backup mais forte no texto e os planos pagos ampliam as franquias, mas a calculadora continua comparando somente os cartões básicos gratuitos.

@@ -22,7 +22,7 @@ class ArticleTemplateContractTests(unittest.TestCase):
     def test_social_metadata_is_complete(self) -> None:
         for marker in (
             'property="og:site_name"',
-            'property="og:image:type" content="image/png"',
+            'property="og:image:type" content="image/svg+xml"',
             'property="og:image:width" content="1200"',
             'property="og:image:height" content="630"',
             'property="og:image:alt" content="{{POST_OG_ALT}}"',
@@ -30,6 +30,26 @@ class ArticleTemplateContractTests(unittest.TestCase):
         ):
             with self.subTest(marker=marker):
                 self.assertIn(marker, self.html)
+
+    def test_standard_components_and_global_disclosure_contract(self) -> None:
+        for marker in (
+            'href="/dlt-patterns.css"',
+            'src="/js/dlt-interactions.js"',
+            "<!-- PROMO_ATUAL -->",
+            'data-promotion="{{OFERTA_ID}}"',
+            'data-verified-at="{{OFERTA_DATA_ISO}}"',
+            "Por tempo indeterminado",
+            'class="piece-lede"',
+            'class="key-points"',
+            'class="verdict"',
+            'class="faq"',
+            'class="sources"',
+        ):
+            with self.subTest(marker=marker):
+                self.assertIn(marker, self.html)
+
+        self.assertNotIn("A DLT Academy pode receber uma recompensa", self.html)
+        self.assertNotIn("Link de indicação</span>", self.html)
 
     def test_json_ld_has_publication_and_modification_dates(self) -> None:
         match = re.search(
