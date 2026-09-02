@@ -10,6 +10,8 @@
   --grad-brand: linear-gradient(120deg, #4A8DF8 0%, #1E4FD8 100%);
 }
 
+main#top { overflow-x: hidden; }
+
 /* ---------- Header sticky (todas as páginas) ---------- */
 header.top {
   position: sticky;
@@ -54,6 +56,35 @@ section[id], main[id] { scroll-margin-top: 84px; }
 .portal-hero img { height: 64px; margin-bottom: 24px; }
 .portal-hero h1 { font-size: clamp(28px, 5vw, 40px); }
 .portal-hero .subtitle { margin: 0 auto 0; text-align: center; }
+
+/* ---------- Páginas públicas do sistema visual ---------- */
+.page-shell { max-width: 880px; margin: 0 auto; padding: 0 20px 72px; }
+.page-hero { padding: 58px 0 30px; }
+.page-hero h1 {
+  font-size: clamp(32px, 5.6vw, 46px); line-height: 1.08;
+  letter-spacing: -0.025em; margin: 0 0 16px; max-width: 22ch;
+}
+.page-hero .subtitle { font-size: 18px; line-height: 1.65; max-width: 62ch; margin: 0; }
+.page-section { padding: 24px 0 34px; }
+.page-section > h2 { font-size: clamp(24px, 3vw, 29px); margin-bottom: 10px; }
+.page-section > p { color: var(--text-dim); max-width: 68ch; }
+.value-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+.value-card {
+  background: linear-gradient(180deg, rgba(14,33,72,.3), rgba(10,17,32,.9));
+  border: 1px solid var(--border); border-radius: 16px; padding: 22px;
+}
+.value-card .value-mark {
+  width: 40px; height: 40px; border-radius: 12px; display: inline-flex;
+  align-items: center; justify-content: center; margin-bottom: 14px;
+  background: rgba(30,79,216,.16); border: 1px solid rgba(74,141,248,.3);
+  color: var(--sky-light); font-family: var(--font-head); font-weight: 800;
+}
+.value-card h2, .value-card h3 { font-family: var(--font-head); font-size: 19px; margin: 0 0 7px; }
+.value-card p { color: var(--text-dim); font-size: 14.5px; line-height: 1.65; margin: 0; }
+.page-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.catalog-page .entry-grid { margin-top: 24px; }
+.catalog-page .situation-chips { margin-top: 22px; }
+.catalog-page [data-filter-count] { margin-top: 12px; }
 
 .eyebrow {
   color: var(--accent);
@@ -179,6 +210,7 @@ section { padding: 52px 0; }
   letter-spacing: -0.02em;
 }
 .section-heading p { color: var(--text-dim); font-size: 15px; margin: 0; }
+.catalog-count { color: var(--text-faint); font-size: 13px; margin: 12px 0 0; }
 .section-heading-row { display: flex; align-items: end; justify-content: space-between; gap: 20px; }
 .section-link {
   color: var(--accent);
@@ -438,6 +470,7 @@ footer.footer-rich { text-align: left; padding: 0; }
 @media (max-width: 560px) {
   .header-nav { gap: 12px; }
   .header-nav a { font-size: 13px; }
+  .header-nav a.nav-catalog { display: none; }
   /* o hero já tem CTA; no mobile o botão não cabe no header */
   .header-nav a.header-cta { display: none; }
   .home-hero { padding: 60px 0 52px; }

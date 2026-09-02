@@ -5,38 +5,39 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="no-referrer">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://gc.zgo.at; style-src 'self' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self' https://*.goatcounter.com; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
-<title>Por que uso o ARQ para sacar dinheiro no exterior — DLT Academy</title>
-<meta name="description" content="Minha experiência usando o ARQ, antigo DolarApp, para saques no exterior: taxa de 1%, custos do ATM, DCC e comparação com Wise e Revolut.">
+<title>ARQ Global para saques: custos reais contra Wise e Revolut — DLT Academy</title>
+<meta name="description" content="Compare o custo real de sacar no exterior com ARQ Global, Wise e Revolut: IOF, conversão, spread, franquias, tarifa do cartão, ATM e DCC.">
 <link rel="canonical" href="https://dlt.academy/blog/arq-saques-exterior/">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="DLT Academy">
-<meta property="og:title" content="Por que uso o ARQ para sacar dinheiro no exterior">
-<meta property="og:description" content="ARQ, Wise ou Revolut para sacar? Compare franquias, tarifa do ATM, DCC e o custo total antes de escolher.">
+<meta property="og:title" content="ARQ Global para saques: saldo sem IOF contra Wise e Revolut">
+<meta property="og:description" content="Compare a rota completa: formação do saldo, câmbio até a moeda local, tarifa de saque, ATM e DCC.">
 <meta property="og:url" content="https://dlt.academy/blog/arq-saques-exterior/">
 <meta property="og:image" content="https://dlt.academy/blog/arq-saques-exterior/og-image.svg">
 <meta property="og:image:type" content="image/svg+xml">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="ARQ para saques no exterior: cartão, caixa eletrônico e dinheiro em moeda local — DLT Academy">
+<meta property="og:image:alt" content="ARQ Global para saques no exterior: saldo sem IOF, conversão e tarifa de saque comparadas — DLT Academy">
 <meta property="og:locale" content="pt_BR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Por que uso o ARQ para sacar dinheiro no exterior">
-<meta name="twitter:description" content="ARQ, Wise ou Revolut: quando cada opção tende a custar menos para sacar dinheiro em viagem.">
+<meta name="twitter:title" content="ARQ Global para saques: saldo sem IOF contra Wise e Revolut">
+<meta name="twitter:description" content="Calcule a rota de BRL até o saque, incluindo câmbio, tarifa do cartão, ATM e DCC.">
 <meta name="twitter:image" content="https://dlt.academy/blog/arq-saques-exterior/og-image.svg">
-<meta name="twitter:image:alt" content="ARQ para saques no exterior — DLT Academy">
+<meta name="twitter:image:alt" content="ARQ Global para saques no exterior — DLT Academy">
 <meta name="theme-color" content="#06090F">
 <link rel="icon" type="image/png" href="/assets/dlt-mark.png">
 <link rel="stylesheet" href="/styles-base.css">
 <link rel="stylesheet" href="/styles-portal.css">
 <link rel="stylesheet" href="../styles-blog.css">
+<link rel="stylesheet" href="/dlt-patterns.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
-  "headline": "Por que uso o ARQ para sacar dinheiro no exterior",
-  "description": "Minha experiência usando o ARQ, antigo DolarApp, para saques no exterior: taxa de 1%, custos do ATM, DCC e comparação com Wise e Revolut.",
+  "headline": "ARQ Global para saques: custos reais contra Wise e Revolut",
+  "description": "Compare o custo real de sacar no exterior com ARQ Global, Wise e Revolut: IOF, conversão, spread, franquias, tarifa do cartão, ATM e DCC.",
   "datePublished": "2026-07-29",
-  "dateModified": "2026-07-30",
+  "dateModified": "2026-08-05",
   "inLanguage": "pt-BR",
   "mainEntityOfPage": "https://dlt.academy/blog/arq-saques-exterior/",
   "image": "https://dlt.academy/blog/arq-saques-exterior/og-image.svg",
@@ -44,171 +45,171 @@
   "publisher": { "@type": "Organization", "name": "DLT Academy", "url": "https://dlt.academy/", "logo": { "@type": "ImageObject", "url": "https://dlt.academy/assets/dlt-logo-light.png" } }
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    { "@type": "Question", "name": "O Cartão Global ARQ cobra IOF?", "acceptedAnswer": { "@type": "Answer", "text": "Segundo as páginas específicas do produto para clientes brasileiros, o Cartão Global usa USDc ou EURc adquiridos sem IOF. A conversão e a cotação até a moeda do saque continuam fazendo parte do custo." } },
+    { "@type": "Question", "name": "Quanto o ARQ cobra por saque no plano Standard?", "acceptedAnswer": { "@type": "Answer", "text": "A tarifa própria publicada é de 1% sobre o valor retirado. Conversão, ajuste cambial, tarifa do operador do ATM e eventual DCC são componentes separados." } },
+    { "@type": "Question", "name": "Quais custos a Wise cobra ao partir de reais?", "acceptedAnswer": { "@type": "Answer", "text": "A Wise informa 3,5% de IOF na conversão de BRL, além de tarifa de conversão variável a partir de 0,78%. Para cartões emitidos no Brasil, há uma retirada gratuita por mês e R$ 20 nas seguintes." } },
+    { "@type": "Question", "name": "Quais custos adicionais podem aparecer na Revolut Standard?", "acceptedAnswer": { "@type": "Answer", "text": "Além do IOF e do spread da cotação envolvendo BRL, podem existir 1,4% após a franquia mensal de câmbio em reais, 1% em câmbios entre moedas estrangeiras no fim de semana, 0,5% acima do limite de uso justo e 2% ou R$ 6 após a franquia de saques." } },
+    { "@type": "Question", "name": "Que moeda devo escolher no caixa eletrônico?", "acceptedAnswer": { "@type": "Answer", "text": "Escolha a moeda local e recuse a conversão dinâmica oferecida pelo caixa." } }
+  ]
+}
+</script>
 </head>
 <body>
-<header class="top"><div class="wrap"><a class="brand" href="/"><img src="/assets/dlt-logo-light.png" alt="DLT Academy"></a></div></header>
+<div class="read-progress" data-progress-for=".article-body" aria-hidden="true"><span></span></div>
+<header class="top"><div class="wrap header-row"><a class="brand" href="/"><img src="/assets/dlt-logo-light.png" alt="DLT Academy"></a><nav class="header-nav" aria-label="Navegação principal"><a class="nav-catalog" href="/ferramentas/">Ferramentas</a><a class="nav-catalog" href="/guias/">Guias</a><a href="/blog/">Blog</a><a href="/sobre/">Sobre</a></nav></div></header>
 <main>
   <div class="article-wrap article">
-    <div class="article-meta">
-      <span class="tag s2">Dinheiro em viagem</span>
-      <time datetime="2026-07-29">29 de julho de 2026</time>
-      <span>Atualizado em 30 de julho de 2026</span>
-    </div>
-    <h1>Por que uso o ARQ para sacar dinheiro no exterior</h1>
+    <section class="piece-head">
+      <div class="piece-meta"><span class="tag s2">Dinheiro em viagem</span><time datetime="2026-07-29">29 jul 2026</time><span class="sep" aria-hidden="true"></span><span>Atualizado em 5 de agosto de 2026</span><span class="sep" aria-hidden="true"></span><span>10 min de leitura</span></div>
+      <h1>ARQ Global para saques no exterior: os custos reais contra Wise e Revolut</h1>
+      <p class="piece-lede">O diferencial do Cartão Global ARQ não é apenas a tarifa de saque de 1%: é formar saldo internacional sem IOF, enquanto alternativas brasileiras podem começar com 3,5% de imposto antes mesmo de chegar ao caixa.</p>
+    </section>
     <div class="article-body">
-<p><strong>O melhor cartão para pagar uma compra não precisa ser o melhor cartão para retirar dinheiro.</strong> Depois de testar diferentes contas globais durante minhas viagens, foi assim que o ARQ — antigo DolarApp — encontrou um lugar permanente no meu setup: é o cartão físico que mantenho principalmente para saques em caixas eletrônicos no exterior.</p>
-<p>Ele já foi meu cartão principal para praticamente tudo na América Latina e me salvou muitas vezes. Hoje, cada método ganhou uma função específica: no meu setup, uso o <a href="/guias/etherfi-cash-viagem/">ether.fi Cash para compras internacionais</a> como minha melhor opção para compras online e pagamentos por aproximação quando o cartão virtual no celular é suficiente; uso Bybit Pay ou Moreta quando o estabelecimento aceita QR local e deixo o ARQ preparado para o momento em que preciso de dinheiro físico.</p>
-<p>O motivo é simples: o cartão foi fácil de obter, a conta facilita manter e movimentar dólares digitais e o custo do saque é previsível. Mas a taxa mudou, o caixa pode cobrar por fora e uma escolha errada na tela do ATM pode custar muito mais do que a tarifa do cartão. Este artigo separa cada parte da conta e compara o ARQ com Wise e Revolut.</p>
+<section class="key-points" data-reveal><p>O essencial</p><ul><li><strong>ARQ Global: 0% de IOF</strong> na formação do saldo em USDc ou EURc.</li><li>A comparação usa apenas opções básicas gratuitas: ARQ Standard Global, Wise padrão e Revolut Standard.</li><li>O ARQ informa aproximadamente 0,5% para formar o saldo e cobra 1% no saque Standard.</li><li>Wise parte de 3,5% de IOF + conversão variável; depois do primeiro saque mensal, cobra R$ 20.</li><li>Revolut pode somar IOF, spread, tarifas de câmbio por franquia, fim de semana e uso justo.</li><li>ATM, cotação até a moeda local e DCC completam o custo real.</li></ul></section>
+<nav class="piece-toc" data-toc-watch=".article-body > h2"><p>Neste artigo</p><ol></ol></nav>
 
-<h2>A resposta curta</h2>
-<ul>
-  <li><strong>Compras online e por aproximação:</strong> ether.fi Cash, quando a compra é elegível e o cartão virtual na carteira digital é suficiente.</li>
-  <li><strong>Dinheiro físico:</strong> ARQ como cartão dedicado aos saques em ATMs durante viagens.</li>
-  <li><strong>Tarifa publicada no plano Standard:</strong> 1% sobre o valor retirado.</li>
-  <li><strong>Wise com cartão emitido no Brasil:</strong> uma retirada gratuita por mês; depois, R$ 20 por retirada.</li>
-  <li><strong>Revolut Standard Brasil:</strong> até R$ 1.600 ou cinco saques sem tarifa própria, o que ocorrer primeiro.</li>
-  <li><strong>Tarifa do dono do caixa:</strong> pode ser cobrada separadamente em qualquer uma das opções.</li>
-  <li><strong>Por que mantenho o ARQ:</strong> depois das franquias gratuitas, o 1% é previsível e não encontrei um teto oficial por número de retiradas no plano Standard.</li>
-</ul>
+<p>Quando ainda se chamava DolarApp, esse cartão me acompanhou por boa parte da América Latina. Durante um tempo foi meu cartão principal para praticamente tudo: compras, emergências e saques. Hoje separo melhor as funções: uso o <a href="/guias/etherfi-cash-viagem/">ether.fi para compras</a>, o <a href="/guias/bybit-pay-vietqr/">Bybit Pay quando existe QR local compatível</a> ou o <a href="/guias/abastecer-moreta-usdt/">Moreta abastecido com USDT</a>, e deixo o ARQ Global preparado para dinheiro físico.</p>
+<p>A comparação justa não é “ARQ cobra 1% e os outros oferecem saque grátis”. Antes do saque, alguém precisou transformar reais em saldo internacional e esse saldo ainda precisa chegar à moeda local. É aí que IOF, conversão, spread e limites mensais mudam o resultado.</p>
 
-<h2>Onde o ether.fi entra</h2>
-<p>No meu setup, o ether.fi Cash é o principal para compras online e pagamentos por aproximação quando o cartão virtual no celular é suficiente. Nessas situações, não preciso carregar nem usar um cartão físico.</p>
-<p>Para dinheiro físico, a lógica muda: o ARQ continua sendo o cartão dedicado aos saques em caixas eletrônicos.</p>
-<p><strong>Em resumo: ether.fi para pagar; ARQ para sacar.</strong></p>
-<p><a href="/guias/etherfi-cash-viagem/">Veja a análise completa de por que uso o ether.fi Cash como cartão principal para compras internacionais.</a></p>
-
-<h2>A tarifa do saque no ARQ Standard é de 1%</h2>
-<p>As páginas oficiais do ARQ consultadas para este artigo informam <strong>1% sobre o valor retirado</strong> com os cartões comuns, em saques locais ou internacionais.</p>
-<p>Isso significa que, antes da cobrança do próprio caixa eletrônico:</p>
-<ul>
-  <li>um saque equivalente a US$ 50 gera US$ 0,50 de tarifa do ARQ;</li>
-  <li>um saque equivalente a US$ 100 gera US$ 1;</li>
-  <li>um saque equivalente a US$ 300 gera US$ 3.</li>
-</ul>
-<p>O plano Premium publica uma franquia de até 500 USDc por mês sem a tarifa do ARQ e cobra 1% depois dela. O Prestige eleva a franquia para 700 USDc. A assinatura só compensa se a economia nas retiradas e nos outros benefícios superar o preço do plano; não vale pagar mensalidade apenas porque “saque grátis” parece melhor.</p>
-<p><strong>Há uma ressalva importante:</strong> a página geral diz que o cartão pode sacar em ATMs ao redor do mundo, enquanto a página do Premium contém uma nota dizendo que saques estão disponíveis apenas para usuários da Colômbia e do México. Como a elegibilidade pode depender do país da conta, do emissor e da versão do cartão, não trataria a compatibilidade como universal sem conferir o aplicativo e fazer um teste pequeno.</p>
-<p><small>Condições oficiais consultadas em 29/07/2026: <a href="https://help.arqfinance.com/en/articles/13551411-atm-withdrawal-fees-and-how-to-avoid-surprise-fees" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">tarifas de ATM e DCC</a>, <a href="https://help.arqfinance.com/en/articles/13738316-arq-costs-and-fees" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">custos do plano Standard</a>, <a href="https://help.arqfinance.com/en/articles/13546968-can-i-make-cash-withdrawals-with-my-arq-card" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">saques com o ARQCard</a> e <a href="https://help.arqfinance.com/en/articles/13901053-what-is-arq-premium" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ Premium</a>.</small></p>
-
-<h2>“Sem limite de vezes” precisa de uma explicação</h2>
-<p>Uma vantagem prática do ARQ Standard é não publicar a mesma franquia por quantidade que aparece em alguns concorrentes. A cobrança é descrita como uma porcentagem do valor de cada saque, independentemente do montante.</p>
-<p>Isso não significa saque literalmente ilimitado. Ainda podem existir:</p>
-<ul>
-  <li>limite diário ou mensal definido no seu cartão;</li>
-  <li>limite por operação do caixa eletrônico;</li>
-  <li>limite de cédulas disponíveis;</li>
-  <li>bloqueio antifraude por localização ou sequência de tentativas;</li>
-  <li>restrições específicas do país em que o cartão foi emitido.</li>
-</ul>
-<p>A forma correta de resumir é: <strong>não encontrei um teto oficial por número de saques no plano Standard, mas cada retirada continua sujeita aos limites operacionais exibidos no aplicativo e no ATM.</strong></p>
-
-<h2>O custo real tem quatro partes</h2>
-<p>Olhar apenas para o 1% pode esconder o que realmente saiu do seu bolso. Para comparar um saque, eu uso:</p>
-<p><strong>custo para formar o saldo + tarifa do cartão + tarifa do ATM + conversão escolhida no caixa</strong></p>
-
-<h3>1. Formar o saldo</h3>
-<p>O ARQ permite manter USDc e EURc, receber e enviar pagamentos internacionais e converter a moeda local. Para clientes Standard, a página de custos lista transferências locais sem tarifa, mas cobra 3 USDc ou 3 EURc em determinadas entradas, saídas e recargas internacionais.</p>
-<p>No Brasil, a própria ARQ informava em julho de 2026 um custo total aproximado de <strong>0,5%</strong> para conversões entre BRL e USDc ou EURc, incluindo os componentes da operação. Esse custo vem antes do saque e precisa entrar na comparação.</p>
-
-<h3>2. Tarifa do cartão</h3>
-<p>No ARQ Standard, é o 1% publicado. Na Wise e no Revolut, a tarifa depende da franquia mensal e do país em que o cartão foi emitido. A ausência de tarifa própria dentro da franquia não elimina eventual custo de conversão.</p>
-
-<h3>3. Tarifa do dono do ATM</h3>
-<p>O banco ou operador do caixa pode cobrar uma tarifa própria. Ela não vai para ARQ, Wise ou Revolut e pode aparecer na tela antes da confirmação. Quando a cobrança é fixa, retirar valores muito pequenos repetidamente encarece bastante o custo percentual.</p>
-
-<h3>4. DCC: a conversão que deve ser recusada</h3>
-<p>Alguns caixas detectam que o cartão opera em dólar e oferecem cobrar a retirada em USD. Parece conveniente, mas normalmente é o próprio operador do ATM que define esse câmbio, com uma margem ruim.</p>
-<p><strong>Escolha a moeda local e recuse a conversão do caixa.</strong> No Vietnã, por exemplo, escolha VND; na Tailândia, THB; na Europa, a moeda local do país. Procure opções como “decline conversion”, “without conversion” ou “charge in local currency”.</p>
-
-<h2>Por que o cartão físico foi decisivo para mim</h2>
-<p>Não adianta uma conta ter o melhor câmbio no papel se o cartão físico é caro, demora demais ou não chega. O DolarApp foi uma das formas mais simples que encontrei de conseguir um cartão internacional funcional. O cartão continuou útil depois da mudança de marca para ARQ e foi o que usei como principal durante boa parte da minha viagem pela América Latina.</p>
-<p>Minha experiência de emissão pertence a uma fase anterior do produto. Para novos pedidos, a documentação atual lista <strong>US$ 4,99 de envio no plano Standard</strong>, cartão físico incluído no Premium e entrega dentro de Argentina, Brasil, Colômbia e México. Confirme o valor final no aplicativo, porque campanhas podem zerar o frete ou alterar a condição.</p>
-<p><small>Fonte oficial consultada em 29/07/2026: <a href="https://help.arqfinance.com/en/articles/13550176-where-can-you-send-my-card" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">países de entrega do cartão físico</a> e <a href="https://help.arqfinance.com/en/articles/13738316-arq-costs-and-fees" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">custos do ARQ</a>.</small></p>
-
-<h2>ARQ, Wise ou Revolut para sacar?</h2>
-<p>Wise e Revolut continuam sendo alternativas importantes. Ter cartões de emissores diferentes é mais valioso do que tentar escolher um vencedor absoluto: caixas recusam cartões, sistemas ficam fora do ar e um bloqueio de segurança pode acontecer justamente quando você precisa de dinheiro.</p>
-
-<h3>Quando a Wise pode sair mais barata</h3>
-<p>Para cartões emitidos no Brasil, a Wise publica <strong>uma retirada gratuita por mês</strong>. Depois dela, cobra uma tarifa fixa de <strong>R$ 20 por retirada</strong>. Se você não tiver a moeda retirada no saldo, também haverá conversão; o ATM ainda pode cobrar por fora.</p>
-<p>R$ 20 equivalem a 1% de R$ 2.000. Numa retirada equivalente a R$ 500, o 1% do ARQ seria aproximadamente R$ 5, enquanto uma retirada Wise depois da franquia teria R$ 20 de tarifa fixa — antes de conversão e cobrança do caixa. Em retiradas muito maiores, a tarifa fixa da Wise pode voltar a ser competitiva, desde que o ATM permita o valor.</p>
-<p>Isso explica meu uso: <strong>a primeira retirada mensal da Wise pode ser excelente, mas o ARQ fica mais previsível quando preciso testar caixas, fazer retiradas menores ou repetir a operação durante uma viagem longa.</strong></p>
-<p><small>Fontes oficiais consultadas em 29/07/2026: <a href="https://wise.com/pt/help/articles/2935769/quanto-custa-para-retirar-dinheiro-em-caixas-eletronicos-com-o-meu-cartao-da-wise" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">tarifas de saque para cartão Wise emitido no Brasil</a> e <a href="https://wise.com/br/pricing/card-fees/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">preços do cartão Wise</a>.</small></p>
-
-<div class="article-callout" data-promotion="wise-referral" data-verified-at="2026-07-29">
-  <p><strong>Se a Wise for a melhor opção para o seu caso</strong></p>
-  <p>Você pode abrir a conta pelo meu link de convite e conferir o benefício disponível para a sua região. A Wise usa programas de indicação diferentes conforme o mercado, por isso o desconto válido é o que aparecer na página no momento do cadastro.</p>
-  <p><a href="https://wise.com/invite/irhc/tiagon100" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer"><strong>Conferir a oferta atual da Wise e criar a conta</strong></a></p>
-  <p><small>Transparência: este é um link de indicação. A DLT Academy pode receber uma recompensa se a nova conta cumprir as condições do programa vigente, sem custo adicional para quem se cadastra. O link não torna a Wise a recomendação automática: compare franquia, conversão e custo total.</small></p>
+<div class="figure-row" data-reveal aria-label="Principais custos para sacar no exterior">
+  <div class="figure-cell"><p class="figure-value">0%</p><p class="figure-label">IOF na compra do saldo Global</p><p class="figure-source">Fonte: ARQ · clientes brasileiros · 05/08/2026</p></div>
+  <div class="figure-cell"><p class="figure-value">~0,5%</p><p class="figure-label">Formação do saldo ARQ</p><p class="figure-source">Custo aproximado informado pela empresa</p></div>
+  <div class="figure-cell"><p class="figure-value">1%</p><p class="figure-label">Saque ARQ Standard Global</p><p class="figure-source">Tarifa própria; ATM pode cobrar por fora</p></div>
+  <div class="figure-cell"><p class="figure-value">3,5%</p><p class="figure-label">IOF em rotas BRL da Wise e Revolut</p><p class="figure-source">Antes de outras tarifas e da cotação</p></div>
 </div>
+<p class="arq-source-note">Escopo: opções básicas gratuitas para clientes brasileiros — ARQ Standard Global, cartão Wise padrão e Revolut Standard. A comparação parte de BRL e termina num saque internacional. O Cartão Local ARQ segue outra regra.</p>
 
-<h3>Quando o Revolut pode sair mais barato</h3>
-<p>No plano Standard brasileiro, o Revolut publica até <strong>R$ 1.600 ou cinco saques por mês</strong> sem tarifa própria, o que ocorrer primeiro. Depois, cobra 2% ou R$ 6 por saque, o que for maior. Dentro dessa franquia, o Revolut pode ser mais barato que o ARQ. Depois dela — ou para quem precisa fazer mais de cinco retiradas — o 1% do ARQ pode ser mais previsível.</p>
-<p><small>Fonte oficial consultada em 29/07/2026: <a href="https://www.revolut.com/pt-BR/legal/standard-fees/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">tarifas do Revolut Standard no Brasil</a>.</small></p>
+<h2>O diferencial que muda a conta: saldo Global sem IOF</h2>
+<p>O Cartão Global ARQ usa saldo em USDc ou EURc. Nas páginas específicas para o Brasil, a empresa informa que esse saldo é comprado <strong>sem IOF</strong> e que não há imposto adicional ao usar o cartão no exterior.</p>
+<p>Isso não significa custo zero. O ARQ informa uma taxa próxima de <strong>0,5%</strong> para formar o saldo e cobra <strong>1%</strong> por saque no plano Standard. A cotação entre USDc ou EURc e a moeda do saque também precisa ser considerada.</p>
+<p>Numa retirada equivalente a R$ 1.000, antes da tarifa do ATM e sem ajuste cambial adicional, a referência inicial é:</p>
+<p><strong>R$ 5 para formar o saldo + R$ 10 de saque = R$ 15.</strong></p>
+<div class="note"><p>Importante</p><p>O benefício vale para o <strong>Cartão Global</strong>. O Cartão Local utiliza BRL e segue outra estrutura de custos no exterior.</p></div>
 
+<h2>Todas as taxas que importam na comparação</h2>
+<section class="compare" aria-labelledby="arq-fees-title">
+  <div class="compare-scroll"><table><caption id="arq-fees-title">Custos das opções básicas gratuitas para clientes brasileiros</caption><thead><tr><th scope="col">Componente</th><th scope="col" class="is-pick">ARQ Standard Global</th><th scope="col">Wise padrão gratuito</th><th scope="col">Revolut Standard Brasil</th></tr></thead><tbody>
+    <tr><th scope="row">IOF ao partir de BRL</th><td class="is-pick"><strong>0%</strong> na formação do saldo Global</td><td><strong>3,5%</strong></td><td><strong>3,5%</strong> quando aplicável à operação de câmbio</td></tr>
+    <tr><th scope="row">Conversão principal</th><td>~0,5% para formar USDc/EURc + cotação até a moeda do saque</td><td>Variável, a partir de 0,78%</td><td>Cotação do provedor com spread variável</td></tr>
+    <tr><th scope="row">Franquia mensal de câmbio BRL</th><td>Não há sobretaxa por franquia publicada</td><td>Não há sobretaxa mensal publicada; a tarifa varia pela rota</td><td>Até R$ 1.000 sem tarifa própria; depois, 1,4% em BRL→moeda estrangeira</td></tr>
+    <tr><th scope="row">Câmbio no fim de semana</th><td>Não há tarifa específica publicada</td><td>Não há tarifa específica publicada</td><td>1% entre duas moedas estrangeiras no Standard</td></tr>
+    <tr><th scope="row">Uso justo de câmbio</th><td>Não há sobretaxa publicada</td><td>Não há sobretaxa publicada</td><td>0,5% acima de R$ 10.000 por ciclo em câmbio entre moedas estrangeiras</td></tr>
+    <tr><th scope="row">Tarifa própria de saque</th><td class="is-pick"><strong>1%</strong> em cada retirada</td><td>1 retirada grátis; depois <strong>R$ 20</strong> por retirada</td><td>Grátis até R$ 1.600 ou 5 saques; depois <strong>2% ou R$ 6</strong>, o maior</td></tr>
+    <tr><th scope="row">Tarifa do operador do ATM</th><td>Possível e externa</td><td>Possível e externa</td><td>Possível e externa</td></tr>
+    <tr><th scope="row">DCC</th><td>Evitável escolhendo moeda local</td><td>Evitável escolhendo moeda local</td><td>Evitável escolhendo moeda local</td></tr>
+  </tbody></table></div>
+  <p class="compare-foot">A tabela usa somente os cartões básicos gratuitos. A cotação e os valores mostrados no aplicativo prevalecem.</p>
+</section>
+
+<h2>O que a Wise cobra e o ARQ Global não cobra</h2>
+<p>Na <a href="https://wise.com/invite/irhc/tiagon100" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Wise</a>, o IOF é cobrado na conversão de BRL para moeda estrangeira. A taxa atual informada para clientes brasileiros é de <strong>3,5%</strong>. Além disso, existe a tarifa própria de conversão, que varia conforme moeda, valor e rota e é anunciada <strong>a partir de 0,78%</strong>.</p>
+<p>Com o saldo na moeda correta, a primeira retirada mensal não tem tarifa da Wise. Nas retiradas seguintes, o cartão emitido no Brasil cobra <strong>R$ 20 por operação</strong>. O caixa ainda pode cobrar uma tarifa adicional.</p>
+<p>Num exemplo de R$ 1.000 partindo de BRL e usando a primeira retirada do mês, a referência mínima é:</p>
+<p><strong>R$ 35 de IOF + pelo menos R$ 7,80 de conversão = R$ 42,80.</strong></p>
+<p>Na segunda retirada do ciclo, entram mais R$ 20. Por isso, “primeiro saque grátis” não significa que a rota inteira seja gratuita.</p>
+
+<h2>O que pode ser cobrado na Revolut e não aparece no ARQ</h2>
+<p>A <a href="https://revolut.com/referral/?referral-code=tiago327k!AUG1-26-AR-BR-H3&amp;geo-redirect" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Revolut Standard</a> oferece franquias úteis, mas a estrutura tem mais camadas. A conversão de BRL utiliza a cotação do provedor Ebury e pode conter <strong>spread</strong>. O plano oferece até R$ 1.000 mensais sem tarifa própria de conversão; depois da franquia, publica <strong>1,4%</strong> para transações subsequentes de BRL para moeda estrangeira.</p>
+<p>Se o usuário já possui uma moeda estrangeira e precisa convertê-la para outra no momento do saque, podem aparecer mais duas tarifas no Standard:</p>
 <ul>
-  <li><strong>Primeira retirada mensal:</strong> Wise pode ganhar na tarifa do emissor.</li>
-  <li><strong>Dentro da franquia do Revolut:</strong> Revolut pode sair mais barato que o ARQ.</li>
-  <li><strong>Retiradas repetidas após as franquias:</strong> ARQ pode ganhar com o 1% publicado.</li>
-  <li><strong>Dinheiro já mantido em USDc no ARQ:</strong> a facilidade de usar o próprio saldo pode pesar mais que uma diferença pequena.</li>
-  <li><strong>Viagem longa:</strong> levo mais de um cartão; o backup vale mais do que uma economia marginal.</li>
+  <li><strong>1%</strong> para câmbio entre moedas estrangeiras no fim de semana;</li>
+  <li><strong>0,5%</strong> sobre o volume acima de R$ 10.000 no ciclo mensal de uso justo.</li>
 </ul>
-<p>Essa comparação ainda não inclui o custo para formar cada saldo nem a tarifa do caixa. O vencedor real depende da retirada completa, não apenas da linha “saque grátis”.</p>
+<p>Nos saques, a franquia é de R$ 1.600 ou cinco retiradas por mês, o que ocorrer primeiro. Depois, a Revolut cobra <strong>2% ou R$ 6 por operação</strong>, o maior valor.</p>
+<p>Assim, um primeiro saque de R$ 1.000 partindo de BRL, ainda dentro das franquias, começa em aproximadamente <strong>R$ 35 de IOF mais o spread da cotação</strong>. Se as franquias já tiverem sido consumidas, podem entrar 1,4% de câmbio e a tarifa de saque.</p>
+<p><strong>No plano gratuito, considero a Revolut a segunda alternativa mais forte para saques.</strong> Ela pode virar a melhor para quem já paga um plano por outros benefícios e aproveita as franquias maiores: os limites de saque sobem de R$ 2.000 no Plus até R$ 14.000 no exterior no Ultra.</p>
+<p><a href="https://revolut.com/referral/?referral-code=tiago327k!AUG1-26-AR-BR-H3&amp;geo-redirect" class="btn btn-secondary" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Criar conta na Revolut e conferir os planos</a></p>
 
-<h2>Como eu testo um caixa novo sem deixar dinheiro preso</h2>
-<ol>
-  <li>Abra o aplicativo e confirme que o cartão está ativo, com PIN disponível e saldo pequeno.</li>
-  <li>Procure primeiro o ATM de um banco conhecido, preferencialmente numa agência.</li>
-  <li>Confira o limite e a tarifa mostrados antes de confirmar.</li>
-  <li>Faça a primeira retirada com um valor pequeno.</li>
-  <li>Escolha a moeda local e recuse DCC.</li>
-  <li>Guarde o recibo e compare o valor retirado com o débito já liquidado no aplicativo.</li>
-  <li>Só então envie ou converta um saldo maior para as próximas retiradas.</li>
-</ol>
-<p>Esse teste é especialmente importante para quem ainda possui um cartão antigo com a marca DolarApp. O cartão pode continuar funcionando, mas bandeira, emissor, país da conta e regras do produto podem ter mudado desde a emissão.</p>
+<h2>Calculadora: compare a rota completa</h2>
+<section class="calc" id="arq-calc" data-arq-calculator aria-labelledby="arq-calc-title">
+  <header><p class="calc-kicker">Cartões básicos gratuitos</p><h3 id="arq-calc-title">Quanto custa repetir o mesmo saque?</h3><p>Compara a rota usada neste artigo: BRL → saldo internacional → saque. Nenhum plano pago entra no cálculo; ajuste apenas os custos que mudam no seu aplicativo ou no caixa.</p></header>
+  <div class="calc-controls">
+    <div class="calc-control"><label for="arq-withdrawal-value">Valor de cada retirada <output id="arq-withdrawal-value-output" for="arq-withdrawal-value">R$ 500</output></label><input id="arq-withdrawal-value" type="range" min="100" max="3000" step="50" value="500"></div>
+    <div class="calc-control"><label for="arq-withdrawal-count">Retiradas no ciclo <output id="arq-withdrawal-count-output" for="arq-withdrawal-count">2 retiradas</output></label><input id="arq-withdrawal-count" type="range" min="1" max="8" step="1" value="2"></div>
+    <div class="calc-control"><label for="arq-conversion-rate">ARQ: formação do saldo sem IOF <output id="arq-conversion-rate-output" for="arq-conversion-rate">0,50%</output></label><input id="arq-conversion-rate" type="range" min="0" max="3" step="0.01" value="0.5"></div>
+    <div class="calc-control"><label for="arq-local-fx-rate">ARQ: ajuste cambial até a moeda do saque <output id="arq-local-fx-rate-output" for="arq-local-fx-rate">0,00%</output></label><input id="arq-local-fx-rate" type="range" min="0" max="3" step="0.01" value="0"></div>
+    <div class="calc-control"><label for="arq-wise-iof-rate">Wise padrão: IOF na rota BRL <output id="arq-wise-iof-rate-output" for="arq-wise-iof-rate">3,50%</output></label><input id="arq-wise-iof-rate" type="range" min="0" max="5" step="0.01" value="3.5"></div>
+    <div class="calc-control"><label for="arq-wise-conversion-rate">Wise padrão: tarifa de conversão <output id="arq-wise-conversion-rate-output" for="arq-wise-conversion-rate">0,78%</output></label><input id="arq-wise-conversion-rate" type="range" min="0" max="3" step="0.01" value="0.78"></div>
+    <div class="calc-control"><label for="arq-revolut-iof-rate">Revolut Standard: IOF na rota BRL <output id="arq-revolut-iof-rate-output" for="arq-revolut-iof-rate">3,50%</output></label><input id="arq-revolut-iof-rate" type="range" min="0" max="5" step="0.01" value="3.5"></div>
+    <div class="calc-control"><label for="arq-revolut-brl-fee-rate">Revolut Standard: tarifa BRL mostrada no app <output id="arq-revolut-brl-fee-rate-output" for="arq-revolut-brl-fee-rate">0,00%</output></label><input id="arq-revolut-brl-fee-rate" type="range" min="0" max="1.4" step="0.1" value="0"></div>
+    <div class="calc-control"><label for="arq-revolut-extra-fx-rate">Revolut Standard: adicional entre moedas <output id="arq-revolut-extra-fx-rate-output" for="arq-revolut-extra-fx-rate">0,00%</output></label><input id="arq-revolut-extra-fx-rate" type="range" min="0" max="1.5" step="0.5" value="0"></div>
+    <div class="calc-control"><label for="arq-revolut-spread-rate">Revolut Standard: spread/ajuste da cotação <output id="arq-revolut-spread-rate-output" for="arq-revolut-spread-rate">0,00%</output></label><input id="arq-revolut-spread-rate" type="range" min="0" max="3" step="0.01" value="0"></div>
+    <div class="calc-control"><label for="arq-atm-fee">Tarifa do ATM por retirada <output id="arq-atm-fee-output" for="arq-atm-fee">R$ 0</output></label><input id="arq-atm-fee" type="range" min="0" max="100" step="1" value="0"></div>
+    <div class="calc-control"><label for="arq-dcc-rate">DCC aceito no caixa <output id="arq-dcc-rate-output" for="arq-dcc-rate">0,00%</output></label><input id="arq-dcc-rate" type="range" min="0" max="15" step="0.1" value="0"></div>
+  </div>
+  <p class="calc-assumption-note">Premissas verificadas em 05/08/2026. O ARQ usa 0,5% como referência para formar USDc/EURc; o ajuste cambial até a moeda do saque começa em zero para você preencher com a cotação observada. Wise e Revolut partem das regras brasileiras publicadas. ATM e DCC são editáveis.</p>
+  <div class="calc-rows bar-chart" aria-live="polite" aria-label="Comparação visual do custo total estimado">
+    <div class="calc-row" data-calc-row="arq"><span class="calc-name">ARQ Standard Global · custo total estimado</span><span class="calc-track"><span></span></span><output class="calc-out"><span data-calc-total>R$ 0</span><small data-calc-detail></small></output></div>
+    <div class="calc-row" data-calc-row="wise"><span class="calc-name">Wise padrão gratuito · custo total estimado</span><span class="calc-track"><span></span></span><output class="calc-out"><span data-calc-total>R$ 0</span><small data-calc-detail></small></output></div>
+    <div class="calc-row" data-calc-row="revolut"><span class="calc-name">Revolut Standard · custo total estimado</span><span class="calc-track"><span></span></span><output class="calc-out"><span data-calc-total>R$ 0</span><small data-calc-detail></small></output></div>
+  </div>
+  <p class="calc-verdict" data-calc-verdict>Informe o cenário para ver a comparação.</p>
+  <button class="btn btn-secondary" type="button" data-copy-result="#arq-calc">Copiar esta simulação</button>
+  <p class="calc-fine">Na Revolut, use 0% na tarifa BRL enquanto houver franquia e 1,4% quando o aplicativo mostrar a cobrança. No adicional entre moedas, use 1% para fim de semana, 0,5% para uso justo excedido ou 1,5% quando ambos incidirem.</p>
+</section>
 
-<h2>O papel do ARQ no meu setup completo</h2>
-<ul>
-  <li><strong>Compras online e por aproximação:</strong> <a href="/guias/etherfi-cash-viagem/">ether.fi Cash</a> é a melhor opção no meu setup para compras elegíveis quando o cartão virtual e a carteira digital são suficientes.</li>
-  <li><strong>QR local:</strong> <a href="/guias/bybit-pay-vietqr/">Bybit Pay</a> ou <a href="/guias/abastecer-moreta-usdt/">Moreta</a>, conforme a compatibilidade.</li>
-  <li><strong>Dinheiro físico:</strong> ARQ como cartão dedicado aos saques.</li>
-  <li><strong>Primeira retirada ou franquias:</strong> Wise e Revolut podem entrar quando suas condições forem mais vantajosas.</li>
-  <li><strong>Emergência:</strong> mais de um cartão e uma pequena reserva em espécie.</li>
-</ul>
-<p>O Revolut continua instalado e com cartão ativo como backup; a Wise entra principalmente para aproveitar a primeira retirada ou outras franquias favoráveis.</p>
-<p>Foi essa especialização que reduziu meus custos: <strong>ether.fi para pagar; ARQ para sacar.</strong> Não tento obrigar um único produto a resolver cartão, QR, saque, câmbio e emergência ao mesmo tempo.</p>
+<h2>Custos que não entram na comparação padrão</h2>
+<p>Recargas internacionais ou em cripto no ARQ Standard podem ter cobrança fixa e ficam fora do cenário principal, que parte de BRL. Custos únicos de emissão ou entrega também não entram no cálculo de saques repetidos.</p>
 
-<h2 id="oferta">A oferta de indicação: US$ 10 depois de gastar US$ 150</h2>
-<p>O link que estou usando informa um benefício de <strong>US$ 10 para a nova conta depois de gastar US$ 150 no cartão durante o primeiro mês</strong>. Campanhas de indicação podem variar por pessoa, país e data, então a oferta mostrada depois de abrir o link é a fonte final.</p>
-<p>A documentação do ARQ também alerta que:</p>
-<ul>
-  <li>a campanha precisa estar ativa para quem indica;</li>
-  <li>o e-mail informado no link deve ser o mesmo usado para abrir a conta;</li>
-  <li>alguns estabelecimentos podem não contar para a meta;</li>
-  <li>a recompensa pode levar até cinco dias úteis depois do cumprimento das condições.</li>
-</ul>
+<h2>O erro no caixa que pode custar mais do que todas as tarifas</h2>
+<p>Muitos caixas oferecem fazer a conversão para a moeda da conta. Isso é DCC: o operador do ATM escolhe o câmbio e inclui sua própria margem.</p>
+<p><strong>Escolha a moeda local e recuse a conversão do caixa.</strong> No Vietnã, escolha VND; na Tailândia, THB. Procure opções como “decline conversion”, “without conversion” ou “charge in local currency”.</p>
+<div class="note is-risk"><p>Risco que eu não negocio</p><p>Aceitar DCC pode custar mais do que toda a diferença entre ARQ, Wise e Revolut. Na calculadora, o padrão é zero porque a orientação é recusar essa conversão.</p></div>
+
+<h2>Como eu testo um caixa novo</h2>
+<section class="steps" aria-label="Sequência para testar um caixa eletrônico">
+  <div class="step"><div class="step-rail"><span class="step-num">01</span></div><div class="step-body"><h3>Preparar o cartão correto</h3><p>Confirmo que estou usando o Cartão Global ARQ, tenho o PIN e o saldo necessário. Não uso o Cartão Local no exterior para esse cenário.</p></div></div>
+  <div class="step"><div class="step-rail"><span class="step-num">02</span></div><div class="step-body"><h3>Testar pequeno e em moeda local</h3><p>Procuro um ATM de banco conhecido, anoto a tarifa exibida, escolho a moeda local e recuso a conversão do caixa.</p></div></div>
+  <div class="step"><div class="step-rail"><span class="step-num">03</span></div><div class="step-body"><h3>Conferir o débito liquidado</h3><p>Comparo o dinheiro recebido com o débito final no aplicativo e ajusto a calculadora com o custo real do ATM e da cotação.</p></div></div>
+</section>
+
+<h2>Então, vale a pena?</h2>
+<section class="verdict"><p>Meu veredito</p><p class="verdict-line">Partindo de reais, o ARQ Global começa com vantagem por evitar 3,5% de IOF, mesmo cobrando 1% no saque.</p><p>A vantagem final depende da cotação aplicada até a moeda local. Wise e Revolut ainda podem vencer com franquias disponíveis ou saldo já preparado. No nosso setup, a divisão continua simples: <strong>ether.fi para pagar; ARQ Global para sacar.</strong></p></section>
+
+<h2 id="oferta">A oferta de indicação do ARQ</h2>
+<p>Em 29/07/2026, o meu convite informava <strong>US$ 10 para a nova conta depois de US$ 150 em gastos elegíveis no primeiro mês</strong>. Confira a condição atual no próprio link.</p>
 
 <!-- PROMO_ATUAL -->
-<div class="article-callout" data-promotion="arq-referral" data-verified-at="2026-07-29">
-  <p><strong>Oferta informada em 29/07/2026</strong></p>
-  <p>Ganhe US$ 10 depois de fazer US$ 150 em gastos elegíveis com o cartão no primeiro mês.</p>
-  <p><a href="https://www.arqfinance.com/referrals/general?referralCode=tiagohyd_I6p&amp;pid=referral&amp;c=general&amp;is_retargeting=true" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer"><strong>Abrir o link da DLT Academy, conferir a campanha atual e criar a conta</strong></a></p>
-  <p><small>Transparência: este é um link de indicação. A DLT Academy pode receber uma recompensa se a nova conta cumprir as condições da campanha, sem custo adicional para quem se cadastra.</small></p>
+<div class="offer" data-promotion="arq-referral" data-verified-at="2026-07-29" data-reveal>
+  <div class="offer-flags"><span class="offer-verified">Condição vista em 29/07/2026</span><span class="tag s2">Confirme no link</span></div>
+  <h3>US$ 10 após US$ 150 em gastos elegíveis</h3>
+  <p>Condição vista para gastos com o cartão durante o primeiro mês.</p>
+  <a href="https://www.arqfinance.com/referrals/general?referralCode=tiagohyd_I6p&amp;pid=referral&amp;c=general&amp;is_retargeting=true" class="btn btn-primary" target="_blank" rel="sponsored nofollow noopener noreferrer" referrerpolicy="no-referrer">Criar conta no ARQ e conferir os US$ 10</a>
 </div>
 <!-- /PROMO_ATUAL -->
 
-<p>Não gaste US$ 150 apenas para buscar US$ 10. Use a promoção se os gastos já fariam parte da sua viagem e se o ARQ realmente resolver um problema do seu setup.</p>
-<p><small>Fonte oficial consultada em 29/07/2026: <a href="https://help.arqfinance.com/en/articles/13864096-referrals-if-you-haven-t-received-the-reward-it-can-take-up-to-5-days-also-your-merchant-might-be-excluded" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">prazo, e-mail e estabelecimentos excluídos</a> e <a href="https://help.arqfinance.com/en/articles/13864103-referrals-if-you-re-not-able-to-find-your-past-invitations-below-we-explain-how-to-locate-them-as-well-as-some-relevant-details" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">campanhas ativas</a>.</small></p>
+<section class="faq" data-faq-exclusive aria-labelledby="faq-arq"><h2 id="faq-arq">Perguntas frequentes</h2>
+<details><summary>O ARQ realmente não cobra IOF?</summary><p>O Cartão Global usa USDc ou EURc comprados sem IOF, segundo as páginas específicas da ARQ para clientes brasileiros. Conversão e cotação até a moeda do saque continuam no custo.</p></details>
+<details><summary>Quanto o ARQ cobra por saque no Standard?</summary><p>A tarifa própria publicada é de 1% sobre o valor retirado. Conversão, ajuste cambial, ATM e DCC são componentes separados.</p></details>
+<details><summary>A Wise não é gratuita no primeiro saque?</summary><p>A primeira retirada mensal não tem tarifa da Wise, mas, se o dinheiro parte de BRL, ainda entram 3,5% de IOF e a tarifa variável de conversão.</p></details>
+<details><summary>Como preencher as tarifas da Revolut?</summary><p>Use os valores mostrados no aplicativo. A tarifa BRL deve ficar em 0% dentro da franquia e pode chegar a 1,4% depois dela.</p></details>
+<details><summary>Que moeda escolho no caixa?</summary><p>A moeda local. Recuse a conversão dinâmica oferecida pelo ATM e mantenha o DCC em zero.</p></details>
+</section>
 
-<h2>Vale a pena?</h2>
-<p><strong>Para mim, sim — principalmente como cartão de saque repetido.</strong> O ARQ foi fácil de colocar em funcionamento, já provou utilidade durante viagens longas e hoje publica uma tarifa de 1% que continua competitiva depois que a retirada gratuita da Wise ou a franquia do Revolut já foram usadas.</p>
-<p>Não significa que ele será o mais barato em cada retirada. A primeira retirada mensal da Wise ou um Revolut ainda dentro da franquia podem cobrar menos; um ATM com tarifa alta pode destruir a vantagem; e uma conversão ruim escolhida na tela pode custar muito mais que 1%.</p>
-<p>A conclusão real é mais útil do que “ARQ é o melhor cartão”: <strong>ether.fi é a melhor opção no meu setup para compras elegíveis online e por aproximação quando o cartão virtual basta; o ARQ é o cartão físico dedicado ao acesso repetido a dinheiro; Wise e Revolut cobrem franquias e redundância; e Bybit Pay ou Moreta cuidam do QR local.</strong></p>
+<section class="share-row" data-share><p>Este artigo pode evitar que alguém compare apenas a palavra “saque grátis” e ignore o custo da rota completa.</p><div class="share-actions"><button type="button" data-share-copy>Copiar link</button><a data-share-telegram target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Telegram</a><a data-share-whatsapp target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">WhatsApp</a></div></section>
 
-<h2>Fontes, evidência e data</h2>
-<p>Taxas, planos, entrega, conversão, Wise, Revolut e regras de indicação foram conferidos em páginas oficiais em <strong>29/07/2026</strong>. O uso como cartão principal na América Latina, a facilidade de obtenção e a escolha atual do ARQ para saques são relatos da minha experiência. Os benefícios dos links de indicação devem ser confirmados novamente nas páginas abertas no momento do cadastro.</p>
-<p>O ARQ trabalha com saldos como USDc e EURc, descritos pela própria empresa como ativos virtuais, não moeda fiduciária. Produtos, emissores, disponibilidade, tarifas e limites podem mudar; confira o aplicativo antes de depender do cartão em uma viagem.</p>
-
-<h2>Uma nota sobre os links de indicação</h2>
-<p>Este conteúdo contém links de indicação do ARQ e da Wise. Eles aparecem depois da comparação e não mudam o método: teste com pouco dinheiro, compare o custo total e mantenha redundância. Se a Wise vencer no seu cenário, use a Wise; se o ARQ for mais previsível para retiradas repetidas, use o ARQ.</p>
+<section class="sources"><h2>Fontes</h2>
+<p>Taxas e condições verificadas em páginas oficiais em <strong>05/08/2026</strong>.</p>
+<ul>
+  <li><a href="https://help.arqfinance.com/pt-BR/articles/13547471-impostos-para-cartoes-brasileiros" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: Cartão Global sem IOF e Cartão Local no exterior</a></li>
+  <li><a href="https://help.arqfinance.com/pt-BR/articles/13549820-entendendo-a-diferenca-entre-o-cartao-global-e-local-brasil" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: uso do Cartão Global e taxa próxima de 0,5%</a></li>
+  <li><a href="https://help.arqfinance.com/pt-BR/articles/13546968-posso-realizar-saques-com-meu-cartao-arq" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: tarifa de saque de 1%</a></li>
+  <li><a href="https://help.arqfinance.com/pt-BR/articles/13738316-custos-e-tarifas-no-arq" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: serviços gratuitos, recargas, cartão físico e demais custos Standard</a></li>
+  <li><a href="https://wise.com/pt/help/articles/2oXQxOw2uAtpipyzMHQyaT/cartoes-da-wise-no-brasil" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Wise: IOF de 3,5% na conversão de BRL</a></li>
+  <li><a href="https://wise.com/br/pricing/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Wise: conversão variável a partir de 0,78%</a></li>
+  <li><a href="https://wise.com/pt/help/articles/3GuSCwDgRqiYrsUc2eo7MN/estrutura-e-tarifas-de-saque-em-caixas-eletronicos" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Wise: uma retirada gratuita e R$ 20 nas seguintes</a></li>
+  <li><a href="https://www.revolut.com/pt-BR/legal/standard-fees/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Revolut: franquias, 1,4%, fim de semana, uso justo e saque Standard</a></li>
+  <li><a href="https://www.revolut.com/pt-BR/our-pricing-plans/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Revolut: comparação dos planos e franquias de saque</a></li>
+  <li><a href="https://help.revolut.com/pt-BR/help/wealth/exchanging-money/how-much-does-it-cost-to-make-an-exchange/what-foreign-exchange-rate-will-i-get/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Revolut: cotação do provedor e spread</a></li>
+  <li><a href="https://www.revolut.com/pt-BR/legal/terms/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Revolut: IOF aplicável exibido antes do câmbio</a></li>
+</ul>
+<p>Para o tratamento do IOF, usamos as páginas específicas do Cartão Global e de impostos da ARQ. O uso do cartão na América Latina e a escolha do ARQ para saques são relatos da minha experiência.</p>
+</section>
     </div>
     <div id="next-step-mount" data-content-id="article-arq-saques-exterior"></div>
   </div>
@@ -223,5 +224,7 @@
 </footer>
 <script src="/js/content-registry.js"></script>
 <script src="/js/next-step.js"></script>
+<script src="/blog/js/arq-calculator.js"></script>
+<script src="/js/dlt-interactions.js"></script>
 </body>
 </html>

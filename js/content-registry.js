@@ -4,7 +4,9 @@
 // Schema: Registry Core V1. O array é JSON ESTRITO (aspas duplas,
 // sem comentários dentro, sem trailing comma) — validado por
 // validate_registry.py. IDs publicados NUNCA são renomeados.
-// type: "tool" | "guide" | "article".
+// type: "tool" | "guide" | "protocolo" | "article".
+// sit: situações opcionais do catálogo: comecar | posicao | viagem | taxas.
+// mark: monograma opcional de 1–2 caracteres; effort: esforço real medido.
 // publishedAt: ISO YYYY-MM-DD, obrigatório para article.
 // ============================================================
 
@@ -17,7 +19,9 @@ const CONTENT = [
     "url": "https://sobrevive-ou-quebra.dlt.academy/",
     "tag": "Proteção de patrimônio",
     "tone": "green",
-    "icon": "🛡️",
+    "sit": ["posicao"],
+    "mark": "SQ",
+    "effort": "4 rotas · 1.000 trajetórias",
     "related": ["tool-vender-ou-segurar", "tool-quanto-em-taxas"]
   },
   {
@@ -28,18 +32,22 @@ const CONTENT = [
     "url": "https://quanto-em-taxas.dlt.academy/",
     "tag": "Custos e taxas",
     "tone": "blue",
-    "icon": "💸",
+    "sit": ["taxas", "posicao"],
+    "mark": "TX",
+    "effort": "menos de 30 segundos",
     "primaryNext": "tool-sobrevive-ou-quebra"
   },
   {
     "id": "tool-primeiros-passos-cripto",
     "type": "tool",
     "title": "Primeiros Passos no Cripto",
-    "description": "Responda 6 perguntas e receba seu plano de entrada personalizado.",
+    "description": "Responda 8 perguntas e receba seu plano de entrada personalizado.",
     "url": "https://primeiros-passos-cripto.dlt.academy/",
     "tag": "Iniciante",
     "tone": "blue",
-    "icon": "🧭",
+    "sit": ["comecar"],
+    "mark": "PP",
+    "effort": "8 perguntas · cerca de 3 minutos",
     "primaryNext": "guide-conta-binance",
     "related": ["tool-quanto-em-taxas"]
   },
@@ -47,11 +55,13 @@ const CONTENT = [
     "id": "tool-vender-ou-segurar",
     "type": "tool",
     "title": "Vender ou Segurar?",
-    "description": "4 perguntas pra descobrir se vender agora é decisão ou pânico — e o que fazer a seguir.",
+    "description": "6 perguntas para descobrir se vender agora é decisão ou pânico — e o que fazer a seguir.",
     "url": "https://vender-ou-segurar.dlt.academy/",
     "tag": "Já tem posição",
     "tone": "green",
-    "icon": "⚖️",
+    "sit": ["posicao"],
+    "mark": "VS",
+    "effort": "6 perguntas · cerca de 2 minutos",
     "primaryNext": "tool-sobrevive-ou-quebra"
   },
   {
@@ -62,7 +72,9 @@ const CONTENT = [
     "url": "/protocolos/medo-de-ficar-de-fora/",
     "tag": "Decisão sob emoção",
     "tone": "green",
-    "icon": "🧭",
+    "sit": ["comecar", "posicao"],
+    "mark": "CT",
+    "effort": "6 passos · cerca de 3 minutos",
     "primaryNext": "tool-sobrevive-ou-quebra",
     "related": ["tool-vender-ou-segurar"]
   },
@@ -74,7 +86,9 @@ const CONTENT = [
     "url": "/guias/conta-binance/",
     "tag": "Guia interativo",
     "tone": "blue",
-    "icon": "🔐",
+    "sit": ["comecar"],
+    "mark": "CS",
+    "effort": "5 passos",
     "primaryNext": "tool-quanto-em-taxas"
   },
   {
@@ -85,7 +99,8 @@ const CONTENT = [
     "url": "/pagamentos-no-exterior/",
     "tag": "Guia central de viagem",
     "tone": "green",
-    "icon": "🌍",
+    "sit": ["viagem", "taxas"],
+    "mark": "VI",
     "related": ["article-arq-saques-exterior", "guide-etherfi-cash-viagem", "guide-bybit-pay-vietqr"]
   },
   {
@@ -96,7 +111,9 @@ const CONTENT = [
     "url": "/guias/bybit-pay-vietqr/",
     "tag": "Guia de viagem",
     "tone": "green",
-    "icon": "📱",
+    "sit": ["viagem", "taxas"],
+    "mark": "QR",
+    "effort": "4 passos principais",
     "primaryNext": "guide-pagamentos-no-exterior",
     "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt", "guide-assinaturas-ia-bybit"]
   },
@@ -108,7 +125,9 @@ const CONTENT = [
     "url": "/guias/assinaturas-ia-bybit/",
     "tag": "Guia de pagamentos",
     "tone": "blue",
-    "icon": "🤖",
+    "sit": ["taxas"],
+    "mark": "IA",
+    "effort": "6 etapas de checagem",
     "primaryNext": "guide-bybit-pay-vietqr",
     "related": ["article-bybit-pay-vs-moreta-vietqr"]
   },
@@ -120,7 +139,9 @@ const CONTENT = [
     "url": "/guias/abastecer-moreta-usdt/",
     "tag": "Guia de viagem",
     "tone": "blue",
-    "icon": "💱",
+    "sit": ["viagem", "taxas"],
+    "mark": "MP",
+    "effort": "2 rotas · 3 verificações",
     "related": ["guide-bybit-pay-vietqr", "article-bybit-pay-vs-moreta-vietqr", "guide-pagamentos-no-exterior"]
   },
   {
@@ -131,7 +152,9 @@ const CONTENT = [
     "url": "/guias/etherfi-cash-viagem/",
     "tag": "Guia de viagem",
     "tone": "green",
-    "icon": "💳",
+    "sit": ["viagem", "taxas"],
+    "mark": "EF",
+    "effort": "8 passos de teste",
     "primaryNext": "guide-pagamentos-no-exterior",
     "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt", "article-arq-saques-exterior"]
   },
@@ -143,6 +166,9 @@ const CONTENT = [
     "url": "/blog/bem-vindo/",
     "tag": "Institucional",
     "publishedAt": "2026-07-15",
+    "sit": ["comecar"],
+    "mark": "BV",
+    "effort": "3 min de leitura",
     "primaryNext": "tool-primeiros-passos-cripto"
   },
   {
@@ -153,6 +179,9 @@ const CONTENT = [
     "url": "/blog/bybit-pay-vs-moreta-vietqr/",
     "tag": "Teste real",
     "publishedAt": "2026-07-17",
+    "sit": ["viagem", "taxas"],
+    "mark": "BM",
+    "effort": "8 min de leitura",
     "primaryNext": "guide-bybit-pay-vietqr"
   },
   {
@@ -163,17 +192,23 @@ const CONTENT = [
     "url": "/blog/topcashback-economia-viagem/",
     "tag": "Economia em viagem",
     "publishedAt": "2026-07-29",
+    "sit": ["viagem", "taxas"],
+    "mark": "TC",
+    "effort": "9 min de leitura",
     "primaryNext": "guide-pagamentos-no-exterior",
     "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt"]
   },
   {
     "id": "article-arq-saques-exterior",
     "type": "article",
-    "title": "Por que uso o ARQ para sacar dinheiro no exterior",
-    "description": "Experiência real com o antigo DolarApp: taxa de 1%, tarifa do ATM, DCC e comparação com Wise e Revolut.",
+    "title": "ARQ Global para saques: custos reais contra Wise e Revolut",
+    "description": "Compare a rota de BRL até o saque com ARQ Global, Wise e Revolut, incluindo IOF, câmbio, franquias, ATM e DCC.",
     "url": "/blog/arq-saques-exterior/",
     "tag": "Dinheiro em viagem",
     "publishedAt": "2026-07-29",
+    "sit": ["viagem", "taxas"],
+    "mark": "AR",
+    "effort": "10 min de leitura",
     "primaryNext": "guide-pagamentos-no-exterior",
     "related": ["guide-bybit-pay-vietqr", "guide-abastecer-moreta-usdt", "guide-etherfi-cash-viagem"]
   },
@@ -185,6 +220,9 @@ const CONTENT = [
     "url": "/blog/fomo-investimentos-depois-da-alta/",
     "tag": "Decisão sob emoção",
     "publishedAt": "2026-07-28",
+    "sit": ["comecar", "posicao"],
+    "mark": "FM",
+    "effort": "6 min de leitura",
     "primaryNext": "protocolo-medo-de-ficar-de-fora",
     "related": ["tool-primeiros-passos-cripto", "tool-sobrevive-ou-quebra"]
   }

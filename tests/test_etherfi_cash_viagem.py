@@ -46,7 +46,8 @@ class EtherfiCashTravelGuideTests(unittest.TestCase):
         self.assertIn('rel="sponsored nofollow noopener noreferrer"', attrs)
         self.assertIn('referrerpolicy="no-referrer"', attrs)
         self.assertIn("A pessoa que me indicou também deixou de receber", self.html)
-        self.assertIn("Essa própria explicação é a transparência sobre o link", self.html)
+        self.assertNotIn("Essa própria explicação é a transparência sobre o link", self.html)
+        self.assertNotIn("A DLT Academy pode receber uma recompensa", self.html)
 
     def test_promotion_is_isolated_and_dated(self) -> None:
         self.assertEqual(self.html.count("<!-- PROMO_ATUAL -->"), 1)
