@@ -225,5 +225,19 @@ const CONTENT = [
     "effort": "6 min de leitura",
     "primaryNext": "protocolo-medo-de-ficar-de-fora",
     "related": ["tool-primeiros-passos-cripto", "tool-sobrevive-ou-quebra"]
+  },
+  {
+    "id": "article-custo-100-dolares-exterior",
+    "type": "article",
+    "title": "Quanto custa gastar US$100 no exterior",
+    "description": "Snapshot datado e método para comparar cartão brasileiro, Wise, ether.fi e stablecoin pelo custo líquido em reais.",
+    "url": "/blog/custo-100-dolares-exterior/",
+    "tag": "Dinheiro em viagem",
+    "publishedAt": "2026-09-03",
+    "sit": ["viagem", "taxas"],
+    "mark": "U1",
+    "effort": "7 min de leitura",
+    "primaryNext": "guide-pagamentos-no-exterior",
+    "related": ["guide-etherfi-cash-viagem", "guide-bybit-pay-vietqr", "article-bybit-pay-vs-moreta-vietqr"]
   }
 ];
