@@ -52,6 +52,20 @@ const CONTENT = [
     "related": ["tool-quanto-em-taxas"]
   },
   {
+    "id": "tool-dreno-cartao",
+    "type": "tool",
+    "title": "O Dreno do Cartão no Exterior",
+    "description": "Calcule quanto seu banco come em taxas invisíveis de IOF (4,38%) e spread ao viajar, e veja o setup de menor custo líquido.",
+    "url": "https://dreno-cartao.dlt.academy/",
+    "tag": "Viagem e pagamentos",
+    "tone": "blue",
+    "sit": ["viagem", "taxas"],
+    "mark": "DC",
+    "effort": "menos de 1 minuto",
+    "primaryNext": "guide-etherfi-cash-viagem",
+    "related": ["article-custo-100-dolares-exterior", "article-arq-saques-exterior", "guide-pagamentos-no-exterior"]
+  },
+  {
     "id": "tool-vender-ou-segurar",
     "type": "tool",
     "title": "Vender ou Segurar?",
