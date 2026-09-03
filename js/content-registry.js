@@ -66,6 +66,20 @@ const CONTENT = [
     "related": ["article-custo-100-dolares-exterior", "article-arq-saques-exterior", "guide-pagamentos-no-exterior"]
   },
   {
+    "id": "tool-setup-nomade",
+    "type": "tool",
+    "title": "O Setup do Nômade",
+    "description": "Descubra o stack ideal de cartões, saques e pagamentos para viajar sem pagar taxas bancárias abusivas.",
+    "url": "https://setup-nomade.dlt.academy/",
+    "tag": "Viagem e pagamentos",
+    "tone": "green",
+    "sit": ["viagem", "taxas"],
+    "mark": "SN",
+    "effort": "3 perguntas · cerca de 1 minuto",
+    "primaryNext": "tool-dreno-cartao",
+    "related": ["tool-dreno-cartao", "guide-etherfi-cash-viagem", "article-arq-saques-exterior"]
+  },
+  {
     "id": "tool-vender-ou-segurar",
     "type": "tool",
     "title": "Vender ou Segurar?",
