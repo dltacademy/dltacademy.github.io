@@ -98,9 +98,9 @@
 <p>Limite honesto: isso é uma prévia observada na minha conta, <strong>n=1</strong>, não tarifa universal. Taxas, câmbio, elegibilidade por país e programas de cashback mudam por conta e por data. Use a tabela como exemplo datado e repita os 5 passos do fim antes de pagar.</p>
 
 <div class="figure-row" data-reveal aria-label="Prévia de US$100 em 18 de julho de 2026">
-  <div class="figure-cell"><p class="figure-value">R$515,15</p><p class="figure-label">Binance para US$100</p><p class="figure-source">Prévia observada · 18/07/2026 · base da comparação</p></div>
-  <div class="figure-cell"><p class="figure-value">R$518,20</p><p class="figure-label">ether.fi para US$100</p><p class="figure-source">Prévia observada · 18/07/2026 · +R$3,05 (+0,59%)</p></div>
-  <div class="figure-cell"><p class="figure-value">R$533,26</p><p class="figure-label">Wise para US$100</p><p class="figure-source">Prévia observada · 18/07/2026 · +R$18,11 (+3,52%)</p></div>
+  <div class="figure-cell"><p class="figure-value" data-count-to="515.15" data-prefix="R$" data-decimals="2">R$515,15</p><p class="figure-label">Binance para US$100</p><p class="figure-source">Prévia observada · 18/07/2026 · base da comparação</p></div>
+  <div class="figure-cell"><p class="figure-value" data-count-to="518.2" data-prefix="R$" data-decimals="2">R$518,20</p><p class="figure-label">ether.fi para US$100</p><p class="figure-source">Prévia observada · 18/07/2026 · +R$3,05 (+0,59%)</p></div>
+  <div class="figure-cell"><p class="figure-value" data-count-to="533.26" data-prefix="R$" data-decimals="2">R$533,26</p><p class="figure-label">Wise para US$100</p><p class="figure-source">Prévia observada · 18/07/2026 · +R$18,11 (+3,52%)</p></div>
 </div>
 <p class="arq-source-note">Escopo: prévias para o mesmo valor e mesma data na minha conta. Não inclui custo de saque em ATM nem conversão dinâmica no caixa. A cotação mostrada no aplicativo prevalece.</p>
 
@@ -122,13 +122,36 @@
 <p><strong>Stablecoin + funding.</strong> Comprar USDT na Binance ou Bybit e transferir preserva a base barata, mas o custo de levar o saldo até a carteira de gasto entra na conta. Na minha observação de 18/07/2026 pela Solana, a Binance cobrava 0,30 em USDT ou USDC para sacar; a Bybit mostrava 0,50 USDT ou 1 USDC. Transferir para o Moreta por USDT saiu sem taxa observada nesta conta — sem documento público que garanta isso como regra. Depositar no Moreta por cartão é outra conta: 2,5% com mínimo de 1,50 USD, mais IOF e spread do cartão. O passo a passo está no <a href="/guias/abastecer-moreta-usdt/">guia de funding do Moreta</a>.</p>
 <p>No teste de campo de 100.000 VND no Vietnã, em 16–17/07/2026, o Moreta debitou 3,90 USD líquidos de saldo via USDT e o Bybit Pay debitou 3,89464652 USDT líquidos após 40 pontos de cashback — diferença de 0,00535348 USD, cerca de 0,14% pró-Bybit. Tratei como empate técnico, abaixo de 0,25%. O detalhe completo está no <a href="/blog/bybit-pay-vs-moreta-vietqr/">teste Bybit Pay × Moreta</a>.</p>
 
+<h2>Calculadora: quanto sai a sua compra em reais?</h2>
+<section class="calc" id="usd100-calc" data-usd100-calculator aria-labelledby="usd100-calc-title">
+  <header><p class="calc-kicker">Comparador interativo</p><h3 id="usd100-calc-title">Ajuste com a cotação do seu aplicativo</h3><p>Parte dos prêmios observados no snapshot de 18/07/2026. Mude o valor, a cotação e os prêmios para repetir a prévia no mesmo minuto. O IOF do cartão é fixo em 3,5%.</p></header>
+  <div class="calc-controls">
+    <div class="calc-control"><label for="usd100-value">Valor da compra <output id="usd100-value-output" for="usd100-value">US$ 100</output></label><input id="usd100-value" type="range" min="10" max="1000" step="10" value="100"></div>
+    <div class="calc-control"><label for="usd100-rate">Cotação de referência (BRL por USD) <output id="usd100-rate-output" for="usd100-rate">R$ 5,15</output></label><input id="usd100-rate" type="range" min="3.5" max="7" step="0.01" value="5.15"></div>
+    <div class="calc-control"><label for="usd100-etherfi-fee">ether.fi: prêmio sobre a base <output id="usd100-etherfi-fee-output" for="usd100-etherfi-fee">0,59%</output></label><input id="usd100-etherfi-fee" type="range" min="0" max="5" step="0.01" value="0.59"></div>
+    <div class="calc-control"><label for="usd100-wise-fee">Wise: prêmio sobre a base <output id="usd100-wise-fee-output" for="usd100-wise-fee">3,52%</output></label><input id="usd100-wise-fee" type="range" min="0" max="8" step="0.01" value="3.52"></div>
+    <div class="calc-control"><label for="usd100-card-spread">Cartão BR: spread sobre a PTAX <output id="usd100-card-spread-output" for="usd100-card-spread">5,00%</output></label><input id="usd100-card-spread" type="range" min="0" max="10" step="0.1" value="5"></div>
+    <div class="calc-control"><label for="usd100-cashback">Cashback ether.fi de 3% elegível <output id="usd100-cashback-output" for="usd100-cashback">aplicado</output></label><input id="usd100-cashback" type="checkbox" checked></div>
+  </div>
+  <p class="calc-assumption-note">Prêmios iniciais do snapshot de 18/07/2026 na minha conta. O cartão brasileiro usa a mesma cotação como PTAX, soma o spread e 3,5% de IOF. Saque em ATM e DCC ficam fora desta conta.</p>
+  <div class="calc-rows bar-chart" aria-live="polite" aria-label="Comparação visual do custo estimado">
+    <div class="calc-row" data-calc-row="binance"><span class="calc-name">Binance · custo estimado</span><span class="calc-track"><span style="width:92%"></span></span><output class="calc-out"><span data-calc-total>R$ 515,00</span><small data-calc-detail>cotação de referência R$ 515,00 · sem prêmio adicional</small></output></div>
+    <div class="calc-row is-best" data-calc-row="etherfi"><span class="calc-name">ether.fi direto · custo estimado</span><span class="calc-track"><span class="is-best" style="width:90%"></span></span><output class="calc-out"><span data-calc-total>R$ 502,50</span><small data-calc-detail>bruto R$ 518,04 · cashback R$ 15,54 · líquido R$ 502,50</small></output></div>
+    <div class="calc-row" data-calc-row="wise"><span class="calc-name">Wise · custo estimado</span><span class="calc-track"><span style="width:95%"></span></span><output class="calc-out"><span data-calc-total>R$ 533,13</span><small data-calc-detail>prêmio R$ 18,13 · IOF e conversão incluídos</small></output></div>
+    <div class="calc-row" data-calc-row="cartao"><span class="calc-name">Cartão brasileiro · custo estimado</span><span class="calc-track"><span style="width:100%"></span></span><output class="calc-out"><span data-calc-total>R$ 559,68</span><small data-calc-detail>PTAX R$ 5,15 · spread 5,00% · IOF 3,50%</small></output></div>
+  </div>
+  <p class="calc-verdict" data-calc-verdict>ether.fi direto tem o menor custo estimado: R$ 502,50. A diferença para a Binance é de R$ 12,50.</p>
+  <button class="btn btn-secondary" type="button" data-copy-result="#usd100-calc">Copiar esta simulação</button>
+  <p class="calc-fine">O cashback de 3% vale para compras elegíveis até US$ 2.000 no mês no plano Core, segundo as condições vistas em 29/07/2026. Fora de elegibilidade, desmarque a opção.</p>
+</section>
+
 <h2>Quatro cenários, uma regra</h2>
 <p><strong>1. O estabelecimento aceita cartão e minha compra é elegível.</strong> Comparo ether.fi líquido contra o cartão que já tenho. Na prévia acima, o ether.fi líquido venceu a Wise por R$30,61, cerca de 5,74%. Fora de elegibilidade, comparo o bruto.</p>
 <p><strong>2. Tem QR local e o Bybit Pay reconhece.</strong> Confiro o débito em USDT, pago e considero o cashback em pontos e o teto do tier no líquido. O <a href="/guias/bybit-pay-vietqr/">guia de VietQR</a> mostra quais códigos costumam abrir.</p>
 <p><strong>3. Tem QR e o Bybit não reconhece.</strong> Tento o Moreta com saldo já em USDT. Nos meus testes ele reconheceu mais QRs, sem garantia universal. Nunca conto o custo de 3,90 USD do teste como regra: ele vale só para saldo via transferência de stablecoin.</p>
 <p><strong>4. Preciso de dinheiro físico.</strong> Saio desta tabela e comparo saque: ARQ Global sem IOF na formação do saldo contra Wise e Revolut com franquias, como no <a href="/blog/arq-saques-exterior/">artigo de saques</a>. Escolho moeda local no caixa e recuso a conversão dinâmica, que é a margem do operador do ATM e pode custar mais que todas as tarifas somadas.</p>
 <p>A regra que uso nos quatro: <strong>o menor custo líquido entre os métodos aceitos naquela compra</strong>. Não existe campeão universal.</p>
-<div class="note"><p>Importante</p><p>Compra direta e depósito são contas diferentes. Não compare o pagamento de 3,90 USD no Moreta com o débito de R$533,26 na Wise sem incluir como o dinheiro chegou a cada conta.</p></div>
+<div class="note is-info"><p>Importante</p><p>Compra direta e depósito são contas diferentes. Não compare o pagamento de 3,90 USD no Moreta com o débito de R$533,26 na Wise sem incluir como o dinheiro chegou a cada conta.</p></div>
 
 <h2>Quando este comparativo não serve</h2>
 <p>Se você não é elegível ao produto, se o teto mensal ou a franquia já estourou, se o estabelecimento não aceita aquele método, ou se a diferença é de centavos e a simplicidade vale mais — use o método simples e siga viagem. Eu mesmo mantenho Wise e um cartão brasileiro como redundância mesmo quando perdem no preço: fallback não é desperdício, é seguro.</p>
@@ -187,6 +210,7 @@
 
 <script src="/js/content-registry.js"></script>
 <script src="/js/next-step.js"></script>
+<script src="/blog/js/usd100-calculator.js"></script>
 <script src="/js/dlt-interactions.js"></script>
 </body>
 </html>
