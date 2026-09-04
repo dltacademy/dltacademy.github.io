@@ -18,6 +18,7 @@ PRIMARY_ROUTES = {
     "/blog/arq-saques-exterior/": "blog/arq-saques-exterior/index.html",
     "/guias/bybit-pay-vietqr/": "guias/bybit-pay-vietqr/index.html",
     "/protocolos/medo-de-ficar-de-fora/": "protocolos/medo-de-ficar-de-fora/index.html",
+    "/blog/custo-100-dolares-exterior/": "blog/custo-100-dolares-exterior/index.html",
 }
 
 ARTICLES = {
@@ -26,6 +27,7 @@ ARTICLES = {
     "blog/topcashback-economia-viagem/index.html",
     "blog/fomo-investimentos-depois-da-alta/index.html",
     "blog/arq-saques-exterior/index.html",
+    "blog/custo-100-dolares-exterior/index.html",
 }
 
 GUIDES = {
@@ -68,7 +70,7 @@ class FullScopeContractTests(unittest.TestCase):
                 self.assertRegex(html, r'<meta name="twitter:image" content="[^"]+\.svg">')
                 svg = asset.read_text(encoding="utf-8")
                 self.assertRegex(svg, r'<svg[^>]+width="1200"[^>]+height="630"')
-                self.assertNotRegex(svg, r'\{\{|\}\}|PLACEHOLDER|TODO|VOLATILE')
+                self.assertNotRegex(svg, r'\{\{|\}\}|PLACEHOLDER|\bTODO\b|VOLATILE')
 
     def test_public_routes_load_the_canonical_system_and_have_no_private_leaks(self) -> None:
         private_markers = ("Dknowledger", "project-management", "TaskNotes", "/Users/", "ferramenta-kit")

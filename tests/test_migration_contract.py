@@ -15,6 +15,7 @@ ARTICLES = {
     "article-topcashback-economia-viagem": "blog/topcashback-economia-viagem/index.html",
     "article-fomo-investimentos-depois-da-alta": "blog/fomo-investimentos-depois-da-alta/index.html",
     "article-arq-saques-exterior": "blog/arq-saques-exterior/index.html",
+    "article-custo-100-dolares-exterior": "blog/custo-100-dolares-exterior/index.html",
 }
 
 GUIDES = {
