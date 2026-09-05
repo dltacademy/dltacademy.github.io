@@ -76,8 +76,10 @@ class PagamentosNoExteriorArqTests(unittest.TestCase):
 
     def test_finder_copy_distinguishes_editorial_map(self):
         self.assertIn("Esta página entrega o mapa editorial base", self.html)
-        self.assertIn("A recomendação personalizada ficará na ferramenta", self.html)
+        self.assertIn("A recomendação personalizada é gerada no seu navegador", self.html)
+        self.assertIn("https://setup-nomade.dlt.academy/", self.html)
         self.assertNotIn("entrega o mesmo mapa", self.html)
+        self.assertNotIn("futuro Descobridor", self.html)
 
     def test_arq_article_points_to_complete_system(self):
         arq = self.registry["article-arq-saques-exterior"]
