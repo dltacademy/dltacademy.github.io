@@ -84,14 +84,14 @@
       <li>Comerciante não identificado pelos parceiros bancários do Bybit</li>
       <li>QR inválido ou de rede não suportada</li>
       <li>Limite de transação atingido</li>
-      <li>Timeout na leitura</li>
+      <li>Tempo esgotado (timeout) na leitura</li>
       <li>Bloqueio por controle de risco</li>
       <li>Saldo insuficiente na Funding Account</li>
       <li>Rejeição do parceiro do lado do comerciante</li>
     </ul>
 
     <h2>VietQR, QR bancário, MoMo, ZaloPay: o que pedir ao comerciante</h2>
-    <p>Nem todo QR no Vietnã é VietQR. MoMo e ZaloPay são carteiras proprietárias fechadas, e muitos QRs "bancários" genéricos não estão na rede que o Bybit reconhece. Antes de tentar escanear, pergunte diretamente ao comerciante: <strong>"Pode gerar VietQR?"</strong> — é o pedido certo, porque é o padrão interbancário que o Bybit Pay efetivamente lê.</p>
+    <p>Nem todo QR no Vietnã é VietQR. MoMo e ZaloPay são carteiras proprietárias, e muitos QRs "bancários" genéricos não estão na rede que o Bybit reconhece. Antes de tentar escanear, pergunte diretamente ao comerciante: <strong>"Pode gerar VietQR?"</strong> — é o pedido certo, porque é o padrão interbancário que o Bybit Pay efetivamente lê.</p>
 
     <h2>Como pagar: o fluxo no app</h2>
     <section class="guide-step" data-reveal><div class="guide-step-top"><span class="guide-step-num">01</span><span class="guide-step-state">Preparar</span></div><h2>Confirme a Funding Account</h2><p>Ela é a origem do pagamento. Garanta saldo suficiente antes de abrir o QR Pay.</p><label class="guide-check"><input type="checkbox" data-guide-check="funding"><span>Funding Account confirmada e com saldo</span></label></section>
@@ -133,7 +133,7 @@
       <li><strong>Comerciante não identificado</strong> — o parceiro bancário daquele estabelecimento pode não estar na rede do Bybit; use o fallback.</li>
       <li><strong>QR inválido/não suportado</strong> — confirme se é de fato VietQR (não MoMo/ZaloQR/proprietário); pergunte "Pode gerar VietQR?".</li>
       <li><strong>Limite atingido</strong> — confira o limite por transação e diário; parcele o pagamento ou use o fallback.</li>
-      <li><strong>Timeout</strong> — tente escanear de novo; conexão instável interrompe a leitura.</li>
+      <li><strong>Tempo esgotado (timeout)</strong> — tente escanear de novo; conexão instável interrompe a leitura.</li>
       <li><strong>Controle de risco</strong> — sistemas antifraude podem bloquear um pagamento atípico; tente mais tarde ou use o fallback.</li>
       <li><strong>Saldo insuficiente</strong> — confirme que a Funding Account tem saldo no ativo de prioridade (USDT).</li>
       <li><strong>Rejeição do parceiro</strong> — recusa do lado bancário do comerciante; sem solução do seu lado além do fallback.</li>
@@ -177,7 +177,7 @@
     <h2 id="faq-titulo">Perguntas frequentes</h2>
     <details><summary>O Bybit Pay funciona com qualquer QR Code?</summary><p>Não. Só funciona quando a rede do país e o parceiro bancário do comerciante são reconhecidos pelo Bybit — ver a lista de redes suportadas por país acima.</p></details>
     <details><summary>Quais redes de QR o Bybit Pay reconhece no Vietnã?</summary><p>VietQR, o padrão interbancário do país. QRs de carteiras proprietárias como MoMo e ZaloPay não são a mesma coisa.</p></details>
-    <details><summary>Por que um VietQR foi recusado?</summary><p>Pode ser por diversos motivos: QR sem valor, já pago, expirado, comerciante não identificado, código inválido, limite atingido, timeout, controle de risco, saldo insuficiente ou rejeição do parceiro. Ver a seção "Erros comuns e o que fazer".</p></details>
+    <details><summary>Por que um VietQR foi recusado?</summary><p>Pode ser por diversos motivos: QR sem valor, já pago, expirado, comerciante não identificado, código inválido, limite atingido, tempo esgotado (timeout), controle de risco, saldo insuficiente ou rejeição do parceiro. Ver a seção "Quando dá errado".</p></details>
     <details><summary>O Bybit Pay cobra taxa de transação no QR Pay?</summary><p>Não cobra tarifa de transação. Isso não significa custo zero — ver a próxima pergunta.</p></details>
     <details><summary>Existe spread cambial mesmo sem taxa cobrada?</summary><p>Sim, pode haver. "Zero tarifa" não é o mesmo que "zero custo cambial" — a cotação exibida na hora do pagamento pode embutir esse spread.</p></details>
     <details><summary>Uso USDT ou USDC?</summary><p>Ambos são suportados. USDT é o padrão operacional do ecossistema e evita conversão intermediária dentro do app.</p></details>
