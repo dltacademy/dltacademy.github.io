@@ -16,7 +16,7 @@ CONTENT_ID = "article-arq-saques-exterior"
 URL = "https://dlt.academy/blog/arq-saques-exterior/"
 REFERRAL_URL = (
     "https://www.arqfinance.com/referrals/general?"
-    "referralCode=tiagohyd_I6p&amp;pid=referral&amp;c=general&amp;is_retargeting=true"
+    "referralCode=tiagohyd_t7t&amp;pid=referral&amp;c=general&amp;is_retargeting=true"
 )
 WISE_REFERRAL_URL = "https://wise.com/invite/irhc/tiagon100"
 REVOLUT_REFERRAL_URL = (
