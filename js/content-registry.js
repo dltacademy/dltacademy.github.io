@@ -52,6 +52,34 @@ const CONTENT = [
     "related": ["tool-quanto-em-taxas"]
   },
   {
+    "id": "tool-dreno-cartao",
+    "type": "tool",
+    "title": "O Dreno do Cartão no Exterior",
+    "description": "Calcule quanto seu banco come em taxas invisíveis de IOF (4,38%) e spread ao viajar, e veja o setup de menor custo líquido.",
+    "url": "https://dreno-cartao.dlt.academy/",
+    "tag": "Viagem e pagamentos",
+    "tone": "blue",
+    "sit": ["viagem", "taxas"],
+    "mark": "DC",
+    "effort": "menos de 1 minuto",
+    "primaryNext": "guide-etherfi-cash-viagem",
+    "related": ["article-custo-100-dolares-exterior", "article-arq-saques-exterior", "guide-pagamentos-no-exterior"]
+  },
+  {
+    "id": "tool-setup-nomade",
+    "type": "tool",
+    "title": "O Setup do Nômade",
+    "description": "Descubra o stack ideal de cartões, saques e pagamentos para viajar sem pagar taxas bancárias abusivas.",
+    "url": "https://setup-nomade.dlt.academy/",
+    "tag": "Viagem e pagamentos",
+    "tone": "green",
+    "sit": ["viagem", "taxas"],
+    "mark": "SN",
+    "effort": "3 perguntas · cerca de 1 minuto",
+    "primaryNext": "tool-dreno-cartao",
+    "related": ["tool-dreno-cartao", "guide-etherfi-cash-viagem", "article-arq-saques-exterior"]
+  },
+  {
     "id": "tool-vender-ou-segurar",
     "type": "tool",
     "title": "Vender ou Segurar?",
@@ -225,5 +253,19 @@ const CONTENT = [
     "effort": "6 min de leitura",
     "primaryNext": "protocolo-medo-de-ficar-de-fora",
     "related": ["tool-primeiros-passos-cripto", "tool-sobrevive-ou-quebra"]
+  },
+  {
+    "id": "article-custo-100-dolares-exterior",
+    "type": "article",
+    "title": "Quanto custa gastar US$100 no exterior",
+    "description": "Snapshot datado e método para comparar cartão brasileiro, Wise, ether.fi e stablecoin pelo custo líquido em reais.",
+    "url": "/blog/custo-100-dolares-exterior/",
+    "tag": "Dinheiro em viagem",
+    "publishedAt": "2026-09-03",
+    "sit": ["viagem", "taxas"],
+    "mark": "U1",
+    "effort": "7 min de leitura",
+    "primaryNext": "guide-pagamentos-no-exterior",
+    "related": ["guide-etherfi-cash-viagem", "guide-bybit-pay-vietqr", "article-bybit-pay-vs-moreta-vietqr"]
   }
 ];
