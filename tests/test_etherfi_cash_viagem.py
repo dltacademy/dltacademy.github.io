@@ -37,7 +37,7 @@ class EtherfiCashTravelGuideTests(unittest.TestCase):
         self.assertIn(f'data-content-id="{CONTENT_ID}"', self.html)
         self.assertIn('"mainEntityOfPage": "' + URL + '"', self.html)
         self.assertIn('"datePublished": "2026-07-29"', self.html)
-        self.assertIn('"dateModified": "2026-07-29"', self.html)
+        self.assertIn('"dateModified": "2026-09-23"', self.html)
 
     def test_affiliate_story_and_link_are_protected(self) -> None:
         match = re.search(r'<a class="btn btn-primary" href="https://www\.ether\.fi/@e155ee95"([^>]*)>', self.html)
