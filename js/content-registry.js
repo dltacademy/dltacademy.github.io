@@ -116,7 +116,7 @@ const CONTENT = [
     "tone": "blue",
     "sit": ["comecar"],
     "mark": "CS",
-    "effort": "5 passos",
+    "effort": "6 passos · 10 minutos",
     "primaryNext": "tool-quanto-em-taxas"
   },
   {
