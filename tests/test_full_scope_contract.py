@@ -54,20 +54,25 @@ class FullScopeContractTests(unittest.TestCase):
                 self.assertTrue((ROOT / relative).is_file())
                 self.assertIn(f'<link rel="canonical" href="https://dlt.academy{route}">', self.read(relative))
 
-    def test_every_primary_screen_has_specific_svg_og_metadata_and_asset(self) -> None:
+    def test_every_primary_screen_has_specific_png_og_metadata_and_svg_source(self) -> None:
+        # WhatsApp, X e Facebook não exibem og:image em SVG: a meta aponta para o PNG
+        # 1200x630 renderizado a partir do og-image.svg, que continua sendo a arte-fonte.
         for route, relative in PRIMARY_ROUTES.items():
             with self.subTest(route=route):
                 html = self.read(relative)
-                image_match = re.search(r'<meta property="og:image" content="([^"]+\.svg)">', html)
+                image_match = re.search(r'<meta property="og:image" content="([^"]+)\.png">', html)
                 self.assertIsNotNone(image_match)
-                image_url = image_match.group(1)
-                asset = ROOT / image_url.removeprefix("https://dlt.academy/")
-                self.assertTrue(asset.is_file(), image_url)
-                self.assertIn('<meta property="og:image:type" content="image/svg+xml">', html)
+                image_url = image_match.group(1) + ".png"
+                png = ROOT / image_url.removeprefix("https://dlt.academy/")
+                self.assertTrue(png.is_file(), image_url)
+                self.assertEqual(png.read_bytes()[16:24], (1200).to_bytes(4, "big") + (630).to_bytes(4, "big"), image_url)
+                asset = png.with_suffix(".svg")
+                self.assertTrue(asset.is_file(), str(asset))
+                self.assertIn('<meta property="og:image:type" content="image/png">', html)
                 self.assertIn('<meta property="og:image:width" content="1200">', html)
                 self.assertIn('<meta property="og:image:height" content="630">', html)
                 self.assertRegex(html, r'<meta property="og:image:alt" content="[^"]+">')
-                self.assertRegex(html, r'<meta name="twitter:image" content="[^"]+\.svg">')
+                self.assertRegex(html, r'<meta name="twitter:image" content="[^"]+\.png">')
                 svg = asset.read_text(encoding="utf-8")
                 self.assertRegex(svg, r'<svg[^>]+width="1200"[^>]+height="630"')
                 self.assertNotRegex(svg, r'\{\{|\}\}|PLACEHOLDER|\bTODO\b|VOLATILE')
@@ -80,12 +85,12 @@ class FullScopeContractTests(unittest.TestCase):
                 self.assertIn('dlt-patterns.css', html)
                 self.assertIn('dlt-interactions.js', html)
                 self.assertFalse(any(marker.lower() in html.lower() for marker in private_markers))
-                self.assertNotIn('og-image.png', html)
+                self.assertNotIn('og-image.svg"', html)
                 self.assertNotIn('name="keywords"', html)
 
-    def test_retired_png_og_assets_are_not_tracked(self) -> None:
-        retired = sorted(ROOT.rglob("og-image.png"))
-        self.assertEqual([], retired, "OG PNG antigo ainda presente: " + ", ".join(str(path.relative_to(ROOT)) for path in retired))
+    def test_every_og_svg_source_has_a_rendered_png(self) -> None:
+        missing = sorted(str(svg.relative_to(ROOT)) for svg in ROOT.rglob("og-image.svg") if ".git" not in svg.parts and not svg.with_suffix(".png").is_file())
+        self.assertEqual([], missing, "og-image.svg sem PNG renderizado: " + ", ".join(missing))
 
     def test_home_and_catalogs_cover_the_portal_hub_model(self) -> None:
         home = self.read("index.html")
