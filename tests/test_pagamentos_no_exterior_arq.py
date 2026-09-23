@@ -28,7 +28,10 @@ def load_registry():
 
 
 def internal_target(href):
-    path = urlsplit(href).path
+    parts = urlsplit(href)
+    if parts.netloc and parts.netloc != "dlt.academy":
+        return None
+    path = parts.path
     if not path or not path.startswith("/"):
         return None
     if path == "/":
@@ -61,7 +64,7 @@ class PagamentosNoExteriorArqTests(unittest.TestCase):
         end = self.html.index("</article>", start)
         layer = self.html[start:end]
         self.assertIn("Formação do saldo", layer)
-        self.assertIn("Funding compatível e barato", layer)
+        self.assertIn("Saldo abastecido pelo caminho barato", layer)
         self.assertIn("Uma recarga cara pode apagar a economia", layer)
         self.assertIn('href="/guias/abastecer-moreta-usdt/"', layer)
         self.assertNotIn("TopCashback", layer)
@@ -75,7 +78,9 @@ class PagamentosNoExteriorArqTests(unittest.TestCase):
         self.assertIn('href="/blog/topcashback-economia-viagem/"', section)
 
     def test_finder_copy_distinguishes_editorial_map(self):
-        self.assertIn("Esta página entrega o mapa editorial base", self.html)
+        self.assertIn("Esta página mostra o mapa geral", self.html)
+        self.assertIn("https://setup-nomade.dlt.academy/setup-viagem.html", self.html)
+        self.assertNotIn("página-pilar", self.html)
         self.assertIn("A recomendação personalizada é gerada no seu navegador", self.html)
         self.assertIn("https://setup-nomade.dlt.academy/", self.html)
         self.assertNotIn("entrega o mesmo mapa", self.html)
