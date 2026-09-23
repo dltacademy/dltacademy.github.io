@@ -55,7 +55,7 @@ const CONTENT = [
     "id": "tool-dreno-cartao",
     "type": "tool",
     "title": "O Dreno do Cartão no Exterior",
-    "description": "Calcule quanto seu banco come em taxas invisíveis de IOF (4,38%) e spread ao viajar, e veja o setup de menor custo líquido.",
+    "description": "Calcule quanto seu banco come em IOF e spread quando você viaja, e veja o jeito de pagar com menor custo final.",
     "url": "https://dreno-cartao.dlt.academy/",
     "tag": "Viagem e pagamentos",
     "tone": "blue",
