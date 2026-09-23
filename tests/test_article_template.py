@@ -22,7 +22,7 @@ class ArticleTemplateContractTests(unittest.TestCase):
     def test_social_metadata_is_complete(self) -> None:
         for marker in (
             'property="og:site_name"',
-            'property="og:image:type" content="image/svg+xml"',
+            'property="og:image:type" content="image/png"',
             'property="og:image:width" content="1200"',
             'property="og:image:height" content="630"',
             'property="og:image:alt" content="{{POST_OG_ALT}}"',
