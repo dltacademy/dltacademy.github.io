@@ -40,7 +40,7 @@ class ArqAtmArticleTests(unittest.TestCase):
         self.assertTrue((PAGE.parent / "og-image.svg").is_file())
         self.assertTrue((PAGE.parent / "CLAIMS.md").is_file())
         self.assertTrue((PAGE.parent / "PUBLISHING.md").is_file())
-        self.assertIn("/blog/arq-saques-exterior/og-image.svg", self.html)
+        self.assertIn("/blog/arq-saques-exterior/og-image.png", self.html)
 
     def test_metadata_dates_title_and_mount_match(self) -> None:
         self.assertIn(f'<link rel="canonical" href="{URL}">', self.html)
