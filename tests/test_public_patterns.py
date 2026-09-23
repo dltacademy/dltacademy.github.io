@@ -75,7 +75,7 @@ class PublicPatternTests(unittest.TestCase):
         html = self.read("protocolos/medo-de-ficar-de-fora/index.html")
         engine = self.read("js/protocol-engine.js")
         protocol = self.read("protocolos/medo-de-ficar-de-fora/js/protocol.js")
-        self.assertIn("og-image.svg", html)
+        self.assertIn("og-image.png", html)
         for marker in ("flow-card", "flow-result", "answer-record", "result-actions", "cta-verdict"):
             with self.subTest(marker=marker):
                 self.assertIn(marker, engine)
