@@ -120,6 +120,20 @@ const CONTENT = [
     "primaryNext": "tool-quanto-em-taxas"
   },
   {
+    "id": "guide-binance-futuros",
+    "type": "guide",
+    "title": "Binance para quem já opera futuros",
+    "description": "Para quem opera futuros em outra corretora: abrir a Binance com cashback vitalício nas taxas, migrar o saldo pela rede certa e configurar o risco antes da primeira ordem.",
+    "url": "/guias/binance-futuros-para-quem-ja-opera/",
+    "tag": "Guia de migração",
+    "tone": "blue",
+    "sit": ["taxas", "posicao"],
+    "mark": "BF",
+    "effort": "5 passos · 40 minutos",
+    "primaryNext": "tool-quanto-em-taxas",
+    "related": ["guide-conta-binance", "tool-sobrevive-ou-quebra"]
+  },
+  {
     "id": "guide-pagamentos-no-exterior",
     "type": "guide",
     "title": "Como pagar no exterior gastando menos",
