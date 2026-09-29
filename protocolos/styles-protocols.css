@@ -276,6 +276,9 @@
 .protocol-cta-disclosure { color: var(--text-faint); font-size: 12.5px; line-height: 1.5; margin: 12px 0 0; }
 
 /* Relatório pago — último bloco, separado do resultado gratuito. */
+.protocol-paid-offers { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; margin: 24px 0 10px; }
+.protocol-paid-offers .protocol-paid-report { margin: 0; display: flex; flex-direction: column; }
+.protocol-paid-offers .protocol-paid-buy { margin-top: auto; }
 .protocol-paid-report {
   margin: 24px 0 10px;
   padding: 22px 22px 24px;

@@ -215,7 +215,7 @@ const PROTOCOL = {
           href: "/protocolos/medo-de-ficar-de-fora/",
           external: false,
         },
-        relatorio: { produto: "decisao-fria", perfil: "recuperacao" },
+        relatorio: ofertas("recuperacao"),
       };
     }
 
@@ -246,7 +246,7 @@ const PROTOCOL = {
           href: "https://sobrevive-ou-quebra.dlt.academy/",
           external: false,
         },
-        relatorio: { produto: "decisao-fria", perfil: "alavancagem" },
+        relatorio: ofertas("alavancagem"),
       };
     }
 
@@ -272,7 +272,7 @@ const PROTOCOL = {
           href: "/protocolos/medo-de-ficar-de-fora/",
           external: false,
         },
-        relatorio: { produto: "decisao-fria", perfil: "pressa" },
+        relatorio: ofertas("pressa"),
       };
     }
 
@@ -302,7 +302,7 @@ const PROTOCOL = {
           href: "https://sobrevive-ou-quebra.dlt.academy/",
           external: false,
         },
-        relatorio: { produto: "decisao-fria", perfil: a.intencao === "aumentar" || a.relogio !== "semana" ? "pressa" : "metodo" },
+        relatorio: ofertas(a.intencao === "aumentar" || a.relogio !== "semana" ? "pressa" : "metodo"),
       };
     }
 
@@ -327,13 +327,22 @@ const PROTOCOL = {
         href: "https://sobrevive-ou-quebra.dlt.academy/",
         external: false,
       },
-      relatorio: { produto: "decisao-fria", perfil: "metodo" },
+      relatorio: ofertas("metodo"),
     };
   },
 };
 
 const safetyNote =
   "Se operar virou algo que você sente que não controla, especialmente para recuperar perdas, isso vai além de uma decisão pontual. Conversar com um profissional de saúde ajuda mais do que qualquer ferramenta. Isto aqui é reflexão estruturada, não tratamento nem recomendação de investimento.";
+
+// Os dois degraus pagos: o dossiê de método (capítulo do perfil) e o
+// relatório escrito para o caso. Nunca chamado no ramo de vulnerabilidade.
+function ofertas(perfil) {
+  return [
+    { produto: "decisao-fria", perfil },
+    { produto: "decisao-fria-premium" },
+  ];
+}
 
 // Sinais de alerta: cada um vale 1. A intenção de recuperar e o impacto
 // que compromete contas não entram na contagem: eles decidem o ramo sozinhos.
