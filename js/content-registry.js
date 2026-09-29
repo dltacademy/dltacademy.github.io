@@ -129,7 +129,7 @@ const CONTENT = [
     "tone": "blue",
     "sit": ["taxas", "posicao"],
     "mark": "BF",
-    "effort": "5 passos · 40 minutos",
+    "effort": "6 passos · 40 minutos",
     "primaryNext": "tool-quanto-em-taxas",
     "related": ["guide-conta-binance", "tool-sobrevive-ou-quebra"]
   },
