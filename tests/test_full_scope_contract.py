@@ -33,6 +33,7 @@ ARTICLES = {
 GUIDES = {
     "pagamentos-no-exterior/index.html",
     "guias/conta-binance/index.html",
+    "guias/binance-futuros-para-quem-ja-opera/index.html",
     "guias/assinaturas-ia-bybit/index.html",
     "guias/abastecer-moreta-usdt/index.html",
     "guias/etherfi-cash-viagem/index.html",
