@@ -396,8 +396,15 @@ function runProtocol(protocol, mountId) {
     // Relatório pago — o último bloco da página, separado do resultado.
     // O resultado gratuito já está completo acima; o relatório é
     // aprofundamento opcional. Sem produto configurado, nada aparece.
-    const paid = buildPaidReportOffer(result.relatorio, el);
-    if (paid) mount.appendChild(paid);
+    // Um produto, ou uma lista (degraus: método e relatório do caso).
+    const refs = Array.isArray(result.relatorio) ? result.relatorio : result.relatorio ? [result.relatorio] : [];
+    const cards = refs.map((ref) => buildPaidReportOffer(ref, el)).filter(Boolean);
+    if (cards.length === 1) mount.appendChild(cards[0]);
+    if (cards.length > 1) {
+      const group = el("div", "protocol-paid-offers");
+      cards.forEach((c) => group.appendChild(c));
+      mount.appendChild(group);
+    }
   }
 
   render(0);
@@ -416,10 +423,11 @@ function buildPaidReportOffer(ref, el) {
   const profile = (product.perfis || {})[ref.perfil];
 
   const box = el("section", "protocol-paid-report");
-  box.setAttribute("aria-labelledby", "protocol-paid-report-title");
+  const titleId = "protocol-paid-report-title-" + String(ref.produto).replace(/[^a-z0-9-]/gi, "");
+  box.setAttribute("aria-labelledby", titleId);
   box.appendChild(el("p", "protocol-paid-eyebrow", "Para ir além deste resultado"));
   const title = el("h3", "protocol-paid-title", product.titulo);
-  title.id = "protocol-paid-report-title";
+  title.id = titleId;
   box.appendChild(title);
   if (product.promessa) box.appendChild(el("p", "protocol-paid-text", product.promessa));
 
@@ -447,10 +455,12 @@ function buildPaidReportOffer(ref, el) {
   buy.appendChild(a);
   box.appendChild(buy);
 
-  box.appendChild(el("p", "protocol-paid-disclosure",
-    "Produto da DLT Academy, vendido e entregue pela " + product.plataforma + ". " +
+  // Aviso padrão do modelo estático; o personalizado declara o próprio,
+  // porque nele as respostas são enviadas depois do pagamento.
+  box.appendChild(el("p", "protocol-paid-disclosure", product.aviso ||
+    ("Produto da DLT Academy, vendido e entregue pela " + product.plataforma + ". " +
     "Nada do que você escreveu aqui vai junto: suas respostas continuam só no seu navegador. " +
-    "Você tem 7 dias para pedir reembolso."));
+    "Você tem 7 dias para pedir reembolso.")));
   return box;
 }
 
