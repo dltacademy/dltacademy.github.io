@@ -18,6 +18,7 @@ PRIMARY_ROUTES = {
     "/blog/arq-saques-exterior/": "blog/arq-saques-exterior/index.html",
     "/guias/bybit-pay-vietqr/": "guias/bybit-pay-vietqr/index.html",
     "/protocolos/medo-de-ficar-de-fora/": "protocolos/medo-de-ficar-de-fora/index.html",
+    "/protocolos/decisao-fria/": "protocolos/decisao-fria/index.html",
     "/blog/custo-100-dolares-exterior/": "blog/custo-100-dolares-exterior/index.html",
 }
 
