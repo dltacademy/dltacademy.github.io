@@ -25,12 +25,12 @@ class PaidReportTests(unittest.TestCase):
         self.assertIsNotNone(hosts)
         self.assertEqual(
             sorted(re.findall(r'"([^"]+)"', hosts.group(1))),
-            ["pay.hotmart.com", "pay.kiwify.com.br"],
+            ["pay.hotmart.com"],
         )
         for url in re.findall(r'checkoutUrl: "([^"]*)"', self.catalog):
             with self.subTest(url=url):
                 if url:
-                    self.assertRegex(url, r"^https://(pay\.kiwify\.com\.br|pay\.hotmart\.com)/")
+                    self.assertRegex(url, r"^https://pay\.hotmart\.com/")
 
     def test_motor_valida_https_e_host_antes_de_mostrar_oferta(self):
         start = self.engine.index("function paidReportCheckoutUrl")
