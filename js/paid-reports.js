@@ -16,7 +16,7 @@
 // protocolo até aqui; nenhuma resposta da pessoa.
 // ============================================================
 
-const PAID_REPORT_HOSTS = ["pay.kiwify.com.br", "pay.hotmart.com"];
+const PAID_REPORT_HOSTS = ["pay.hotmart.com"];
 
 const PAID_REPORTS = {
   "decisao-fria": {
@@ -31,7 +31,7 @@ const PAID_REPORTS = {
     preco: "R$ 29",
     formato: "PDF com fichas para preencher",
     botao: "Quero o Dossiê Decisão Fria →",
-    plataforma: "Kiwify",
+    plataforma: "Hotmart",
     checkoutUrl: "",
     perfis: {
       recuperacao: {
