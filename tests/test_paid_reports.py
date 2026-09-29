@@ -25,12 +25,12 @@ class PaidReportTests(unittest.TestCase):
         self.assertIsNotNone(hosts)
         self.assertEqual(
             sorted(re.findall(r'"([^"]+)"', hosts.group(1))),
-            ["pay.hotmart.com"],
+            ["buy.stripe.com", "pay.hotmart.com"],
         )
         for url in re.findall(r'checkoutUrl: "([^"]*)"', self.catalog):
             with self.subTest(url=url):
                 if url:
-                    self.assertRegex(url, r"^https://pay\.hotmart\.com/")
+                    self.assertRegex(url, r"^https://(pay\.hotmart\.com|buy\.stripe\.com)/")
 
     def test_motor_valida_https_e_host_antes_de_mostrar_oferta(self):
         start = self.engine.index("function paidReportCheckoutUrl")
@@ -62,7 +62,7 @@ class PaidReportTests(unittest.TestCase):
 
     def test_oferta_e_o_ultimo_bloco_depois_do_proximo_passo_e_do_cta(self):
         self.assertLess(self.engine.index('id = "next-step-mount"'), self.engine.index("const cta = result.cta"))
-        self.assertLess(self.engine.index("const cta = result.cta"), self.engine.index("buildPaidReportOffer(result.relatorio"))
+        self.assertLess(self.engine.index("const cta = result.cta"), self.engine.index("buildPaidReportOffer(ref, el)"))
 
     def test_catalogo_carrega_antes_do_motor(self):
         catalog = '<script src="/js/paid-reports.js"></script>'
@@ -72,8 +72,8 @@ class PaidReportTests(unittest.TestCase):
 
     def test_perfis_do_protocolo_existem_no_catalogo(self):
         perfis_usados = set()
-        for expr in re.findall(r"perfil: ([^}]+)\}", self.protocol):
-            perfis_usados |= set(re.findall(r'"(recuperacao|alavancagem|pressa|metodo|[a-z]+)"', expr)) - {"aumentar", "semana"}
+        for expr in re.findall(r"relatorio: ofertas\((.+)\),\n", self.protocol):
+            perfis_usados |= set(re.findall(r'"([a-z]+)"', expr)) - {"aumentar", "semana"}
         self.assertEqual(perfis_usados, {"recuperacao", "alavancagem", "pressa", "metodo"})
         for perfil in perfis_usados:
             with self.subTest(perfil=perfil):
@@ -83,7 +83,14 @@ class PaidReportTests(unittest.TestCase):
         start = self.protocol.index('if (a.impacto === "compromete")')
         end = self.protocol.index('if (a.intencao === "recuperar")')
         self.assertNotIn("relatorio", self.protocol[start:end])
-        self.assertEqual(5, self.protocol.count('relatorio: { produto: "decisao-fria"'))
+        self.assertEqual(5, self.protocol.count("relatorio: ofertas("))
+        self.assertIn('{ produto: "decisao-fria-premium" }', self.protocol)
+
+    def test_personalizado_declara_aviso_de_envio_das_respostas(self):
+        premium = self.catalog[self.catalog.index('"decisao-fria-premium"'):]
+        self.assertIn('plataforma: "Stripe"', premium)
+        self.assertIn("as respostas são enviadas uma vez", premium)
+        self.assertIn("product.aviso ||", self.engine)
 
     def test_decisao_fria_segue_a_regra_dos_verbos_ativos(self):
         self.assertEqual(7, len(re.findall(r'eyebrow: "\d de 7', self.protocol)))
