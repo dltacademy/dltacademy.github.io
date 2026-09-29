@@ -21,6 +21,7 @@ ARTICLES = {
 GUIDES = {
     "guide-pagamentos-no-exterior": "pagamentos-no-exterior/index.html",
     "guide-conta-binance": "guias/conta-binance/index.html",
+    "guide-binance-futuros": "guias/binance-futuros-para-quem-ja-opera/index.html",
     "guide-assinaturas-ia-bybit": "guias/assinaturas-ia-bybit/index.html",
     "guide-abastecer-moreta-usdt": "guias/abastecer-moreta-usdt/index.html",
     "guide-etherfi-cash-viagem": "guias/etherfi-cash-viagem/index.html",
