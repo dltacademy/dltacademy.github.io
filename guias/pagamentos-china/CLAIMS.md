@@ -30,7 +30,8 @@ As fontes públicas continuam vinculadas no próprio guia. Este arquivo registra
 | Câmbio de referência USD/BRL 5,1681 | câmbio médio da Wise em 30/09/2026 | fixo — é dado histórico |
 | TopCashback × Trip.com: 11% hotéis (novos) / 8% (existentes), 2% trens, 2,5% ingressos, voos domésticos na China excluídos, app não conta, sem taxas; rastreio pode variar fora dos EUA | página do Trip.com no TopCashback (atualizada em abril/2026), consultada em 30/09/2026 | antes de cada divulgação |
 | eSIM de dados comprado no Trip.com; chip do Brasil com roaming só de SMS; metrô por ficha, cartão de transporte ou QR do Alipay/WeChat; dinheiro vivo dispensável | experiência do Tiago (setembro/2026) | revisar a cada viagem |
-| Recarga de saldo no Alipay com cartão estrangeiro: não suportada (Wise, 2026); Tour Card cobrava 5% e foi encerrado em 29/05/2026; Nihao China (UnionPay) com taxas desencontradas nas fontes | pesquisa de 30/09/2026; nenhuma fonte confirmou depósito sem taxa | confirmar com print do app |
+| Recarga de saldo no Alipay com cartão estrangeiro: não suportada (FAQ do Alipay e Wise); Tour Card cobrava 5% e foi encerrado em 29/05/2026 | pesquisa de 30/09/2026 | 30/10/2026 |
+| Links de indicação abertos em 30/09/2026: Revolut (convite ativo), ether.fi (até 3% e código, sem campanha extra) | navegador, 30/09/2026 | antes de cada divulgação |
 | Simulações por cartão (4 compras ¥454,93 e viagem ¥10.000) | modelo do simulador com tarifas de 30/09/2026 | junto com as tarifas |
 | IOF sobre stablecoins | proposta em construção, não vigente em 30/09/2026 | a cada revisão |
 | Câmbio de referência ¥6,7053 (fechamento onshore 30/09/2026 16h30) | FX168 | fixo — é dado histórico |

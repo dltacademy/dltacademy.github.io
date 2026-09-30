@@ -54,9 +54,9 @@ class EtherfiCashTravelGuideTests(unittest.TestCase):
         self.assertEqual(self.html.count("<!-- PROMO_ATUAL -->"), 1)
         self.assertEqual(self.html.count("<!-- /PROMO_ATUAL -->"), 1)
         self.assertIn('data-promotion="etherfi-referral"', self.html)
-        self.assertIn('data-verified-at="2026-07-29"', self.html)
-        self.assertIn("10% de cashback em delivery, restaurantes, supermercados e corridas de Uber", self.html)
-        self.assertIn("Use o próprio link como fonte final", self.html)
+        self.assertIn('data-verified-at="2026-09-30"', self.html)
+        self.assertIn("Até 3% de cashback nas compras do dia a dia, com o código e155ee95", self.html)
+        self.assertIn("O que o link mostrava em 30/09/2026", self.html)
 
     def test_personal_thesis_and_protections_are_present(self) -> None:
         required = (
