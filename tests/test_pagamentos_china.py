@@ -90,6 +90,7 @@ class ChinaPaymentsGuideTests(unittest.TestCase):
             "¥1.320,30",
             "R$ 783,91",
             "R$ 823,44",
+            "o limite de ¥200 é regra do cartão, não do saldo",
             "Alternativa: saldo no Alipay pela Remessa internacional",
             "O ether.fi no mês inteiro, com a subida de nível",
             "5 mil pontos",
