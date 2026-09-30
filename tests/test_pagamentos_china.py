@@ -108,10 +108,33 @@ class ChinaPaymentsGuideTests(unittest.TestCase):
             with self.subTest(leaked=leaked):
                 self.assertNotIn(leaked, self.html)
 
-    def test_affiliate_flow_stays_in_the_etherfi_guide(self) -> None:
+    def test_affiliate_links_are_marked_and_known(self) -> None:
+        allowed = (
+            "https://www.ether.fi/@e155ee95",
+            "https://www.arqfinance.com/referrals/general?referralCode=tiagohyd_t7t",
+            "https://wise.com/invite/irhc/tiagon100",
+            "https://revolut.com/referral/?referral-code=tiago327k",
+        )
+        referral = re.compile(r'<a [^>]*href="(https://[^"]*(?:ether\.fi/@|referral|/invite/)[^"]*)"[^>]*>')
+        found = referral.findall(self.html)
+        self.assertGreaterEqual(len(found), 6)
+        for match in referral.finditer(self.html):
+            tag, href = match.group(0), match.group(1)
+            with self.subTest(href=href[:60]):
+                self.assertTrue(href.startswith(allowed), href)
+                self.assertIn('rel="sponsored nofollow noopener noreferrer"', tag)
+                self.assertIn('referrerpolicy="no-referrer"', tag)
+                self.assertIn('target="_blank"', tag)
         self.assertNotIn("PROMO_ATUAL", self.html)
-        self.assertNotIn("ether.fi/@", self.html)
+        self.assertIn("Links de indicação.", self.html)
+        self.assertIn("termine o cadastro no navegador", self.html)
         self.assertIn('/guias/etherfi-cash-viagem/#como-pedir', self.html)
+
+    def test_offer_has_one_primary_action(self) -> None:
+        match = re.search(r'<div class="offer cta-verdict"[^>]*>(.*?)</div>', self.html, re.DOTALL)
+        self.assertIsNotNone(match)
+        self.assertEqual(1, match.group(1).count("btn-primary"))
+        self.assertIn("ether.fi/@e155ee95", match.group(1))
 
     def test_single_primary_cta_in_hero(self) -> None:
         match = re.search(r'<section class="guide-hero piece-head">(.*?)</section>', self.html, re.DOTALL)
@@ -122,7 +145,7 @@ class ChinaPaymentsGuideTests(unittest.TestCase):
         for match in re.finditer(r'<a [^>]*href="https://(?!dlt\.academy|[a-z-]+\.dlt\.academy)[^"]+"[^>]*>', self.html):
             tag = match.group(0)
             with self.subTest(tag=tag[:80]):
-                self.assertIn('rel="noopener noreferrer"', tag)
+                self.assertRegex(tag, r'rel="(?:sponsored nofollow )?noopener noreferrer"')
                 self.assertIn('referrerpolicy="no-referrer"', tag)
 
 
