@@ -84,6 +84,8 @@ class ChinaPaymentsGuideTests(unittest.TestCase):
             "O que cada nível dá além do cashback",
             "Salas VIP de aeroporto",
             "Vale pagar os US$ 199 do Luxe?",
+            "Compare com o ether.fi Travel",
+            "eSIM global",
             "+0,16%",
             "¥6,7053",
             "6,7148",

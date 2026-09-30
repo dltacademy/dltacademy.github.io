@@ -30,6 +30,7 @@
   }
 
   var PERKS = {
+    core: root.getAttribute("data-etherfi-core-perks") || "",
     luxe: root.getAttribute("data-etherfi-luxe-perks") || "",
     pinnacle: root.getAttribute("data-etherfi-pinnacle-perks") || "",
   };
