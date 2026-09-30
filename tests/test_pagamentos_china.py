@@ -81,6 +81,9 @@ class ChinaPaymentsGuideTests(unittest.TestCase):
             "Reais → yuan antes",
             "O ether.fi no mês inteiro, com a subida de nível",
             "5 mil pontos",
+            "O que cada nível dá além do cashback",
+            "Salas VIP de aeroporto",
+            "Vale pagar os US$ 199 do Luxe?",
             "+0,16%",
             "¥6,7053",
             "6,7148",
@@ -104,7 +107,7 @@ class ChinaPaymentsGuideTests(unittest.TestCase):
         self.assertIn('id="china-etherfi-level"', self.html)
         self.assertIn("LEVELS", script)
         self.assertNotIn("o ARQ passa na frente", self.html)
-        for attr in ("data-iof=", "data-revolut-quota=", "data-etherfi-tier1=", "data-alipay-fee=", "data-etherfi-luxe-points=", "data-etherfi-pinnacle-points="):
+        for attr in ("data-iof=", "data-revolut-quota=", "data-etherfi-tier1=", "data-alipay-fee=", "data-etherfi-luxe-points=", "data-etherfi-pinnacle-points=", "data-etherfi-luxe-perks="):
             with self.subTest(attr=attr):
                 self.assertIn(attr, self.html)
         self.assertIn('data-copy-result="#china-calc"', self.html)

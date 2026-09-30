@@ -29,6 +29,11 @@
     return list.length === 2 && list.every(Number.isFinite) ? list : fallback.split(",").map(Number);
   }
 
+  var PERKS = {
+    luxe: root.getAttribute("data-etherfi-luxe-perks") || "",
+    pinnacle: root.getAttribute("data-etherfi-pinnacle-perks") || "",
+  };
+
   var LEVELS = {
     core: { points: 0, caps: [P.tier1, P.tier2], fxMax: Infinity },
     luxe: { points: attr("etherfi-luxe-points", 5000), caps: caps("luxe", "10000,20000"), fxMax: attr("etherfi-luxe-fx-max", 1.25) / 100 },
@@ -133,7 +138,7 @@
     var levelLabel = { core: "Core", luxe: "Luxe", pinnacle: "Pinnacle" };
     result.etherfi = {
       total: base + efFx + efFund - efCashback,
-      parts: [["formar o saldo", efFund], ["IOF", 0, "zero"], ["câmbio", efFx], ["cashback", -efCashback], ["nível no fim: " + levelLabel[levelName], 0, "label"]],
+      parts: [["formar o saldo", efFund], ["IOF", 0, "zero"], ["câmbio", efFx], ["cashback", -efCashback], ["nível no fim: " + levelLabel[levelName] + (PERKS[levelName] ? " · inclui " + PERKS[levelName] : ""), 0, "label"]],
     };
 
     // ARQ Global: reais → USDc (0,5%), câmbio da bandeira.

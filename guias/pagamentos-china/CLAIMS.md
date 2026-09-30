@@ -12,6 +12,7 @@ As fontes públicas continuam vinculadas no próprio guia. Este arquivo registra
 | ether.fi: câmbio-base ~1% + 0–0,5% (Core) | central de ajuda, consultada em 30/09/2026 | 30/10/2026 |
 | ether.fi: cashback 3% até US$ 2.000/mês (Core), pago em ETHFI com 7 dias de trava | central de ajuda, consultada em 30/09/2026 | 30/10/2026 |
 | ether.fi: níveis por pontos (US$ 1 gasto = 1 ponto; Luxe 5 mil, Pinnacle 25 mil; pontos zeram no mês; subida imediata) e caps de 3% (Core US$ 2 mil, Luxe US$ 10 mil, Pinnacle US$ 50 mil) | help center: níveis (15/09/2026), benefícios e pontos, consultados em 30/09/2026 | 30/10/2026 |
+| ether.fi: benefícios por nível (salas VIP: Luxe 2, Pinnacle ilimitadas; fila rápida no Luxe; saques grátis até 10/mês no Pinnacle; desconto em assinaturas 10%/US$ 10 e 20%/US$ 20; cartões; gerente dedicado) | página de comparação e central de ajuda, 30/09/2026. Divergência: cartão físico do Core aparece como US$ 60 com frete na comparação e "grátis, frete à parte" na central | 30/10/2026 |
 | ether.fi: se a subida de nível recalcula o gasto anterior do mês | não documentado; o guia e o simulador assumem que não (conservador) | perguntar ao suporte |
 | ether.fi: MCC 7372 e 4722 fora das exclusões | lista de 27 MCCs, consultada em 30/09/2026 | 30/10/2026 |
 | ether.fi: PIX 0,5% + R$ 0,10, BRL → USDC | central de ajuda, atualizada em 01/04/2026 | 30/10/2026 |
@@ -43,6 +44,7 @@ As fontes públicas continuam vinculadas no próprio guia. Este arquivo registra
 - Rotas por ¥1.000 (régua R$ 770,75 = 1000 ÷ 6,7053 × 5,1681): ether.fi 3% −1,23%, 1% +0,80%, 0,5% +1,30%; ARQ +0,50%; Revolut na cota 0%, fora 1,014 × 1,035 = +4,95%, via dólar no fim de semana +6,00%; Wise direto 1 + 0,035 + 0,0067 = +4,17%, via dólar × 1,0032 = +4,50%; Nomad 1,02 × 1,035 = +5,57% (nível 5: +4,54%); banco 1,04 × 1,035 = +7,64% (3,5%: +7,12%).
 - O simulador (`js/china-calculator.js`) lê as tarifas dos atributos `data-*` do bloco `#china-calc`; ao revisar, atualize os atributos, os valores padrão dos campos e `data-verified-at`.
 - ether.fi no mês inteiro (câmbio Core 1,29%, Luxe até 1,25%, Pinnacle até 1,0%; PIX 0,5%; subida não retroativa): US$ 2 mil −1,22%; 3 mil −0,55%; 5 mil +0,16%; 10 mil −0,54%; 25 mil +0,30%. ARQ +0,50% em todos.
+- Ganho de começar o mês no Luxe vs Core (mesmo modelo): US$ 3 mil +22; 4 mil +48; 5 mil ou mais +72 por mês. Anuidade do Luxe: US$ 199.
 - Break-even ARQ Premium: 500 + (6,99 − 5) ÷ 0,005 ≈ US$ 898/mês; Prestige: 500 + (19,99 − 10) ÷ 0,005 ≈ US$ 2.498/mês.
 
 Se os comprovantes pendentes do Alipay (ether.fi e ARQ) liquidarem com outro valor, atualizar a tabela e esta seção.
