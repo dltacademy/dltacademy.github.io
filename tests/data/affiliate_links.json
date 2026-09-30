@@ -1,0 +1,48 @@
+{
+  "_comment": "Fonte única dos links de indicação do portal. Para trocar um link, altere aqui e nas páginas; test_affiliate_links.py reprova qualquer variante fora desta lista. check_affiliate_links.py abre cada link ao vivo.",
+  "providers": [
+    {
+      "id": "etherfi",
+      "label": "ether.fi Cash",
+      "pattern": "ether\\.fi/@",
+      "canonical": "https://www.ether.fi/@e155ee95"
+    },
+    {
+      "id": "arq",
+      "label": "ARQ Global",
+      "pattern": "arqfinance\\.com/referrals",
+      "canonical": "https://www.arqfinance.com/referrals/general?referralCode=tiagohyd_t7t"
+    },
+    {
+      "id": "wise",
+      "label": "Wise",
+      "pattern": "wise\\.com/invite",
+      "canonical": "https://wise.com/invite/irhc/tiagon100"
+    },
+    {
+      "id": "revolut",
+      "label": "Revolut",
+      "pattern": "revolut\\.com/referral",
+      "canonical": "https://revolut.com/referral/?referral-code=tiago327k"
+    },
+    {
+      "id": "topcashback",
+      "label": "TopCashback",
+      "pattern": "topcashback\\.com/ref/",
+      "canonical": "https://www.topcashback.com/ref/member1244137676106",
+      "live_cookie": "ReferralID"
+    },
+    {
+      "id": "binance",
+      "label": "Binance",
+      "pattern": "binance\\.com/register",
+      "canonical": "https://www.binance.com/register?ref=BOSS2026"
+    },
+    {
+      "id": "bybit",
+      "label": "Bybit",
+      "pattern": "bybit\\.com/invite",
+      "canonical": "https://www.bybit.com/invite?ref=O0YDQDM"
+    }
+  ]
+}
