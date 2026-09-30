@@ -120,15 +120,19 @@ class ChinaPaymentsGuideTests(unittest.TestCase):
             "https://www.arqfinance.com/referrals/general?referralCode=tiagohyd_t7t",
             "https://wise.com/invite/irhc/tiagon100",
             "https://revolut.com/referral/?referral-code=tiago327k",
+            "https://www.topcashback.com/ref/member1244137676106",
         )
-        referral = re.compile(r'<a [^>]*href="(https://[^"]*(?:ether\.fi/@|referral|/invite/)[^"]*)"[^>]*>')
+        referral = re.compile(r'<a [^>]*href="(https://[^"]*(?:ether\.fi/@|referral|/invite/|topcashback\.com/ref/)[^"]*)"[^>]*>')
         found = referral.findall(self.html)
-        self.assertGreaterEqual(len(found), 6)
+        self.assertGreaterEqual(len(found), 8)
+        self.assertNotIn("sponsored", self.html)
+        self.assertIn("pelo navegador. Em 30/09/2026, a página do Trip.com no TopCashback", self.html)
+        self.assertIn("Compras pelo app do Trip.com não contam", self.html)
         for match in referral.finditer(self.html):
             tag, href = match.group(0), match.group(1)
             with self.subTest(href=href[:60]):
                 self.assertTrue(href.startswith(allowed), href)
-                self.assertIn('rel="sponsored nofollow noopener noreferrer"', tag)
+                self.assertIn('rel="nofollow noopener noreferrer"', tag)
                 self.assertIn('referrerpolicy="no-referrer"', tag)
                 self.assertIn('target="_blank"', tag)
         self.assertNotIn("PROMO_ATUAL", self.html)
@@ -151,7 +155,7 @@ class ChinaPaymentsGuideTests(unittest.TestCase):
         for match in re.finditer(r'<a [^>]*href="https://(?!dlt\.academy|[a-z-]+\.dlt\.academy)[^"]+"[^>]*>', self.html):
             tag = match.group(0)
             with self.subTest(tag=tag[:80]):
-                self.assertRegex(tag, r'rel="(?:sponsored nofollow )?noopener noreferrer"')
+                self.assertRegex(tag, r'rel="(?:nofollow )?noopener noreferrer"')
                 self.assertIn('referrerpolicy="no-referrer"', tag)
 
 

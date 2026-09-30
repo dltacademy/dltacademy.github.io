@@ -26,6 +26,7 @@ As fontes públicas continuam vinculadas no próprio guia. Este arquivo registra
 | Saques: Revolut R$ 1.600 ou 5/mês e 2% (mín. R$ 6); Wise 1 grátis e R$ 20; Nomad US$ 5 fora da MoneyPass | páginas de tarifas | 30/10/2026 |
 | Spread de cartão de banco: Nubank Ultravioleta anuncia 3,5% | blog Nubank, 16/09/2026; o simulador usa 4% como padrão editável | 30/10/2026 |
 | Câmbio de referência USD/BRL 5,1681 | câmbio médio da Wise em 30/09/2026 | fixo — é dado histórico |
+| TopCashback × Trip.com: 11% hotéis (novos) / 8% (existentes), 2% trens, 2,5% ingressos, voos domésticos na China excluídos, app não conta, sem taxas; rastreio pode variar fora dos EUA | página do Trip.com no TopCashback (atualizada em abril/2026), consultada em 30/09/2026 | antes de cada divulgação |
 | IOF sobre stablecoins | proposta em construção, não vigente em 30/09/2026 | a cada revisão |
 | Câmbio de referência ¥6,7053 (fechamento onshore 30/09/2026 16h30) | FX168 | fixo — é dado histórico |
 | Comprovantes (3 compras) e ausência de IOF | experiência pessoal do Tiago; dados de cartão e IDs removidos | fixo — é relato datado |

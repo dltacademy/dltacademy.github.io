@@ -44,7 +44,7 @@ class EtherfiCashTravelGuideTests(unittest.TestCase):
         self.assertIsNotNone(match)
         attrs = match.group(1)
         self.assertIn('target="_blank"', attrs)
-        self.assertIn('rel="sponsored nofollow noopener noreferrer"', attrs)
+        self.assertIn('rel="nofollow noopener noreferrer"', attrs)
         self.assertIn('referrerpolicy="no-referrer"', attrs)
         self.assertIn("A pessoa que me indicou também deixou de receber", self.html)
         self.assertNotIn("Essa própria explicação é a transparência sobre o link", self.html)
