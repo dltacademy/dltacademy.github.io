@@ -26,6 +26,7 @@
   white-space: nowrap;
 }
 .calc .calc-control input[type="range"] { width: 100%; accent-color: var(--accent); }
+.calc .calc-control select,
 .calc .calc-control input[type="number"] {
   width: 100%;
   min-height: 44px;

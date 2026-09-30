@@ -79,6 +79,9 @@ class ChinaPaymentsGuideTests(unittest.TestCase):
             "+7,64%",
             "+4,95%",
             "Reais → yuan antes",
+            "O ether.fi no mês inteiro, com a subida de nível",
+            "5 mil pontos",
+            "+0,16%",
             "¥6,7053",
             "6,7148",
             "−1,23%",
@@ -98,7 +101,10 @@ class ChinaPaymentsGuideTests(unittest.TestCase):
             with self.subTest(row=key):
                 self.assertIn(f'data-calc-row="{key}"', self.html)
                 self.assertIn(key + ":", script)
-        for attr in ("data-iof=", "data-revolut-quota=", "data-etherfi-tier1=", "data-alipay-fee="):
+        self.assertIn('id="china-etherfi-level"', self.html)
+        self.assertIn("LEVELS", script)
+        self.assertNotIn("o ARQ passa na frente", self.html)
+        for attr in ("data-iof=", "data-revolut-quota=", "data-etherfi-tier1=", "data-alipay-fee=", "data-etherfi-luxe-points=", "data-etherfi-pinnacle-points="):
             with self.subTest(attr=attr):
                 self.assertIn(attr, self.html)
         self.assertIn('data-copy-result="#china-calc"', self.html)

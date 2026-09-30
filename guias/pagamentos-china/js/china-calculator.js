@@ -23,6 +23,18 @@
     alipayFee: attr("alipay-fee", 3) / 100,
   };
 
+  function caps(name, fallback) {
+    var raw = root.getAttribute("data-etherfi-" + name + "-caps");
+    var list = (raw || fallback).split(",").map(Number);
+    return list.length === 2 && list.every(Number.isFinite) ? list : fallback.split(",").map(Number);
+  }
+
+  var LEVELS = {
+    core: { points: 0, caps: [P.tier1, P.tier2], fxMax: Infinity },
+    luxe: { points: attr("etherfi-luxe-points", 5000), caps: caps("luxe", "10000,20000"), fxMax: attr("etherfi-luxe-fx-max", 1.25) / 100 },
+    pinnacle: { points: attr("etherfi-pinnacle-points", 25000), caps: caps("pinnacle", "50000,80000"), fxMax: attr("etherfi-pinnacle-fx-max", 1) / 100 },
+  };
+
   var labels = {
     etherfi: "ether.fi Cash",
     arq: "ARQ Global",
@@ -38,6 +50,7 @@
     spend: $("china-spend"),
     walletOver: $("china-wallet-over"),
     etherfiPrior: $("china-etherfi-prior"),
+    etherfiLevel: $("china-etherfi-level"),
     revolutUsed: $("china-revolut-used"),
     nomadConv: $("china-nomad-conv"),
     bankSpread: $("china-bank-spread"),
@@ -87,23 +100,40 @@
     var base = usdMid * o.usdbrl;
     var result = {};
 
-    // ether.fi: PIX → USDC (0,5% + R$ 0,10), câmbio medido, cashback por faixa no mês.
-    var efUsd = usdMid * (1 + o.etherfiFx);
-    var efFx = (efUsd - usdMid) * o.usdbrl;
-    var efFund = efUsd * o.usdbrl * P.pix + P.pixFlat;
-    var remaining = efUsd;
-    var spent = o.etherfiPrior;
+    // ether.fi: PIX → USDC (0,5% + R$ 0,10), câmbio por nível e cashback por faixa no mês.
+    // O nível sobe com os pontos do cartão (US$ 1 = 1 ponto); a subida vale só daí em diante.
+    var levelOrder = ["core", "luxe", "pinnacle"];
+    var startLevel = levelOrder.indexOf(o.etherfiLevel);
+    if (startLevel < 0) startLevel = 0;
+    var efCard = 0;
     var cashbackUsd = 0;
-    [[P.tier1, P.rates[0]], [P.tier2, P.rates[1]], [Infinity, P.rates[2]]].forEach(function (tier) {
-      var take = Math.max(0, Math.min(remaining, tier[0] - spent));
-      cashbackUsd += take * tier[1];
-      remaining -= take;
-      spent += take;
-    });
+    var points = o.etherfiPrior;
+    var counter = o.etherfiPrior;
+    var steps = Math.max(1, Math.min(400, Math.ceil(usdMid / 10)));
+    var chunk = usdMid / steps;
+    var levelName = levelOrder[startLevel];
+    for (var i = 0; i < steps; i += 1) {
+      var level = startLevel;
+      for (var l = levelOrder.length - 1; l > startLevel; l -= 1) {
+        if (points >= LEVELS[levelOrder[l]].points) { level = l; break; }
+      }
+      var def = LEVELS[levelOrder[level]];
+      levelName = levelOrder[level];
+      var fx = Math.min(o.etherfiFx, def.fxMax);
+      var cardUsd = chunk * (1 + fx);
+      var rate = counter < def.caps[0] ? P.rates[0] : counter < def.caps[1] ? P.rates[1] : P.rates[2];
+      cashbackUsd += cardUsd * rate;
+      counter += cardUsd;
+      points += cardUsd;
+      efCard += cardUsd;
+    }
+    var efFx = (efCard - usdMid) * o.usdbrl;
+    var efFund = efCard * o.usdbrl * P.pix + P.pixFlat;
     var efCashback = cashbackUsd * o.usdbrl;
+    var levelLabel = { core: "Core", luxe: "Luxe", pinnacle: "Pinnacle" };
     result.etherfi = {
       total: base + efFx + efFund - efCashback,
-      parts: [["formar o saldo", efFund], ["IOF", 0, "zero"], ["câmbio", efFx], ["cashback", -efCashback]],
+      parts: [["formar o saldo", efFund], ["IOF", 0, "zero"], ["câmbio", efFx], ["cashback", -efCashback], ["nível no fim: " + levelLabel[levelName], 0, "label"]],
     };
 
     // ARQ Global: reais → USDc (0,5%), câmbio da bandeira.
@@ -163,6 +193,7 @@
       spend: spend,
       walletOver: walletOver,
       etherfiPrior: num(inputs.etherfiPrior, 0, 0),
+      etherfiLevel: inputs.etherfiLevel ? inputs.etherfiLevel.value : "core",
       revolutUsed: num(inputs.revolutUsed, 0, 0),
       nomadConv: num(inputs.nomadConv, 2, 0) / 100,
       bankSpread: num(inputs.bankSpread, 4, 0) / 100,
@@ -204,10 +235,11 @@
       row.root.style.order = String(rank);
       row.total.textContent = (rank + 1) + "º · " + brl.format(card.total) + " · " + pct(diff, true);
       row.detail.textContent = card.parts.filter(function (part) {
-        return Math.abs(part[1]) >= 0.005 || part[2] === "zero";
+        return Math.abs(part[1]) >= 0.005 || part[2] === "zero" || part[2] === "label";
       }).map(function (part) {
         if (part[2] === "info") return brl.format(part[1]) + " " + part[0];
         if (part[2] === "zero") return part[0] + " " + brl.format(0);
+        if (part[2] === "label") return part[0];
         return part[0] + " " + (part[1] < 0 ? "−" : "") + brl.format(Math.abs(part[1]));
       }).join(" · ") || "sem custo além do câmbio comercial";
       // A barra mostra quanto cada um custa acima do mais barato.
@@ -241,7 +273,9 @@
   });
 
   Object.keys(inputs).forEach(function (key) {
-    if (inputs[key]) inputs[key].addEventListener("input", function () { render(); syncPresets(); });
+    if (!inputs[key]) return;
+    inputs[key].addEventListener("input", function () { render(); syncPresets(); });
+    inputs[key].addEventListener("change", function () { render(); syncPresets(); });
   });
   syncPresets();
 
