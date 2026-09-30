@@ -137,7 +137,7 @@ class ArqAtmArticleTests(unittest.TestCase):
         for url in (REFERRAL_URL, WISE_REFERRAL_URL, REVOLUT_REFERRAL_URL):
             match = re.search(rf'<a href="{re.escape(url)}"([^>]*)>', self.html)
             self.assertIsNotNone(match)
-            self.assertIn('rel="sponsored nofollow noopener noreferrer"', match.group(1))
+            self.assertIn('rel="nofollow noopener noreferrer"', match.group(1))
 
     def test_revolut_paid_plan_positioning_is_conditional_and_sourced(self) -> None:
         self.assertIn("segunda alternativa mais forte para saques", self.html)
