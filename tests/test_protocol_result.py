@@ -35,7 +35,8 @@ class ProtocolResultTests(unittest.TestCase):
         for field in ("result.verdict", "result.body", "result.record", "result.plan", "result.safety"):
             self.assertIn(field, pdf_builder)
         self.assertIn("Gerado em", pdf_builder)
-        self.assertIn("dlt.academy/protocolos/medo-de-ficar-de-fora", pdf_builder)
+        self.assertIn('"dlt.academy" + String(protocol.path', pdf_builder)
+        self.assertIn("protocol.pdfSubject", pdf_builder)
         self.assertIn("Reflexão estruturada — não é terapia nem recomendação de investimento", pdf_builder)
         self.assertNotIn("result.cta", pdf_builder)
         self.assertNotIn("cta.href", pdf_builder)

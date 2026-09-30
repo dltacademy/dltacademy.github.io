@@ -392,9 +392,89 @@ function runProtocol(protocol, mountId) {
       if (cta.disclosure) box.appendChild(el("p", "protocol-cta-disclosure", cta.disclosure));
       mount.appendChild(box);
     }
+
+    // Relatório pago — o último bloco da página, separado do resultado.
+    // O resultado gratuito já está completo acima; o relatório é
+    // aprofundamento opcional. Sem produto configurado, nada aparece.
+    // Um produto, ou uma lista (degraus: método e relatório do caso).
+    const refs = Array.isArray(result.relatorio) ? result.relatorio : result.relatorio ? [result.relatorio] : [];
+    const cards = refs.map((ref) => buildPaidReportOffer(ref, el)).filter(Boolean);
+    if (cards.length === 1) mount.appendChild(cards[0]);
+    if (cards.length > 1) {
+      const group = el("div", "protocol-paid-offers");
+      cards.forEach((c) => group.appendChild(c));
+      mount.appendChild(group);
+    }
   }
 
   render(0);
+}
+
+// Monta a oferta do relatório pago a partir do catálogo (js/paid-reports.js).
+// Recebe só { produto, perfil } — nenhuma resposta da pessoa. O link vai
+// para o checkout do provedor, sem parâmetro derivado das respostas.
+// Configuração ausente ou inválida não gera oferta (SECURITY_BASELINE).
+function buildPaidReportOffer(ref, el) {
+  if (!ref || typeof PAID_REPORTS === "undefined") return null;
+  const product = PAID_REPORTS[ref.produto];
+  if (!product) return null;
+  const checkout = paidReportCheckoutUrl(product.checkoutUrl);
+  if (!checkout) return null;
+  const profile = (product.perfis || {})[ref.perfil];
+
+  const box = el("section", "protocol-paid-report");
+  const titleId = "protocol-paid-report-title-" + String(ref.produto).replace(/[^a-z0-9-]/gi, "");
+  box.setAttribute("aria-labelledby", titleId);
+  box.appendChild(el("p", "protocol-paid-eyebrow", "Para ir além deste resultado"));
+  const title = el("h3", "protocol-paid-title", product.titulo);
+  title.id = titleId;
+  box.appendChild(title);
+  if (product.promessa) box.appendChild(el("p", "protocol-paid-text", product.promessa));
+
+  if (profile && profile.capitulo) {
+    const chapter = el("p", "protocol-paid-profile");
+    chapter.appendChild(el("span", "protocol-paid-profile-label", "Inclui o capítulo do seu caso"));
+    chapter.appendChild(el("strong", null, profile.capitulo));
+    if (profile.porque) chapter.appendChild(el("span", "protocol-paid-profile-why", profile.porque));
+    box.appendChild(chapter);
+  }
+
+  if (product.conteudo && product.conteudo.length) {
+    const list = el("ul", "protocol-paid-list");
+    product.conteudo.forEach((item) => list.appendChild(el("li", null, item)));
+    box.appendChild(list);
+  }
+
+  const buy = el("div", "protocol-paid-buy");
+  buy.appendChild(el("p", "protocol-paid-price", product.preco + (product.formato ? " · " + product.formato : "")));
+  const a = el("a", "btn btn-primary", product.botao || "Quero o relatório completo →");
+  a.href = checkout;
+  a.target = "_blank";
+  a.rel = "noopener noreferrer";
+  a.setAttribute("referrerpolicy", "no-referrer");
+  buy.appendChild(a);
+  box.appendChild(buy);
+
+  // Aviso padrão do modelo estático; o personalizado declara o próprio,
+  // porque nele as respostas são enviadas depois do pagamento.
+  box.appendChild(el("p", "protocol-paid-disclosure", product.aviso ||
+    ("Produto da DLT Academy, vendido e entregue pela " + product.plataforma + ". " +
+    "Nada do que você escreveu aqui vai junto: suas respostas continuam só no seu navegador. " +
+    "Você tem 7 dias para pedir reembolso.")));
+  return box;
+}
+
+function paidReportCheckoutUrl(value) {
+  if (typeof value !== "string" || !value) return null;
+  let url;
+  try {
+    url = new URL(value);
+  } catch (error) {
+    return null;
+  }
+  if (url.protocol !== "https:") return null;
+  const hosts = typeof PAID_REPORT_HOSTS === "undefined" ? [] : PAID_REPORT_HOSTS;
+  return hosts.indexOf(url.hostname) === -1 ? null : url.href;
 }
 
 function prepareProtocolPdfBrand() {
@@ -462,7 +542,7 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
 
   doc.setProperties({
     title: protocol.title,
-    subject: "Reflexão estruturada — medo de ficar de fora",
+    subject: protocol.pdfSubject || "Reflexão estruturada",
     author: "DLT Academy",
     creator: "dlt.academy",
   });
@@ -643,7 +723,7 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
   }
 
   const totalPages = doc.getNumberOfPages();
-  const pageUrl = "dlt.academy/protocolos/medo-de-ficar-de-fora";
+  const pageUrl = "dlt.academy" + String(protocol.path || "/").replace(/\/$/, "");
   const disclaimer = "Conteúdo educacional · Reflexão estruturada — não é terapia nem recomendação de investimento";
 
   for (let page = 1; page <= totalPages; page += 1) {
