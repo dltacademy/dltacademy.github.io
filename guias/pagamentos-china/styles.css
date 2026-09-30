@@ -85,3 +85,7 @@
 .china-jump .guide-list { list-style: none; padding-left: 0; }
 .china-jump .guide-list a { display: flex; align-items: center; min-height: 44px; padding: 6px 0; }
 .china-jump .guide-list a::after { content: "→"; margin-left: auto; padding-left: 12px; }
+
+.china-shot { margin: 16px 0 24px; max-width: 340px; }
+.china-shot img { display: block; width: 100%; height: auto; border: 1px solid var(--border); border-radius: var(--radius); }
+.china-shot figcaption { margin-top: 8px; font-size: 13px; color: var(--text-faint); }

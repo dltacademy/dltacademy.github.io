@@ -189,6 +189,13 @@ class ChinaPaymentsGuideTests(unittest.TestCase):
         self.assertIn("Voo low-cost ou trem-bala?", self.html)
         self.assertIn("Voo low-cost × trem-bala", CLAIMS.read_text(encoding="utf-8"))
 
+    def test_topcashback_statement_image_has_alt_and_file(self) -> None:
+        self.assertTrue((PAGE.parent / "topcashback-trip-dez-2025.webp").is_file())
+        match = re.search(r'<figure class="china-shot">.*?</figure>', self.html, re.DOTALL)
+        self.assertIsNotNone(match)
+        self.assertRegex(match.group(0), r'<img [^>]*alt="[^"]{20,}"')
+        self.assertIn("US$ 12,65", match.group(0))
+
 
 if __name__ == "__main__":
     unittest.main()
