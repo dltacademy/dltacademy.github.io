@@ -36,7 +36,7 @@ Leia este arquivo antes de criar ou alterar uma peça pública.
 ## Segurança e publicação
 
 - CSP permanece restritiva e não recebe JavaScript inline;
-- links externos usam `noopener noreferrer` e `referrerpolicy="no-referrer"`; links comerciais também usam `sponsored nofollow`;
+- links externos usam `noopener noreferrer` e `referrerpolicy="no-referrer"`; links de indicação também usam `nofollow` (não são publicidade paga: são indicações de produtos que o Tiago usa);
 - promoções preservam `<!-- PROMO_ATUAL -->`, `data-promotion` e `data-verified-at`;
 - sem data final publicada, o rótulo é “por tempo indeterminado”;
 - artigo e guia usam disclosure global no rodapé e em `/transparencia/`; ferramenta/protocolo interativo usa disclosure junto da recomendação;

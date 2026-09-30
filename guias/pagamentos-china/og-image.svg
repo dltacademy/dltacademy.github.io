@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Como pagar na China com a melhor taxa</title>
+  <desc id="desc">Alipay, WeChat Pay e Trip.com: a regra dos 200 yuan, o cartão direto para contas grandes e compras reais com cashback.</desc>
+  <rect width="1200" height="630" fill="#06090f"/>
+  <rect x="760" width="440" height="630" fill="#08261f"/>
+  <text x="72" y="82" fill="#f4f8fc" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700">DLT ACADEMY</text>
+  <rect x="72" y="104" width="278" height="40" rx="20" fill="none" stroke="#30e89a" stroke-width="2"/>
+  <text x="94" y="131" fill="#60f0b1" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700">GUIA DE VIAGEM · CHINA</text>
+  <g fill="#f4f8fc" font-family="Arial, Helvetica, sans-serif" font-size="55" font-weight="700">
+    <text x="72" y="230">Como pagar na</text>
+    <text x="72" y="298">China com a</text>
+    <text x="72" y="366">melhor taxa</text>
+  </g>
+  <g fill="#b2becd" font-family="Arial, Helvetica, sans-serif" font-size="28">
+    <text x="76" y="430">Alipay, WeChat Pay e Trip.com</text>
+    <text x="76" y="472">com compras reais e cashback.</text>
+  </g>
+  <rect x="72" y="530" width="560" height="50" rx="25" fill="none" stroke="#30e89a" stroke-width="2"/>
+  <text x="98" y="563" fill="#5aebad" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700">QR ATÉ ¥200 · CARTÃO DIRETO ACIMA</text>
+  <rect x="835" y="105" width="245" height="415" rx="30" fill="#0f1621" stroke="#596f83" stroke-width="4"/>
+  <g fill="none" stroke="#30e89a" stroke-width="5">
+    <rect x="880" y="150" width="60" height="60" rx="6"/>
+    <rect x="975" y="150" width="60" height="60" rx="6"/>
+    <rect x="880" y="245" width="60" height="60" rx="6"/>
+  </g>
+  <g fill="#30e89a">
+    <rect x="897" y="167" width="26" height="26"/>
+    <rect x="992" y="167" width="26" height="26"/>
+    <rect x="897" y="262" width="26" height="26"/>
+    <rect x="975" y="245" width="22" height="22"/>
+    <rect x="1013" y="283" width="22" height="22"/>
+  </g>
+  <text x="865" y="385" fill="#f4f8fc" font-family="Arial, Helvetica, sans-serif" font-size="58" font-weight="700">¥200</text>
+  <text x="865" y="425" fill="#60f0b1" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700">O LIMITE QUE</text>
+  <text x="865" y="455" fill="#60f0b1" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700">EVITA OS 3%</text>
+</svg>
