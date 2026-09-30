@@ -1,0 +1,91 @@
+/* Complementos do guia de pagamentos na China. A estrutura vem de
+   dlt-patterns.css; aqui só o layout do simulador (mesmos controles do
+   artigo ARQ) e linhas de resultado mais largas, sem tokens novos. */
+.compare caption {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.calc .calc-controls { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 24px; }
+.calc .calc-control { display: grid; gap: 8px; align-content: start; }
+.calc .calc-control label {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--text-dim);
+  font-size: 14px;
+  font-weight: 600;
+}
+.calc .calc-control output {
+  color: var(--text);
+  font-family: var(--font-head);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.calc .calc-control input[type="range"] { width: 100%; accent-color: var(--accent); }
+.calc .calc-control select,
+.calc .calc-control input[type="number"] {
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--bg-elev-2);
+  color: var(--text);
+  font: inherit;
+}
+.calc .calc-group { display: grid; gap: 16px; align-content: start; margin: 0; padding: 0; border: 0; min-width: 0; }
+.calc .calc-group legend { margin-bottom: 4px; padding: 0; color: var(--text); font-family: var(--font-head); font-size: 15px; font-weight: 700; }
+.calc .calc-presets { display: flex; flex-wrap: wrap; gap: 8px; margin-top: -6px; }
+.calc .calc-presets button {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--bg-elev-2);
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.calc .calc-presets button:hover, .calc .calc-presets button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+.calc .calc-presets button:focus-visible, .calc .calc-advanced summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.calc .calc-advanced { margin: 0 0 20px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.calc .calc-advanced summary { display: flex; align-items: center; min-height: 44px; color: var(--text-dim); font-size: 14.5px; font-weight: 600; cursor: pointer; }
+.calc .calc-advanced[open] summary { margin-bottom: 12px; }
+.calc .calc-advanced > .calc-controls { margin-bottom: 18px; }
+.calc .calc-assumption-note { color: var(--text-faint); font-size: 12.5px; line-height: 1.55; margin: -4px 0 12px; }
+.calc .calc-base { color: var(--text-dim); font-size: 14.5px; margin: 0 0 14px; }
+.calc .calc-rows { display: grid; gap: 14px; margin-bottom: 18px; }
+.calc .calc-rows.bar-chart { grid-auto-flow: row; height: auto; }
+#china-calc .calc-row { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr) minmax(0, 1.4fr); }
+#china-calc .calc-out { text-align: left; }
+#china-calc .calc-out [data-calc-detail] { font-size: 13px; line-height: 1.4; }
+.calc .calc-rows + .calc-verdict { margin-bottom: 18px; }
+.calc .calc-verdict { min-height: 2.8em; }
+.calc .btn { margin-top: 4px; }
+
+@media (max-width: 720px) {
+  .calc .calc-controls { grid-template-columns: 1fr; }
+  #china-calc .calc-row { grid-template-columns: 1fr; gap: 6px; }
+  #china-calc .calc-name { font-size: 14px; }
+}
+@media (max-width: 560px) {
+  .calc .calc-control label { display: block; }
+  .calc .calc-control output { display: block; margin-top: 4px; }
+}
+.calc .calc-advanced summary { list-style: none; }
+.calc .calc-advanced summary::-webkit-details-marker { display: none; }
+.calc .calc-advanced summary::after { content: "+"; margin-left: auto; font-size: 20px; color: var(--accent); }
+.calc .calc-advanced[open] summary::after { content: "−"; }
+.china-jump .guide-list { list-style: none; padding-left: 0; }
+.china-jump .guide-list a { display: flex; align-items: center; min-height: 44px; padding: 6px 0; }
+.china-jump .guide-list a::after { content: "→"; margin-left: auto; padding-left: 12px; }
+
+.china-shot { margin: 16px 0 24px; max-width: 340px; }
+.china-shot img { display: block; width: 100%; height: auto; border: 1px solid var(--border); border-radius: var(--radius); }
+.china-shot figcaption { margin-top: 8px; font-size: 13px; color: var(--text-faint); }

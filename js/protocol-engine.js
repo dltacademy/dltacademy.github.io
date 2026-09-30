@@ -385,7 +385,7 @@ function runProtocol(protocol, mountId) {
       a.href = cta.href;
       if (cta.external) {
         a.target = "_blank";
-        a.rel = "sponsored nofollow noopener noreferrer";
+        a.rel = "nofollow noopener noreferrer";
         a.setAttribute("referrerpolicy", "no-referrer");
       }
       box.appendChild(a);
