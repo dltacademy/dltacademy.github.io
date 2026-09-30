@@ -52,6 +52,7 @@ As fontes públicas continuam vinculadas no próprio guia. Este arquivo registra
 - ether.fi no mês inteiro (câmbio Core 1,29%, Luxe até 1,25%, Pinnacle até 1,0%; PIX 0,5%; subida não retroativa): US$ 2 mil −1,22%; 3 mil −0,55%; 5 mil +0,16%; 10 mil −0,54%; 25 mil +0,30%. ARQ +0,50% em todos.
 - Ganho de começar o mês no Luxe vs Core (mesmo modelo): US$ 3 mil +22; 4 mil +48; 5 mil ou mais +72 por mês. Anuidade do Luxe: US$ 199.
 - Cesta ¥454,93 (R$ 350,64 no comercial): ether.fi R$ 346,38; ARQ 352,39; Revolut na cota 350,64 (fora 367,99); Wise 365,26; Nomad 370,17; banco 377,43. Viagem ¥10.000 (R$ 7.707,49): ether.fi 7.611,84; ARQ 7.746,02; Revolut 8.039,44 (R$ 1.000 na cota); Wise 8.028,89; Nomad 8.136,79; banco 8.296,34.
+- Saldo × cartão numa conta de ¥1.000 por QR (cartão × 1,03 sobre a rota de melhor caso): Panda 1ª 783,91 (+1,71%); ether.fi 761,27 × 1,03 = 784,11 (+1,73%; com 1% de cashback +3,82%); Revolut na cota 793,87 (+3,00%); ARQ 797,84 (+3,51%); Panda seguintes 823,44 (+6,84%); Wise 826,98 (+7,30%); Revolut fora 833,16 (+8,10%); Nomad nível 1 838,09 (+8,74%); banco 4% 854,52 (+10,87%).
 - Break-even ARQ Premium: 500 + (6,99 − 5) ÷ 0,005 ≈ US$ 898/mês; Prestige: 500 + (19,99 − 10) ÷ 0,005 ≈ US$ 2.498/mês.
 
 Se os comprovantes pendentes do Alipay (ether.fi e ARQ) liquidarem com outro valor, atualizar a tabela e esta seção.
