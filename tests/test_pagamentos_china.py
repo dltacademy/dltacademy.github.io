@@ -71,13 +71,22 @@ class ChinaPaymentsGuideTests(unittest.TestCase):
             "US$ 5.000",
             "US$ 50.000",
             "Consultadas em 30/09/2026",
+            "Comparação: ether.fi, ARQ, Revolut e Nomad",
+            "¥6,7053",
+            "6,7148",
+            "≈ −1,25%",
+            "≈ +0,36%",
+            "≈ +4,54%",
+            "Tarifa publicada",
+            "Meu comprovante",
+            "IOF de até 3,5% na compra de stablecoins",
         )
         for text in required:
             with self.subTest(text=text):
                 self.assertIn(text, self.html)
 
     def test_no_sensitive_receipt_data(self) -> None:
-        for leaked in ("0787", "4318", "c1145301", "e9ce1ece", "476c5927", "0x038e", "0xc423", "0x11dc", "02161686888"):
+        for leaked in ("0787", "4318", "c1145301", "e9ce1ece", "476c5927", "0x038e", "0xc423", "0x11dc", "02161686888", "9036"):
             with self.subTest(leaked=leaked):
                 self.assertNotIn(leaked, self.html)
 
