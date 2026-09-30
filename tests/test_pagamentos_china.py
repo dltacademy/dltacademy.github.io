@@ -141,7 +141,7 @@ class ChinaPaymentsGuideTests(unittest.TestCase):
             "https://www.arqfinance.com/referrals/general?referralCode=tiagohyd_t7t",
             "https://wise.com/invite/irhc/tiagon100",
             "https://revolut.com/referral/?referral-code=tiago327k",
-            "https://www.topcashback.com/ref/member124413767106",
+            "https://www.topcashback.com/ref/member1244137676106",
         )
         referral = re.compile(r'<a [^>]*href="(https://[^"]*(?:ether\.fi/@|referral|/invite/|topcashback\.com/ref/)[^"]*)"[^>]*>')
         found = referral.findall(self.html)
