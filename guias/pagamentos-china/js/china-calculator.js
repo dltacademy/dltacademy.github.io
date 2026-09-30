@@ -103,7 +103,7 @@
     var efCashback = cashbackUsd * o.usdbrl;
     result.etherfi = {
       total: base + efFx + efFund - efCashback,
-      parts: [["formar o saldo", efFund], ["câmbio", efFx], ["cashback", -efCashback]],
+      parts: [["formar o saldo", efFund], ["IOF", 0, "zero"], ["câmbio", efFx], ["cashback", -efCashback]],
     };
 
     // ARQ Global: reais → USDc (0,5%), câmbio da bandeira.
@@ -112,7 +112,7 @@
     var arqFund = arqUsd * o.usdbrl * P.arqFunding;
     result.arq = {
       total: base + arqFx + arqFund,
-      parts: [["formar o saldo", arqFund], ["câmbio", arqFx]],
+      parts: [["formar o saldo", arqFund], ["IOF", 0, "zero"], ["câmbio", arqFx]],
     };
 
     // Revolut Standard: cota mensal sem tarifa e sem IOF; acima, tarifa + IOF.
@@ -122,7 +122,7 @@
     var rvIof = (over + rvFee) * P.iof;
     result.revolut = {
       total: base + rvFee + rvIof,
-      parts: [["convertidos na cota, sem custo", free, "info"], ["tarifa fora da cota", rvFee], ["IOF fora da cota", rvIof]],
+      parts: [["convertidos na cota, sem tarifa e sem IOF", free, "info"], ["tarifa fora da cota", rvFee], ["IOF fora da cota", rvIof]],
     };
 
     // Wise: reais → yuan antes; IOF e tarifa sobre o valor convertido.
@@ -200,11 +200,14 @@
       var row = rows[key];
       if (!row) return;
       var diff = (card.total / m.base - 1) * 100;
-      row.total.textContent = brl.format(card.total) + " · " + pct(diff, true);
+      var rank = sorted.indexOf(key);
+      row.root.style.order = String(rank);
+      row.total.textContent = (rank + 1) + "º · " + brl.format(card.total) + " · " + pct(diff, true);
       row.detail.textContent = card.parts.filter(function (part) {
-        return Math.abs(part[1]) >= 0.005;
+        return Math.abs(part[1]) >= 0.005 || part[2] === "zero";
       }).map(function (part) {
         if (part[2] === "info") return brl.format(part[1]) + " " + part[0];
+        if (part[2] === "zero") return part[0] + " " + brl.format(0);
         return part[0] + " " + (part[1] < 0 ? "−" : "") + brl.format(Math.abs(part[1]));
       }).join(" · ") || "sem custo além do câmbio comercial";
       // A barra mostra quanto cada um custa acima do mais barato.
@@ -222,9 +225,25 @@
       : labels[best] + " sai mais barato: " + brl.format(m.cards[best].total) + ", " + brl.format(gap) + " a menos que " + labels[second] + " e " + brl.format(m.cards[worst].total - m.cards[best].total) + " a menos que " + labels[worst] + ".";
   }
 
-  Object.keys(inputs).forEach(function (key) {
-    if (inputs[key]) inputs[key].addEventListener("input", render);
+  var presets = Array.prototype.slice.call(root.querySelectorAll("[data-china-preset]"));
+  function syncPresets() {
+    presets.forEach(function (button) {
+      button.setAttribute("aria-pressed", String(inputs.spend && button.getAttribute("data-china-preset") === inputs.spend.value));
+    });
+  }
+  presets.forEach(function (button) {
+    button.addEventListener("click", function () {
+      if (!inputs.spend) return;
+      inputs.spend.value = button.getAttribute("data-china-preset");
+      render();
+      syncPresets();
+    });
   });
+
+  Object.keys(inputs).forEach(function (key) {
+    if (inputs[key]) inputs[key].addEventListener("input", function () { render(); syncPresets(); });
+  });
+  syncPresets();
 
   render();
 })();
