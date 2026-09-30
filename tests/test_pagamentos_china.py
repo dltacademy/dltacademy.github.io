@@ -179,6 +179,16 @@ class ChinaPaymentsGuideTests(unittest.TestCase):
                 self.assertRegex(tag, r'rel="(?:nofollow )?noopener noreferrer"')
                 self.assertIn('referrerpolicy="no-referrer"', tag)
 
+    def test_lowcost_flight_tip_states_the_full_cost_comparison(self) -> None:
+        match = re.search(r'Antes de fechar o trem-bala, olhe o voo:.*?</p>', self.html, re.DOTALL)
+        self.assertIsNotNone(match)
+        tip = match.group(0)
+        for part in ("mala despachada", "aeroporto", "TopCashback", "¥200"):
+            with self.subTest(part=part):
+                self.assertIn(part, tip)
+        self.assertIn("Voo low-cost ou trem-bala?", self.html)
+        self.assertIn("Voo low-cost × trem-bala", CLAIMS.read_text(encoding="utf-8"))
+
 
 if __name__ == "__main__":
     unittest.main()
