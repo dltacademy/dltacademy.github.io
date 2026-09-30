@@ -82,3 +82,6 @@
 .calc .calc-advanced summary::-webkit-details-marker { display: none; }
 .calc .calc-advanced summary::after { content: "+"; margin-left: auto; font-size: 20px; color: var(--accent); }
 .calc .calc-advanced[open] summary::after { content: "−"; }
+.china-jump .guide-list { list-style: none; padding-left: 0; }
+.china-jump .guide-list a { display: flex; align-items: center; min-height: 44px; padding: 6px 0; }
+.china-jump .guide-list a::after { content: "→"; margin-left: auto; padding-left: 12px; }

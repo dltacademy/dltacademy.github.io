@@ -29,6 +29,9 @@ As fontes públicas continuam vinculadas no próprio guia. Este arquivo registra
 | Spread de cartão de banco: Nubank Ultravioleta anuncia 3,5% | blog Nubank, 16/09/2026; o simulador usa 4% como padrão editável | 30/10/2026 |
 | Câmbio de referência USD/BRL 5,1681 | câmbio médio da Wise em 30/09/2026 | fixo — é dado histórico |
 | TopCashback × Trip.com: 11% hotéis (novos) / 8% (existentes), 2% trens, 2,5% ingressos, voos domésticos na China excluídos, app não conta, sem taxas; rastreio pode variar fora dos EUA | página do Trip.com no TopCashback (atualizada em abril/2026), consultada em 30/09/2026 | antes de cada divulgação |
+| eSIM de dados comprado no Trip.com; chip do Brasil com roaming só de SMS; metrô por ficha, cartão de transporte ou QR do Alipay/WeChat; dinheiro vivo dispensável | experiência do Tiago (setembro/2026) | revisar a cada viagem |
+| Recarga de saldo no Alipay com cartão estrangeiro: não suportada (Wise, 2026); Tour Card cobrava 5% e foi encerrado em 29/05/2026; Nihao China (UnionPay) com taxas desencontradas nas fontes | pesquisa de 30/09/2026; nenhuma fonte confirmou depósito sem taxa | confirmar com print do app |
+| Simulações por cartão (4 compras ¥454,93 e viagem ¥10.000) | modelo do simulador com tarifas de 30/09/2026 | junto com as tarifas |
 | IOF sobre stablecoins | proposta em construção, não vigente em 30/09/2026 | a cada revisão |
 | Câmbio de referência ¥6,7053 (fechamento onshore 30/09/2026 16h30) | FX168 | fixo — é dado histórico |
 | Comprovantes (3 compras) e ausência de IOF | experiência pessoal do Tiago; dados de cartão e IDs removidos | fixo — é relato datado |
@@ -46,6 +49,7 @@ As fontes públicas continuam vinculadas no próprio guia. Este arquivo registra
 - O simulador (`js/china-calculator.js`) lê as tarifas dos atributos `data-*` do bloco `#china-calc`; ao revisar, atualize os atributos, os valores padrão dos campos e `data-verified-at`.
 - ether.fi no mês inteiro (câmbio Core 1,29%, Luxe até 1,25%, Pinnacle até 1,0%; PIX 0,5%; subida não retroativa): US$ 2 mil −1,22%; 3 mil −0,55%; 5 mil +0,16%; 10 mil −0,54%; 25 mil +0,30%. ARQ +0,50% em todos.
 - Ganho de começar o mês no Luxe vs Core (mesmo modelo): US$ 3 mil +22; 4 mil +48; 5 mil ou mais +72 por mês. Anuidade do Luxe: US$ 199.
+- Cesta ¥454,93 (R$ 350,64 no comercial): ether.fi R$ 346,38; ARQ 352,39; Revolut na cota 350,64 (fora 367,99); Wise 365,26; Nomad 370,17; banco 377,43. Viagem ¥10.000 (R$ 7.707,49): ether.fi 7.611,84; ARQ 7.746,02; Revolut 8.039,44 (R$ 1.000 na cota); Wise 8.028,89; Nomad 8.136,79; banco 8.296,34.
 - Break-even ARQ Premium: 500 + (6,99 − 5) ÷ 0,005 ≈ US$ 898/mês; Prestige: 500 + (19,99 − 10) ÷ 0,005 ≈ US$ 2.498/mês.
 
 Se os comprovantes pendentes do Alipay (ether.fi e ARQ) liquidarem com outro valor, atualizar a tabela e esta seção.
