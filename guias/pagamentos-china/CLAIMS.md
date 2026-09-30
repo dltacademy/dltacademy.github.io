@@ -18,6 +18,12 @@ As fontes públicas continuam vinculadas no próprio guia. Este arquivo registra
 | ARQ Premium/Prestige: 1%/2% nos primeiros US$ 500, US$ 6,99 e US$ 19,99/mês | help center ARQ (27/07 e 30/07/2026) | 30/10/2026 |
 | Revolut Standard: cota de R$ 1.000/mês com spread zero e isenção de IOF, 1,4% acima | página de tarifas Standard + notícia oficial de 04/03/2026 | 30/10/2026 |
 | Nomad: conversão a partir de 1% + IOF 3,5%; compra em outra moeda pela taxa Visa sem margem | tarifas Nomad + help center (22/06/2026) | 30/10/2026 |
+| Wise: 0,67% de tarifa + IOF 3,5% em reais → moeda; USD → CNY 0,32%; cartão BR recusa conversão com BRL | API de preços da Wise e help center, 30/09/2026 | 30/10/2026 |
+| Nomad Pass: conversão de 2% (nível 1) a 1% (nível 5) | Nomad, 15/09/2026 | 30/10/2026 |
+| Revolut: câmbio entre moedas estrangeiras grátis em dia útil até R$ 10.000; +1% fim de semana; +0,5% acima | página de tarifas Standard | 30/10/2026 |
+| Saques: Revolut R$ 1.600 ou 5/mês e 2% (mín. R$ 6); Wise 1 grátis e R$ 20; Nomad US$ 5 fora da MoneyPass | páginas de tarifas | 30/10/2026 |
+| Spread de cartão de banco: Nubank Ultravioleta anuncia 3,5% | blog Nubank, 16/09/2026; o simulador usa 4% como padrão editável | 30/10/2026 |
+| Câmbio de referência USD/BRL 5,1681 | câmbio médio da Wise em 30/09/2026 | fixo — é dado histórico |
 | IOF sobre stablecoins | proposta em construção, não vigente em 30/09/2026 | a cada revisão |
 | Câmbio de referência ¥6,7053 (fechamento onshore 30/09/2026 16h30) | FX168 | fixo — é dado histórico |
 | Comprovantes (3 compras) e ausência de IOF | experiência pessoal do Tiago; dados de cartão e IDs removidos | fixo — é relato datado |
@@ -31,6 +37,8 @@ As fontes públicas continuam vinculadas no próprio guia. Este arquivo registra
 - ¥256,84 × 3% = ¥7,71 de taxa hipotética na carteira.
 
 - Comparação por ¥1.000 (régua US$ 149,14 a ¥6,7053): ether.fi 1,005 × 1,0129 × 0,97 ≈ −1,25%; ARQ 1,005 × 0,9986 ≈ +0,36%; Revolut dentro da cota ≈ 0%; acima 1,4% até 1,014 × 1,035 = +4,95%; Nomad 1,01 × 1,035 = +4,54%.
+- Rotas por ¥1.000 (régua R$ 770,75 = 1000 ÷ 6,7053 × 5,1681): ether.fi 3% −1,23%, 1% +0,80%, 0,5% +1,30%; ARQ +0,50%; Revolut na cota 0%, fora 1,014 × 1,035 = +4,95%, via dólar no fim de semana +6,00%; Wise direto 1 + 0,035 + 0,0067 = +4,17%, via dólar × 1,0032 = +4,50%; Nomad 1,02 × 1,035 = +5,57% (nível 5: +4,54%); banco 1,04 × 1,035 = +7,64% (3,5%: +7,12%).
+- O simulador (`js/china-calculator.js`) lê as tarifas dos atributos `data-*` do bloco `#china-calc`; ao revisar, atualize os atributos, os valores padrão dos campos e `data-verified-at`.
 - Break-even ARQ Premium: 500 + (6,99 − 5) ÷ 0,005 ≈ US$ 898/mês; Prestige: 500 + (19,99 − 10) ÷ 0,005 ≈ US$ 2.498/mês.
 
 Se os comprovantes pendentes do Alipay (ether.fi e ARQ) liquidarem com outro valor, atualizar a tabela e esta seção.

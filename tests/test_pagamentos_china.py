@@ -71,19 +71,37 @@ class ChinaPaymentsGuideTests(unittest.TestCase):
             "US$ 5.000",
             "US$ 50.000",
             "Consultadas em 30/09/2026",
-            "Comparação: ether.fi, ARQ, Revolut e Nomad",
+            "Comparação: ether.fi, ARQ, Revolut, Wise, Nomad e cartão de banco",
+            "Quanto sai ¥1.000 em cada rota",
+            "R$ 770,75",
+            "+4,17%",
+            "+5,57%",
+            "+7,64%",
+            "+4,95%",
+            "Reais → yuan antes",
             "¥6,7053",
             "6,7148",
-            "≈ −1,25%",
-            "≈ +0,36%",
-            "≈ +4,54%",
-            "Tarifa publicada",
-            "Meu comprovante",
+            "−1,23%",
+            "+0,50%",
             "IOF de até 3,5% na compra de stablecoins",
         )
         for text in required:
             with self.subTest(text=text):
                 self.assertIn(text, self.html)
+
+    def test_calculator_contract(self) -> None:
+        self.assertIn('data-china-calculator', self.html)
+        self.assertIn('data-verified-at="2026-09-30"', self.html)
+        self.assertIn('src="/guias/pagamentos-china/js/china-calculator.js"', self.html)
+        script = (PAGE.parent / "js" / "china-calculator.js").read_text(encoding="utf-8")
+        for key in ("etherfi", "arq", "revolut", "wise", "nomad", "bank"):
+            with self.subTest(row=key):
+                self.assertIn(f'data-calc-row="{key}"', self.html)
+                self.assertIn(key + ":", script)
+        for attr in ("data-iof=", "data-revolut-quota=", "data-etherfi-tier1=", "data-alipay-fee="):
+            with self.subTest(attr=attr):
+                self.assertIn(attr, self.html)
+        self.assertIn('data-copy-result="#china-calc"', self.html)
 
     def test_no_sensitive_receipt_data(self) -> None:
         for leaked in ("0787", "4318", "c1145301", "e9ce1ece", "476c5927", "0x038e", "0xc423", "0x11dc", "02161686888", "9036"):

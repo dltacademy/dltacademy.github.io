@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="/styles-base.css">
 <link rel="stylesheet" href="/styles-portal.css">
 <link rel="stylesheet" href="/guias/styles-guides.css">
+<link rel="stylesheet" href="/guias/pagamentos-china/styles.css">
 <link rel="stylesheet" href="/dlt-patterns.css">
 <script type="application/ld+json">
 {
@@ -60,7 +61,7 @@
     <div class="guide-progress-bar" aria-hidden="true"><span data-guide-progress-fill></span></div><p class="privacy-line" data-guide-progress-label aria-live="polite">0 de 4 concluídos</p>
   </section>
 
-  <section class="key-points" data-reveal aria-labelledby="china-essencial"><p id="china-essencial" class="key-points-title">O essencial em 30 segundos</p><ul><li>Na China quase tudo se paga por QR. Alipay e WeChat Pay aceitam cartão estrangeiro vinculado.</li><li>Até ¥200 por pagamento, a carteira não cobra taxa. Acima disso, cobra 3% sobre o valor inteiro.</li><li>O que passa de ¥200 (hotel, trem, voo, passeio) eu pago com o cartão direto, pelo Trip.com ou na maquininha.</li><li>Com o ether.fi Cash, nas compras que já liquidaram, o câmbio ficou uns 1,5% acima do comercial e voltaram 3% de cashback. Saí abaixo do câmbio comercial.</li><li>Na comparação completa, do real até o yuan: ether.fi ≈ −1,25%, ARQ ≈ +0,4%, Revolut ≈ 0% só dentro da cota e Nomad ≈ +4,5%.</li></ul></section>
+  <section class="key-points" data-reveal aria-labelledby="china-essencial"><p id="china-essencial" class="key-points-title">O essencial em 30 segundos</p><ul><li>Na China quase tudo se paga por QR. Alipay e WeChat Pay aceitam cartão estrangeiro vinculado.</li><li>Até ¥200 por pagamento, a carteira não cobra taxa. Acima disso, cobra 3% sobre o valor inteiro.</li><li>O que passa de ¥200 (hotel, trem, voo, passeio) eu pago com o cartão direto, pelo Trip.com ou na maquininha.</li><li>Com o ether.fi Cash, nas compras que já liquidaram, o câmbio ficou uns 1,5% acima do comercial e voltaram 3% de cashback. Saí abaixo do câmbio comercial.</li><li>Do real até o yuan, fora das cotas grátis: ether.fi −1,23%, ARQ +0,50%, Wise +4,17%, Revolut +4,95%, Nomad +5,57% e cartão de banco +7,64% sobre o câmbio comercial. Tem simulador para o seu gasto.</li></ul></section>
   <nav class="piece-toc" data-toc-watch=".guide-reference > h2"><p>Neste guia</p><ol></ol></nav>
 
   <article class="guide-reference">
@@ -143,7 +144,7 @@
     </ul>
     <p class="guide-note"><strong>Fontes oficiais:</strong> <a href="https://help.ether.fi/en/articles/449829-pix-transfers-brl" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">PIX no ether.fi (atualizado em 01/04/2026)</a> · <a href="https://help.ether.fi/en/articles/262374-how-does-cashback-work" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">como o cashback funciona</a>. Consultadas em 30/09/2026.</p>
 
-    <h2 id="comparacao">Comparação: ether.fi, ARQ, Revolut e Nomad</h2>
+    <h2 id="comparacao">Comparação: ether.fi, ARQ, Revolut, Wise, Nomad e cartão de banco</h2>
     <p>Para comparar de verdade, somei tudo o que sai do bolso desde os reais: formar o saldo, IOF, câmbio na compra em yuan e o cashback que volta. A régua é o câmbio comercial do dia.</p>
 
     <h3>O teste lado a lado: ether.fi × ARQ no Alipay</h3>
@@ -159,25 +160,85 @@
     </div>
     <p>No câmbio puro, o ARQ ganha: cobrou praticamente a cotação comercial, até um pouco melhor. O ether.fi cobra cerca de 1,3% a mais. Quando o cashback entra, a ordem inverte.</p>
 
-    <h3>O custo total, do real até a compra em yuan</h3>
-    <div class="compare" aria-labelledby="china-comparacao-titulo"><div class="compare-scroll"><table><caption id="china-comparacao-titulo">Custo total contra o câmbio comercial, plano gratuito de cada um</caption><thead><tr><th scope="col">Cartão</th><th scope="col">Formar o saldo</th><th scope="col">IOF</th><th scope="col">Câmbio em yuan</th><th scope="col">Cashback</th><th scope="col">Total · ¥1.000 saem por</th></tr></thead><tbody>
-      <tr><th scope="row">ether.fi Cash (Core)<br><small>Meu comprovante</small></th><td>0,5% + R$ 0,10 (PIX)</td><td>0%</td><td>+1,29%</td><td>−3%</td><td><strong>≈ −1,25%</strong><br><small>US$ 147,27</small></td></tr>
-      <tr><th scope="row">ARQ Global (Standard)<br><small>Meu comprovante</small></th><td>0,5%</td><td>0%</td><td>−0,14%</td><td>—</td><td><strong>≈ +0,36%</strong><br><small>US$ 149,67</small></td></tr>
-      <tr><th scope="row">Revolut Standard, dentro da cota<br><small>Tarifa publicada</small></th><td>0% até R$ 1.000/mês</td><td>0% na cota</td><td>Câmbio da Revolut</td><td>—</td><td><strong>≈ 0%</strong><br><small>≈ US$ 149,14</small></td></tr>
-      <tr><th scope="row">Revolut Standard, acima da cota<br><small>Tarifa publicada</small></th><td>1,4%</td><td>até 3,5%</td><td>Câmbio da Revolut</td><td>—</td><td><strong>+1,4% a +4,95%</strong><br><small>US$ 151,22 a 156,52</small></td></tr>
-      <tr><th scope="row">Nomad<br><small>Tarifa publicada</small></th><td>a partir de 1%</td><td>3,5%</td><td>Taxa Visa, sem margem</td><td>—</td><td><strong>≈ +4,54%</strong><br><small>≈ US$ 155,90</small></td></tr>
-    </tbody></table></div><p class="compare-foot">Régua: ¥1.000 ao câmbio comercial de 30/09/2026 = US$ 149,14. Linhas marcadas "meu comprovante" usam o câmbio real que paguei; as outras, só as tarifas publicadas, sem teste meu. A taxa da Visa e o câmbio da Revolut podem somar alguns décimos que não estão na conta.</p></div>
-
-    <p>O que a tabela mostra:</p>
+    <h3>As três rotas do real até o yuan</h3>
     <ul class="guide-list">
-      <li><strong>ether.fi é o mais barato enquanto o cashback é de 3%,</strong> ou seja, nos primeiros US$ 2.000 do mês. Entre US$ 2.000 e 3.000 o cashback cai para 1%, e o total sobe para cerca de +0,8%: aí o ARQ passa na frente.</li>
-      <li><strong>O ARQ é o câmbio mais limpo.</strong> Sem cashback no plano gratuito, mas sem surpresa. Nos planos pagos o cashback é de 1% (Premium, US$ 6,99/mês) ou 2% (Prestige, US$ 19,99/mês) nos primeiros US$ 500 do mês. Só pelo cashback, a mensalidade só se paga com gastos acima de uns US$ 900 (Premium) ou US$ 2.500 (Prestige) por mês.</li>
-      <li><strong>A Revolut empata no zero, mas a cota é pequena.</strong> R$ 1.000 por mês no Standard não cobrem uma viagem. Acima disso vêm 1,4%, e a isenção de IOF está atrelada à cota do plano: confira no app antes de converter.</li>
-      <li><strong>A Nomad é a mais cara para a China.</strong> O cartão não cobra margem na compra em yuan, mas o saldo nasce com 3,5% de IOF e a taxa de conversão.</li>
-      <li><strong>Para sacar yuan,</strong> o ARQ cobra 1% do valor sacado; o ether.fi, 2% e sem cartão físico no nível Core. Por isso o ARQ é o meu cartão de saque.</li>
+      <li><strong>Reais → dólar → yuan:</strong> você forma saldo em dólar (ou USDC) antes, e o cartão converte dólar em yuan na compra.</li>
+      <li><strong>Reais → yuan antes:</strong> você converte reais em yuan no app e guarda saldo em yuan. Na compra, não há conversão.</li>
+      <li><strong>Reais → yuan na hora:</strong> o cartão debita reais e converte direto na compra.</li>
     </ul>
-    <p class="guide-note"><strong>Um risco no horizonte:</strong> o governo estuda cobrar IOF de até 3,5% na compra de stablecoins, o que atingiria o ether.fi e o ARQ. Até 30/09/2026, pelo que encontrei, era proposta em construção, não regra em vigor. Se entrar, esta tabela muda.</p>
-    <p class="guide-note"><strong>Fontes:</strong> <a href="https://help.arqfinance.com/pt-BR/articles/13547471-impostos-para-cartoes-brasileiros" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: cartão Global sem IOF</a> · <a href="https://articles.arqfinance.com/cartao-sem-iof-arq-2026/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: custo de 0,5% na formação do saldo</a> · <a href="https://help.arqfinance.com/en/articles/13828450-how-does-the-cashback-work-if-i-am-a-premium-or-prestige-member" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: cashback dos planos</a> · <a href="https://www.revolut.com/pt-BR/legal/standard-fees/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Revolut Standard</a> · <a href="https://www.revolut.com/pt-BR/news/revolut_acelera_no_brasil_com_cr_dito_em_todos_os_cart_es_e_lan_a_ultra/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Revolut: cotas com spread zero e isenção de IOF</a> · <a href="https://www.nomadglobal.com/tarifas-nomad" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Nomad: tarifas</a> · <a href="https://benomad.zendesk.com/hc/en-us/articles/4408236373015-What-s-the-effective-exchange-rate-for-non-US-Dollar-purchases-with-the-Nomad-International-Debit-Card" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Nomad: compras em outras moedas</a> · <a href="https://www.fx168news.com/express/fastnews/1439332" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">fechamento do yuan em 30/09/2026</a>. Consultadas em 30/09/2026.</p>
+    <p>Toda vez que uma instituição brasileira converte reais em moeda estrangeira, entra IOF de 3,5%, a não ser que ela isente (a Revolut, dentro da cota do plano). Nas rotas com stablecoin (ether.fi e ARQ), o real vira USDC ou USDc sem IOF hoje.</p>
+
+    <h3>Cada tarifa, cartão por cartão</h3>
+    <div class="compare" aria-labelledby="china-tarifas-titulo"><div class="compare-scroll"><table><caption id="china-tarifas-titulo">Tarifas publicadas e medidas, plano gratuito de cada um</caption><thead><tr><th scope="col">Cartão</th><th scope="col">Entrada dos reais</th><th scope="col">IOF</th><th scope="col">Conversão até o yuan</th><th scope="col">Cashback e faixas</th></tr></thead><tbody>
+      <tr><th scope="row">ether.fi Cash (Core)</th><td>PIX → USDC: 0,5% + R$ 0,10</td><td>0%</td><td>Câmbio-base de cerca de 1% + margem de 0% a 0,5%. Medi +1,29%</td><td>3% até US$ 2.000 no mês, 1% até US$ 3.000, 0,5% acima. Pago em ETHFI</td></tr>
+      <tr><th scope="row">ARQ Global (Standard)</th><td>Reais → USDc: 0,5%</td><td>0%</td><td>Taxa da Mastercard, sem tarifa do ARQ. Medi −0,14%</td><td>Nenhum no Standard. Premium: 1% e Prestige: 2% nos primeiros US$ 500</td></tr>
+      <tr><th scope="row">Revolut Standard</th><td>Sem tarifa até R$ 1.000 no mês com reais; acima, 1,4%</td><td>Isento dentro da cota; acima, 3,5%</td><td>Dólar → yuan: grátis em dia útil até R$ 10.000 no mês; +1% no fim de semana; +0,5% acima de R$ 10.000</td><td>Nenhum</td></tr>
+      <tr><th scope="row">Wise</th><td>Reais → yuan ou dólar: 0,67% de tarifa</td><td>3,5%</td><td>Dólar → yuan: 0,32%. O cartão brasileiro recusa pagar direto dos reais</td><td>Nenhum</td></tr>
+      <tr><th scope="row">Nomad</th><td>Reais → dólar: 2% no nível 1 do Nomad Pass, até 1% no nível 5</td><td>3,5%</td><td>Taxa da Visa, sem margem da Nomad</td><td>Pontos do Nomad Pass, fora da conta</td></tr>
+      <tr><th scope="row">Cartão de crédito de banco</th><td>Spread do banco sobre o dólar. O Nubank Ultravioleta anuncia 3,5% como spread reduzido; usei 4%</td><td>3,5%</td><td>Bandeira converte yuan → dólar; o banco, dólar → real</td><td>Depende do cartão</td></tr>
+    </tbody></table></div><p class="compare-foot">Tarifas da Wise na cotação consultada em 30/09/2026: R$ 1.000 viram R$ 959,96 convertidos (IOF de R$ 33,60 + tarifa de R$ 6,44). Revolut: a isenção de IOF está atrelada à cota do plano, segundo a própria Revolut; confira no app.</p></div>
+
+    <h3>Quanto sai ¥1.000 em cada rota</h3>
+    <p>Régua: ¥1.000 = <strong>R$ 770,75</strong> no câmbio comercial de 30/09/2026 (US$ 1 = R$ 5,1681 e ¥6,7053). A primeira coluna é o melhor caso; a segunda, o que acontece quando a cota grátis ou a faixa boa acaba.</p>
+    <div class="compare" aria-labelledby="china-rotas-titulo"><div class="compare-scroll"><table><caption id="china-rotas-titulo">Custo de ¥1.000 sobre o câmbio comercial, por cartão e rota</caption><thead><tr><th scope="col">Cartão · rota</th><th scope="col">Melhor caso</th><th scope="col">Fora da cota ou da faixa</th></tr></thead><tbody>
+      <tr><th scope="row">ether.fi · reais → USDC → yuan <small>(única rota)</small></th><td><strong>−1,23%</strong><br><small>R$ 761,27 · até US$ 2.000 no mês</small></td><td>+0,80% com 1% de cashback<br><small>R$ 776,89 · +1,30% (R$ 780,79) acima de US$ 3.000</small></td></tr>
+      <tr><th scope="row">ARQ · reais → USDc → yuan <small>(única rota)</small></th><td><strong>+0,50%</strong><br><small>R$ 774,60</small></td><td>+0,50%<br><small>Sem cota: o custo não muda</small></td></tr>
+      <tr><th scope="row">Revolut · reais → yuan na hora ou antes</th><td><strong>0%</strong><br><small>R$ 770,75 · dentro de R$ 1.000 no mês</small></td><td>+4,95%<br><small>R$ 808,89 · 1,4% + IOF</small></td></tr>
+      <tr><th scope="row">Revolut · reais → dólar → yuan</th><td>0% em dia útil<br><small>+1,00% no fim de semana</small></td><td>+4,95% em dia útil<br><small>+6,00% no fim de semana</small></td></tr>
+      <tr><th scope="row">Wise · reais → yuan antes</th><td><strong>+4,17%</strong><br><small>R$ 802,89</small></td><td>+4,17%<br><small>Sem cota: o custo não muda</small></td></tr>
+      <tr><th scope="row">Wise · reais → dólar → yuan</th><td>+4,50%<br><small>R$ 805,46</small></td><td>+4,50%</td></tr>
+      <tr><th scope="row">Wise · reais → yuan na hora</th><td>Recusada<br><small>O cartão brasileiro não converte reais na compra</small></td><td>—</td></tr>
+      <tr><th scope="row">Nomad · reais → dólar → yuan <small>(única rota)</small></th><td>+4,54%<br><small>R$ 805,70 · nível 5 do Nomad Pass</small></td><td><strong>+5,57%</strong><br><small>R$ 813,68 · nível 1, onde todo mundo começa</small></td></tr>
+      <tr><th scope="row">Cartão de banco · reais → yuan na hora</th><td>+7,12%<br><small>R$ 825,65 · spread de 3,5%</small></td><td><strong>+7,64%</strong><br><small>R$ 829,63 · spread de 4%</small></td></tr>
+    </tbody></table></div><p class="compare-foot">Linhas do ether.fi e do ARQ usam o câmbio medido nos meus comprovantes (o do ARQ arredondado para 0%); as demais, só as tarifas publicadas. A taxa da Visa ou da Mastercard pode somar alguns décimos que não estão na conta. Pagar mais de ¥200 pela carteira soma 3% em qualquer cartão.</p></div>
+
+    <h3>A melhor rota de cada um</h3>
+    <ul class="guide-list">
+      <li><strong>ether.fi:</strong> só existe uma rota (PIX → USDC → cartão). O que muda é a faixa: até US$ 2.000 no mês é o mais barato de todos; entre US$ 2.000 e 3.000 fica em +0,80%, e o ARQ passa na frente.</li>
+      <li><strong>ARQ:</strong> também uma rota só. O custo é estável: +0,50% sobre o comercial, sem cota que acaba. Para quem gasta muito no mês, é o piso.</li>
+      <li><strong>Revolut:</strong> pague direto do saldo em reais, ou converta para yuan, em dia útil. Dentro da cota de R$ 1.000 no mês é câmbio comercial puro; fora dela, 1,4% mais IOF, e ela cai para o meio da tabela. Passar pelo dólar só piora, principalmente no fim de semana.</li>
+      <li><strong>Wise:</strong> converta reais direto para yuan antes de pagar (+4,17%). Passar pelo dólar custa mais 0,32%. E não conte com a conversão na hora: com cartão emitido no Brasil, a Wise recusa a compra se não houver saldo na moeda.</li>
+      <li><strong>Nomad:</strong> só via dólar. O IOF de 3,5% e a conversão de 2% no nível inicial deixam ela entre as mais caras. Subir de nível no Nomad Pass reduz a conversão até 1%.</li>
+      <li><strong>Cartão de banco:</strong> o mais caro. IOF de 3,5% mais o spread do banco. Deixe só para emergência.</li>
+    </ul>
+    <p>Ranking para ¥1.000, fora das cotas grátis: <strong>ether.fi (−1,23%) → ARQ (+0,50%) → Wise (+4,17%) → Revolut (+4,95%) → Nomad (+5,57%) → cartão de banco (+7,64%)</strong>. Dentro da cota, a Revolut sobe para o segundo lugar, com 0%.</p>
+
+    <section class="calc" id="china-calc" data-china-calculator data-verified-at="2026-09-30" data-iof="3.5" data-etherfi-pix="0.5" data-etherfi-pix-flat="0.10" data-etherfi-tier1="2000" data-etherfi-tier2="3000" data-etherfi-rates="3,1,0.5" data-arq-funding="0.5" data-revolut-quota="1000" data-revolut-fee="1.4" data-alipay-fee="3" aria-labelledby="china-calc-title">
+      <header><p class="calc-kicker">Simulador</p><h3 id="china-calc-title">Quanto a sua viagem custa em cada cartão?</h3><p>Coloque quanto pretende gastar na China. O simulador usa a melhor rota de cada cartão e mostra, em reais, cada tarifa que entra.</p></header>
+      <div class="calc-controls">
+        <div class="calc-control"><label for="china-spend">Gasto na China <output id="china-spend-output" for="china-spend">¥5.000</output></label><input id="china-spend" type="range" min="100" max="60000" step="100" value="5000"></div>
+        <div class="calc-control"><label for="china-wallet-over">Desse gasto, quanto vai pela carteira em pagamentos acima de ¥200 <output id="china-wallet-over-output" for="china-wallet-over">¥0</output></label><input id="china-wallet-over" type="range" min="0" max="60000" step="100" value="0"></div>
+        <div class="calc-control"><label for="china-etherfi-prior">ether.fi: quanto você já gastou no mês com o cartão <output id="china-etherfi-prior-output" for="china-etherfi-prior">US$ 0</output></label><input id="china-etherfi-prior" type="range" min="0" max="5000" step="50" value="0"></div>
+        <div class="calc-control"><label for="china-revolut-used">Revolut: quanto da cota de R$ 1.000 você já usou no mês <output id="china-revolut-used-output" for="china-revolut-used">R$ 0</output></label><input id="china-revolut-used" type="range" min="0" max="1000" step="50" value="0"></div>
+        <div class="calc-control"><label for="china-nomad-conv">Nomad: taxa de conversão do seu nível <output id="china-nomad-conv-output" for="china-nomad-conv">2,00%</output></label><input id="china-nomad-conv" type="range" min="1" max="2" step="0.1" value="2"></div>
+        <div class="calc-control"><label for="china-bank-spread">Cartão de banco: spread <output id="china-bank-spread-output" for="china-bank-spread">4,00%</output></label><input id="china-bank-spread" type="range" min="0" max="8" step="0.1" value="4"></div>
+        <div class="calc-control"><label for="china-etherfi-fx">ether.fi: câmbio acima do comercial <output id="china-etherfi-fx-output" for="china-etherfi-fx">1,29%</output></label><input id="china-etherfi-fx" type="range" min="0" max="3" step="0.01" value="1.29"></div>
+        <div class="calc-control"><label for="china-arq-fx">ARQ: câmbio acima do comercial <output id="china-arq-fx-output" for="china-arq-fx">0,00%</output></label><input id="china-arq-fx" type="range" min="0" max="3" step="0.01" value="0"></div>
+        <div class="calc-control"><label for="china-wise-fee">Wise: tarifa de conversão <output id="china-wise-fee-output" for="china-wise-fee">0,67%</output></label><input id="china-wise-fee" type="range" min="0" max="2" step="0.01" value="0.67"></div>
+        <div class="calc-control"><label for="china-usdbrl">Dólar em reais <output id="china-usdbrl-output" for="china-usdbrl">R$ 5,1681</output></label><input id="china-usdbrl" type="number" min="1" max="20" step="0.0001" value="5.1681" inputmode="decimal"></div>
+        <div class="calc-control"><label for="china-usdcny">Yuan por dólar <output id="china-usdcny-output" for="china-usdcny">¥6,7053</output></label><input id="china-usdcny" type="number" min="1" max="20" step="0.0001" value="6.7053" inputmode="decimal"></div>
+      </div>
+      <p class="calc-assumption-note">Premissas conferidas em 30/09/2026. Câmbios comerciais de 30/09/2026; troque pelos de hoje. Cashback do ether.fi pelo valor em dólar no dia, sem a variação do ETHFI. Revolut: IOF só fora da cota. Os planos gratuitos de cada um; ARQ Premium e Prestige ficam de fora.</p>
+      <p class="calc-base" data-china-base>No câmbio comercial, o gasto sai por R$ 0.</p>
+      <p class="calc-assumption-note">A barra mostra quanto cada cartão custa a mais que o mais barato do cenário.</p>
+      <div class="calc-rows bar-chart" aria-live="polite" aria-label="Custo total estimado por cartão">
+        <div class="calc-row" data-calc-row="etherfi"><span class="calc-name">ether.fi Cash · PIX → USDC → yuan</span><span class="calc-track"><span></span></span><output class="calc-out"><span data-calc-total>R$ 0</span><small data-calc-detail></small></output></div>
+        <div class="calc-row" data-calc-row="arq"><span class="calc-name">ARQ Global · reais → USDc → yuan</span><span class="calc-track"><span></span></span><output class="calc-out"><span data-calc-total>R$ 0</span><small data-calc-detail></small></output></div>
+        <div class="calc-row" data-calc-row="revolut"><span class="calc-name">Revolut Standard · reais → yuan na hora</span><span class="calc-track"><span></span></span><output class="calc-out"><span data-calc-total>R$ 0</span><small data-calc-detail></small></output></div>
+        <div class="calc-row" data-calc-row="wise"><span class="calc-name">Wise · reais → yuan antes</span><span class="calc-track"><span></span></span><output class="calc-out"><span data-calc-total>R$ 0</span><small data-calc-detail></small></output></div>
+        <div class="calc-row" data-calc-row="nomad"><span class="calc-name">Nomad · reais → dólar → yuan</span><span class="calc-track"><span></span></span><output class="calc-out"><span data-calc-total>R$ 0</span><small data-calc-detail></small></output></div>
+        <div class="calc-row" data-calc-row="bank"><span class="calc-name">Cartão de banco · reais → yuan na hora</span><span class="calc-track"><span></span></span><output class="calc-out"><span data-calc-total>R$ 0</span><small data-calc-detail></small></output></div>
+      </div>
+      <p class="calc-verdict" data-calc-verdict>Informe o gasto para ver a comparação.</p>
+      <button class="btn btn-secondary" type="button" data-copy-result="#china-calc">Copiar esta simulação</button>
+      <p class="calc-fine">Nada do que você digita sai do seu navegador. As tarifas mudam: confira no app de cada um antes de converter.</p>
+    </section>
+
+    <h3>Os planos pagos do ARQ</h3>
+    <p>O cashback do ARQ só existe nos planos pagos: 1% no Premium (US$ 6,99 por mês) e 2% no Prestige (US$ 19,99 por mês), nos primeiros US$ 500 do mês e 0,5% depois. Só pelo cashback, a mensalidade se paga com gastos acima de uns US$ 900 (Premium) ou US$ 2.500 (Prestige) por mês. O Premium também dá até 500 USDc de saque grátis por mês.</p>
+    <p><strong>Para sacar yuan,</strong> o ARQ cobra 1% do valor sacado; o ether.fi, 2% e sem cartão físico no nível Core; a Revolut Standard dá R$ 1.600 ou cinco saques grátis no mês e depois cobra 2% (mínimo de R$ 6); a Wise dá uma retirada grátis no mês e depois R$ 20; a Nomad cobra US$ 5 fora da rede MoneyPass. O ARQ é o meu cartão de saque.</p>
+    <p class="guide-note"><strong>Um risco no horizonte:</strong> o governo estuda cobrar IOF de até 3,5% na compra de stablecoins, o que atingiria o ether.fi e o ARQ. Até 30/09/2026, pelo que encontrei, era proposta em construção, não regra em vigor. Se entrar, as duas primeiras linhas da tabela sobem uns 3,5 pontos.</p>
+    <p class="guide-note"><strong>Fontes:</strong> <a href="https://help.arqfinance.com/pt-BR/articles/13547471-impostos-para-cartoes-brasileiros" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: cartão Global sem IOF</a> · <a href="https://articles.arqfinance.com/cartao-sem-iof-arq-2026/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: 0,5% na formação do saldo</a> · <a href="https://help.arqfinance.com/en/articles/13828450-how-does-the-cashback-work-if-i-am-a-premium-or-prestige-member" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ: cashback dos planos</a> · <a href="https://help.arqfinance.com/en/articles/13901053-what-is-arq-premium" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ Premium</a> · <a href="https://help.arqfinance.com/en/articles/13430222-what-is-arq-prestige" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">ARQ Prestige</a> · <a href="https://www.revolut.com/pt-BR/legal/standard-fees/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Revolut Standard</a> · <a href="https://www.revolut.com/pt-BR/news/revolut_acelera_no_brasil_com_cr_dito_em_todos_os_cart_es_e_lan_a_ultra/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Revolut: cotas com spread zero e isenção de IOF</a> · <a href="https://wise.com/br/pricing/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Wise: tarifas</a> · <a href="https://wise.com/pt/help/articles/2oXQxOw2uAtpipyzMHQyaT/cartoes-da-wise-no-brasil" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Wise: cartão brasileiro e IOF</a> · <a href="https://www.nomadglobal.com/tarifas-nomad" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Nomad: tarifas</a> · <a href="https://www.nomadglobal.com/conteudos/nomad-pass" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Nomad Pass: conversão por nível</a> · <a href="https://www.nomadglobal.com/conteudos/iof-para-viajantes" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Nomad: IOF</a> · <a href="https://benomad.zendesk.com/hc/en-us/articles/4408236373015-What-s-the-effective-exchange-rate-for-non-US-Dollar-purchases-with-the-Nomad-International-Debit-Card" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Nomad: compras em outras moedas</a> · <a href="https://blog.nubank.com.br/cartao-black-nubank-ultravioleta-compras-internacionais/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Nubank Ultravioleta: spread</a> · <a href="https://www.fx168news.com/express/fastnews/1439332" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">fechamento do yuan em 30/09/2026</a>. Consultadas em 30/09/2026.</p>
 
     <h2 id="qual-caminho">Qual caminho usar em cada situação</h2>
     <div class="table-scroll">
@@ -220,7 +281,7 @@
     <h2 id="plano-b">Plano B</h2>
     <section class="note is-info plan-b"><p>O que eu levo sempre</p><p><strong>1. A outra carteira:</strong> Alipay e WeChat Pay com o cartão já vinculado. <strong>2. Um segundo cartão, de outra bandeira:</strong> para quando o primeiro for recusado. <strong>3. Um pouco de yuan:</strong> tirado num caixa eletrônico com um cartão de saque, como o <a href="/blog/arq-saques-exterior/">ARQ</a>. Em Xangai, o limite por saque é de ¥3.000, e o seu banco pode ter limite próprio.</p></section>
 
-    <section class="verdict" data-reveal><p>Veredito</p><p class="verdict-line">Na China, a economia está menos no cartão "certo" e mais em pagar cada coisa pelo trilho certo: QR até ¥200, cartão direto acima disso.</p><p>Com o ether.fi Cash nos dois trilhos, minhas compras liquidadas custaram cerca de 1,5% abaixo do câmbio comercial, antes do PIX e da variação do token. No teste lado a lado, o ARQ teve o câmbio mais limpo, mas sem cashback ficou cerca de 1,6% atrás; Revolut só empata dentro da cota pequena, e a Nomad sai uns 4,5% acima do comercial. São comprovantes meus e tarifas publicadas, com a minha conta e o meu nível: refaça a conta com a sua primeira compra.</p></section>
+    <section class="verdict" data-reveal><p>Veredito</p><p class="verdict-line">Na China, a economia está menos no cartão "certo" e mais em pagar cada coisa pelo trilho certo: QR até ¥200, cartão direto acima disso.</p><p>Com o ether.fi Cash nos dois trilhos, minhas compras liquidadas custaram cerca de 1,5% abaixo do câmbio comercial, antes do PIX e da variação do token. Na comparação completa, o ARQ teve o câmbio mais limpo e é o piso para quem passa de US$ 2.000 no mês; a Revolut só empata dentro da cota pequena; Wise, Nomad e cartão de banco pagam IOF e ficam de 4% a 8% acima do comercial. São comprovantes meus e tarifas publicadas, com a minha conta e o meu nível: refaça a conta com a sua primeira compra.</p></section>
 
     <h2 id="para-quem-nao">Para quem pode não funcionar</h2>
     <ul class="guide-list">
@@ -249,7 +310,8 @@
     <details><summary>O ether.fi cobra IOF?</summary><p>Não é um cartão brasileiro, e eu não paguei IOF nem no PIX nem nas compras. O custo que fica é o de 0,5% + R$ 0,10 do PIX e o câmbio da compra, que o cashback mais do que cobriu nos meus comprovantes.</p></details>
     <details><summary>O cashback funciona no Alipay?</summary><p>Na minha compra funcionou: ela entrou com o código 7372, fora da lista de exclusões. O código depende do comerciante e do processador, então confira o primeiro pagamento no app.</p></details>
     <details><summary>ether.fi ou ARQ?</summary><p>Nos meus comprovantes, o ARQ cobrou o câmbio comercial e o ether.fi 1,3% acima, mas os 3% de cashback do ether.fi viram o jogo: no total, ele saiu uns 1,6% mais barato. Acima de US$ 2.000 no mês o cashback cai, e o ARQ passa na frente. Eu uso o ether.fi para comprar e o ARQ para sacar.</p></details>
-    <details><summary>E a Revolut e a Nomad?</summary><p>A Revolut empata no zero dentro da cota do plano (R$ 1.000 por mês no Standard) e cobra 1,4% acima dela. A Nomad soma 3,5% de IOF e a taxa de conversão na hora de formar o saldo, e sai perto de 4,5% acima do comercial.</p></details>
+    <details><summary>E Revolut, Wise e Nomad?</summary><p>A Revolut empata no zero dentro da cota do plano (R$ 1.000 por mês no Standard); fora dela, 1,4% mais IOF, cerca de +4,95%. A Wise cobra IOF e tarifa: o melhor é converter reais direto para yuan (+4,17%). A Nomad só vai via dólar, com IOF e 2% de conversão no nível inicial: cerca de +5,57%.</p></details>
+    <details><summary>Qual rota é melhor: reais → dólar → yuan ou direto para yuan?</summary><p>Depende do cartão. Na Wise e na Revolut, direto para yuan é melhor, porque passar pelo dólar soma uma conversão (0,32% na Wise; 1% no fim de semana na Revolut). ether.fi, ARQ e Nomad só têm a rota pelo dólar.</p></details>
     <details><summary>E o dinheiro vivo?</summary><p>Leve um cartão de saque. O ether.fi não é para isso. Caixas com a bandeira do seu cartão sacam yuan; em Xangai, o limite é de ¥3.000 por saque.</p></details>
     <details><summary>Onde peço o cartão?</summary><p>O <a href="/guias/etherfi-cash-viagem/#como-pedir">guia do ether.fi</a> tem o link de indicação e o cuidado para não perder a promoção no cadastro.</p></details>
   </section>
@@ -269,5 +331,6 @@
 <script src="/js/content-registry.js"></script>
 <script src="/js/next-step.js"></script>
 <script src="/js/dlt-interactions.js"></script>
+<script src="/guias/pagamentos-china/js/china-calculator.js"></script>
 </body>
 </html>
