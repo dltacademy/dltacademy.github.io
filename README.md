@@ -87,7 +87,7 @@ python3 security_check.py .
 find . -name '*.js' -not -path './.git/*' -print0 | xargs -0 -n1 node --check
 ```
 
-O CI executa os gates em PR e push para `main`.
+O CI executa os gates em PR e push para `main`. Os testes checam estrutura (metadados, links, âncoras, ids, promoções, anatomia, links de indicação), não frases: melhorar um texto não deve exigir editar teste. Detalhes em [AGENTS.md](./AGENTS.md#verificação).
 
 ## Arquitetura de navegação
 
@@ -106,7 +106,7 @@ js/content-registry.js       registry único
 js/portal.js                 cards da home
 js/next-step.js              grafo + comunidade
 js/dlt-interactions.js       comportamentos opt-in dos componentes
-dlt-patterns.css             biblioteca visual de 31 padrões
+dlt-patterns.css             biblioteca visual de componentes
 og-template.svg              base social 1200 × 630 por peça
 blog/                        artigos e template
 protocolos/                  protocolos interativos
@@ -116,7 +116,9 @@ guias/                       guias de referência
 sobre/ transparencia/ comunidade/
 validate_registry.py         schema, destinos, mounts e sitemaps
 security_check.py            baseline de segurança
-tests/                       contratos automatizados
+tests/                       contratos estruturais (páginas, links de indicação, registry) e guardas de regressão
+tests/data/affiliate_links.json  fonte única dos links de indicação
+check_affiliate_links.py     abre cada link de indicação ao vivo (uso manual)
 sitemap.xml                  somente URLs de dlt.academy
 sitemap-index.xml            portal + 4 ferramentas
 .github/workflows/ci.yml     gates
