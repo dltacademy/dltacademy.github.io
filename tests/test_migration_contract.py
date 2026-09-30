@@ -25,6 +25,7 @@ GUIDES = {
     "guide-assinaturas-ia-bybit": "guias/assinaturas-ia-bybit/index.html",
     "guide-abastecer-moreta-usdt": "guias/abastecer-moreta-usdt/index.html",
     "guide-etherfi-cash-viagem": "guias/etherfi-cash-viagem/index.html",
+    "guide-pagamentos-china": "guias/pagamentos-china/index.html",
     "guide-bybit-pay-vietqr": "guias/bybit-pay-vietqr/index.html",
 }
 
