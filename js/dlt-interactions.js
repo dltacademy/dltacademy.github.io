@@ -452,9 +452,41 @@
     });
   }
 
+  /* ---------- 11 · Botão de volta aos atalhos --------------
+     <a class="back-nav" href="#atalhos" data-back-nav hidden
+        data-back-nav-heads=".guide-reference > h2" data-back-nav-end=".sources">
+     Aparece depois que o bloco de atalhos (o alvo do href) sai da tela, some
+     quando o fim da peça (data-back-nav-end) entra, e mostra a seção atual. */
+  function initBackNav() {
+    var button = document.querySelector("[data-back-nav]");
+    if (!button) return;
+    var jump = document.querySelector(button.getAttribute("href"));
+    if (!jump) return;
+    var current = button.querySelector("[data-back-nav-current]");
+    var heads = Array.prototype.slice.call(
+      document.querySelectorAll(button.getAttribute("data-back-nav-heads") || ".guide-reference > h2"));
+    var endSel = button.getAttribute("data-back-nav-end");
+    var end = endSel ? document.querySelector(endSel) : null;
+    var raf = null;
+    function update() {
+      raf = null;
+      var show = jump.getBoundingClientRect().bottom < 0 &&
+        (!end || end.getBoundingClientRect().top > window.innerHeight);
+      button.hidden = !show;
+      if (!show || !current) return;
+      var here = "";
+      heads.forEach(function (h) { if (h.getBoundingClientRect().top <= 100) here = h.textContent; });
+      if (current.textContent !== here) current.textContent = here;
+    }
+    function onScroll() { if (raf === null) raf = requestAnimationFrame(update); }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    update();
+  }
+
   function boot() {
     initProgress(); initToc(); initReveal(); initCounters();
-    initFilters(); initAtmCalc(); initGuideProgress(); initFaq(); initShare(); initCopyResult();
+    initFilters(); initAtmCalc(); initGuideProgress(); initFaq(); initShare(); initCopyResult(); initBackNav();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
   else boot();
