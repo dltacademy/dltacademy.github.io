@@ -90,6 +90,44 @@
 .piece-toc a { font-size: 15px; color: var(--text); text-decoration: none; }
 .piece-toc a:hover { color: var(--sky-light); }
 
+/* ---------- 03b · Atalhos do guia + índice + botão de volta ---------
+   Um bloco só antes do conteúdo: atalhos por situação do leitor e, embaixo,
+   o índice completo que abre sob demanda. Depois que o leitor passa do bloco,
+   o botão fixo [data-back-nav] mostra a seção atual e volta para os atalhos.
+   <nav class="guide-card jump-nav" id="atalhos" aria-labelledby="...">
+     <p id="..." class="guide-step-label">Vá direto ao que você precisa</p>
+     <ul class="guide-list"><li><a href="#secao">Situação do leitor</a></li>…</ul>
+     <details class="jump-toc"><summary>Ver todas as seções do guia</summary>
+       <div class="piece-toc" data-toc-watch=".guide-reference > h2"><ol></ol></div></details>
+   </nav>
+   <a class="back-nav" href="#atalhos" data-back-nav data-back-nav-heads=".guide-reference > h2"
+      data-back-nav-end=".sources" hidden aria-label="Voltar aos atalhos do guia">
+      <span aria-hidden="true">↑</span> Índice<span class="back-nav-current" data-back-nav-current></span></a> */
+.jump-nav .guide-list { list-style: none; padding-left: 0; }
+.jump-nav .guide-list a { display: flex; align-items: center; min-height: 44px; padding: 6px 0; }
+.jump-nav .guide-list a::after { content: "→"; margin-left: auto; padding-left: 12px; }
+.jump-nav .jump-toc { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; }
+.jump-nav .jump-toc summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--text-dim); font-size: 15px; list-style: none; }
+.jump-nav .jump-toc summary::-webkit-details-marker { display: none; }
+.jump-nav .jump-toc summary::after { content: "+"; margin-left: auto; font-size: 20px; color: var(--accent); }
+.jump-nav .jump-toc[open] summary::after { content: "−"; }
+.jump-nav .piece-toc { border: 0; padding: 8px 0 0; margin: 0; }
+.jump-nav .piece-toc ol { gap: 0; }
+.jump-nav .piece-toc a { display: block; padding: 10px 0; }
+.back-nav {
+  position: fixed; right: 16px; bottom: 16px; z-index: 40;
+  display: inline-flex; align-items: center; gap: 6px; max-width: min(360px, calc(100vw - 32px));
+  min-height: 44px; padding: 10px 16px; border-radius: 999px;
+  background: rgba(10, 17, 32, .92); border: 1px solid rgba(74, 141, 248, .4);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, .45);
+  color: var(--text); font-size: 14px; font-weight: 600; text-decoration: none;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.back-nav[hidden] { display: none; }
+.back-nav:hover { border-color: var(--accent); color: var(--text); }
+.back-nav-current { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-dim); font-weight: 500; }
+.back-nav-current:not(:empty)::before { content: "· "; }
+
 /* ---------- 04 · Número-chave ------------------------------ */
 .figure-row {
   max-width: var(--pattern-read);
@@ -159,6 +197,30 @@
 .compare .compare-foot {
   margin: 0; padding: 12px 16px; background: #080D18;
   border-top: 1px solid var(--border); color: var(--text-faint); font-size: 12px;
+}
+
+/* Tabela que vira cartões no celular: <div class="compare is-stack">.
+   Cada <td> leva data-label com o cabeçalho da coluna; até 600 px cada linha
+   vira um cartão (nome em cima, rótulo à esquerda, valor à direita) e nada
+   rola para o lado. Sem rowspan/colspan: a célula precisa ser de uma linha só.
+   O rótulo flutua; não usar flex/grid na célula, senão link e texto viram colunas. */
+@media (max-width: 600px) {
+  .compare.is-stack .compare-scroll { overflow-x: visible; }
+  .compare.is-stack .compare-scroll table { display: block; width: 100%; min-width: 0; }
+  .compare.is-stack caption, .compare.is-stack thead {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+  }
+  .compare.is-stack tbody, .compare.is-stack tbody tr,
+  .compare.is-stack tbody th[scope="row"], .compare.is-stack tbody td { display: block; }
+  .compare.is-stack tbody tr { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+  .compare.is-stack tbody tr:last-child { border-bottom: none; }
+  .compare.is-stack tbody th[scope="row"] { padding: 0 0 6px; background: none; border: 0; font-size: 15px; color: var(--text); }
+  .compare.is-stack tbody td { padding: 5px 0; border: 0; text-align: right; color: var(--text); }
+  .compare.is-stack tbody td::before {
+    content: attr(data-label); float: left; margin-right: 12px;
+    text-align: left; color: var(--text-faint); font-size: 13px;
+  }
+  .compare.is-stack tbody td::after { content: ""; display: block; clear: both; }
 }
 
 /* ---------- 07 · Passo numerado --------------------------- */
