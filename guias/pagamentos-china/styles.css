@@ -89,3 +89,13 @@
 .china-shot { margin: 16px 0 24px; max-width: 340px; }
 .china-shot img { display: block; width: 100%; height: auto; border: 1px solid var(--border); border-radius: var(--radius); }
 .china-shot figcaption { margin-top: 8px; font-size: 13px; color: var(--text-faint); }
+
+.calc .china-buckets { grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 16px; }
+.calc .china-buckets label { display: grid; gap: 2px; justify-content: start; }
+.calc .china-buckets label small { color: var(--text-faint); font-size: 12.5px; font-weight: 500; }
+.calc .china-bill { display: grid; gap: 10px; margin: 0 0 20px; padding: 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-elev-2); }
+.calc .china-bill p { margin: 0; color: var(--text); font-size: 15px; line-height: 1.5; }
+.calc .calc-advanced .calc-control label { display: block; }
+@media (max-width: 720px) {
+  .calc .china-buckets { grid-template-columns: 1fr; }
+}

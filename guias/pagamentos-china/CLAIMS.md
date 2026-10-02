@@ -1,6 +1,6 @@
-# Claims voláteis — revisão de 30/09/2026
+# Claims voláteis — revisão de 30/09/2026, reescrita em 02/10/2026
 
-As fontes públicas continuam vinculadas no próprio guia. Este arquivo registra o que precisa ser revalidado.
+As fontes públicas ficam todas na seção "Fontes e escopo", no fim do guia. Este arquivo registra o que precisa ser revalidado.
 
 | Bloco | Evidência usada | Próxima revisão |
 |---|---|---|
@@ -35,6 +35,15 @@ As fontes públicas continuam vinculadas no próprio guia. Este arquivo registra
 | Links de indicação abertos em 30/09/2026: Revolut (convite ativo), ether.fi (até 3% e código, sem campanha extra) | navegador, 30/09/2026 | antes de cada divulgação |
 | Extrato TopCashback (imagem): 8 lançamentos do Trip.com em dez/2025, US$ 0,54 a US$ 4,08, soma US$ 12,65; "acumula e pode cobrir 1 ou 2 noites" é relato do Tiago, sem promessa de valor | captura de tela do app do Tiago (30/09/2026), recortada sem dados de conta; o Tiago confirmou que todos os 8 já estavam confirmados e disponíveis para saque | fixo — é relato datado |
 | Voo low-cost × trem-bala: em muitos trajetos o site da low-cost sai mais barato que o trem e tem promoção de mala; mala à parte, aeroporto longe do centro e tempo de embarque entram na conta; trem compensa em trajetos curtos | dica do Tiago (30/09/2026); depende de rota, data e promoção, sem número fixo no guia | conferir com uma busca real antes de divulgar |
+| QR pessoal (P2P) recusa cartão estrangeiro; mostrar o próprio código passa pelo cartão quando o vendedor tem leitor; saldo do Alipay paga QR pessoal | relato do Tiago + go2china.app (QR pessoal × de loja), consultado em 02/10/2026 | 30/12/2026 |
+| Alipay mais estável que o WeChat Pay para conta estrangeira nova; WeChat bloqueia conta nova e o desbloqueio pede amigo com conta de 6+ meses | relato do Tiago + chinaneighbor.com (verificação do WeChat), 02/10/2026 | 30/12/2026 |
+| eSIM de roaming do Trip.com sai por Hong Kong e abre Google/WhatsApp sem VPN; chip chinês e Wi-Fi local ficam atrás do firewall | relato do Tiago + guia de eSIM do Trip.com, 02/10/2026 | 30/12/2026 |
+| Celular só-eSIM: número do Brasil precisa rodar em eSIM com roaming, ativo junto com o eSIM de dados | orientação do Tiago (02/10/2026) | a cada viagem |
+| Dinheiro de reserva ¥300–¥500 em notas de ¥20 e ¥50 | prescrição do Tiago (02/10/2026) | fixo — é recomendação |
+| Caixas do Bank of China, ICBC e China Construction Bank aceitam Visa/Mastercard; ¥3.000 por saque; tarifa definida pelo emissor do cartão (Bank of China) | página de ATM do Bank of China (jan/2026) + guia de saque do Trip.com, 02/10/2026 | 30/12/2026 |
+| DiDi dentro do Alipay, em inglês; restaurantes com pedido por QR da mesa no WeChat; hotel bloqueia depósito no check-in | conhecimento geral de viagem, sem número | revisar a cada viagem |
+| Custos por tipo de gasto (¥1.000): ether.fi −1,23% / +1,73%; ARQ +0,50% / +3,52%; Revolut 0% e +4,95% / +3,00% e +8,10%; Wise +4,17% / +7,30%; Nomad +5,57% / +8,74%; banco +7,64% / +10,87% | `js/china-model.js` com as tarifas de 30/09/2026 (test_pagamentos_china.py confere) | junto com as tarifas |
+| Simulador pré-preenchido (¥3.000 reservas, ¥1.500 dia a dia, ¥500 QR acima de ¥200; conta avulsa ¥350) | `js/china-model.js`; o teste compara o HTML com a fórmula | junto com as tarifas |
 | Simulações por cartão (4 compras ¥454,93 e viagem ¥10.000) | modelo do simulador com tarifas de 30/09/2026 | junto com as tarifas |
 | IOF sobre stablecoins | proposta em construção, não vigente em 30/09/2026 | a cada revisão |
 | Câmbio de referência ¥6,7053 (fechamento onshore 30/09/2026 16h30) | FX168 | fixo — é dado histórico |
