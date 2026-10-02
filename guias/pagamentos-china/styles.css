@@ -132,3 +132,19 @@
 .china-back-nav:hover { border-color: var(--accent); color: var(--text); }
 .china-back-current { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-dim); font-weight: 500; }
 .china-back-current:not(:empty)::before { content: "· "; }
+
+/* No celular, cada linha das tabelas vira um cartão: nome em cima e cada
+   valor com o rótulo da coluna (data-label), sem rolar para o lado.
+   O rótulo flutua à esquerda; o conteúdo da célula segue como texto normal. */
+@media (max-width: 600px) {
+  .compare .compare-scroll { overflow-x: visible; }
+  .compare .compare-scroll table { display: block; width: 100%; min-width: 0; }
+  .compare thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .compare tbody, .compare tbody tr, .compare tbody th[scope="row"], .compare tbody td { display: block; }
+  .compare tbody tr { padding: 14px 16px; border-bottom: 1px solid var(--border); }
+  .compare tbody tr:last-child { border-bottom: none; }
+  .compare tbody th[scope="row"] { padding: 0 0 6px; background: none; border: 0; font-size: 15px; color: var(--text); }
+  .compare tbody td { padding: 5px 0; border: 0; text-align: right; color: var(--text); }
+  .compare tbody td::before { content: attr(data-label); float: left; margin-right: 12px; text-align: left; color: var(--text-faint); font-size: 13px; }
+  .compare tbody td::after { content: ""; display: block; clear: both; }
+}
