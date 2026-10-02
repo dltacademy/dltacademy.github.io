@@ -104,7 +104,6 @@
 .calc .china-calc-cta .btn { justify-self: start; margin: 0; }
 .calc .china-calc-cta p { margin: 0; color: var(--text-dim); font-size: 14px; }
 #china-calc .calc-name a { color: inherit; text-decoration: underline; text-decoration-color: var(--border); text-underline-offset: 3px; }
-.china-inline-cta { padding: 14px 16px; border-left: 3px solid var(--accent); background: var(--bg-elev); border-radius: 0 var(--radius) var(--radius) 0; }
 .offer .offer-lead { font-size: 16px; }
 .offer .offer-points, .offer .offer-steps { margin: 0 0 16px; padding-left: 20px; display: grid; gap: 6px; }
 .offer .offer-steps { counter-reset: none; }
