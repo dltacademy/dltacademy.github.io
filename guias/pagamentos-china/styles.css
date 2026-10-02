@@ -108,3 +108,28 @@
 .offer .offer-lead { font-size: 16px; }
 .offer .offer-points, .offer .offer-steps { margin: 0 0 16px; padding-left: 20px; display: grid; gap: 6px; }
 .offer .offer-steps { counter-reset: none; }
+
+/* Atalhos + índice completo num bloco só; o índice abre sob demanda. */
+.china-jump .china-toc { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; }
+.china-jump .china-toc summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--text-dim); font-size: 14.5px; list-style: none; }
+.china-jump .china-toc summary::-webkit-details-marker { display: none; }
+.china-jump .china-toc summary::after { content: "+"; margin-left: auto; font-size: 20px; color: var(--accent); }
+.china-jump .china-toc[open] summary::after { content: "−"; }
+.china-jump .piece-toc { border: 0; padding: 8px 0 0; margin: 0; }
+.china-jump .piece-toc ol { gap: 0; }
+.china-jump .piece-toc a { display: block; padding: 10px 0; }
+
+/* Botão "Índice" fixo depois dos atalhos, com a seção atual. */
+.china-back-nav {
+  position: fixed; right: 16px; bottom: 16px; z-index: 40;
+  display: inline-flex; align-items: center; gap: 6px; max-width: min(360px, calc(100vw - 32px));
+  min-height: 44px; padding: 10px 16px; border-radius: 999px;
+  background: rgba(10, 17, 32, .92); border: 1px solid rgba(74, 141, 248, .4);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, .45);
+  color: var(--text); font-size: 14px; font-weight: 600; text-decoration: none;
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.china-back-nav[hidden] { display: none; }
+.china-back-nav:hover { border-color: var(--accent); color: var(--text); }
+.china-back-current { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-dim); font-weight: 500; }
+.china-back-current:not(:empty)::before { content: "· "; }
