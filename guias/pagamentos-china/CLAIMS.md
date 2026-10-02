@@ -44,6 +44,10 @@ As fontes públicas ficam todas na seção "Fontes e escopo", no fim do guia. Es
 | DiDi dentro do Alipay, em inglês; restaurantes com pedido por QR da mesa no WeChat; hotel bloqueia depósito no check-in | conhecimento geral de viagem, sem número | revisar a cada viagem |
 | Custos por tipo de gasto (¥1.000): ether.fi −1,23% / +1,73%; ARQ +0,50% / +3,52%; Revolut 0% e +4,95% / +3,00% e +8,10%; Wise +4,17% / +7,30%; Nomad +5,57% / +8,74%; banco +7,64% / +10,87% | `js/china-model.js` com as tarifas de 30/09/2026 (test_pagamentos_china.py confere) | junto com as tarifas |
 | Simulador pré-preenchido (¥3.000 reservas, ¥1.500 dia a dia, ¥500 QR acima de ¥200; conta avulsa ¥350) | `js/china-model.js`; o teste compara o HTML com a fórmula | junto com as tarifas |
+| ether.fi: 3% em Core (US$ 2.000), Luxe (US$ 10.000) e Pinnacle (US$ 50.000); VIP 4% nos primeiros US$ 50.000; entre as faixas 1% e 0,5%; o nível sobe sozinho com o gasto | help center: "how does cashback work" e "membership level benefits", atualizados na semana de 02/10/2026 | 02/11/2026 |
+| ether.fi: cadastrar o e-mail da conta no link de indicação, pelo navegador, ativa os benefícios sazonais do convite | orientação do Tiago (02/10/2026); o guia do ether.fi já registrava a perda da indicação ao trocar para o app no meio do cadastro | antes de cada divulgação |
+| Link de indicação do ARQ: `tiagohyd_mIM` (o `tiagohyd_t7t` abria "This campaign is expired"); o link expira e é renovado a cada ~11 dias | Tiago, 02/10/2026; fonte única em `tests/data/affiliate_links.json` | 13/10/2026 |
+| CTA do simulador aponta para o cartão mais barato com link de indicação; "R$ 343 a menos que um cartão de banco" e "R$ 67 a menos que o ARQ" na oferta vêm do cenário padrão de ¥5.000 | `js/china-model.js` | junto com as tarifas |
 | Simulações por cartão (4 compras ¥454,93 e viagem ¥10.000) | modelo do simulador com tarifas de 30/09/2026 | junto com as tarifas |
 | IOF sobre stablecoins | proposta em construção, não vigente em 30/09/2026 | a cada revisão |
 | Câmbio de referência ¥6,7053 (fechamento onshore 30/09/2026 16h30) | FX168 | fixo — é dado histórico |

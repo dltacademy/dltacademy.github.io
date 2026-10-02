@@ -75,6 +75,16 @@
   var verdict = root.querySelector("[data-calc-verdict]");
   var summary = root.querySelector("[data-china-base]");
   var billOut = root.querySelector("[data-china-bill]");
+  var cta = root.querySelector("[data-china-cta]");
+  var ctaNote = root.querySelector("[data-china-cta-note]");
+  // O botão aponta para o cartão mais barato que tem link de indicação. O link vem do
+  // nome do cartão na própria linha, então só existe um lugar para trocar cada link.
+  var ctaLabels = {
+    etherfi: "Pedir o ether.fi Cash pelo navegador →",
+    arq: "Abrir conta no ARQ →",
+    revolut: "Abrir conta na Revolut →",
+    wise: "Abrir conta na Wise →",
+  };
 
   var brl = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
   var yuan = new Intl.NumberFormat("pt-BR", { minimumFractionDigits: 0, maximumFractionDigits: 2 });
@@ -136,6 +146,22 @@
       row.root.classList.toggle("is-best", rank === 0);
       row.track.classList.toggle("is-best", rank === 0);
     });
+
+    if (cta) {
+      var pick = m.ranking.filter(function (key) {
+        return ctaLabels[key] && rows[key] && rows[key].root.querySelector(".calc-name a");
+      })[0];
+      if (pick) {
+        cta.href = rows[pick].root.querySelector(".calc-name a").href;
+        cta.textContent = ctaLabels[pick];
+        if (ctaNote) {
+          var saving = m.cards.bank.total - m.cards[pick].total;
+          ctaNote.textContent = (pick === m.ranking[0] ? "É o mais barato nesta simulação: " : "É o mais barato com link de indicação: ") +
+            brl.format(saving) + " a menos que um cartão de banco." +
+            (pick === "etherfi" ? " Cadastre o e-mail no link, pelo navegador, antes de baixar o app." : "");
+        }
+      }
+    }
 
     var second = m.cards[m.ranking[1]];
     verdict.textContent = labels[m.ranking[0]] + " sai mais barato: " + brl.format(best.total) + ", " +
