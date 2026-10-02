@@ -47,8 +47,8 @@ header.top {
 }
 .header-nav a.header-cta:hover { background: #2a5ce6; transform: translateY(-1px); }
 
-/* âncoras não somem embaixo do header fixo */
-section[id], main[id] { scroll-margin-top: 84px; }
+/* âncoras não somem embaixo do header fixo: vale para qualquer alvo (h2, section, div) */
+html { scroll-padding-top: 84px; }
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
 }
