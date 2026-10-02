@@ -196,7 +196,7 @@ const CONTENT = [
     "tone": "green",
     "sit": ["viagem", "taxas"],
     "mark": "CN",
-    "effort": "5 passos antes de embarcar",
+    "effort": "4 passos antes de embarcar",
     "primaryNext": "guide-etherfi-cash-viagem",
     "related": ["guide-pagamentos-no-exterior", "article-arq-saques-exterior", "tool-dreno-cartao"]
   },
