@@ -104,7 +104,21 @@ const CONTENT = [
     "mark": "CT",
     "effort": "6 passos · cerca de 3 minutos",
     "primaryNext": "tool-sobrevive-ou-quebra",
-    "related": ["tool-vender-ou-segurar"]
+    "related": ["tool-vender-ou-segurar", "protocolo-decisao-fria"]
+  },
+  {
+    "id": "protocolo-decisao-fria",
+    "type": "protocolo",
+    "title": "Decisão fria",
+    "description": "Vai colocar dinheiro em risco? Escreva a tese, o melhor argumento contra ela e as travas de limite, saída e revisão antes do clique.",
+    "url": "/protocolos/decisao-fria/",
+    "tag": "Decisão sob emoção",
+    "tone": "green",
+    "sit": ["posicao", "comecar"],
+    "mark": "DF",
+    "effort": "7 passos · cerca de 5 minutos",
+    "primaryNext": "tool-sobrevive-ou-quebra",
+    "related": ["protocolo-medo-de-ficar-de-fora", "tool-vender-ou-segurar"]
   },
   {
     "id": "guide-conta-binance",
