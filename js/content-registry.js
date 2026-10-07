@@ -255,6 +255,20 @@ const CONTENT = [
     "related": ["article-bybit-pay-vs-moreta-vietqr", "guide-abastecer-moreta-usdt"]
   },
   {
+    "id": "article-cashback-indicacao-binance",
+    "type": "article",
+    "title": "Código de indicação da Binance: o que o cashback devolve",
+    "description": "O cashback é uma parte da taxa que muda de link para link. Veja o que a regra oficial diz sobre percentual e duração em spot e em futuros, e como conferir antes de abrir a conta.",
+    "url": "/blog/cashback-indicacao-binance/",
+    "tag": "Cashback e indicação",
+    "publishedAt": "2026-09-29",
+    "sit": ["taxas", "comecar"],
+    "mark": "CI",
+    "effort": "7 min de leitura",
+    "primaryNext": "guide-conta-binance",
+    "related": ["guide-binance-futuros"]
+  },
+  {
     "id": "article-arq-saques-exterior",
     "type": "article",
     "title": "ARQ Global para saques: custos reais contra Wise e Revolut",
