@@ -12,7 +12,7 @@ Agentes devem ler [AGENTS.md](./AGENTS.md) antes de editar conteúdo ou componen
 - blog estático;
 - guias de referência;
 - protocolos interativos;
-- páginas `/sobre/`, `/transparencia/` e `/comunidade/`;
+- páginas `/sobre/`, `/transparencia/`, `/privacidade/` e `/comunidade/`;
 - grafo de próximos passos;
 - comunidade no fim do conteúdo;
 - sitemap por host reunido em `sitemap-index.xml`;
@@ -85,6 +85,7 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 python3 validate_registry.py
 python3 security_check.py .
 find . -name '*.js' -not -path './.git/*' -print0 | xargs -0 -n1 node --check
+bash scripts/montar_site.sh   # monta _site/ e confere que nada interno vai ao ar
 ```
 
 O CI executa os gates em PR e push para `main`. Os testes checam estrutura (metadados, links, âncoras, ids, promoções, anatomia, links de indicação), não frases: melhorar um texto não deve exigir editar teste. Detalhes em [AGENTS.md](./AGENTS.md#verificação).
@@ -113,7 +114,7 @@ protocolos/                  protocolos interativos
 js/protocol-engine.js        motor compartilhado
 styles-protocols.css         tela e impressão dos protocolos
 guias/                       guias de referência
-sobre/ transparencia/ comunidade/
+sobre/ transparencia/ privacidade/ comunidade/
 validate_registry.py         schema, destinos, mounts e sitemaps
 security_check.py            baseline de segurança
 tests/                       contratos estruturais (páginas, links de indicação, registry) e guardas de regressão
@@ -122,7 +123,8 @@ check_affiliate_links.py     abre cada link de indicação ao vivo (uso manual)
 sitemap.xml                  somente URLs de dlt.academy
 sitemap-index.xml            portal + 4 ferramentas
 .github/workflows/ci.yml     gates
-.github/workflows/pages.yml  deploy
+.github/workflows/pages.yml  deploy (publica só o _site montado)
+scripts/montar_site.sh       monta _site com o que o site serve e confere links locais
 ```
 
 ## Regras permanentes

@@ -26,5 +26,8 @@ jobs:
       - name: Sintaxe JavaScript
         run: find . -name '*.js' -not -path './.git/*' -print0 | xargs -0 -n1 node --check
 
+      - name: Site publicado (o mesmo _site do deploy)
+        run: bash scripts/montar_site.sh "$RUNNER_TEMP/_site"
+
       - name: Bateria de testes
         run: python3 -m unittest discover -s tests -v
