@@ -137,6 +137,7 @@ const PROTOCOL = {
     // Próximo passo é utilidade educacional, nunca presente afiliado.
     if (a.dinheiro === "nao_tenho") {
       return {
+        id: 1,
         tone: "bad",
         verdict: "O passo de hoje é não dar o passo.",
         body: [
@@ -159,6 +160,7 @@ const PROTOCOL = {
     // Ramo 2 — tiraria de reserva/meta. Só utilidade educacional.
     if (a.dinheiro === "tirar") {
       return {
+        id: 2,
         tone: "mixed",
         verdict: "Antes de tirar de outro lugar, olhe o que você trocaria.",
         body: [
@@ -181,6 +183,7 @@ const PROTOCOL = {
     // Ramo 3 — dinheiro que sobra, mas quem decide é o aperto.
     if (a.sentimento !== "tranquilo") {
       return {
+        id: 3,
         tone: "mixed",
         verdict: "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
         body: [
@@ -207,6 +210,7 @@ const PROTOCOL = {
     // A continuação ainda é utilidade; o fluxo não confirmou necessidade
     // nem elegibilidade para uma plataforma, então não há presente direto.
     return {
+      id: 4,
       tone: "good",
       verdict: "Decidir com calma, com dinheiro que sobra, é legítimo — inclusive decidir sim.",
       body: [
