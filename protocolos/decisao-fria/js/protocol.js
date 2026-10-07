@@ -173,6 +173,7 @@ const PROTOCOL = {
     if (a.impacto === "compromete") {
       return {
         ...base,
+        id: 1,
         tone: "bad",
         verdict: "Com esse dinheiro, a resposta é não.",
         body: [
@@ -197,6 +198,7 @@ const PROTOCOL = {
     if (a.intencao === "recuperar") {
       return {
         ...base,
+        id: 2,
         tone: "bad",
         verdict: "Recuperar não é tese. Hoje, não opere.",
         body: [
@@ -224,6 +226,7 @@ const PROTOCOL = {
       const risco = alertas > 0;
       return {
         ...base,
+        id: risco ? 3 : 4,
         tone: risco ? "bad" : "mixed",
         verdict: risco
           ? "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não."
@@ -254,6 +257,7 @@ const PROTOCOL = {
     if (alertas >= 2) {
       return {
         ...base,
+        id: 5,
         tone: "mixed",
         verdict: "Ainda não é uma decisão. É uma vontade com pressa.",
         body: [
@@ -284,6 +288,7 @@ const PROTOCOL = {
       if (semTravas) pendencias.push("as travas não foram escritas");
       return {
         ...base,
+        id: 6,
         tone: "mixed",
         verdict: "Quase lá. Falta fechar um ponto antes de agir.",
         body: [
@@ -309,6 +314,7 @@ const PROTOCOL = {
     // Ramo 6 — decisão fria de verdade.
     return {
       ...base,
+      id: 7,
       tone: "good",
       verdict: "Pode seguir, com as travas que você escreveu.",
       body: [
