@@ -10,7 +10,9 @@
   --grad-brand: linear-gradient(120deg, #4A8DF8 0%, #1E4FD8 100%);
 }
 
-main#top { overflow-x: hidden; }
+/* clip, não hidden: hidden força overflow-y:auto e faz do <main> um contêiner de
+   rolagem próprio, que prende a roda do mouse e trava a rolagem da página. */
+main#top { overflow-x: clip; }
 
 /* ---------- Header sticky (todas as páginas) ---------- */
 header.top {
@@ -45,8 +47,8 @@ header.top {
 }
 .header-nav a.header-cta:hover { background: #2a5ce6; transform: translateY(-1px); }
 
-/* âncoras não somem embaixo do header fixo */
-section[id], main[id] { scroll-margin-top: 84px; }
+/* âncoras não somem embaixo do header fixo: vale para qualquer alvo (h2, section, div) */
+html { scroll-padding-top: 84px; }
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
 }

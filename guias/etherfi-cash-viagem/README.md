@@ -1,6 +1,6 @@
 # Por que uso o ether.fi Cash no exterior
 
-Guia pessoal e comparativo da DLT Academy. A página documenta a pesquisa e a experiência real que levaram o ether.fi Cash a se tornar o cartão principal do Tiago para compras internacionais.
+Guia pessoal e comparativo da DLT Academy. A página documenta a pesquisa e a experiência real que levaram o ether.fi Cash a se tornar o cartão principal do autor para compras internacionais.
 
 ## Tese editorial
 
@@ -21,7 +21,7 @@ Antes de cada divulgação:
 1. abrir `https://www.ether.fi/@e155ee95`;
 2. conferir a oferta, o prazo, as categorias, a região e as condições;
 3. atualizar o texto do bloco, `data-verified-at` e `CLAIMS.md`;
-4. preservar o link com `rel="sponsored nofollow noopener noreferrer"`;
+4. preservar o link com `rel="nofollow noopener noreferrer"`;
 5. não transformar uma campanha temporária em promessa permanente.
 
 ## Gates

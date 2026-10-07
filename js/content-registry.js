@@ -201,6 +201,20 @@ const CONTENT = [
     "related": ["guide-bybit-pay-vietqr", "article-bybit-pay-vs-moreta-vietqr", "guide-pagamentos-no-exterior"]
   },
   {
+    "id": "guide-pagamentos-china",
+    "type": "guide",
+    "title": "Como pagar na China com a melhor taxa",
+    "description": "Alipay, WeChat Pay e Trip.com com um cartão só: a regra dos ¥200 que evita os 3%, o passo a passo antes de embarcar e compras reais com cashback.",
+    "url": "/guias/pagamentos-china/",
+    "tag": "Guia de viagem",
+    "tone": "green",
+    "sit": ["viagem", "taxas"],
+    "mark": "CN",
+    "effort": "4 passos principais",
+    "primaryNext": "guide-etherfi-cash-viagem",
+    "related": ["guide-pagamentos-no-exterior", "article-arq-saques-exterior", "tool-dreno-cartao"]
+  },
+  {
     "id": "guide-etherfi-cash-viagem",
     "type": "guide",
     "title": "Por que uso o ether.fi Cash no exterior",

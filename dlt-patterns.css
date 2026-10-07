@@ -55,14 +55,16 @@
   color: var(--sky-light); margin: 0 0 16px;
 }
 .key-points ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 13px; }
+/* Bloco com o ✓ posicionado: negrito, texto e links correm na mesma linha.
+   Com display:flex cada pedaço virava uma coluna e o texto saía da caixa. */
 .key-points li {
-  display: flex; gap: 12px; align-items: flex-start;
+  position: relative; padding-left: 32px;
   font-size: 15.5px; line-height: 1.55; color: var(--text);
 }
 .key-points li::before {
-  content: "✓"; flex-shrink: 0;
+  content: "✓"; position: absolute; left: 0; top: 2px;
   display: inline-flex; align-items: center; justify-content: center;
-  width: 20px; height: 20px; margin-top: 2px; border-radius: 6px;
+  width: 20px; height: 20px; border-radius: 6px;
   background: rgba(110,231,168,.12); border: 1px solid rgba(110,231,168,.3);
   color: var(--green); font-size: 11px; font-weight: 700;
 }
@@ -81,7 +83,7 @@
 .piece-toc ol { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; counter-reset: toc; }
 .piece-toc li { counter-increment: toc; display: flex; gap: 12px; align-items: baseline; }
 .piece-toc li::before {
-  content: "0" counter(toc);
+  content: counter(toc, decimal-leading-zero);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12px; color: var(--accent); flex-shrink: 0;
 }
