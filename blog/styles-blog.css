@@ -150,6 +150,24 @@
 .cost-parts .figure-cell { padding: 16px; }
 .cost-parts .figure-value { font-size: 25px; color: var(--sky-light); }
 
+/* Largura inicial das barras antes do JS (ou sem JS); o script recalcula. */
+.calc .calc-track > span.calc-bar-90 { width: 90%; }
+.calc .calc-track > span.calc-bar-92 { width: 92%; }
+.calc .calc-track > span.calc-bar-95 { width: 95%; }
+.calc .calc-track > span.calc-bar-100 { width: 100%; }
+
+/* Cartão de próximo passo prático dentro do artigo. */
+.card-next-action {
+  margin: 2.5rem 0;
+  padding: 1.5rem;
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.card-next-action .eyebrow { color: var(--accent); margin-bottom: 0.5rem; font-weight: 600; }
+.card-next-action h3 { margin-top: 0; margin-bottom: 0.75rem; }
+.card-next-action p:not(.eyebrow) { margin-bottom: 1.25rem; }
+
 @media (max-width: 560px) {
   .calc .calc-control label { display: block; }
   .calc .calc-control output { display: block; margin-top: 4px; }

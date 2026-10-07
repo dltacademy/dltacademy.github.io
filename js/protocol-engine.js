@@ -43,19 +43,44 @@ function runProtocol(protocol, mountId) {
   // reformulado, em vez de descrever o movimento em abstrato.
   const resolve = (v) => (typeof v === "function" ? v(state.answers) : v);
 
+  // Único dado que o motor grava: quais itens do plano foram marcados.
+  // A chave de cada item é "r<id do desfecho>:<id do item>", sem texto do
+  // veredito nem tom. Chaves em outro formato (versões antigas guardavam o
+  // veredito) são descartadas na leitura e apagadas do armazenamento.
   const planStorageKey = "dlt-protocol-plan:" + protocol.id;
+  const planItemKeyPattern = /^r[0-9]+:[A-Za-z0-9_-]+$/;
   function readPlanState() {
+    let saved = {};
     try {
-      return JSON.parse(window.localStorage.getItem(planStorageKey) || "{}");
+      saved = JSON.parse(window.localStorage.getItem(planStorageKey) || "{}") || {};
     } catch (error) {
       return {};
     }
+    const clean = {};
+    let dropped = false;
+    Object.keys(saved).forEach((key) => {
+      if (planItemKeyPattern.test(key) && saved[key] === true) clean[key] = true;
+      else dropped = true;
+    });
+    if (dropped) {
+      if (Object.keys(clean).length) writePlanState(clean);
+      else clearPlanState();
+    }
+    return clean;
   }
   function writePlanState(value) {
     try {
       window.localStorage.setItem(planStorageKey, JSON.stringify(value));
     } catch (error) {
       // A private window or a blocked storage context still leaves the plan usable in memory.
+    }
+  }
+  // Apaga tudo o que este protocolo gravou neste navegador.
+  function clearPlanState() {
+    try {
+      window.localStorage.removeItem(planStorageKey);
+    } catch (error) {
+      // Sem acesso ao armazenamento não há nada gravado para apagar.
     }
   }
 
@@ -208,8 +233,10 @@ function runProtocol(protocol, mountId) {
       plan.appendChild(planTitle);
       plan.appendChild(el("p", "protocol-plan-intro", "Marque conforme fizer. A lista fica somente neste navegador e pode ser retomada depois."));
       const list = el("div", "protocol-plan-list");
+      const resultKey = "r" + (Number.isInteger(result.id) ? result.id : 0);
       result.plan.forEach((item, index) => {
-        const key = result.tone + ":" + result.verdict + ":" + (item.id || index);
+        const itemId = String(item.id || index).replace(/[^A-Za-z0-9_-]/g, "");
+        const key = resultKey + ":" + (itemId || index);
         const label = el("label", "protocol-plan-item");
         const check = el("input");
         check.type = "checkbox";
@@ -224,8 +251,10 @@ function runProtocol(protocol, mountId) {
         if (check.checked) label.classList.add("is-done");
         check.addEventListener("change", () => {
           const next = readPlanState();
-          next[key] = check.checked;
-          writePlanState(next);
+          if (check.checked) next[key] = true;
+          else delete next[key];
+          if (Object.keys(next).length) writePlanState(next);
+          else clearPlanState();
           label.classList.toggle("is-done", check.checked);
         });
         list.appendChild(label);
@@ -311,17 +340,37 @@ function runProtocol(protocol, mountId) {
     const restart = el("button", "btn btn-secondary", "Refazer o protocolo");
     restart.type = "button";
     restart.addEventListener("click", () => {
+      clearPlanState();
       state.answers = {};
       state.path = [];
       render(0);
       window.scrollTo({ top: mount.offsetTop - 20, behavior: "smooth" });
     });
 
+    // Apagar: remove o que o protocolo gravou neste navegador e desmarca o
+    // plano na tela. A confirmação é texto na página, sem diálogo.
+    const eraseStatus = el("p", "protocol-erase-status");
+    eraseStatus.setAttribute("role", "status");
+    eraseStatus.setAttribute("aria-live", "polite");
+    const erase = el("button", "btn btn-secondary protocol-erase", "Apagar minhas respostas");
+    erase.type = "button";
+    erase.addEventListener("click", () => {
+      clearPlanState();
+      card.querySelectorAll("[data-plan-key]").forEach((check) => {
+        check.checked = false;
+        const item = check.closest(".protocol-plan-item");
+        if (item) item.classList.remove("is-done");
+      });
+      eraseStatus.textContent = "Respostas apagadas deste navegador.";
+    });
+
     actions.appendChild(pdf);
     actions.appendChild(md);
     actions.appendChild(copyResult);
     actions.appendChild(restart);
+    actions.appendChild(erase);
     delivery.appendChild(actions);
+    delivery.appendChild(eraseStatus);
     delivery.appendChild(el("p", "protocol-privacy privacy-line",
       "Tudo isto rodou no seu navegador. Nenhuma resposta foi enviada a lugar nenhum — os arquivos são gerados no seu dispositivo."));
     card.appendChild(delivery);

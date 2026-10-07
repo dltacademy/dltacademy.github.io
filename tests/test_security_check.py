@@ -20,8 +20,9 @@ sys.path.insert(0, str(REPO_ROOT))
 from security_check import check_html  # noqa: E402
 
 CSP = (
-    "default-src 'self'; script-src 'self' https://gc.zgo.at; "
-    "object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'self'"
+    "default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; "
+    "connect-src 'self'; object-src 'none'; frame-src 'none'; base-uri 'none'; "
+    "form-action 'self'"
 )
 
 HEAD_OK = (
@@ -116,6 +117,21 @@ class JsonLdPolicyTests(unittest.TestCase):
     def test_csp_is_still_required(self) -> None:
         html = page("<p>ok</p>", head='<meta name="referrer" content="no-referrer">')
         self.assertTrue(any("CSP ausente" in e for e in errors_for(html)))
+
+    def test_third_party_hosts_in_csp_are_rejected(self) -> None:
+        # O portal já liberou gc.zgo.at, goatcounter e Google Fonts sem usar; host extra reprova.
+        for directive, extra in (
+            ("script-src 'self'", "script-src 'self' https://gc.zgo.at"),
+            ("style-src 'self'", "style-src 'self' https://fonts.googleapis.com"),
+            ("font-src 'self'", "font-src https://fonts.gstatic.com"),
+            ("connect-src 'self'", "connect-src 'self' https://*.goatcounter.com"),
+        ):
+            with self.subTest(directive=extra):
+                head = (
+                    f'<meta http-equiv="Content-Security-Policy" content="{CSP.replace(directive, extra)}">'
+                    '<meta name="referrer" content="no-referrer">'
+                )
+                self.assertTrue(any("CSP incompleta" in e for e in errors_for(page("<p>ok</p>", head=head))))
 
     def test_referrer_policy_is_still_required(self) -> None:
         head = f'<meta http-equiv="Content-Security-Policy" content="{CSP}">'
