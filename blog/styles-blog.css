@@ -167,6 +167,9 @@
 .card-next-action .eyebrow { color: var(--accent); margin-bottom: 0.5rem; font-weight: 600; }
 .card-next-action h3 { margin-top: 0; margin-bottom: 0.75rem; }
 .card-next-action p:not(.eyebrow) { margin-bottom: 1.25rem; }
+/* Linha secundária depois do botão: atalho em texto, sem competir com a ação primária. */
+.card-next-action p.next-action-alt { margin: 1rem 0 0; color: var(--text-dim); font-size: 15px; line-height: 1.6; }
+.card-next-action p.next-action-alt a { display: block; width: fit-content; padding: 10px 0; font-weight: 600; }
 
 @media (max-width: 560px) {
   .calc .calc-control label { display: block; }
