@@ -90,6 +90,9 @@
 }
 .article-body pre code { background: none; padding: 0; }
 .article-body a { color: var(--accent); }
+/* Botões dentro do texto mantêm a cor do botão; sem isto, a regra acima pinta o texto do btn-primary de azul sobre azul. */
+.article-body a.btn-primary { color: white; }
+.article-body a.btn-secondary { color: var(--text); }
 .article-body img { max-width: 100%; border-radius: var(--radius); display: block; margin: 24px auto; }
 .article-body figcaption { text-align: center; color: var(--text-faint); font-size: 13px; margin-top: -12px; margin-bottom: 20px; }
 .article-body hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
@@ -167,6 +170,9 @@
 .card-next-action .eyebrow { color: var(--accent); margin-bottom: 0.5rem; font-weight: 600; }
 .card-next-action h3 { margin-top: 0; margin-bottom: 0.75rem; }
 .card-next-action p:not(.eyebrow) { margin-bottom: 1.25rem; }
+/* Linha secundária depois do botão: atalho em texto, sem competir com a ação primária. */
+.card-next-action p.next-action-alt { margin: 1rem 0 0; color: var(--text-dim); font-size: 15px; line-height: 1.6; }
+.card-next-action p.next-action-alt a { display: block; width: fit-content; padding: 10px 0; font-weight: 600; }
 
 @media (max-width: 560px) {
   .calc .calc-control label { display: block; }
