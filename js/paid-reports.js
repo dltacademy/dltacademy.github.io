@@ -9,7 +9,10 @@
 //
 // Para ativar a oferta: criar o link de pagamento no Stripe e colar em
 // `checkoutUrl`. Com o campo vazio, ou com host fora da lista abaixo, o
-// motor não mostra nada.
+// motor não mostra nada. No Dossiê, que é baixado depois do pagamento, o
+// link só entra depois que a página de entrega do PDF estiver no ar e
+// testada com uma compra real; antes disso, quem pagasse não receberia o
+// arquivo (ver PAID_REPORT_FRAMEWORK.md no ferramenta-kit).
 //
 // `perfis` mapeia o perfil devolvido por result() ao capítulo do
 // relatório que fala daquele caso. Só o nome do perfil viaja do
