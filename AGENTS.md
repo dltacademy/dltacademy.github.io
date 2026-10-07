@@ -34,7 +34,7 @@ uma melhoria real de texto ou de experiência, o gate está errado: corrija o ga
 
 - A fonte única é `tests/data/affiliate_links.json`. Trocar um código é editar esse arquivo e as páginas; `test_affiliate_links.py` reprova qualquer variante fora da lista.
 - Nunca "corrija" um código de memória ou de um documento antigo. O código vem da conta do provedor (área de indicação) e do arquivo acima.
-- Todo link de indicação usa `target="_blank"`, `rel="nofollow noopener noreferrer"` e `referrerpolicy="no-referrer"`. Não usa `sponsored`: não é publicidade paga, são indicações de produtos que o Tiago usa.
+- Todo link de indicação usa `target="_blank"`, `rel="nofollow noopener noreferrer"` e `referrerpolicy="no-referrer"`. Não usa `sponsored`: não é publicidade paga, são indicações de produtos que o autor usa.
 - Antes de divulgar, ou depois de trocar um código, rode `python3 check_affiliate_links.py`. Ele abre cada link ao vivo. O que voltar "inconclusivo" (bloqueio antirrobô) se confere no navegador.
 - Artigo e guia usam a divulgação global do rodapé e de `/transparencia/`. Ferramenta e protocolo interativo mostram a divulgação junto da recomendação.
 
