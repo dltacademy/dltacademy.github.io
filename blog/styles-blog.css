@@ -90,6 +90,9 @@
 }
 .article-body pre code { background: none; padding: 0; }
 .article-body a { color: var(--accent); }
+/* Botões dentro do texto mantêm a cor do botão; sem isto, a regra acima pinta o texto do btn-primary de azul sobre azul. */
+.article-body a.btn-primary { color: white; }
+.article-body a.btn-secondary { color: var(--text); }
 .article-body img { max-width: 100%; border-radius: var(--radius); display: block; margin: 24px auto; }
 .article-body figcaption { text-align: center; color: var(--text-faint); font-size: 13px; margin-top: -12px; margin-bottom: 20px; }
 .article-body hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
