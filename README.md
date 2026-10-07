@@ -85,6 +85,7 @@ python3 -m unittest discover -s tests -p 'test_*.py' -v
 python3 validate_registry.py
 python3 security_check.py .
 find . -name '*.js' -not -path './.git/*' -print0 | xargs -0 -n1 node --check
+bash scripts/montar_site.sh   # monta _site/ e confere que nada interno vai ao ar
 ```
 
 O CI executa os gates em PR e push para `main`. Os testes checam estrutura (metadados, links, âncoras, ids, promoções, anatomia, links de indicação), não frases: melhorar um texto não deve exigir editar teste. Detalhes em [AGENTS.md](./AGENTS.md#verificação).
@@ -122,7 +123,8 @@ check_affiliate_links.py     abre cada link de indicação ao vivo (uso manual)
 sitemap.xml                  somente URLs de dlt.academy
 sitemap-index.xml            portal + 4 ferramentas
 .github/workflows/ci.yml     gates
-.github/workflows/pages.yml  deploy
+.github/workflows/pages.yml  deploy (publica só o _site montado)
+scripts/montar_site.sh       monta _site com o que o site serve e confere links locais
 ```
 
 ## Regras permanentes
