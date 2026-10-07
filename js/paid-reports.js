@@ -2,23 +2,24 @@
 // Catálogo dos relatórios pagos — dados, não lógica.
 //
 // O resultado gratuito de cada protocolo é completo em si. O relatório
-// pago é o aprofundamento opcional: um produto só por protocolo, vendido
-// e entregue por um provedor gerenciado (checkout, pagamento, entrega do
-// PDF, nota e reembolso ficam lá). Nenhum servidor nosso, nenhum dado
-// guardado aqui.
+// pago é o aprofundamento opcional, vendido por link de pagamento do
+// Stripe. A entrega fica numa página da DLT Academy, fora deste site
+// estático, que confere o pagamento no Stripe antes de entregar. Este
+// arquivo só descreve os produtos: não guarda dado nem recebe resposta.
 //
-// Para ativar a oferta: criar o produto no provedor e colar o link de
-// checkout em `checkoutUrl`. Com o campo vazio, ou com host fora da
-// lista abaixo, o motor não mostra nada.
+// Para ativar a oferta: criar o link de pagamento no Stripe e colar em
+// `checkoutUrl`. Com o campo vazio, ou com host fora da lista abaixo, o
+// motor não mostra nada.
 //
 // `perfis` mapeia o perfil devolvido por result() ao capítulo do
 // relatório que fala daquele caso. Só o nome do perfil viaja do
 // protocolo até aqui; nenhuma resposta da pessoa.
 // ============================================================
 
-// Hotmart: modelo estático (PDF pronto). Stripe: modelo personalizado
-// (o relatório é escrito depois do pagamento, a partir das respostas).
-const PAID_REPORT_HOSTS = ["pay.hotmart.com", "buy.stripe.com"];
+// Os dois modelos usam o Stripe: o estático (PDF pronto, baixado depois
+// do pagamento) e o personalizado (o relatório é escrito depois do
+// pagamento, a partir das respostas).
+const PAID_REPORT_HOSTS = ["buy.stripe.com"];
 
 const PAID_REPORTS = {
   "decisao-fria": {
@@ -33,8 +34,9 @@ const PAID_REPORTS = {
     preco: "R$ 29",
     formato: "PDF com fichas para preencher",
     botao: "Quero o Dossiê Decisão Fria →",
-    plataforma: "Hotmart",
+    plataforma: "Stripe",
     checkoutUrl: "",
+    aviso: "Pagamento pelo Stripe. Depois de pagar, você baixa o PDF numa página da DLT Academy. Nada do que você escreveu aqui vai junto: suas respostas continuam só no seu navegador. Você tem 7 dias para pedir reembolso.",
     perfis: {
       recuperacao: {
         capitulo: "Depois da perda",

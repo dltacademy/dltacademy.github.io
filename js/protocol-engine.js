@@ -504,10 +504,10 @@ function buildPaidReportOffer(ref, el) {
   buy.appendChild(a);
   box.appendChild(buy);
 
-  // Aviso padrão do modelo estático; o personalizado declara o próprio,
-  // porque nele as respostas são enviadas depois do pagamento.
+  // Cada produto declara o próprio aviso (como paga, como recebe, o que
+  // acontece com as respostas). Este texto é só a rede de segurança.
   box.appendChild(el("p", "protocol-paid-disclosure", product.aviso ||
-    ("Produto da DLT Academy, vendido e entregue pela " + product.plataforma + ". " +
+    ("Produto da DLT Academy, com pagamento pelo " + product.plataforma + ". " +
     "Nada do que você escreveu aqui vai junto: suas respostas continuam só no seu navegador. " +
     "Você tem 7 dias para pedir reembolso.")));
   return box;
