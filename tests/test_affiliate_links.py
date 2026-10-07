@@ -16,7 +16,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 DATA = json.loads((ROOT / "tests" / "data" / "affiliate_links.json").read_text(encoding="utf-8"))
 PROVIDERS = DATA["providers"]
-SKIP_DIRS = {".git", "node_modules", "tests"}
+SKIP_DIRS = {".git", "node_modules", "tests", "_site"}
 URL = re.compile(r"https?://[^\s\"'<>)`]+")
 ANCHOR = re.compile(r"<a\s[^>]*>", re.IGNORECASE)
 

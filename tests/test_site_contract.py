@@ -18,7 +18,7 @@ from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = "https://dlt.academy"
-SKIP_DIRS = {".git", "node_modules", "tests"}
+SKIP_DIRS = {".git", "node_modules", "tests", "_site"}
 TEMPLATES = {"blog/template-post.html"}
 PRIVATE_MARKERS = ("Dknowledger", "project-management", "TaskNotes", "/Users/", "ferramenta-kit")
 # TODO em maiúsculas: "todo" minúsculo é português para "tudo".
