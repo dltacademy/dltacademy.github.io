@@ -222,10 +222,10 @@ const PROTOCOL = {
       record, safety: safetyNote, plan: plans.calm, stats: resultStats(plans.calm),
       cta: {
         tipo: "artigo",
-        headline: "Se for agir, veja quanto a sua exposição aguenta antes de decidir o tamanho.",
-        texto: "O que protege não é acertar a hora — é dimensionar. O simulador compara cenários e mostra o impacto de cada tamanho no seu dinheiro.",
-        label: "Abrir o Sobrevive ou Quebra? →",
-        href: "https://sobrevive-ou-quebra.dlt.academy/",
+        headline: "Se for agir, escreva antes as três travas: quanto no máximo, quando sair e quando revisar.",
+        texto: "O protocolo Decisão Fria transforma a decisão em limite, saída e revisão escritos, em uns 5 minutos — e calcula o valor máximo a partir do que você aguenta perder.",
+        label: "Fazer a Decisão Fria →",
+        href: "/protocolos/decisao-fria/",
         external: false,
       },
     };
