@@ -24,6 +24,7 @@ const PROTOCOL = {
   slug: "medo-de-ficar-de-fora",
   title: "Cheguei tarde? — o protocolo do medo de ficar de fora",
   path: "/protocolos/medo-de-ficar-de-fora/",
+  pdfSubject: "Reflexão estruturada — medo de ficar de fora",
 
   steps: [
     // 1. NOTAR — dar nome ao que está no comando (diagnóstico → escolha ok).
