@@ -13,16 +13,32 @@ import sys
 # Política de segurança aplicada (T1A/T1B): zero JavaScript executável inline;
 # o único <script> sem src permitido é o data block type="application/ld+json"
 # com JSON estático válido.
-SECURITY_POLICY_VERSION = "2026-07-17"
+# 2026-10-07: script, estilo, fonte e conexão só do próprio site. O portal não
+# carrega analytics nem fontes de terceiros, então nenhum host externo entra.
+SECURITY_POLICY_VERSION = "2026-10-07"
 
-REQUIRED_CSP = (
-    "default-src 'self'",
-    "script-src 'self' https://gc.zgo.at",
-    "object-src 'none'",
-    "frame-src 'none'",
-    "base-uri 'none'",
-    "form-action 'self'",
-)
+# Diretiva -> valor exato exigido. Valor exato, não "contém": um host de
+# terceiro somado a 'self' reprova.
+REQUIRED_CSP = {
+    "default-src": "'self'",
+    "script-src": "'self'",
+    "style-src": "'self'",
+    "font-src": "'self'",
+    "connect-src": "'self'",
+    "object-src": "'none'",
+    "frame-src": "'none'",
+    "base-uri": "'none'",
+    "form-action": "'self'",
+}
+
+
+def parse_csp(policy: str) -> dict[str, str]:
+    directives: dict[str, str] = {}
+    for part in policy.split(";"):
+        tokens = part.split()
+        if tokens:
+            directives[tokens[0].lower()] = " ".join(tokens[1:])
+    return directives
 
 
 class SecurityHTMLParser(HTMLParser):
@@ -101,8 +117,8 @@ def check_html(path: Path) -> list[str]:
     errors = parser.errors
     if not parser.csp:
         errors.append(f"{path}: CSP ausente")
-    elif any(directive not in parser.csp for directive in REQUIRED_CSP):
-        errors.append(f"{path}: CSP incompleta")
+    elif any(parse_csp(parser.csp).get(name) != value for name, value in REQUIRED_CSP.items()):
+        errors.append(f"{path}: CSP incompleta ou com host de terceiro")
     elif "unsafe-inline" in parser.csp or "unsafe-eval" in parser.csp:
         errors.append(f"{path}: CSP contém diretiva insegura")
     if parser.referrer != "no-referrer":
@@ -114,6 +130,9 @@ def main() -> int:
     root = Path(sys.argv[1] if len(sys.argv) > 1 else ".").resolve()
     errors: list[str] = []
     for path in sorted(root.rglob("*.html")):
+        # _site/ é cópia montada por scripts/montar_site.sh; a fonte é conferida aqui.
+        if {"_site", ".git", "node_modules"} & set(path.relative_to(root).parts):
+            continue
         errors.extend(check_html(path))
     for path in (root / ".github" / "workflows").glob("*.yml"):
         for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):

@@ -251,6 +251,14 @@
   cursor: wait;
   opacity: .68;
 }
+/* Confirmação do "Apagar minhas respostas": texto na página, sem diálogo. */
+.protocol-delivery .protocol-erase-status {
+  color: var(--green);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 8px;
+}
+.protocol-delivery .protocol-erase-status:empty { display: none; }
 .protocol-privacy {
   font-size: 13px;
   color: var(--text-faint);
