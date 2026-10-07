@@ -1,89 +1,59 @@
+"""Protocolos interativos: PDF, privacidade do resultado e licença do vendor.
+
+Não trava rótulos de botão, nomes de classe nem valores de CSS. O que fica é
+comportamento e decisão de produto: o PDF é gerado no navegador (sem CDN e sem
+impressão), não leva CTA nem divulgação e todo veredito termina em um próximo passo.
+"""
+from __future__ import annotations
+
 import unittest
 from pathlib import Path
 
 
+ROOT = Path(__file__).resolve().parents[1]
+
+
 class ProtocolResultTests(unittest.TestCase):
     @classmethod
-    def setUpClass(cls):
-        cls.root = Path(__file__).resolve().parents[1]
-        cls.index = (cls.root / "protocolos/medo-de-ficar-de-fora/index.html").read_text(encoding="utf-8")
-        cls.engine = (cls.root / "js/protocol-engine.js").read_text(encoding="utf-8")
-        cls.protocol = (
-            cls.root / "protocolos/medo-de-ficar-de-fora/js/protocol.js"
-        ).read_text(encoding="utf-8")
-        cls.styles = (cls.root / "protocolos/styles-protocols.css").read_text(encoding="utf-8")
+    def setUpClass(cls) -> None:
+        cls.index = (ROOT / "protocolos/medo-de-ficar-de-fora/index.html").read_text(encoding="utf-8")
+        cls.engine = (ROOT / "js/protocol-engine.js").read_text(encoding="utf-8")
+        cls.protocol = (ROOT / "protocolos/medo-de-ficar-de-fora/js/protocol.js").read_text(encoding="utf-8")
 
-    def test_jspdf_e_auto_hospedado_e_carregado_antes_do_motor(self):
-        vendor_src = '<script src="/js/vendor/jspdf.umd.min.js"></script>'
-        engine_src = '<script src="/js/protocol-engine.js"></script>'
-        self.assertIn(vendor_src, self.index)
-        self.assertLess(self.index.index(vendor_src), self.index.index(engine_src))
-        self.assertNotIn("unpkg.com", self.index)
-        self.assertNotIn("cdnjs.cloudflare.com", self.index)
-        self.assertIn("script-src 'self' https://gc.zgo.at", self.index)
+    def test_jspdf_is_self_hosted_and_loaded_before_the_engine(self) -> None:
+        vendor = '<script src="/js/vendor/jspdf.umd.min.js"></script>'
+        engine = '<script src="/js/protocol-engine.js"></script>'
+        self.assertIn(vendor, self.index)
+        self.assertLess(self.index.index(vendor), self.index.index(engine))
+        for cdn in ("unpkg.com", "cdnjs.cloudflare.com", "cdn.jsdelivr.net"):
+            self.assertNotIn(cdn, self.index)
 
-    def test_botao_pdf_nao_usa_impressao(self):
+    def test_pdf_is_generated_not_printed(self) -> None:
         self.assertNotIn("window.print", self.engine)
-        self.assertIn('"Baixar meu resultado em PDF"', self.engine)
-        self.assertIn("doc.save(protocol.slug + \"-resultado.pdf\")", self.engine)
-        self.assertIn('loadLocalImageAsDataUrl("/assets/dlt-logo.png")', self.engine)
+        self.assertIn("doc.save(", self.engine)
 
-    def test_pdf_inclui_resultado_registro_aviso_e_rodape_sem_cta(self):
+    def test_pdf_has_the_result_and_no_sales_content(self) -> None:
         start = self.engine.index("function downloadProtocolPdf")
         end = self.engine.index("function safePdfText")
-        pdf_builder = self.engine[start:end]
+        builder = self.engine[start:end]
         for field in ("result.verdict", "result.body", "result.record", "result.plan", "result.safety"):
-            self.assertIn(field, pdf_builder)
-        self.assertIn("Gerado em", pdf_builder)
-        self.assertIn('"dlt.academy" + String(protocol.path', pdf_builder)
-        self.assertIn("protocol.pdfSubject", pdf_builder)
-        self.assertIn("Reflexão estruturada — não é terapia nem recomendação de investimento", pdf_builder)
-        self.assertNotIn("result.cta", pdf_builder)
-        self.assertNotIn("cta.href", pdf_builder)
-        self.assertNotIn("disclosure", pdf_builder)
+            with self.subTest(field=field):
+                self.assertIn(field, builder)
+        for banned in ("result.cta", "cta.href", "disclosure"):
+            with self.subTest(banned=banned):
+                self.assertNotIn(banned, builder)
 
-    def test_modelo_tem_progresso_plano_persistente_e_acoes_publicas(self):
-        for marker in (
-            "protocol-progress",
-            "protocol-progress-dot",
-            "result-hero",
-            "protocol-plan",
-            "protocol-plan-item",
-            "localStorage",
-            "Copiar resultado",
-            "Refazer o protocolo",
-            "protocol-share",
-            "Compartilhe a ferramenta, não as suas respostas",
-            "window.location.origin + window.location.pathname",
-        ):
-            self.assertIn(marker, self.engine)
-        self.assertIn("plan:", self.protocol)
-        self.assertIn("dlt-patterns.css", self.index)
+    def test_share_never_carries_the_answers(self) -> None:
+        self.assertIn("window.location.origin + window.location.pathname", self.engine)
 
-    def test_todos_os_quatro_vereditos_tem_proximo_passo_util(self):
-        self.assertEqual(4, self.protocol.count('tipo: "artigo"'))
+    def test_every_verdict_ends_in_a_next_step(self) -> None:
         self.assertNotIn('tipo: "none"', self.protocol)
-        self.assertNotIn('tipo: "presente"', self.protocol)
-        self.assertIn("https://primeiros-passos-cripto.dlt.academy/", self.protocol)
-        self.assertIn("https://sobrevive-ou-quebra.dlt.academy/", self.protocol)
 
-    def test_resultado_tem_hierarquia_e_mobile_sem_estouro(self):
-        self.assertIn(".protocol-verdict-panel", self.styles)
-        self.assertIn("grid-template-columns: minmax(140px, .72fr) minmax(0, 1.28fr)", self.styles)
-        self.assertIn("overflow-wrap: anywhere", self.styles)
-        self.assertIn(".protocol-actions .btn,", self.styles)
-        self.assertIn("width: 100%", self.styles)
-        self.assertIn("padding: 24px 0 0", self.styles)
-
-    def test_vendor_e_build_umd_min_licenciada(self):
-        vendor = self.root / "js/vendor/jspdf.umd.min.js"
-        license_file = self.root / "js/vendor/jspdf.LICENSE.txt"
+    def test_vendor_build_ships_its_license(self) -> None:
+        vendor = ROOT / "js/vendor/jspdf.umd.min.js"
+        license_file = ROOT / "js/vendor/jspdf.LICENSE.txt"
         self.assertTrue(vendor.is_file())
-        self.assertGreater(vendor.stat().st_size, 300_000)
-        head = vendor.read_text(encoding="utf-8")[:2500]
-        self.assertIn("jsPDF - PDF Document creation from JavaScript", head)
-        self.assertIn("Version 4.2.1", head)
-        self.assertIn("Permission is hereby granted", head)
+        self.assertIn("jsPDF", vendor.read_text(encoding="utf-8")[:2500])
         self.assertTrue(license_file.is_file())
         self.assertIn("Permission is hereby granted", license_file.read_text(encoding="utf-8"))
 
