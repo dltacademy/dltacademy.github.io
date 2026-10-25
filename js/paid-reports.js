@@ -73,6 +73,6 @@ const PAID_REPORTS = {
     botao: "Quero o relatório do meu caso →",
     plataforma: "Stripe",
     checkoutUrl: "",
-    aviso: "Pagamento pelo Stripe. Depois de pagar, você responde algumas perguntas; as respostas são enviadas uma vez para gerar o relatório com inteligência artificial e não são guardadas por nós. É material educacional, não recomendação de investimento. Você tem 7 dias para pedir reembolso.",
+    aviso: "Pagamento pelo Stripe. Depois de pagar, você responde algumas perguntas; as respostas são enviadas uma vez a um serviço de geração de texto contratado por nós, para escrever o relatório, e não são guardadas por nós. É material educacional, não recomendação de investimento. Você tem 7 dias para pedir reembolso.",
   },
 };
