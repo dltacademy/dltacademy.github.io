@@ -1,7 +1,7 @@
 """Contrato dos relatórios pagos.
 
 O resultado gratuito é completo; o relatório pago é um bloco à parte, no
-fim da página, que só aparece com checkout de um provedor permitido. Nada
+fim da página, que só aparece com checkout do Stripe. Nada
 das respostas viaja para o provedor, e a oferta nunca entra no arquivo
 pessoal (PDF/.md).
 """
@@ -20,17 +20,17 @@ class PaidReportTests(unittest.TestCase):
         cls.index = (cls.root / "protocolos/decisao-fria/index.html").read_text(encoding="utf-8")
         cls.protocol = (cls.root / "protocolos/decisao-fria/js/protocol.js").read_text(encoding="utf-8")
 
-    def test_catalogo_so_aceita_checkout_de_provedor_gerenciado(self):
+    def test_catalogo_so_aceita_checkout_do_stripe(self):
         hosts = re.search(r"PAID_REPORT_HOSTS = \[([^\]]*)\]", self.catalog)
         self.assertIsNotNone(hosts)
         self.assertEqual(
             sorted(re.findall(r'"([^"]+)"', hosts.group(1))),
-            ["buy.stripe.com", "pay.hotmart.com"],
+            ["buy.stripe.com"],
         )
         for url in re.findall(r'checkoutUrl: "([^"]*)"', self.catalog):
             with self.subTest(url=url):
                 if url:
-                    self.assertRegex(url, r"^https://(pay\.hotmart\.com|buy\.stripe\.com)/")
+                    self.assertRegex(url, r"^https://buy\.stripe\.com/")
 
     def test_motor_valida_https_e_host_antes_de_mostrar_oferta(self):
         start = self.engine.index("function paidReportCheckoutUrl")
