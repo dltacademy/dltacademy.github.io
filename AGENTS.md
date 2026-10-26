@@ -41,6 +41,8 @@ uma melhoria real de texto ou de experiência, o gate está errado: corrija o ga
 ## Sistema visual e interação
 
 - `dlt-patterns.css` reúne os componentes e é carregado depois dos estilos base/específicos; `js/dlt-interactions.js` reúne comportamentos opt-in por `data-*`. Carregar os dois é pré-requisito, não prova de que o modelo foi implementado.
+- Guia longo usa os padrões prontos, sem reinventar na página: `.jump-nav` (atalhos por situação + índice recolhido, num bloco só), `.back-nav` (botão fixo "Índice" com a seção atual) e `.compare.is-stack` (tabela que vira cartão no celular; `data-label` em todo `td`, sem `rowspan`/`colspan`). O comentário de cada um em `dlt-patterns.css` tem o HTML.
+- Não use `display:flex`/`grid` em elemento com texto misturado com `<strong>`/`<a>`: cada pedaço vira coluna e o texto sai da caixa.
 - Nenhum claim volátil entra no JavaScript compartilhado. A fórmula de uma peça fica no JS da própria peça e lê as tarifas de atributos `data-*` datados no HTML.
 - Monograma de duas letras ou numeral, não emoji, em cards e ícones de produto.
 - Em componente novo ou alterado: texto corrido com 15 px ou mais; legenda, rótulo e metadado não abaixo de 12 px; alvo de toque com 44 px ou mais. (O CSS antigo tem rótulos menores; melhore quando mexer, sem refazer o que não está no escopo.)

@@ -82,9 +82,6 @@
 .calc .calc-advanced summary::-webkit-details-marker { display: none; }
 .calc .calc-advanced summary::after { content: "+"; margin-left: auto; font-size: 20px; color: var(--accent); }
 .calc .calc-advanced[open] summary::after { content: "−"; }
-.china-jump .guide-list { list-style: none; padding-left: 0; }
-.china-jump .guide-list a { display: flex; align-items: center; min-height: 44px; padding: 6px 0; }
-.china-jump .guide-list a::after { content: "→"; margin-left: auto; padding-left: 12px; }
 
 .china-shot { margin: 16px 0 24px; max-width: 340px; }
 .china-shot img { display: block; width: 100%; height: auto; border: 1px solid var(--border); border-radius: var(--radius); }
@@ -107,44 +104,3 @@
 .offer .offer-lead { font-size: 16px; }
 .offer .offer-points, .offer .offer-steps { margin: 0 0 16px; padding-left: 20px; display: grid; gap: 6px; }
 .offer .offer-steps { counter-reset: none; }
-
-/* Atalhos + índice completo num bloco só; o índice abre sob demanda. */
-.china-jump .china-toc { margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px; }
-.china-jump .china-toc summary { display: flex; align-items: center; min-height: 44px; cursor: pointer; color: var(--text-dim); font-size: 14.5px; list-style: none; }
-.china-jump .china-toc summary::-webkit-details-marker { display: none; }
-.china-jump .china-toc summary::after { content: "+"; margin-left: auto; font-size: 20px; color: var(--accent); }
-.china-jump .china-toc[open] summary::after { content: "−"; }
-.china-jump .piece-toc { border: 0; padding: 8px 0 0; margin: 0; }
-.china-jump .piece-toc ol { gap: 0; }
-.china-jump .piece-toc a { display: block; padding: 10px 0; }
-
-/* Botão "Índice" fixo depois dos atalhos, com a seção atual. */
-.china-back-nav {
-  position: fixed; right: 16px; bottom: 16px; z-index: 40;
-  display: inline-flex; align-items: center; gap: 6px; max-width: min(360px, calc(100vw - 32px));
-  min-height: 44px; padding: 10px 16px; border-radius: 999px;
-  background: rgba(10, 17, 32, .92); border: 1px solid rgba(74, 141, 248, .4);
-  box-shadow: 0 6px 22px rgba(0, 0, 0, .45);
-  color: var(--text); font-size: 14px; font-weight: 600; text-decoration: none;
-  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-}
-.china-back-nav[hidden] { display: none; }
-.china-back-nav:hover { border-color: var(--accent); color: var(--text); }
-.china-back-current { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text-dim); font-weight: 500; }
-.china-back-current:not(:empty)::before { content: "· "; }
-
-/* No celular, cada linha das tabelas vira um cartão: nome em cima e cada
-   valor com o rótulo da coluna (data-label), sem rolar para o lado.
-   O rótulo flutua à esquerda; o conteúdo da célula segue como texto normal. */
-@media (max-width: 600px) {
-  .compare .compare-scroll { overflow-x: visible; }
-  .compare .compare-scroll table { display: block; width: 100%; min-width: 0; }
-  .compare thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-  .compare tbody, .compare tbody tr, .compare tbody th[scope="row"], .compare tbody td { display: block; }
-  .compare tbody tr { padding: 14px 16px; border-bottom: 1px solid var(--border); }
-  .compare tbody tr:last-child { border-bottom: none; }
-  .compare tbody th[scope="row"] { padding: 0 0 6px; background: none; border: 0; font-size: 15px; color: var(--text); }
-  .compare tbody td { padding: 5px 0; border: 0; text-align: right; color: var(--text); }
-  .compare tbody td::before { content: attr(data-label); float: left; margin-right: 12px; text-align: left; color: var(--text-faint); font-size: 13px; }
-  .compare tbody td::after { content: ""; display: block; clear: both; }
-}
