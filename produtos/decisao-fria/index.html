@@ -29,6 +29,7 @@
 <link rel="stylesheet" href="/styles-portal.css">
 <link rel="stylesheet" href="/blog/styles-blog.css">
 <link rel="stylesheet" href="/dlt-patterns.css">
+<link rel="stylesheet" href="/produtos/produtos.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -49,26 +50,149 @@
 </head>
 <body>
 <header class="top"><div class="wrap header-row"><a class="brand" href="/"><img src="/assets/dlt-logo-light.png" alt="DLT Academy"></a><nav class="header-nav" aria-label="Navegação principal"><a class="nav-catalog" href="/ferramentas/">Ferramentas</a><a class="nav-catalog" href="/guias/">Guias</a><a href="/blog/">Blog</a><a href="/sobre/">Sobre</a></nav></div></header>
-<main class="page-shell" id="top">
-  <section class="page-hero piece-head"><div class="piece-meta"><span class="tag s2">Relatório pago</span><span>R$ 47, pagamento único</span></div><h1>Decisão Fria: o relatório da decisão que você está prestes a tomar</h1><p class="piece-lede">Você conta a decisão com dinheiro que está na sua frente. Três leituras escrevem o seu relatório: o que a emoção está fazendo, o melhor argumento contra e o veredito, com o seu limite em reais e as suas travas. O Dossiê com o método completo vem junto.</p><p class="btn-row"><a class="btn btn-primary" href="https://relatorio.dlt.academy/comprar/decisao-fria?utm_source=portal&amp;utm_medium=pagina-de-vendas&amp;utm_content=topo">Quero o relatório e o Dossiê, R$ 47 →</a></p><p class="note">7 dias para desistir, com o valor de volta. Pagamento pelo Stripe.</p></section>
+<main class="sp" id="top">
 
-  <section class="page-section" aria-labelledby="para-quando"><h2 id="para-quando">Para quando a decisão chega antes da calma</h2><p>Muita perda grande não vem de falta de informação. Vem de decidir no calor: depois de uma alta, para recuperar um prejuízo, porque alguém do grupo comprou, com prazo de horas.</p><p>Na hora, a decisão parece óbvia. O relatório separa o que é tese do que é vontade, antes do clique.</p></section>
+  <section class="sp-hero" data-topo>
+    <div>
+      <p class="sp-kicker">Decisão Fria · relatório do seu caso + Dossiê</p>
+      <h1>Antes de colocar dinheiro em risco, <em>veja a sua decisão de fora.</em></h1>
+      <p class="sp-lede">Você conta o que está prestes a fazer. Recebe de volta o seu limite em reais, o melhor argumento contra e um veredito com travas escritas. Antes do clique, não depois.</p>
+      <a class="sp-cta" href="https://relatorio.dlt.academy/comprar/decisao-fria?utm_source=portal&amp;utm_medium=pagina-de-vendas&amp;utm_content=topo">Quero o relatório do meu caso <span class="sp-cta-preco">· R$ 47</span></a>
+      <ul class="sp-trust"><li>Pagamento único</li><li>7 dias para desistir</li><li>Dossiê em PDF incluso</li></ul>
+    </div>
 
-  <section class="page-section" aria-labelledby="o-que-voce-recebe"><h2 id="o-que-voce-recebe">O que você recebe</h2><ul><li><strong>O veredito do seu caso:</strong> siga, ajuste, espere ou não, com o nível de frieza da decisão.</li><li><strong>O seu limite em reais:</strong> o máximo que cabe na perda que você aceita. É conta, feita em código, e não opinião.</li><li><strong>O espelho:</strong> o que você disse e o que o seu próprio texto mostra.</li><li><strong>Os três melhores argumentos contra a sua tese</strong>, cada um virando uma condição de saída.</li><li><strong>Os pontos cegos</strong> do seu caso.</li><li><strong>As travas:</strong> o limite, a saída e quando tirar o risco da mesa.</li><li><strong>As perguntas de revisão</strong> para daqui a 7, 30 e 90 dias.</li><li><strong>O Dossiê Decisão Fria em PDF:</strong> o método completo, com fichas, para as próximas decisões.</li></ul></section>
+    <form class="sp-calc" data-calc-limite aria-labelledby="calc-titulo">
+      <h2 id="calc-titulo">Quanto cabe nessa decisão?</h2>
+      <p>Faça agora a primeira conta do método. É grátis e fica no seu navegador.</p>
+      <label class="sp-campo"><span>Quanto você pretende colocar (R$)</span><input type="number" inputmode="decimal" min="0" step="any" placeholder="Ex.: 5000" data-valor></label>
+      <label class="sp-campo"><span>Quanto aceita perder sem mudar nada na vida (R$)</span><input type="number" inputmode="decimal" min="0" step="any" placeholder="Ex.: 1500" data-perda></label>
+      <label class="sp-check"><input type="checkbox" data-alavancagem> <span>É operação alavancada, com margem ou em futuros</span></label>
+      <div class="sp-resultado" aria-live="polite">
+        <div data-saida hidden>
+          <p class="sp-limite">O seu limite <strong data-limite></strong></p>
+          <div class="sp-barra" data-barra aria-hidden="true"><i></i></div>
+          <p class="sp-msg" data-msg></p>
+          <p class="sp-msg-resto" data-resto></p>
+        </div>
+      </div>
+      <p class="sp-nota">A conta supõe uma queda de 70% do valor (100% com alavancagem). Nada do que você digita sai daqui.</p>
+    </form>
+  </section>
 
-  <section class="page-section" aria-labelledby="como-funciona"><h2 id="como-funciona">Como funciona</h2><div class="steps">
-    <div class="step"><div class="step-rail"><span class="step-num">1</span></div><div class="step-body"><h3>Você paga</h3><p>R$ 47 pelo Stripe, no cartão. Depois do pagamento, você vai para a página da sua compra, e o Dossiê já está liberado.</p></div></div>
-    <div class="step"><div class="step-rail"><span class="step-num">2</span></div><div class="step-body"><h3>Você conta o caso</h3><p>Algumas perguntas de escolha e um pouco de escrita: a decisão, a sua tese, o melhor argumento contra, a perda que ainda pesa e o pior cenário. Uns dez minutos.</p></div></div>
-    <div class="step"><div class="step-rail"><span class="step-num">3</span></div><div class="step-body"><h3>O relatório fica pronto</h3><p>Em cerca de um minuto, na tela e em PDF. Baixe e guarde: o relatório não fica guardado conosco.</p></div></div>
-  </div></section>
+  <section aria-label="O momento da decisão">
+    <div class="sp-cena">
+      <p>O gráfico subiu de novo. Alguém no grupo já comprou. Você abre o aplicativo com o valor na cabeça.</p>
+      <p>Nesse momento a decisão parece óbvia. É justamente quando ela merece uma segunda leitura.</p>
+      <p class="sp-virada">O Decisão Fria faz essa leitura com você: separa a tese da vontade e transforma o que você sente em números e travas.</p>
+    </div>
+  </section>
 
-  <section class="page-section" aria-labelledby="exemplo"><h2 id="exemplo">Um exemplo</h2><p>Caso fictício, dos nossos testes: um aporte de R$ 3.000 num fundo de índice, dentro de um plano mensal de 14 meses, com reserva separada.</p><div class="verdict"><p>Veredito: siga · frieza 85 de 100</p><p class="verdict-line">Siga com os R$ 3.000, dentro do seu plano de aportes e do limite de R$ 3.571.</p><p>O principal ponto de atenção é o risco de perder o emprego numa queda forte, e isso já aparece nas suas travas.</p></div><p>Num caso de compra com pressa, depois de uma alta e pela opinião de um grupo, o mesmo relatório responde com o limite em reais, os argumentos contra e um veredito mais duro.</p></section>
+  <section aria-labelledby="exemplo">
+    <p class="sp-kicker">Um relatório de verdade</p>
+    <h2 id="exemplo">Duas decisões, duas respostas</h2>
+    <p class="sp-sub">Trechos de relatórios gerados em casos fictícios dos nossos testes. O seu é escrito a partir do que você contar.</p>
+    <div class="sp-abas" role="tablist" aria-label="Exemplos de relatório" data-abas>
+      <button class="sp-aba" type="button" role="tab" id="aba-a" aria-controls="rel-a" aria-selected="true">Um aporte planejado</button>
+      <button class="sp-aba" type="button" role="tab" id="aba-b" aria-controls="rel-b" aria-selected="false" tabindex="-1">Uma compra com pressa</button>
+    </div>
 
-  <section class="page-section" aria-labelledby="para-quem"><h2 id="para-quem">Para quem é, e para quem não é</h2><p><strong>É para</strong> quem vai pôr dinheiro em algo com risco, como ações, cripto, fundos ou uma operação, e quer olhar a própria decisão de fora antes de agir. E para quem já perdeu por pressa e quer uma trava.</p><p><strong>Não é para</strong> quem procura dica do que comprar: não indicamos ativo, não prevemos preço e não prometemos resultado. Também não é para quem pensa em usar dinheiro de contas, de dívidas ou de quem depende de você. Nesse caso, a resposta é não, e o protocolo gratuito já diz isso. Se você está em sofrimento, o CVV atende 24 horas pelo telefone 188.</p></section>
+    <div class="sp-relatorio" role="tabpanel" id="rel-a" aria-labelledby="aba-a">
+      <div class="sp-rel-topo"><span class="sp-selo siga">SIGA</span><div class="sp-frieza"><span>Frieza da decisão: 80 de 100</span><div class="sp-barra" data-medidor data-valor="80" aria-hidden="true"><i></i></div></div></div>
+      <p class="sp-rel-titulo">O aporte segue o plano de 14 meses, com a trava de não vender em queda.</p>
+      <div class="sp-rel-grade">
+        <article><h3>O espelho</h3><p class="sp-cita">“Não tento acertar o momento: compro todo mês o mesmo valor.”</p><p>Seu método é de valor fixo em data fixa, o que reduz a influência da emoção sobre o momento da compra.</p></article>
+        <article><h3>O seu limite</h3><p>R$ 3.571 é o maior valor que, caindo 70%, faria você perder no máximo R$ 2.500, a perda que você aceita. Seus R$ 3.000 ficam dentro dele.</p></article>
+        <article><h3>Ponto cego</h3><p>O texto não diz se os R$ 3.000 são o aporte mensal de sempre ou um valor a mais. Se for a mais, é uma decisão nova, com outro risco de momento.</p></article>
+        <article><h3>Revisão em 30 dias</h3><p class="sp-saida">Se o índice tiver caído, você manteve a compra no mesmo valor e sem vender?</p></article>
+      </div>
+    </div>
 
-  <section class="page-section" aria-labelledby="gratuito"><h2 id="gratuito">Antes de comprar, faça o gratuito</h2><p>O <a href="/protocolos/decisao-fria/">protocolo Decisão Fria</a> é gratuito, roda no seu navegador e já entrega um veredito. O relatório pago é o aprofundamento, escrito a partir do seu caso.</p></section>
+    <div class="sp-relatorio" role="tabpanel" id="rel-b" aria-labelledby="aba-b" hidden>
+      <div class="sp-rel-topo"><span class="sp-selo nao">NÃO</span><div class="sp-frieza"><span>Frieza da decisão: 25 de 100</span><div class="sp-barra" data-medidor data-valor="25" aria-hidden="true"><i></i></div></div></div>
+      <p class="sp-rel-titulo">Não compre R$ 15.000 agora: o valor passa do limite e a decisão está sob pressa.</p>
+      <div class="sp-rel-grade">
+        <article><h3>O que a emoção está fazendo</h3><p class="sp-cita">“Se eu não decidir nas próximas horas, perco a chance.”</p><p>Um prazo de horas deixa pouco espaço para checar a tese.</p></article>
+        <article><h3>O melhor argumento contra</h3><p>A moeda subiu 180% em dois meses. Quem comprou antes já pagou pela expectativa. Comprar agora é pagar o preço que os primeiros podem querer vender.</p></article>
+        <article><h3>O seu limite</h3><p>R$ 5.714 é o maior valor que, numa queda de 70%, mantém a perda dentro dos R$ 4.000 que você aceita.</p></article>
+        <article><h3>A trava</h3><p class="sp-saida">Se ainda quiser comprar, no máximo R$ 5.714, só depois de 7 dias e só se a parceria for anunciada oficialmente.</p></article>
+      </div>
+    </div>
+    <p class="sp-rel-nota">O relatório completo também traz os três argumentos contra, todos os pontos cegos, as travas de saída e as perguntas de 7, 30 e 90 dias, em PDF.</p>
+  </section>
 
-  <section class="page-section" aria-labelledby="preco"><h2 id="preco">Preço e garantia</h2><p><strong>R$ 47, pagamento único.</strong> Um relatório do seu caso e o Dossiê em PDF.</p><p>Você tem 7 dias, contados da compra, para desistir e receber o valor de volta, mesmo depois de gerar o relatório. As regras completas estão nos <a href="/termos/">Termos</a>.</p><p class="btn-row"><a class="btn btn-primary" href="https://relatorio.dlt.academy/comprar/decisao-fria?utm_source=portal&amp;utm_medium=pagina-de-vendas&amp;utm_content=preco">Quero o relatório e o Dossiê, R$ 47 →</a></p></section>
+  <section aria-labelledby="recebe">
+    <p class="sp-kicker">O que você recebe</p>
+    <h2 id="recebe">Uma resposta para agora e um método para depois</h2>
+    <div class="sp-dois">
+      <div class="sp-cartao">
+        <p class="sp-kicker">Para esta decisão</p>
+        <h3>O relatório do seu caso</h3>
+        <ul>
+          <li><strong>O veredito:</strong> siga, ajuste, espere ou não, com a frieza da decisão.</li>
+          <li><strong>O seu limite em reais</strong>, calculado em código a partir do que você aceita perder.</li>
+          <li><strong>O espelho:</strong> o que você disse e o que o seu texto mostra.</li>
+          <li><strong>Três argumentos contra</strong>, cada um virando uma condição de saída.</li>
+          <li><strong>Os pontos cegos</strong> e <strong>as travas</strong>: limite, saída e quando tirar o risco da mesa.</li>
+          <li><strong>A revisão</strong> de 7, 30 e 90 dias. Tudo em PDF.</li>
+        </ul>
+      </div>
+      <div class="sp-cartao">
+        <p class="sp-kicker">Para as próximas</p>
+        <h3>O Dossiê Decisão Fria</h3>
+        <ul>
+          <li><strong>O método completo</strong> por trás do relatório, para usar sem pressa em toda decisão com risco.</li>
+          <li><strong>Fichas para preencher:</strong> quanto colocar, quando sair e como revisar sem se enganar.</li>
+          <li><strong>Capítulos por situação:</strong> depois da perda, alavancagem, quando a vontade chega antes da tese e a decisão fria como rotina.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="como">
+    <p class="sp-kicker">Como funciona</p>
+    <h2 id="como">Uns dez minutos, do pagamento ao PDF</h2>
+    <ol class="sp-passos">
+      <li><h3>Você paga</h3><p>R$ 47 pelo Stripe. O Dossiê já fica liberado na página da sua compra.</p></li>
+      <li><h3>Você conta o caso</h3><p>Escolhas rápidas e um pouco de escrita: a decisão, a tese, o argumento contra, a perda que ainda pesa.</p></li>
+      <li><h3>O relatório fica pronto</h3><p>Em cerca de um minuto, na tela e em PDF. Baixe e guarde: ele não fica guardado conosco.</p></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="quem">
+    <p class="sp-kicker">Para quem é</p>
+    <h2 id="quem">Honesto dos dois lados</h2>
+    <div class="sp-quem">
+      <div class="sim"><h3>É para você se</h3><ul>
+        <li>vai pôr dinheiro em algo com risco, como ações, cripto, fundos ou uma operação, e quer olhar a decisão de fora antes;</li>
+        <li>já perdeu por pressa e quer uma trava escrita;</li>
+        <li>quer um número para o quanto colocar, e não só uma intuição.</li>
+      </ul></div>
+      <div class="nao"><h3>Não é para você se</h3><ul>
+        <li>procura dica do que comprar: não indicamos ativo, não prevemos preço e não prometemos resultado;</li>
+        <li>pensa em usar dinheiro de contas, de dívidas ou de quem depende de você. Aí a resposta é não, e o <a href="/protocolos/decisao-fria/">protocolo gratuito</a> já diz isso;</li>
+        <li>está em sofrimento. O CVV atende 24 horas pelo telefone 188.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section class="sp-oferta" aria-labelledby="oferta" data-oferta>
+    <div>
+      <p class="sp-kicker">Decisão Fria</p>
+      <h2 id="oferta">Relatório do seu caso + Dossiê</h2>
+      <p class="sp-preco">R$ 47<small>pagamento único</small></p>
+      <p class="sp-ancora" data-ancora data-preco="47" hidden></p>
+      <div class="sp-garantia"><span aria-hidden="true">↺</span><p><strong>7 dias para desistir</strong>, com o valor de volta, mesmo depois de gerar o relatório. Regras nos <a href="/termos/">Termos</a>.</p></div>
+    </div>
+    <div>
+      <ul>
+        <li>Um relatório escrito a partir do seu caso, na tela e em PDF</li>
+        <li>O Dossiê Decisão Fria em PDF</li>
+        <li>Respostas enviadas uma vez para escrever o relatório e não guardadas</li>
+      </ul>
+      <a class="sp-cta" href="https://relatorio.dlt.academy/comprar/decisao-fria?utm_source=portal&amp;utm_medium=pagina-de-vendas&amp;utm_content=oferta">Quero o relatório do meu caso <span class="sp-cta-preco">· R$ 47</span></a>
+      <p class="sp-letra">Pagamento pelo Stripe. Material educacional, não é recomendação de investimento. Prefere começar de graça? Faça o <a href="/protocolos/decisao-fria/">protocolo Decisão Fria</a>.</p>
+    </div>
+  </section>
 
   <section class="faq" aria-labelledby="perguntas"><h2 id="perguntas">Perguntas frequentes</h2>
     <details><summary>Quanto tempo leva?</summary><p>Uns dez minutos para responder e cerca de um minuto para o relatório ficar pronto.</p></details>
@@ -80,7 +204,11 @@
     <details><summary>Isso é recomendação de investimento?</summary><p>Não. É material educacional e de reflexão estruturada. A decisão e as consequências dela continuam sendo suas.</p></details>
   </section>
 </main>
+
+<div class="sp-barra-fixa" data-barra-fixa><p>Decisão Fria<strong>R$ 47</strong></p><a class="sp-cta" href="https://relatorio.dlt.academy/comprar/decisao-fria?utm_source=portal&amp;utm_medium=pagina-de-vendas&amp;utm_content=barra-celular">Quero o meu</a></div>
+
 <footer><div class="wrap"><p>DLT Academy — Ferramentas e protocolos independentes de decisão financeira.</p><p><a href="/sobre/">Sobre a DLT Academy</a> · <a href="/transparencia/">Transparência</a> · <a href="/privacidade/">Privacidade</a> · <a href="/termos/">Termos</a></p><p class="footer-social"><a href="/comunidade/">Comunidade</a>: <a href="https://t.me/dltacademyc" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Canal no Telegram</a> · <a href="https://t.me/dltacademy" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Grupo</a> · <a href="https://www.youtube.com/c/DLTAcademy" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">YouTube</a></p><p>© 2026 DLT Academy</p></div></footer>
 <script src="/js/dlt-interactions.js"></script>
+<script src="/produtos/produtos.js"></script>
 </body>
 </html>
