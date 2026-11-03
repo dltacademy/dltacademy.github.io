@@ -496,12 +496,20 @@ function buildPaidReportOffer(ref, el) {
 
   const buy = el("div", "protocol-paid-buy");
   buy.appendChild(el("p", "protocol-paid-price", product.preco + (product.formato ? " · " + product.formato : "")));
+  const actions = el("div", "protocol-paid-actions");
   const a = el("a", "btn btn-primary", product.botao || "Quero o relatório completo →");
   a.href = checkout;
   a.target = "_blank";
   a.rel = "noopener noreferrer";
   a.setAttribute("referrerpolicy", "no-referrer");
-  buy.appendChild(a);
+  actions.appendChild(a);
+  const pagina = paidReportPageUrl(product.paginaUrl);
+  if (pagina) {
+    const ver = el("a", "btn btn-ghost", product.botaoPagina || "Ver exemplo do relatório");
+    ver.href = pagina;
+    actions.appendChild(ver);
+  }
+  buy.appendChild(actions);
   box.appendChild(buy);
 
   // Aviso padrão do modelo estático; o personalizado declara o próprio,
@@ -513,6 +521,12 @@ function buildPaidReportOffer(ref, el) {
   return box;
 }
 
+/**
+ * O que faz: Valida o endereço de compra do relatório pago e devolve a URL normalizada ou null.
+ * Por quê: Impede que o catálogo abra esquema inseguro, host não autorizado, rota fora de /comprar/<produto> ou parâmetros fora de utm_*.
+ * Erro e ataque: Strings vazias, URLs malformadas, http:, credenciais, porta, hash, parâmetros fora de utm_* ou hosts externos retornam null.
+ * Prova: tests/test_paid_reports.py (test_catalogo_usa_link_curto_oficial_de_compra, test_validadores_rejeitam_entradas_hostis).
+ */
 function paidReportCheckoutUrl(value) {
   if (typeof value !== "string" || !value) return null;
   let url;
@@ -522,8 +536,22 @@ function paidReportCheckoutUrl(value) {
     return null;
   }
   if (url.protocol !== "https:") return null;
+  if (url.username || url.password || url.port || url.hash) return null;
+  if (!/^\/comprar\/[a-z0-9-]+$/.test(url.pathname)) return null;
+  if (url.search && !/^\?utm_[a-z0-9_]+=[a-z0-9_-]+(?:&utm_[a-z0-9_]+=[a-z0-9_-]+)*$/.test(url.search)) return null;
   const hosts = typeof PAID_REPORT_HOSTS === "undefined" ? [] : PAID_REPORT_HOSTS;
   return hosts.indexOf(url.hostname) === -1 ? null : url.href;
+}
+
+/**
+ * O que faz: Valida o caminho interno opcional da página pública de apresentação do produto (/produtos/<id>/).
+ * Por quê: Garante que o link secundário de exemplo aponte apenas para página estática própria sem carregar dados da sessão.
+ * Erro e ataque: Rejeita URLs absolutas, esquemas como javascript:, travessia de diretório, parâmetros ou fragmentos; retorna null quando inválido.
+ * Prova: tests/test_paid_reports.py (test_motor_valida_https_e_host_antes_de_mostrar_oferta, test_pagina_de_vendas_nao_fica_orfa_no_portal).
+ */
+function paidReportPageUrl(value) {
+  if (typeof value !== "string" || !value) return null;
+  return /^\/produtos\/[a-z0-9-]+\/$/.test(value) ? value : null;
 }
 
 function prepareProtocolPdfBrand() {
