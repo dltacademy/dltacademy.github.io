@@ -31,6 +31,7 @@ INSTITUTIONAL_URLS = {
     "https://dlt.academy/transparencia/",
     "https://dlt.academy/privacidade/",
     "https://dlt.academy/termos/",
+    "https://dlt.academy/produtos/decisao-fria/",
     "https://dlt.academy/comunidade/",
 }
 ID_PATTERN = re.compile(r"^[a-z0-9-]+$")
