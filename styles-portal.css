@@ -357,6 +357,53 @@ section { padding: 52px 0; }
 .tool-card-cta .arrow { transition: transform .2s; display: inline-block; }
 .tool-card:hover .tool-card-cta .arrow { transform: translateX(4px); }
 
+/* ---------- Destaque editorial de produto próprio ---------- */
+.product-spotlight {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, .95fr);
+  gap: 28px 36px;
+  align-items: center;
+  background: radial-gradient(circle at 88% 0%, rgba(30, 79, 216, .26), transparent 58%),
+              linear-gradient(180deg, rgba(14, 33, 72, .34), rgba(10, 17, 32, .92));
+  border: 1px solid rgba(74, 141, 248, .34);
+  border-radius: 18px;
+  padding: 32px 34px;
+  margin: 8px 0 12px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05);
+}
+.product-spotlight h2 {
+  font-size: clamp(23px, 3vw, 30px);
+  letter-spacing: -0.02em;
+  margin: 0 0 10px;
+  text-wrap: balance;
+}
+.product-spotlight-copy p:last-child {
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.65;
+  margin: 0;
+  text-wrap: pretty;
+}
+.product-spotlight-copy strong { color: var(--text); }
+.product-spotlight-actions {
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+}
+.product-spotlight-meta {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+.product-spotlight-meta strong { color: var(--text); font-family: var(--font-head); }
+.product-spotlight-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 /* ---------- Artigos ---------- */
 #latest-posts-grid {
   display: grid;
@@ -469,10 +516,13 @@ footer.footer-rich { text-align: left; padding: 0; }
 
 /* ---------- Responsivo ---------- */
 @media (max-width: 720px) {
+  .product-spotlight { grid-template-columns: 1fr; padding: 26px 22px; gap: 20px; }
   .footer-grid { grid-template-columns: 1fr; gap: 26px; }
   .footer-nav { justify-content: flex-start; }
 }
 @media (max-width: 560px) {
+  .product-spotlight-btns { width: 100%; }
+  .product-spotlight-btns .btn { width: 100%; justify-content: center; }
   .header-nav { gap: 12px; }
   .header-nav a { font-size: 13px; }
   .header-nav a.nav-catalog { display: none; }
