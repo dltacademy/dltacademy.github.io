@@ -8,6 +8,7 @@
 //   [data-abas]         abas de exemplo (role=tablist + busca na página)
 //   [data-medidor]      barra que enche até data-valor (0–100) ao aparecer
 //   [data-ancora]       frase que compara o preço com a perda aceita
+//   [data-enxame]       nós de agentes acendendo sobre o caso, animado
 //   [data-barra-fixa]   barra de compra no celular, escondida no topo,
 //                       perto da oferta e no rodapé
 // ============================================================
@@ -198,7 +199,112 @@
     if (rodape) obs.observe(rodape);
   }
 
+  // ---- enxame: nós de agentes acendendo sobre o caso ------------------
+  // Decorativo (aria-hidden): os nós e as ligações são desenhados aqui. As
+  // fases e o resultado já estão no HTML; sem JS ou com movimento reduzido,
+  // aparecem prontos.
+  function enxame(raiz) {
+    const campo = raiz.querySelector("[data-enx-campo]");
+    const status = raiz.querySelector("[data-enx-status]");
+    const fases = Array.from(raiz.querySelectorAll("[data-enx-fases] li"));
+    const resultado = raiz.querySelector("[data-enx-resultado]");
+    const reduzido = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const NS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(NS, "svg");
+    svg.setAttribute("viewBox", "0 0 100 75");
+    svg.setAttribute("preserveAspectRatio", "none");
+    campo.appendChild(svg);
+
+    // Nós em anéis em volta do centro (o caso), com um pouco de desordem.
+    const pontos = [{ x: 50, y: 37.5, centro: true }];
+    let semente = 7;
+    const acaso = () => { semente = (semente * 9301 + 49297) % 233280; return semente / 233280; };
+    [[14, 8], [26, 14], [37, 20]].forEach(([r, n]) => {
+      for (let k = 0; k < n; k++) {
+        const a = (k / n) * Math.PI * 2 + acaso() * 0.4;
+        const rr = r + (acaso() - 0.5) * 5;
+        pontos.push({ x: 50 + Math.cos(a) * rr * 1.25, y: 37.5 + Math.sin(a) * rr * 0.85 });
+      }
+    });
+    const nos = pontos.map((p) => {
+      const n = document.createElement("span");
+      n.className = "sp-enx-no" + (p.centro ? " centro" : "");
+      n.style.left = p.x + "%";
+      n.style.top = (p.y / 75) * 100 + "%";
+      campo.appendChild(n);
+      return n;
+    });
+    // Ligações: cada nó ao vizinho mais próximo de dentro e ao centro.
+    const linhas = [];
+    pontos.forEach((p, i) => {
+      if (p.centro) return;
+      let melhor = 0, dist = Infinity;
+      pontos.forEach((q, j) => {
+        if (j === i) return;
+        const dq = Math.hypot(q.x - 50, q.y - 37.5), dp = Math.hypot(p.x - 50, p.y - 37.5);
+        if (dq >= dp) return;
+        const d = Math.hypot(q.x - p.x, q.y - p.y);
+        if (d < dist) { dist = d; melhor = j; }
+      });
+      const l = document.createElementNS(NS, "line");
+      l.setAttribute("x1", p.x); l.setAttribute("y1", p.y);
+      l.setAttribute("x2", pontos[melhor].x); l.setAttribute("y2", pontos[melhor].y);
+      svg.appendChild(l);
+      linhas.push({ el: l, de: i, para: melhor });
+    });
+
+    let geracao = 0;
+    const espera = (ms) => new Promise((r) => setTimeout(r, ms));
+
+    function final() {
+      nos.forEach((n) => n.classList.add("aceso"));
+      linhas.forEach((l) => l.el.classList.add("aceso"));
+      fases.forEach((f) => f.classList.add("feita"));
+      status.textContent = "Relatório pronto";
+      resultado.classList.add("visivel");
+    }
+
+    async function tocar() {
+      const minha = ++geracao;
+      if (reduzido) { final(); return; }
+      nos.forEach((n) => n.classList.remove("aceso"));
+      linhas.forEach((l) => l.el.classList.remove("aceso"));
+      fases.forEach((f) => f.classList.remove("feita"));
+      resultado.classList.remove("visivel");
+      for (let f = 0; f < fases.length; f++) {
+        if (minha !== geracao) return;
+        status.textContent = fases[f].textContent;
+        // Uma onda: alguns nós de fora acendem e a ligação até o centro brilha.
+        for (let pulso = 0; pulso < 4; pulso++) {
+          if (minha !== geracao) return;
+          const escolhidos = linhas.filter(() => acaso() < 0.28);
+          escolhidos.forEach((l) => { l.el.classList.add("aceso"); nos[l.de].classList.add("aceso"); });
+          await espera(170);
+          escolhidos.forEach((l) => { l.el.classList.remove("aceso"); nos[l.de].classList.remove("aceso"); });
+          await espera(60);
+        }
+        fases[f].classList.add("feita");
+      }
+      if (minha !== geracao) return;
+      final();
+    }
+
+    const repetir = raiz.querySelector("[data-enx-repetir]");
+    if (repetir) repetir.addEventListener("click", tocar);
+    if ("IntersectionObserver" in window && !reduzido) {
+      fases.forEach((f) => f.classList.remove("feita"));
+      resultado.classList.remove("visivel");
+      const obs = new IntersectionObserver((entradas) => {
+        if (entradas.some((e) => e.isIntersecting)) { obs.disconnect(); tocar(); }
+      }, { threshold: 0.3 });
+      obs.observe(raiz);
+    } else {
+      final();
+    }
+  }
+
   document.querySelectorAll("[data-calc-limite]").forEach(calculadora);
+  document.querySelectorAll("[data-enxame]").forEach(enxame);
   document.querySelectorAll("[data-abas]").forEach(abas);
   document.querySelectorAll("[data-medidor]").forEach((el) => { if (!el.closest("[hidden]")) encher(el); });
   document.querySelectorAll("[data-barra-fixa]").forEach(barraFixa);

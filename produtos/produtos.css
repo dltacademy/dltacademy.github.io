@@ -170,3 +170,41 @@
 @media (prefers-reduced-motion: reduce) {
   .sp-barra i, .sp-cta, .sp-barra-fixa { transition: none; }
 }
+
+/* ---- enxame: nós de agentes acendendo sobre o caso ----------- */
+.sp-enxame { position: relative; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 24px; align-items: center; background: radial-gradient(circle at 20% 30%, rgba(30,79,216,.30), transparent 60%), var(--bg-elev); border: 1px solid rgba(74,141,248,.35); border-radius: 22px; padding: 26px; margin: 0 0 12px; overflow: hidden; }
+.sp-enx-campo { position: relative; aspect-ratio: 4 / 3; min-height: 220px; }
+.sp-enx-no { position: absolute; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: rgba(74,141,248,.25); box-shadow: 0 0 0 0 rgba(74,141,248,0); transition: background .35s ease, box-shadow .35s ease, transform .35s ease; }
+.sp-enx-no.aceso { background: var(--accent); box-shadow: 0 0 14px 4px rgba(74,141,248,.55); transform: scale(1.35); }
+.sp-enx-no.centro { width: 18px; height: 18px; margin: -9px 0 0 -9px; background: rgba(110,231,168,.35); }
+.sp-enx-no.centro.aceso { background: var(--green); box-shadow: 0 0 22px 8px rgba(110,231,168,.45); }
+.sp-enx-campo svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sp-enx-campo line { stroke: rgba(74,141,248,.12); stroke-width: 1; transition: stroke .35s ease; }
+.sp-enx-campo line.aceso { stroke: rgba(74,141,248,.6); }
+.sp-enx-caso { margin: 0 0 16px; font-size: 15.5px; line-height: 1.55; font-style: italic; }
+.sp-enx-caso span { display: block; font: 700 11.5px var(--font-head); letter-spacing: .12em; text-transform: uppercase; font-style: normal; color: var(--accent); margin: 0 0 6px; }
+.sp-enx-status { font: 600 15px var(--font-head); color: var(--text); margin: 0 0 12px; min-height: 22px; }
+.sp-enx-status::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-right: 10px; vertical-align: middle; animation: sp-pulso 1s ease-in-out infinite; }
+@keyframes sp-pulso { 50% { opacity: .25; } }
+.sp-enx-fases { list-style: none; margin: 0 0 16px; padding: 0; }
+.sp-enx-fases li { font-size: 13.5px; color: var(--text-faint); padding: 3px 0 3px 22px; position: relative; transition: color .3s ease; }
+.sp-enx-fases li::before { content: "○"; position: absolute; left: 0; color: var(--text-faint); }
+.sp-enx-fases li.feita { color: var(--text-dim); }
+.sp-enx-fases li.feita::before { content: "✓"; color: var(--green); }
+.sp-enx-resultado { display: flex; gap: 12px; align-items: center; margin: 0 0 14px; opacity: 0; transform: translateY(6px); transition: opacity .5s ease, transform .5s ease; }
+.sp-enx-resultado.visivel { opacity: 1; transform: none; }
+.sp-enx-resultado p { margin: 0; font-size: 14px; color: var(--text); line-height: 1.5; }
+.sp-orq-repetir { background: transparent; border: 1px solid var(--border); color: var(--text-dim); font: 600 13px var(--font-head); padding: 10px 14px; min-height: 44px; border-radius: 10px; cursor: pointer; }
+.sp-orq-repetir:hover { color: var(--text); border-color: var(--accent); }
+.sp-orq-repetir:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sp-orq-nota { color: var(--text-faint); font-size: 13px; margin: 0 0 28px; }
+@media (max-width: 860px) {
+  .sp-enxame { grid-template-columns: minmax(0, 1fr); }
+  .sp-enx-campo { min-height: 200px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sp-enx-no, .sp-enx-campo line, .sp-enx-resultado { transition: none; }
+  .sp-enx-status::before { animation: none; }
+}
+.sp-selo.ajuste, .sp-selo.espere { background: rgba(251,191,36,.12); color: var(--amber); border: 1px solid rgba(251,191,36,.4); }
+.sp-rel-caso { margin: 0 0 16px; font-style: italic; color: var(--text-dim); font-size: 15px; line-height: 1.55; border-left: 2px solid var(--border); padding-left: 14px; }
