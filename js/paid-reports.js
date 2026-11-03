@@ -8,16 +8,17 @@
 // antes de entregar. Este arquivo só descreve a oferta: não guarda dado
 // nem recebe resposta.
 //
-// Para ativar a oferta: criar o link de pagamento no Stripe e colar em
-// `checkoutUrl`. Com o campo vazio, ou com host fora da lista abaixo, o
-// motor não mostra nada.
+// Para ativar a oferta: configurar a rota curta de compra no subdomínio de
+// relatórios (`https://relatorio.dlt.academy/comprar/<produto>`) e colar em
+// `checkoutUrl`. Com o campo vazio, ou fora desse host e caminho, o motor não
+// mostra nada.
 //
 // `perfis` mapeia o perfil devolvido por result() ao capítulo do Dossiê
 // que fala daquele caso. Só o nome do perfil viaja do protocolo até
 // aqui; nenhuma resposta da pessoa.
 // ============================================================
 
-const PAID_REPORT_HOSTS = ["buy.stripe.com"];
+const PAID_REPORT_HOSTS = ["relatorio.dlt.academy"];
 
 const PAID_REPORTS = {
   "decisao-fria": {
@@ -32,8 +33,10 @@ const PAID_REPORTS = {
     preco: "R$ 47",
     formato: "relatório escrito na hora + Dossiê em PDF",
     botao: "Quero o relatório e o Dossiê →",
+    paginaUrl: "/produtos/decisao-fria/",
+    botaoPagina: "Ver exemplo do relatório",
     plataforma: "Stripe",
-    checkoutUrl: "https://buy.stripe.com/8x25kF3zrcKPdvighW38400",
+    checkoutUrl: "https://relatorio.dlt.academy/comprar/decisao-fria?utm_source=portal&utm_medium=protocolo",
     aviso: "Pagamento pelo Stripe. Nada do que você escreveu aqui vai junto. Depois de pagar, você responde algumas perguntas e baixa o Dossiê na mesma página. As respostas são enviadas uma vez a um serviço de geração de texto contratado por nós, para escrever o relatório, e não são guardadas por nós. Um relatório por compra. É material educacional, não recomendação de investimento. Você tem 7 dias para pedir reembolso.",
     perfis: {
       recuperacao: {
