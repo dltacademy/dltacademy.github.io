@@ -12,7 +12,7 @@ Agentes devem ler [AGENTS.md](./AGENTS.md) antes de editar conteúdo ou componen
 - blog estático;
 - guias de referência;
 - protocolos interativos;
-- páginas `/sobre/`, `/transparencia/`, `/privacidade/` e `/comunidade/`;
+- páginas `/sobre/`, `/transparencia/`, `/privacidade/`, `/termos/` e `/comunidade/`;
 - grafo de próximos passos;
 - comunidade no fim do conteúdo;
 - sitemap por host reunido em `sitemap-index.xml`;
@@ -114,7 +114,7 @@ protocolos/                  protocolos interativos
 js/protocol-engine.js        motor compartilhado
 styles-protocols.css         tela e impressão dos protocolos
 guias/                       guias de referência
-sobre/ transparencia/ privacidade/ comunidade/
+sobre/ transparencia/ privacidade/ termos/ comunidade/
 validate_registry.py         schema, destinos, mounts e sitemaps
 security_check.py            baseline de segurança
 tests/                       contratos estruturais (páginas, links de indicação, registry) e guardas de regressão
