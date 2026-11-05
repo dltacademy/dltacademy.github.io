@@ -11,6 +11,8 @@
 //   [data-enxame]       nós de agentes acendendo sobre o caso, animado
 //   [data-barra-fixa]   barra de compra no celular, escondida no topo,
 //                       perto da oferta e no rodapé
+//   botões de compra    os links para relatorio.dlt.academy/comprar/ herdam
+//                       os utm_* com que a pessoa chegou (o vídeo, o anúncio)
 // ============================================================
 (function () {
   "use strict";
@@ -303,6 +305,33 @@
     }
   }
 
+  /**
+   * O que faz: Repassa aos botões de compra os utm_* com que a pessoa chegou à página (o vídeo, o anúncio, a mensagem).
+   * Por quê: Os botões levam utm fixos do portal; sem o repasse, a venda vinda de uma peça aparece no Stripe como "portal", e não dá para saber qual peça vendeu.
+   * Erro e ataque: Só os cinco utm_* passam, cada um até 200 caracteres e sem caractere de controle; o resto da visita é ignorado. Só links https de relatorio.dlt.academy/comprar/ são tocados, e o destino não muda. Sem utm válido na visita, nada muda. A posição do botão (o utm_content fixo) segue no utm_term, se a visita não trouxer um. O Worker revalida cada valor.
+   * Prova: tests/test_paid_reports.py (test_botoes_de_compra_herdam_utm_da_visita).
+   */
+  const UTM = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+  const COMPRA = 'a[href^="https://relatorio.dlt.academy/comprar/"]';
+  function repassarUtm() {
+    let visita;
+    try { visita = new URLSearchParams(window.location.search || ""); } catch (e) { return; }
+    const valido = (v) => typeof v === "string" && v.trim() !== "" && v.length <= 200 && !/[\u0000-\u001F\u007F-\u009F]/.test(v);
+    const vindos = UTM.filter((k) => valido(visita.get(k)));
+    if (!vindos.length) return;
+    document.querySelectorAll(COMPRA).forEach((a) => {
+      let url;
+      try { url = new URL(a.getAttribute("href")); } catch (e) { return; }
+      if (url.protocol !== "https:" || url.host !== "relatorio.dlt.academy" || !url.pathname.startsWith("/comprar/")) return;
+      const posicao = url.searchParams.get("utm_content");
+      UTM.forEach((k) => url.searchParams.delete(k));
+      vindos.forEach((k) => url.searchParams.set(k, visita.get(k)));
+      if (posicao && !vindos.includes("utm_term")) url.searchParams.set("utm_term", posicao);
+      a.setAttribute("href", url.toString());
+    });
+  }
+
+  repassarUtm();
   document.querySelectorAll("[data-calc-limite]").forEach(calculadora);
   document.querySelectorAll("[data-enxame]").forEach(enxame);
   document.querySelectorAll("[data-abas]").forEach(abas);
