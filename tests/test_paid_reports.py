@@ -182,6 +182,82 @@ console.log(JSON.stringify({{ estadoPerdaVazia, estadoPerdaZero, estadoPerdaPosi
         self.assertEqual({"hidden": False, "limite": "R$ 2.142", "ancoraMudou": True}, out["estadoPerdaPositiva"])
         self.assertTrue(out["bloqueouSubmit"])
 
+    def test_teste_de_queda_da_pagina_de_vendas(self):
+        produtos_js = str(self.root / "produtos/produtos.js")
+        script = f"""
+const fs = require("node:fs");
+const codigo = fs.readFileSync({json.dumps(produtos_js)}, "utf8");
+function criarEl(extra = {{}}) {{
+  const listeners = {{}};
+  return Object.assign({{
+    value: "", checked: false, hidden: false, textContent: "", className: "",
+    dataset: {{}}, style: {{}}, validity: {{ badInput: false }},
+    classList: {{ toggle() {{}} }},
+    getAttribute(k) {{ return this[k] || null; }},
+    querySelector() {{ return null; }},
+    querySelectorAll() {{ return []; }},
+    closest() {{ return null; }},
+    addEventListener(ev, fn) {{ (listeners[ev] ||= []).push(fn); }},
+    dispatch(ev, obj = {{}}) {{ (listeners[ev] || []).forEach((fn) => fn(obj)); }},
+  }}, extra);
+}}
+const segura = criarEl(), divers = criarEl(), alto = criarEl(), gasto = criarEl();
+const saida = criarEl({{ hidden: true }}), perda = criarEl(), barraI = criarEl();
+const barra = criarEl({{ querySelector: () => barraI }}), msg = criarEl(), resto = criarEl();
+const ancora = criarEl({{ textContent: "Texto padrão", "data-preco": "47", "data-ancora-base": "queda" }});
+const form = criarEl({{
+  querySelector(sel) {{
+    return ({{ "[data-segura]": segura, "[data-diversificada]": divers, "[data-alto]": alto, "[data-gasto]": gasto,
+      "[data-saida]": saida, "[data-perda-teste]": perda, "[data-barra]": barra,
+      "[data-msg]": msg, "[data-resto]": resto }})[sel] || null;
+  }},
+}});
+global.window = {{}};
+global.requestAnimationFrame = (fn) => fn();
+global.document = {{
+  body: {{ onbeforematch: null }},
+  getElementById: () => null,
+  querySelector: () => null,
+  querySelectorAll(sel) {{
+    if (sel === "[data-calc-queda]") return [form];
+    if (sel === "[data-ancora]") return [ancora];
+    return [];
+  }},
+}};
+eval(codigo);
+const vazio = {{ hidden: saida.hidden, ancora: ancora.textContent }};
+segura.value = "30000"; segura.dispatch("input");
+const soSegura = {{ hidden: saida.hidden, perda: perda.textContent, barra: barraI.style.width }};
+divers.value = "20000"; alto.value = "50000"; gasto.value = "5000"; alto.dispatch("input");
+const fragil = {{ perda: perda.textContent, barra: barraI.style.width, msg: msg.textContent, ancoraMudou: ancora.textContent !== "Texto padrão" }};
+alto.value = "-5"; alto.dispatch("input");
+const negativo = {{ perda: perda.textContent }};
+let bloqueou = false;
+form.dispatch("submit", {{ preventDefault() {{ bloqueou = true; }} }});
+console.log(JSON.stringify({{ vazio, soSegura, fragil, negativo, bloqueou }}));
+"""
+        proc = subprocess.run(["node", "-e", script], capture_output=True, text=True, check=True)
+        out = json.loads(proc.stdout)
+        self.assertEqual({"hidden": True, "ancora": "Texto padrão"}, out["vazio"])
+        self.assertEqual({"hidden": False, "perda": "R$ 0", "barra": "100%"}, out["soSegura"])
+        # 30% de 20.000 + 80% de 50.000 = 46.000, 46% de 100.000: mais de um terço.
+        self.assertEqual("R$ 46.000", out["fragil"]["perda"])
+        self.assertEqual("54%", out["fragil"]["barra"])
+        self.assertIn("mais de um terço", out["fragil"]["msg"])
+        self.assertIn("9,2 meses", out["fragil"]["msg"])
+        self.assertTrue(out["fragil"]["ancoraMudou"])
+        # Valor negativo conta como zero: sobra só a parte diversificada.
+        self.assertEqual("R$ 6.000", out["negativo"]["perda"])
+        self.assertTrue(out["bloqueou"])
+
+    def test_pagina_da_carteira_aponta_para_o_link_curto_e_nao_prescreve(self):
+        html = (self.root / "produtos/carteira-aguenta/index.html").read_text(encoding="utf-8")
+        self.assertNotIn("buy.stripe.com", html)
+        for content in ("topo", "oferta", "barra-celular"):
+            self.assertIn("https://relatorio.dlt.academy/comprar/carteira-aguenta?utm_source=portal&amp;utm_medium=pagina-de-vendas&amp;utm_content=" + content, html)
+        self.assertIn("data-calc-queda", html)
+        self.assertIn("CVV", html)
+
     def test_pagina_de_vendas_nao_fica_orfa_no_portal(self):
         self.assertIn('paginaUrl: "/produtos/decisao-fria/"', self.catalog)
         for rel in (
