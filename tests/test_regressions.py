@@ -107,7 +107,7 @@ class PrivacyAndPublishingGuards(unittest.TestCase):
                     self.assertEqual("'self'", csp.get(directive), directive)
 
     def test_deploy_publishes_only_the_built_site(self) -> None:
-        # O deploy com path: . publicou AGENTS.md, README.md, os .py, tests/ e .claude/launch.json.
+        # O deploy com path: . publicou AGENTS.md, README.md, os .py, tests/ e a configuração local de preview.
         workflow = (ROOT / ".github/workflows/pages.yml").read_text(encoding="utf-8")
         self.assertRegex(workflow, r"(?m)^\s*path:\s*_site\s*$")
         self.assertNotRegex(workflow, r"(?m)^\s*path:\s*\.\s*$")
@@ -122,7 +122,7 @@ class PrivacyAndPublishingGuards(unittest.TestCase):
             published = [p.relative_to(site) for p in site.rglob("*")]
             self.assertTrue((site / "index.html").is_file())
             self.assertEqual([], [p.as_posix() for p in published if p.suffix in {".md", ".py"}])
-            self.assertEqual([], [p.as_posix() for p in published if {"tests", ".claude", ".github"} & set(p.parts)])
+            self.assertEqual([], [p.as_posix() for p in published if {"tests", ".github"} & set(p.parts)])
             self.assertEqual([], [p.as_posix() for p in published if any(part.startswith(".") for part in p.parts)])
 
     def test_protocol_engine_can_erase_what_it_stored(self) -> None:
