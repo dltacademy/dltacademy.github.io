@@ -22,6 +22,8 @@ A comparação usa somente as opções pessoais básicas gratuitas para clientes
 | Revolut planos pagos | franquias oficiais de saque de R$ 2.000 no Plus, R$ 3.000 no Premium, R$ 6.000 no Metal e R$ 14.000 no exterior no Ultra | 05/09/2026 |
 | ATM e DCC | valores variáveis; campos editáveis na calculadora | revisar após novos testes |
 | Promoção ARQ | em 29/07/2026 o convite mostrava US$ 10 após US$ 150 em gastos elegíveis no primeiro mês | antes de cada divulgação |
+| Investimento em ações ARQ | ações e ETFs dos EUA a partir de US$ 1, sem comissão por operação, conversão de ~0,5% para USDc; distribuição a investidores brasileiros pela Oslo Capital DTVM (artigo da ARQ "conta global para investir em ações dos EUA", visto em 06/11/2026) | 06/12/2026 |
+| Link de indicação ARQ | `tiagohyd_5Wd` (substitui `tiagohyd_h6L`); fonte única em `tests/data/affiliate_links.json` | antes de cada divulgação |
 
 ## Regra da calculadora
 
