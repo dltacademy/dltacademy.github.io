@@ -5,9 +5,13 @@
 //
 //   [data-calc-limite]  calculadora do limite em reais (mesma conta do
 //                       relatório: perda aceita ÷ queda de teste)
+//   [data-calc-queda]   teste de queda da carteira (mesma conta do relatório
+//                       A Carteira Aguenta?: 80% do alto risco + 30% do
+//                       diversificado; a parte segura não cai)
 //   [data-abas]         abas de exemplo (role=tablist + busca na página)
 //   [data-medidor]      barra que enche até data-valor (0–100) ao aparecer
-//   [data-ancora]       frase que compara o preço com a perda aceita
+//   [data-ancora]       frase que compara o preço com a perda aceita (ou,
+//                       com data-ancora-base="queda", com a perda no teste)
 //   [data-enxame]       nós de agentes acendendo sobre o caso, animado
 //   [data-barra-fixa]   barra de compra no celular, escondida no topo,
 //                       perto da oferta e no rodapé
@@ -26,6 +30,7 @@
   const suportaUntilFound = typeof document !== "undefined" && Boolean(document.body) && "onbeforematch" in document.body;
 
   let perdaInformada = NaN;
+  let perdaNoTeste = NaN;
   document.querySelectorAll("[data-ancora]").forEach((el) => {
     el.dataset.padrao = (el.textContent || "").trim();
   });
@@ -83,6 +88,65 @@
   }
 
   /**
+   * O que faz: Calcula ao vivo o teste de queda da carteira: 80% do alto risco e 30% do diversificado, a parte segura não cai.
+   * Por quê: Entrega de graça a primeira conta do A Carteira Aguenta?, com a mesma regra do relatório pago (QUEDA_POR_CLASSE, PERDA_FRAGIL, PERDA_QUEBRA).
+   * Erro e ataque: Campos vazios, inválidos ou negativos contam como zero; carteira zerada mantém a saída recolhida; submit é bloqueado sem recarregar. Nada sai do navegador.
+   * Prova: tests/test_paid_reports.py (test_teste_de_queda_da_pagina_de_vendas).
+   */
+  function testeDeQueda(raiz) {
+    const segura = raiz.querySelector("[data-segura]");
+    const divers = raiz.querySelector("[data-diversificada]");
+    const alto = raiz.querySelector("[data-alto]");
+    const gasto = raiz.querySelector("[data-gasto]");
+    const saida = raiz.querySelector("[data-saida]");
+    const perdaEl = raiz.querySelector("[data-perda-teste]");
+    const barra = raiz.querySelector("[data-barra]");
+    const barraI = barra && barra.querySelector("i");
+    const msg = raiz.querySelector("[data-msg]");
+    const resto = raiz.querySelector("[data-resto]");
+    const zero = (v) => (Number.isNaN(v) ? 0 : v);
+
+    raiz.addEventListener("submit", (e) => e.preventDefault());
+
+    function atualizar() {
+      const s = zero(num(segura)), d = zero(num(divers)), a = zero(num(alto));
+      const total = s + d + a;
+      if (!(total > 0)) {
+        perdaNoTeste = NaN;
+        ancorar();
+        if (saida) saida.hidden = true;
+        return;
+      }
+      const perda = Math.round(d * 0.3 + a * 0.8);
+      const fracao = perda / total;
+      perdaNoTeste = perda;
+      ancorar();
+      if (saida) saida.hidden = false;
+      if (perdaEl) perdaEl.textContent = brl(perda);
+      const pe = Math.round((1 - fracao) * 100);
+      if (barra) barra.classList.toggle("passa", fracao > 1 / 3);
+      if (barraI) barraI.style.width = pe + "%";
+      const pctTxt = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 }).format(fracao * 100) + "%";
+      const g = num(gasto);
+      const meses = g > 0 ? " Isso é " + new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 }).format(perda / g) + " meses dos seus gastos." : "";
+      if (msg) {
+        const grave = fracao > 0.5, fragil = fracao > 0.33;
+        msg.className = "sp-msg " + (fragil ? "passa" : "ok");
+        msg.textContent = (grave
+          ? "A queda levaria " + pctTxt + " da carteira, mais da metade."
+          : fragil
+            ? "A queda levaria " + pctTxt + " da carteira, mais de um terço."
+            : "Na queda de preço, a carteira fica de pé: a perda seria " + pctTxt + " dela.") + meses;
+      }
+      if (resto) {
+        resto.textContent = "Essa é só a queda de preço. O relatório soma também o que cai junto (o mesmo ativo, o mesmo ecossistema), o que fica preso se uma plataforma travar e a que queda cada alavancagem é liquidada.";
+      }
+    }
+    [segura, divers, alto, gasto].forEach((el) => el && el.addEventListener("input", atualizar));
+    atualizar();
+  }
+
+  /**
    * O que faz: Atualiza o comparativo entre o preço do relatório e a perda aceita informada na calculadora.
    * Por quê: Mantém uma âncora concreta visível desde o carregamento e personalizada quando há perda positiva digitada.
    * Erro e ataque: Se perda for vazia, zero, NaN ou preço inválido, restaura o texto padrão do HTML.
@@ -92,6 +156,19 @@
     document.querySelectorAll("[data-ancora]").forEach((el) => {
       const preco = Number(el.getAttribute("data-preco"));
       const padrao = el.dataset.padrao || "";
+      if (el.getAttribute("data-ancora-base") === "queda") {
+        if (!(perdaNoTeste > 0) || !(preco > 0)) {
+          el.textContent = padrao;
+          el.hidden = !padrao;
+          return;
+        }
+        const pq = (preco / perdaNoTeste) * 100;
+        el.hidden = false;
+        el.textContent = "Numa queda que levaria " + brl(perdaNoTeste) + ", o relatório custa " +
+          (pq < 0.1 ? "menos de 0,1%" : new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 }).format(pq) + "%") +
+          " desse valor.";
+        return;
+      }
       if (!(perdaInformada > 0) || !(preco > 0)) {
         el.textContent = padrao;
         el.hidden = !padrao;
@@ -304,6 +381,7 @@
   }
 
   document.querySelectorAll("[data-calc-limite]").forEach(calculadora);
+  document.querySelectorAll("[data-calc-queda]").forEach(testeDeQueda);
   document.querySelectorAll("[data-enxame]").forEach(enxame);
   document.querySelectorAll("[data-abas]").forEach(abas);
   document.querySelectorAll("[data-medidor]").forEach((el) => { if (!el.closest("[hidden]")) encher(el); });
