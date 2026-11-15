@@ -117,13 +117,31 @@
     };
   }
 
+  // Sem gasto não há simulação: apaga a tabela, as barras e o CTA da rodada
+  // anterior para a tela não mostrar números de uma conta que já não vale.
+  function clearTrip() {
+    Object.keys(rows).forEach(function (key) {
+      var row = rows[key];
+      row.total.textContent = "—";
+      row.detail.textContent = "";
+      row.track.style.width = "0%";
+      row.root.classList.remove("is-best");
+      row.track.classList.remove("is-best");
+    });
+    if (cta) cta.hidden = true;
+    if (ctaNote) { ctaNote.textContent = ""; ctaNote.hidden = true; }
+  }
+
   function renderTrip(o) {
     var m = Model.cost(o, P);
     if (m.spend <= 0) {
       summary.textContent = "Coloque quanto pretende gastar em pelo menos um dos três tipos de gasto.";
       verdict.textContent = "";
+      clearTrip();
       return;
     }
+    if (cta) cta.hidden = false;
+    if (ctaNote) ctaNote.hidden = false;
     var feeText = m.walletFee > 0
       ? " Os ¥" + yuan.format(o.qrAlto) + " pagos no QR acima de ¥200 somam ¥" + yuan.format(m.walletFee) + " de taxa da carteira, em qualquer cartão."
       : " Nada passa de ¥200 no QR, então a taxa da carteira não entra.";
