@@ -1577,3 +1577,115 @@ main#top .home-hero {
     min-width: 100%;
   }
 }
+
+/* ---------- Ajustes da revisão (15/11/2026) ---------- */
+
+/* Atalhos das trilhas no hero: um toque abre a trilha na triagem */
+.hero-tracks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin: 22px auto 10px;
+  max-width: 1000px;
+}
+.hero-tracks-label {
+  font-size: 13px;
+  color: var(--text-faint);
+  margin-right: 4px;
+}
+.hero-tracks a.hero-track {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 8px 15px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(14, 21, 38, 0.6);
+  color: var(--text);
+  font-family: var(--font-head);
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color .15s, background-color .15s;
+}
+.hero-tracks a.hero-track:hover {
+  border-color: rgba(74, 141, 248, 0.6);
+  background: rgba(30, 79, 216, 0.16);
+}
+.hero-tracks a.hero-track:focus-visible,
+.catalog-more:focus-visible,
+.catalog-clear:focus-visible {
+  outline: 2px solid var(--sky-light, var(--accent));
+  outline-offset: 2px;
+}
+
+/* Uma ação principal por tela: o passo pago vira botão contornado */
+.stage-paid-cta {
+  background: transparent;
+  border: 1px solid rgba(74, 141, 248, 0.65);
+  color: var(--text);
+}
+.stage-paid-cta:hover {
+  background: rgba(30, 79, 216, 0.18);
+}
+
+/* Acervo: botão para abrir o resto e limpar o filtro */
+.catalog-more {
+  display: flex;
+  margin: 22px auto 0;
+  min-height: 44px;
+}
+/* .entry-card tem display próprio, que anulava o atributo hidden: sem esta regra os filtros não escondiam nada */
+#tools-grid .entry-card[hidden],
+.catalog-more[hidden],
+.catalog-clear[hidden] { display: none; }
+.catalog-count:focus { outline: none; }
+.catalog-clear {
+  appearance: none;
+  min-height: 44px;
+  padding: 0 4px;
+  margin: 2px 0 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font: 600 13.5px var(--font-body);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* Rótulo dos cards do acervo com 12 px (o dlt-patterns.css reduzia para 10,5 px) */
+#tools-grid .entry-card .entry-type { font-size: 12px; }
+
+/* Botão de filtrar quebra linha em vez de vazar */
+.funnel-jump-btn { white-space: normal; text-align: left; }
+
+/* Rodapé: colunas quebram em telas estreitas */
+.footer-nav { flex-wrap: wrap; row-gap: 22px; }
+
+@media (max-width: 560px) {
+  .hero-tracks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero-tracks-label { grid-column: 1 / -1; text-align: center; }
+  .hero-tracks a.hero-track { justify-content: center; text-align: center; line-height: 1.3; padding: 8px 10px; }
+
+  /* Abas das trilhas: uma faixa com rolagem lateral em vez de 4 cards empilhados */
+  .funnel-tabs {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 10px;
+    margin-left: -18px;
+    margin-right: -18px;
+    padding: 2px 18px 8px;
+    scrollbar-width: none;
+  }
+  .funnel-tabs::-webkit-scrollbar { display: none; }
+  .funnel-tab {
+    flex: 0 0 72%;
+    scroll-snap-align: start;
+    min-height: 64px;
+  }
+  .funnel-jump-btn { width: 100%; justify-content: center; }
+}
