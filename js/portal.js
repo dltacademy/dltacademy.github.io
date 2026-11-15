@@ -63,7 +63,7 @@
       scenarios: [
         {
           label: "Subiu forte e bateu pressa de entrar (FOMO)",
-          badge: "Prescrição imediata · Grátis (3 min)",
+          badge: "Caminho sugerido · Grátis (3 min)",
           title: "Protocolo Medo de Ficar de Fora",
           why: "Quebra o impulso antes de abrir a corretora e separa convicção de pressa. Se decidir seguir com capital relevante, passe depois pelo relatório sob medida.",
           primary: {
@@ -77,9 +77,9 @@
         },
         {
           label: "Vou colocar um valor relevante e quero travar meu limite",
-          badge: "Prescrição · Auditoria sob medida",
+          badge: "Caminho sugerido · Auditoria sob medida",
           title: "Relatório Decisão Fria + Dossiê 24p",
-          why: "Regras fixas em código travam primeiro o teto máximo em reais para o seu caixa; três agentes opostos auditam sua tese, fonte e pressão emocional.",
+          why: "Regras fixas em código travam primeiro o teto máximo em reais para o seu caixa; agentes que discordam entre si auditam sua tese, fonte e pressão emocional.",
           primary: {
             label: "Abrir página do Decisão Fria →",
             url: "/produtos/decisao-fria/"
@@ -91,7 +91,7 @@
         },
         {
           label: "Já tenho posição e estou em dúvida entre vender ou segurar",
-          badge: "Prescrição imediata · Simulador grátis",
+          badge: "Caminho sugerido · Simulador grátis",
           title: "Vender ou Segurar?",
           why: "Simula quanto muda se você realizar parcial, travar parte do ganho ou esperar antes de mexer na posição principal.",
           primary: {
@@ -107,9 +107,9 @@
       step1Ids: ["protocolo-decisao-fria", "protocolo-medo-de-ficar-de-fora", "tool-vender-ou-segurar"],
       step2Ids: ["article-fomo-investimentos-depois-da-alta", "tool-quanto-em-taxas", "guide-binance-futuros"],
       step3: {
-        kicker: "Passo 3 · Segunda Leitura Sob Medida (R$ 47)",
+        kicker: "Se o valor pesar · Segunda leitura sob medida (R$ 47)",
         title: "Relatório Decisão Fria + Dossiê 24 páginas",
-        desc: "Antes de alocar um valor relevante, regras em código travam o teto máximo em reais e três agentes opostos auditam sua tese, emoção e fontes.",
+        desc: "Antes de alocar um valor relevante, regras em código travam o teto máximo em reais e agentes que discordam entre si auditam sua tese, emoção e fontes.",
         primaryCta: { label: "Ver exemplo e calculadora →", url: "/produtos/decisao-fria/" },
         secondaryCta: { label: "Começar no protocolo grátis (5 min)", url: "/protocolos/decisao-fria/" }
       }
@@ -119,12 +119,12 @@
       num: "Trilha 02",
       tabTitle: "Saber se a carteira aguenta uma queda",
       headline: "Para enxergar o risco real na soma das posições — antes que o mercado cobre a conta.",
-      summary: "Simule 1.000 cenários de queda, descubra o que cai junto na mesma rede e veja quanto fica preso se uma plataforma travar.",
+      summary: "Teste uma queda forte na carteira inteira, descubra o que cai junto na mesma rede e veja quanto fica preso se uma plataforma travar.",
       situationFilter: "posicao",
       scenarios: [
         {
-          label: "Tenho 2 a 8 posições e quero testar um tombo de 30% a 70%",
-          badge: "Prescrição · Auditoria de portfólio",
+          label: "Tenho várias posições e quero saber se aguento uma queda forte",
+          badge: "Caminho sugerido · Auditoria de portfólio",
           title: "Relatório A Carteira Aguenta? + Roteiro PDF",
           why: "Traduz a queda em reais e em meses dos seus gastos, revela concentração oculta por ecossistema e calcula o risco de saque travado por corretora.",
           primary: {
@@ -138,7 +138,7 @@
         },
         {
           label: "Uso margem/futuros e quero calcular risco de liquidação",
-          badge: "Prescrição imediata · Simulador grátis",
+          badge: "Caminho sugerido · Simulador grátis",
           title: "Sobrevive ou Quebra? (1.000 cenários)",
           why: "Calcula distância até liquidação e chance estatística de ruína antes de abrir ou aumentar alavancagem e travas de proteção.",
           primary: {
@@ -152,9 +152,9 @@
         },
         {
           label: "Quero descobrir se tudo cai junto ou trava na mesma corretora",
-          badge: "Prescrição · Auditoria de concentração",
+          badge: "Caminho sugerido · Auditoria de concentração",
           title: "Relatório A Carteira Aguenta?",
-          why: "Mapeia correlação real entre os ativos da sua carteira e concentração por plataforma antes que o próximo estresse de mercado bloqueie a saída.",
+          why: "Soma o que cai junto por rede e setor e mostra quanto está em cada plataforma, antes que o próximo estresse de mercado bloqueie a saída.",
           primary: {
             label: "Testar concentração da carteira →",
             url: "/produtos/carteira-aguenta/"
@@ -168,7 +168,7 @@
       step1Ids: ["tool-sobrevive-ou-quebra", "tool-vender-ou-segurar", "tool-quanto-em-taxas"],
       step2Ids: ["guide-binance-futuros", "protocolo-decisao-fria", "article-fomo-investimentos-depois-da-alta"],
       step3: {
-        kicker: "Passo 3 · Auditoria Completa de Portfólio (R$ 47)",
+        kicker: "Se o valor pesar · Teste da carteira inteira (R$ 47)",
         title: "Relatório A Carteira Aguenta? + Roteiro Trimestral",
         desc: "Simula a carteira inteira contra quedas fortes em reais e meses de gastos, mede concentração por ecossistema/plataforma e distância até liquidação.",
         primaryCta: { label: "Ver exemplo e teste de queda →", url: "/produtos/carteira-aguenta/" },
@@ -185,7 +185,7 @@
       scenarios: [
         {
           label: "Vou viajar e quero cortar IOF e spread do cartão tradicional",
-          badge: "Prescrição imediata · Grátis (1 min)",
+          badge: "Caminho sugerido · Grátis (1 min)",
           title: "O Dreno do Cartão no Exterior",
           why: "Mostra em reais quanto o seu cartão atual perde no câmbio oculto e compara quanto economiza ao migrar para rotas globais eficientes.",
           primary: {
@@ -199,7 +199,7 @@
         },
         {
           label: "Vou para Ásia, China ou Europa e preciso de QR local e saque",
-          badge: "Prescrição · Rota personalizada grátis",
+          badge: "Caminho sugerido · Rota personalizada grátis",
           title: "O Setup do Nômade",
           why: "Reúne cartão com cashback líquido, conta global para saque barato e pagamento via QR Code local conforme o seu destino.",
           primary: {
@@ -213,7 +213,7 @@
         },
         {
           label: "Pago IA e softwares em dólar todo mês e quero cashback",
-          badge: "Prescrição prática · Guia grátis",
+          badge: "Caminho sugerido · Guia grátis",
           title: "Assinaturas de IA com Cashback",
           why: "Passo a passo para pagar ferramentas e serviços em dólar usando rota internacional com cashback líquido recorrente e teto claro.",
           primary: {
@@ -229,7 +229,7 @@
       step1Ids: ["tool-dreno-cartao", "tool-setup-nomade", "tool-quanto-em-taxas"],
       step2Ids: ["guide-pagamentos-no-exterior", "guide-etherfi-cash-viagem", "guide-pagamentos-china", "guide-bybit-pay-vietqr", "article-custo-100-dolares-exterior"],
       step3: {
-        kicker: "Passo 3 · Rotas Completas de Pagamento Global",
+        kicker: "Para ir além · Rotas completas de pagamento",
         title: "Setup completo para viver e viajar pagando menos",
         desc: "Combine cartão com cashback líquido (ether.fi Cash), conta global de saque barato (ARQ / Wise) e QR Codes locais com abastecimento eficiente em USDT.",
         primaryCta: { label: "Abrir O Setup do Nômade →", url: "https://setup-nomade.dlt.academy/" },
@@ -246,7 +246,7 @@
       scenarios: [
         {
           label: "Estou começando do zero e quero montar reserva e 1ª posição",
-          badge: "Prescrição inicial · Diagnóstico 3 min",
+          badge: "Caminho sugerido · Diagnóstico 3 min",
           title: "Primeiros Passos no Cripto",
           why: "Responda 8 perguntas para verificar se a sua reserva e segurança mínima já sustentam a entrada antes de escolher a conta e o valor inicial.",
           primary: {
@@ -260,7 +260,7 @@
         },
         {
           label: "Já opero e quero parar de perder dinheiro em taxas de corretora",
-          badge: "Prescrição imediata · Calculadora grátis",
+          badge: "Caminho sugerido · Calculadora grátis",
           title: "Quanto Você Paga para Operar?",
           why: "Calcula em menos de 30 segundos quanto giro e ordem a mercado consomem por mês e por ano no seu volume operacional.",
           primary: {
@@ -274,7 +274,7 @@
         },
         {
           label: "Já estruturei a base e vou fazer meu primeiro aporte maior",
-          badge: "Prescrição · Travas antes do aporte",
+          badge: "Caminho sugerido · Travas antes do aporte",
           title: "Protocolo Decisão Fria",
           why: "Organize primeiro sua decisão no protocolo gratuito em cerca de 5 minutos; se o valor exigir dossiê e teto em código, avance para o relatório sob medida.",
           primary: {
@@ -290,7 +290,7 @@
       step1Ids: ["tool-primeiros-passos-cripto", "tool-quanto-em-taxas", "protocolo-medo-de-ficar-de-fora"],
       step2Ids: ["guide-conta-binance", "guide-abastecer-moreta-usdt", "guide-assinaturas-ia-bybit", "article-bem-vindo"],
       step3: {
-        kicker: "Passo 3 · Travas antes do aporte relevante (R$ 47)",
+        kicker: "Se o valor pesar · Travas antes do aporte (R$ 47)",
         title: "Plano de entrada + Relatório Decisão Fria",
         desc: "Depois de estruturar reserva e cortar taxas operacionais, use o motor Decisão Fria antes de colocar capital maior para travar limites em reais.",
         primaryCta: { label: "Conhecer o Decisão Fria →", url: "/produtos/decisao-fria/" },
@@ -411,7 +411,7 @@
     let activeScenarioIdx = 0;
 
     function buildPrescription(scenario) {
-      const box = el("div", { className: "triage-prescription", "aria-live": "polite" });
+      const box = el("div", { className: "triage-prescription" });
       box.appendChild(
         el("div", { className: "triage-rx-top" }, [
           el("span", { className: "triage-rx-badge", textContent: scenario.badge })
@@ -437,7 +437,7 @@
       }
 
       const headCopy = el("div", { className: "funnel-panel-head-copy" }, [
-        el("p", { className: "funnel-panel-kicker", textContent: track.num + " · Arquitetura de Triagem" }),
+        el("p", { className: "funnel-panel-kicker", textContent: track.num }),
         el("h3", { textContent: track.headline }),
         el("p", { className: "funnel-panel-desc", textContent: track.summary })
       ]);
@@ -461,11 +461,12 @@
       panelHost.appendChild(head);
 
       const triage = el("div", { className: "funnel-triage" }, [
-        el("p", { className: "triage-prompt", textContent: "Passo 2 · Qual é o seu momento exato nessa decisão?" })
+        el("p", { className: "triage-prompt", textContent: "Qual é o seu momento nessa decisão?" })
       ]);
 
       const scenariosRow = el("div", { className: "triage-scenarios", role: "group", "aria-label": "Cenários da trilha" });
-      let rxHost = buildPrescription(scenarios[activeScenarioIdx]);
+      const rxLive = el("div", { className: "triage-rx-live", "aria-live": "polite" });
+      rxLive.appendChild(buildPrescription(scenarios[activeScenarioIdx]));
 
       scenarios.forEach((sc, idx) => {
         const btn = el("button", {
@@ -479,20 +480,19 @@
           scenariosRow.querySelectorAll(".triage-scenario-btn").forEach((other, i) => {
             other.setAttribute("aria-pressed", String(i === idx));
           });
-          const nextRx = buildPrescription(scenarios[idx]);
-          rxHost.replaceWith(nextRx);
-          rxHost = nextRx;
+          rxLive.replaceChildren(buildPrescription(scenarios[idx]));
+          writeUrlState();
         });
         scenariosRow.appendChild(btn);
       });
 
       triage.appendChild(scenariosRow);
-      triage.appendChild(rxHost);
+      triage.appendChild(rxLive);
       panelHost.appendChild(triage);
 
       panelHost.appendChild(el("p", {
         className: "funnel-map-label",
-        textContent: "Visão completa desta trilha no funil (Passo 1 Grátis → Passo 2 Execução → Passo 3 Sob Medida)"
+        textContent: "A trilha completa: grátis agora → para executar → se o valor for alto"
       }));
 
       const stages = el("div", { className: "funnel-stages" });
@@ -521,8 +521,8 @@
         return stage;
       }
 
-      stages.appendChild(buildStageList("stage-free", "Passo 1 · Diagnóstico Rápido", "Grátis", track.step1Ids));
-      stages.appendChild(buildStageList("stage-guide", "Passo 2 · Execução e Guias", "Grátis", track.step2Ids));
+      stages.appendChild(buildStageList("stage-free", "Grátis agora · Diagnóstico rápido", "Grátis", track.step1Ids));
+      stages.appendChild(buildStageList("stage-guide", "Para executar · Guias e análises", "Grátis", track.step2Ids));
 
       const stagePaid = el("div", { className: "funnel-stage stage-paid" }, [
         el("div", { className: "funnel-stage-head" }, [
@@ -553,41 +553,74 @@
         role: "tab",
         "aria-controls": "funnel-panel",
         "aria-selected": String(track.id === activeTrackId),
+        tabindex: track.id === activeTrackId ? "0" : "-1",
         "data-track-id": track.id
       }, [
         el("span", { className: "funnel-tab-num", textContent: track.num }),
         el("span", { className: "funnel-tab-title", textContent: track.tabTitle })
       ]);
       btn.addEventListener("click", () => {
-        activeTrackId = track.id;
-        activeScenarioIdx = 0;
-        tabButtons.forEach((other) => {
-          other.setAttribute("aria-selected", String(other.getAttribute("data-track-id") === activeTrackId));
-        });
-        renderPanel(track);
+        selectTrack(track.id, 0);
+        writeUrlState();
+      });
+      btn.addEventListener("keydown", (event) => {
+        const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+        let next = -1;
+        const current = tabButtons.indexOf(btn);
+        if (event.key in keys) next = (current + keys[event.key] + tabButtons.length) % tabButtons.length;
+        else if (event.key === "Home") next = 0;
+        else if (event.key === "End") next = tabButtons.length - 1;
+        if (next < 0) return;
+        event.preventDefault();
+        tabButtons[next].focus();
+        tabButtons[next].click();
       });
       tabButtons.push(btn);
       tabsHost.appendChild(btn);
     });
 
-    window.__selectFunnelTrack = function (trackId, scenarioIdx) {
+    function selectTrack(trackId, scenarioIdx) {
       const nextTrack = FUNNEL_TRACKS.find((t) => t.id === trackId);
-      if (!nextTrack) return;
+      if (!nextTrack) return false;
       activeTrackId = nextTrack.id;
       activeScenarioIdx = typeof scenarioIdx === "number" ? scenarioIdx : 0;
       tabButtons.forEach((other) => {
-        other.setAttribute("aria-selected", String(other.getAttribute("data-track-id") === activeTrackId));
+        const selected = other.getAttribute("data-track-id") === activeTrackId;
+        other.setAttribute("aria-selected", String(selected));
+        other.setAttribute("tabindex", selected ? "0" : "-1");
+        if (selected && tabsHost.scrollWidth > tabsHost.clientWidth) {
+          const pad = parseFloat(window.getComputedStyle(tabsHost).paddingLeft) || 0;
+          tabsHost.scrollTo({ left: Math.max(0, other.offsetLeft - tabsHost.offsetLeft - pad), behavior: reducedMotion() ? "auto" : "smooth" });
+        }
       });
       renderPanel(nextTrack);
+      return true;
+    }
+
+    // A escolha fica no endereço (?trilha=...&momento=...), para compartilhar o link
+    // e manter a escolha ao voltar. Momento é 1, 2 ou 3 no endereço.
+    function writeUrlState() {
+      if (!window.history || typeof window.history.replaceState !== "function") return;
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.set("trilha", activeTrackId);
+        if (activeScenarioIdx > 0) url.searchParams.set("momento", String(activeScenarioIdx + 1));
+        else url.searchParams.delete("momento");
+        window.history.replaceState(null, "", url.pathname + url.search + url.hash);
+      } catch (err) {
+        /* endereço inválido: a escolha continua valendo na tela */
+      }
+    }
+
+    window.__selectFunnelTrack = function (trackId, scenarioIdx) {
+      if (selectTrack(trackId, scenarioIdx)) writeUrlState();
     };
 
-    const trilhaParam = new URLSearchParams(window.location.search).get("trilha");
-    const initialTrack = FUNNEL_TRACKS.find((t) => t.id === trilhaParam) || FUNNEL_TRACKS[0];
-    if (initialTrack.id !== FUNNEL_TRACKS[0].id) {
-      window.__selectFunnelTrack(initialTrack.id, 0);
-    } else {
-      renderPanel(initialTrack);
-    }
+    const params = new URLSearchParams(window.location.search);
+    const initialTrack = FUNNEL_TRACKS.find((t) => t.id === params.get("trilha")) || FUNNEL_TRACKS[0];
+    const momento = parseInt(params.get("momento") || "1", 10);
+    const initialScenario = momento >= 1 && momento <= (initialTrack.scenarios || []).length ? momento - 1 : 0;
+    selectTrack(initialTrack.id, initialScenario);
   }
 
   function setupEcosystemExplorer() {
@@ -608,6 +641,30 @@
 
     let activeType = "all";
     let activeSit = "";
+    let expanded = false;
+    const PREVIEW_LIMIT = 6;
+
+    // Sem filtro, o acervo mostra as 6 primeiras peças e um botão para abrir o resto.
+    const moreBtn = el("button", { type: "button", className: "btn btn-ghost catalog-more", "aria-controls": "tools-grid" });
+    moreBtn.addEventListener("click", () => {
+      expanded = true;
+      apply();
+      const firstHidden = cards[PREVIEW_LIMIT];
+      if (firstHidden) firstHidden.focus({ preventScroll: true });
+    });
+    gridHost.insertAdjacentElement("afterend", moreBtn);
+
+    const clearBtn = el("button", { type: "button", className: "catalog-clear", textContent: "Limpar filtro" });
+    clearBtn.addEventListener("click", () => {
+      activeType = "all";
+      activeSit = "";
+      apply();
+      if (countHost) countHost.focus({ preventScroll: true });
+    });
+    if (countHost) {
+      countHost.setAttribute("tabindex", "-1");
+      countHost.insertAdjacentElement("afterend", clearBtn);
+    }
 
     function countForFormat(formatId) {
       if (formatId === "all") return allItems.length;
@@ -619,6 +676,8 @@
 
     function apply() {
       let shown = 0;
+      let matched = 0;
+      const filtering = activeType !== "all" || Boolean(activeSit);
       cards.forEach((card) => {
         const cardType = card.dataset.type || "";
         const formatOk =
@@ -627,10 +686,17 @@
           cardType === activeType;
         const cardSits = card.dataset.situations || "";
         const sitOk = !activeSit || (" " + cardSits + " ").includes(" " + activeSit + " ");
-        const visible = formatOk && sitOk;
+        const matches = formatOk && sitOk;
+        if (matches) matched += 1;
+        const visible = matches && (filtering || expanded || matched <= PREVIEW_LIMIT);
         card.hidden = !visible;
         if (visible) shown += 1;
       });
+
+      const rest = matched - shown;
+      moreBtn.hidden = rest <= 0;
+      moreBtn.textContent = "Ver as outras " + rest + (rest === 1 ? " peça" : " peças");
+      clearBtn.hidden = !filtering;
 
       if (typeHost) {
         typeHost.querySelectorAll(".type-chip").forEach((b) => {
@@ -645,7 +711,9 @@
 
       if (countHost) {
         if (activeType === "all" && !activeSit) {
-          countHost.textContent = shown + " peças no acervo — simuladores, protocolos, guias e artigos gratuitos.";
+          countHost.textContent = !expanded && matched > shown
+            ? "Exibindo " + shown + " de " + matched + " peças no acervo — simuladores, protocolos, guias e artigos gratuitos."
+            : matched + " peças no acervo — simuladores, protocolos, guias e artigos gratuitos.";
         } else {
           const fmtObj = FORMAT_FILTERS.find((f) => f.id === activeType) || FORMAT_FILTERS[0];
           const sitObj = SITUATIONS.find((s) => s.id === activeSit) || SITUATIONS[0];
