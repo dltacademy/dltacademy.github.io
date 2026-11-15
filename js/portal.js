@@ -621,21 +621,6 @@
     const momento = parseInt(params.get("momento") || "1", 10);
     const initialScenario = momento >= 1 && momento <= (initialTrack.scenarios || []).length ? momento - 1 : 0;
     selectTrack(initialTrack.id, initialScenario);
-
-    // Atalhos do topo: abrem a trilha sem recarregar a página.
-    document.querySelectorAll("[data-track]").forEach((link) => {
-      link.addEventListener("click", (event) => {
-        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-        const trackId = link.getAttribute("data-track");
-        if (!selectTrack(trackId, 0)) return;
-        event.preventDefault();
-        writeUrlState();
-        const section = document.getElementById("como-funciona");
-        if (section) section.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth" });
-        const tab = document.getElementById("tab-" + trackId);
-        if (tab) tab.focus({ preventScroll: true });
-      });
-    });
   }
 
   function setupEcosystemExplorer() {
@@ -726,7 +711,9 @@
 
       if (countHost) {
         if (activeType === "all" && !activeSit) {
-          countHost.textContent = matched + " peças no acervo — simuladores, protocolos, guias e artigos gratuitos.";
+          countHost.textContent = !expanded && matched > shown
+            ? "Exibindo " + shown + " de " + matched + " peças no acervo — simuladores, protocolos, guias e artigos gratuitos."
+            : matched + " peças no acervo — simuladores, protocolos, guias e artigos gratuitos.";
         } else {
           const fmtObj = FORMAT_FILTERS.find((f) => f.id === activeType) || FORMAT_FILTERS[0];
           const sitObj = SITUATIONS.find((s) => s.id === activeSit) || SITUATIONS[0];
