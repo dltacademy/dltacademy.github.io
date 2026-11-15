@@ -554,32 +554,6 @@ main#top .home-hero {
   max-width: none;
 }
 
-.home-hero .hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  min-height: 36px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  background: rgba(74, 141, 248, 0.12);
-  border: 1px solid rgba(74, 141, 248, 0.34);
-  font-family: var(--font-head);
-  font-size: 12.5px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--sky-light);
-  margin: 0 auto 20px;
-}
-
-.home-hero .hero-badge .pulse-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 0 4px rgba(110, 231, 168, 0.18);
-  flex: none;
-}
-
 .home-hero h1 {
   font-family: var(--font-head);
   font-size: clamp(32px, 5.2vw, 52px);
