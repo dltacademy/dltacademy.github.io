@@ -102,9 +102,15 @@ function runProtocol(protocol, mountId) {
     return index + 1;
   }
 
-  function render(index) {
+  function prefersReducedMotion() {
+    return Boolean(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }
+
+  // `moveFocus`: depois de uma ação da pessoa, o foco vai para a pergunta nova
+  // (o teclado não fica solto na tela que sumiu).
+  function render(index, moveFocus) {
     mount.replaceChildren();
-    if (index >= protocol.steps.length) return renderResult();
+    if (index >= protocol.steps.length) return renderResult(moveFocus);
 
     const step = currentStep(index);
     const card = el("div", "protocol-card flow-card");
@@ -125,23 +131,44 @@ function runProtocol(protocol, mountId) {
     progress.appendChild(progressDots);
     card.appendChild(progress);
 
-    if (step.eyebrow) card.appendChild(el("p", "protocol-eyebrow", step.eyebrow));
-    card.appendChild(el("h2", "protocol-q", resolve(step.prompt)));
+    if (step.eyebrow) card.appendChild(el("p", "protocol-eyebrow section-eyebrow", step.eyebrow));
+    const question = el("h2", "protocol-q", resolve(step.prompt));
+    question.id = "protocol-question";
+    question.tabIndex = -1;
+    card.appendChild(question);
     const help = resolve(step.help);
     if (help) card.appendChild(el("p", "protocol-help", help));
 
     if (step.type === "choice") {
-      const group = el("div", "protocol-options flow-options");
+      // Cada opção é uma linha de escolha (.choice-row) com estado marcado.
+      // Clicar marca a linha e segue para o próximo passo, como antes; ao
+      // voltar, a resposta já dada aparece marcada.
+      const group = el("div", "protocol-options choice-list");
       group.setAttribute("role", "group");
+      group.setAttribute("aria-labelledby", "protocol-question");
+      let chosen = false;
       step.options.forEach((opt) => {
-        const b = el("button", "btn btn-secondary", opt.label);
+        const b = el("button", "choice-row");
         b.type = "button";
+        const dot = el("span", "choice-dot");
+        dot.setAttribute("aria-hidden", "true");
+        b.appendChild(dot);
+        b.appendChild(el("span", "choice-label", opt.label));
+        b.setAttribute("aria-pressed", String(state.answers[step.id] === opt.value));
         b.addEventListener("click", () => {
+          if (chosen) return;
+          chosen = true;
           state.answers[step.id] = opt.value;
           state.answers[step.id + "__label"] = opt.label;
           state.path.push(index);
-          render(nextIndex(index));
-          window.scrollTo({ top: mount.offsetTop - 20, behavior: "smooth" });
+          group.querySelectorAll(".choice-row").forEach((row) => row.setAttribute("aria-pressed", String(row === b)));
+          const advance = () => {
+            render(nextIndex(index), true);
+            window.scrollTo({ top: mount.offsetTop - 20, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+          };
+          // Um instante para a marca ser vista; sem espera para quem pede menos movimento.
+          if (prefersReducedMotion()) advance();
+          else window.setTimeout(advance, 160);
         });
         group.appendChild(b);
       });
@@ -158,8 +185,8 @@ function runProtocol(protocol, mountId) {
       cont.addEventListener("click", () => {
         state.answers[step.id] = ta.value.trim();
         state.path.push(index);
-        render(nextIndex(index));
-        window.scrollTo({ top: mount.offsetTop - 20, behavior: "smooth" });
+        render(nextIndex(index), true);
+        window.scrollTo({ top: mount.offsetTop - 20, behavior: prefersReducedMotion() ? "auto" : "smooth" });
       });
       row.appendChild(cont);
       card.appendChild(row);
@@ -173,31 +200,40 @@ function runProtocol(protocol, mountId) {
     back.addEventListener("click", () => {
       if (!state.path.length) return;
       const prev = state.path.pop();
-      render(prev);
+      render(prev, true);
     });
     card.appendChild(back);
 
     mount.appendChild(card);
+    if (moveFocus) question.focus({ preventScroll: true });
   }
 
-  function renderResult() {
+  function renderResult(moveFocus) {
     const result = protocol.result(state.answers);
+    const grade = resultGrade(result);
     const toneClass = result.tone === "good" ? "is-good" : result.tone === "bad" ? "is-bad" : "is-mixed";
-    const card = el("div", "protocol-card protocol-result flow-result result-hero " + toneClass);
+    // Uma superfície só: o cartão do resultado. Dentro dele, grupos separados
+    // por espaço e fio. A cor de acento (data-grade) vem do grau, não do azul.
+    const card = el("div", "protocol-card protocol-result " + toneClass);
+    card.dataset.grade = String(grade);
 
-    card.appendChild(el("p", "protocol-eyebrow", result.eyebrow || "Seu resultado"));
+    card.appendChild(el("p", "protocol-eyebrow section-eyebrow", result.eyebrow || "Seu resultado"));
 
     const verdictPanel = el("div", "protocol-verdict-panel");
-    verdictPanel.appendChild(el("h2", "protocol-verdict", result.verdict));
+    verdictPanel.appendChild(buildVerdictPill(grade, el));
+    const verdictHeading = el("h2", "protocol-verdict", result.verdict);
+    verdictHeading.tabIndex = -1;
+    verdictPanel.appendChild(verdictHeading);
     card.appendChild(verdictPanel);
 
     if (result.stats && result.stats.length) {
-      const stats = el("div", "result-stats protocol-result-stats");
+      const stats = el("div", "protocol-result-stats");
+      stats.setAttribute("role", "group");
       stats.setAttribute("aria-label", "Indicadores do resultado");
       result.stats.slice(0, 3).forEach((stat) => {
-        const cell = el("div");
-        cell.appendChild(el("strong", null, stat.value));
-        cell.appendChild(el("span", null, stat.label));
+        const cell = el("div", "protocol-stat");
+        cell.appendChild(el("span", "num-label", stat.label));
+        cell.appendChild(el("strong", "num-value tnum", stat.value));
         stats.appendChild(cell);
       });
       card.appendChild(stats);
@@ -209,16 +245,16 @@ function runProtocol(protocol, mountId) {
 
     // Registro pessoal do que a pessoa escreveu/escolheu.
     if (result.record && result.record.length) {
-      const rec = el("section", "protocol-record answer-record");
+      const rec = el("section", "protocol-record");
       rec.setAttribute("aria-labelledby", "protocol-record-title");
       const recTitle = el("h3", null, "O que você registrou");
       recTitle.id = "protocol-record-title";
       rec.appendChild(recTitle);
       result.record.forEach((r) => {
         if (!r.value) return;
-        const item = el("div", "protocol-record-item answer-item");
-        item.appendChild(el("span", "protocol-record-q answer-q", r.q));
-        item.appendChild(el("span", "protocol-record-a answer-a", r.value));
+        const item = el("div", "protocol-record-item");
+        item.appendChild(el("span", "protocol-record-q", r.q));
+        item.appendChild(el("span", "protocol-record-a", r.value));
         rec.appendChild(item);
       });
       card.appendChild(rec);
@@ -271,7 +307,7 @@ function runProtocol(protocol, mountId) {
       "Os arquivos são montados localmente no seu navegador e não incluem recomendações ou ofertas exibidas depois do resultado."));
 
     const actions = el("div", "protocol-actions result-actions-row");
-    const pdf = el("button", "btn btn-primary", "Preparando o PDF…");
+    const pdf = el("button", "btn btn-outline", "Preparando o PDF…");
     pdf.type = "button";
     pdf.disabled = true;
     pdf.setAttribute("aria-busy", "true");
@@ -343,8 +379,8 @@ function runProtocol(protocol, mountId) {
       clearPlanState();
       state.answers = {};
       state.path = [];
-      render(0);
-      window.scrollTo({ top: mount.offsetTop - 20, behavior: "smooth" });
+      render(0, true);
+      window.scrollTo({ top: mount.offsetTop - 20, behavior: prefersReducedMotion() ? "auto" : "smooth" });
     });
 
     // Apagar: remove o que o protocolo gravou neste navegador e desmarca o
@@ -411,26 +447,41 @@ function runProtocol(protocol, mountId) {
     mount.replaceChildren(card);
 
     // Próximo passo pelo grafo do registry (mesmo componente dos guias).
-    // Ele vem antes do CTA contextual para manter a ordem do modelo:
-    // reflexão → registro → próximo passo útil → presente/CTA.
+    // O mount nasce aqui, antes do CTA, para manter a ordem do modelo:
+    // reflexão → registro → próximo passo útil → presente/CTA. Ele entra na
+    // página depois da escada, que reúne grátis → executar → pago.
     const nextMount = el("div");
     nextMount.id = "next-step-mount";
     nextMount.dataset.contentId = protocol.id;
-    mount.appendChild(nextMount);
-    if (typeof renderNextStep === "function") renderNextStep();
 
     // CTA por veredito — bloco separado, só na tela, nunca no arquivo nem
     // tecido na reflexão. O modo "artigo" também pode apontar para guia ou
     // ferramenta de utilidade; "presente" é reservado a oferta elegível.
     const cta = result.cta;
-    if (cta && cta.tipo && cta.tipo !== "none") {
-      const box = el("section", "protocol-cta cta-verdict");
-      box.dataset.tone = result.tone === "bad" ? "risk" : result.tone === "mixed" ? "warn" : "good";
-      box.appendChild(el("p", "protocol-cta-eyebrow cta-eyebrow",
+    const hasCta = Boolean(cta && cta.tipo && cta.tipo !== "none");
+
+    // Relatório pago — o último degrau, separado do resultado.
+    // O resultado gratuito já está completo acima; o relatório é
+    // aprofundamento opcional. Sem produto configurado, nada aparece.
+    // Um produto, ou uma lista (degraus: método e relatório do caso).
+    const refs = Array.isArray(result.relatorio) ? result.relatorio : result.relatorio ? [result.relatorio] : [];
+    const cards = refs.map((ref) => buildPaidReportOffer(ref, el)).filter(Boolean);
+    // Um botão cheio por tela: com oferta paga, o primário é o dela (o da
+    // primeira, se houver mais de uma), exceto em alerta (grau 4, NÃO):
+    // contenção antes de conversão, então a oferta vira contorno e o
+    // primário é o do próximo passo. Sem oferta, o primário é o do próximo passo.
+    const paidIsPrimary = cards.length > 0 && grade < 4;
+    cards.slice(paidIsPrimary ? 1 : 0).forEach(demoteOfferButton);
+
+    const steps = [];
+    steps.push({ kind: "free", title: "Grátis agora", sub: result.eyebrow || "Seu resultado" });
+    if (hasCta) {
+      const box = el("div", "protocol-cta");
+      box.appendChild(el("p", "protocol-cta-eyebrow",
         cta.tipo === "presente" ? "Um presente por ter chegado até aqui" : "Próximo passo útil"));
-      if (cta.headline) box.appendChild(el("p", "protocol-cta-headline cta-headline", cta.headline));
+      if (cta.headline) box.appendChild(el("p", "protocol-cta-headline", cta.headline));
       if (cta.texto) box.appendChild(el("p", "protocol-cta-texto", cta.texto));
-      const a = el("a", "btn btn-primary", cta.label);
+      const a = el("a", "btn btn-md " + (paidIsPrimary ? "btn-outline" : "btn-primary"), cta.label);
       a.href = cta.href;
       if (cta.external) {
         a.target = "_blank";
@@ -439,24 +490,80 @@ function runProtocol(protocol, mountId) {
       }
       box.appendChild(a);
       if (cta.disclosure) box.appendChild(el("p", "protocol-cta-disclosure", cta.disclosure));
-      mount.appendChild(box);
+      steps.push({ kind: "guide", title: "Para executar", content: box });
+    }
+    if (cards.length) {
+      let paid = cards[0];
+      if (cards.length > 1) {
+        paid = el("div", "protocol-paid-offers");
+        cards.forEach((c) => paid.appendChild(c));
+      }
+      steps.push({ kind: "paid", title: "Se o valor pesar", content: paid });
     }
 
-    // Relatório pago — o último bloco da página, separado do resultado.
-    // O resultado gratuito já está completo acima; o relatório é
-    // aprofundamento opcional. Sem produto configurado, nada aparece.
-    // Um produto, ou uma lista (degraus: método e relatório do caso).
-    const refs = Array.isArray(result.relatorio) ? result.relatorio : result.relatorio ? [result.relatorio] : [];
-    const cards = refs.map((ref) => buildPaidReportOffer(ref, el)).filter(Boolean);
-    if (cards.length === 1) mount.appendChild(cards[0]);
-    if (cards.length > 1) {
-      const group = el("div", "protocol-paid-offers");
-      cards.forEach((c) => group.appendChild(c));
-      mount.appendChild(group);
-    }
+    if (steps.length > 1) mount.appendChild(buildLadder(steps, el));
+    mount.appendChild(nextMount);
+    if (typeof renderNextStep === "function") renderNextStep();
+
+    if (moveFocus) verdictHeading.focus({ preventScroll: true });
   }
 
   render(0);
+}
+
+// Grau do veredito (1 a 4): SIGA, AJUSTE, ESPERE, NÃO. O desfecho declara
+// `grade` explicitamente; sem ele, o tom antigo vira grau (good 1, mixed 2,
+// bad 4), para os protocolos que ainda não declaram.
+const PROTOCOL_GRADE_WORDS = { 1: "SIGA", 2: "AJUSTE", 3: "ESPERE", 4: "NÃO" };
+
+function resultGrade(result) {
+  if (Number.isInteger(result.grade) && result.grade >= 1 && result.grade <= 4) return result.grade;
+  return result.tone === "good" ? 1 : result.tone === "bad" ? 4 : 2;
+}
+
+// Pílula do veredito: cor, palavra e pontos dizem o mesmo grau
+// (padrão .verdict-pill de dlt-patterns.css).
+function buildVerdictPill(grade, el) {
+  const pill = el("span", "verdict-pill", PROTOCOL_GRADE_WORDS[grade]);
+  pill.dataset.grade = String(grade);
+  const dots = el("span", "verdict-dots");
+  dots.setAttribute("role", "img");
+  dots.setAttribute("aria-label", "grau " + grade + " de 4");
+  for (let i = 0; i < 4; i += 1) dots.appendChild(document.createElement("i"));
+  pill.appendChild(dots);
+  return pill;
+}
+
+// Escada de degraus (padrão .ladder): o primeiro é o resultado, já feito;
+// o último, quando existe, é o pago. Cada degrau traz o conteúdo que já existia.
+function buildLadder(steps, el) {
+  const section = el("section", "protocol-ladder");
+  const list = el("ol", "ladder");
+  steps.forEach((step, i) => {
+    const li = el("li", "ladder-step " + (step.kind === "free" ? "is-free" : step.kind === "paid" ? "is-paid" : "is-guide"));
+    const rail = el("div", "ladder-rail");
+    const node = el("span", "ladder-node", step.kind === "free" ? "✓" : String(i + 1));
+    node.setAttribute("aria-hidden", "true");
+    rail.appendChild(node);
+    if (i < steps.length - 1) rail.appendChild(el("span", "ladder-line")).setAttribute("aria-hidden", "true");
+    const body = el("div", "ladder-body");
+    body.appendChild(el("h3", "ladder-title", step.title));
+    if (step.sub) body.appendChild(el("p", "ladder-sub", step.sub));
+    if (step.content) body.appendChild(step.content);
+    li.appendChild(rail);
+    li.appendChild(body);
+    list.appendChild(li);
+  });
+  section.appendChild(list);
+  return section;
+}
+
+// Oferta que não é a principal vira botão de contorno.
+function demoteOfferButton(card) {
+  const button = card.querySelector(".protocol-paid-buy .btn-primary");
+  if (!button) return;
+  button.classList.remove("btn-primary");
+  button.classList.add("btn-outline");
 }
 
 // Monta a oferta do relatório pago a partir do catálogo (js/paid-reports.js).
@@ -471,11 +578,11 @@ function buildPaidReportOffer(ref, el) {
   if (!checkout) return null;
   const profile = (product.perfis || {})[ref.perfil];
 
-  const box = el("section", "protocol-paid-report");
+  const box = el("section", "protocol-paid-report ladder-card");
   const titleId = "protocol-paid-report-title-" + String(ref.produto).replace(/[^a-z0-9-]/gi, "");
   box.setAttribute("aria-labelledby", titleId);
   box.appendChild(el("p", "protocol-paid-eyebrow", "Para ir além deste resultado"));
-  const title = el("h3", "protocol-paid-title", product.titulo);
+  const title = el("h4", "protocol-paid-title", product.titulo);
   title.id = titleId;
   box.appendChild(title);
   if (product.promessa) box.appendChild(el("p", "protocol-paid-text", product.promessa));
@@ -497,7 +604,7 @@ function buildPaidReportOffer(ref, el) {
   const buy = el("div", "protocol-paid-buy");
   buy.appendChild(el("p", "protocol-paid-price", product.preco + (product.formato ? " · " + product.formato : "")));
   const actions = el("div", "protocol-paid-actions");
-  const a = el("a", "btn btn-primary", product.botao || "Quero o relatório completo →");
+  const a = el("a", "btn btn-md btn-primary", product.botao || "Quero o relatório completo →");
   a.href = checkout;
   a.target = "_blank";
   a.rel = "noopener noreferrer";

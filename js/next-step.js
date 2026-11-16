@@ -1,49 +1,75 @@
 // ============================================================
 // Bloco "Próximo passo" / "Relacionados" — lê primaryNext/related
 // de js/content-registry.js e conecta o grafo de conteúdo.
-// Mesma linguagem visual dos cards do portal (tool-card). DOM
-// seguro: só createElement/textContent, zero innerHTML.
+// Mesmo cartão do acervo da home e dos índices (.catalog-card,
+// dlt-patterns 39). DOM seguro: só createElement/textContent,
+// zero innerHTML.
 // ============================================================
 
 function findContentEntry(id) {
   return typeof CONTENT === "undefined" ? undefined : CONTENT.find((entry) => entry.id === id);
 }
 
+// Mesmos rótulos de formato da home (js/portal.js, TYPE_META).
+const NEXT_STEP_TYPE_LABELS = {
+  tool: "Simulador",
+  protocolo: "Protocolo",
+  guide: "Guia",
+  article: "Artigo",
+};
+
+function nextStepMark(entry) {
+  if (entry.mark) return entry.mark.slice(0, 2).toUpperCase();
+  return entry.title
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part.charAt(0))
+    .join("")
+    .toUpperCase();
+}
+
+function nextStepSpan(className, text) {
+  const node = document.createElement("span");
+  node.className = className;
+  if (text) node.textContent = text;
+  return node;
+}
+
 function createConnectionCard(entry) {
   const card = document.createElement("a");
-  card.className = "tool-card";
+  card.className = "catalog-card";
   card.href = entry.url;
 
-  const top = document.createElement("div");
-  top.className = "tool-card-top";
-
-  const icon = document.createElement("span");
-  icon.className = "tool-card-icon";
-  icon.setAttribute("aria-hidden", "true");
-  icon.textContent = entry.icon || "✦";
-
-  const tag = document.createElement("span");
-  tag.className = "tag " + (entry.tone === "green" ? "s1" : "s2");
-  tag.textContent = entry.tag;
-
-  top.append(icon, tag);
+  const mark = nextStepSpan(
+    "catalog-mark tnum " + (entry.tone === "green" ? "is-green" : "is-blue"),
+    nextStepMark(entry)
+  );
+  mark.setAttribute("aria-hidden", "true");
+  const format = NEXT_STEP_TYPE_LABELS[entry.type];
+  const kind = !format ? entry.tag || "" : !entry.tag ? format : entry.tag.toLowerCase().indexOf(format.toLowerCase()) === 0 ? entry.tag : format + " \u00b7 " + entry.tag;
+  const top = nextStepSpan("catalog-card-top");
+  top.append(mark, nextStepSpan("catalog-kind", kind));
 
   const title = document.createElement("h3");
+  title.className = "catalog-card-title";
   title.textContent = entry.title;
 
   const desc = document.createElement("p");
+  desc.className = "catalog-card-desc";
   desc.textContent = entry.description;
 
-  const cta = document.createElement("span");
-  cta.className = "tool-card-cta";
-  cta.textContent = "Abrir ";
-  const arrow = document.createElement("span");
-  arrow.className = "arrow";
+  const NEXT_STEP_CTAS = { tool: "Abrir ferramenta", protocolo: "Começar protocolo", guide: "Ler o guia", article: "Ler artigo" };
+  const cta = nextStepSpan("catalog-cta", (NEXT_STEP_CTAS[entry.type] || "Abrir") + " ");
+  const arrow = nextStepSpan("");
   arrow.setAttribute("aria-hidden", "true");
-  arrow.textContent = "→";
+  arrow.textContent = "\u2192";
   cta.appendChild(arrow);
 
-  card.append(top, title, desc, cta);
+  const foot = nextStepSpan("catalog-card-foot");
+  foot.append(nextStepSpan("catalog-effort", entry.effort || entry.readingTime || ""), cta);
+
+  card.append(top, title, desc, foot);
   return card;
 }
 
@@ -75,7 +101,7 @@ const COMMUNITY_ENTRY = {
     "Canal para acompanhar, grupo para conversar e YouTube. Gratuitos, sem cadastro — e com os links oficiais num lugar só, para reconhecer golpe quando ele chegar.",
   tag: "Grátis",
   tone: "green",
-  icon: "CM",
+  mark: "CM",
 };
 
 function renderNextStep() {

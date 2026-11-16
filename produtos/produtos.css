@@ -7,20 +7,23 @@
 .sp section { margin: 0 0 76px; }
 .sp h2 { font-family: var(--font-head); font-size: clamp(24px, 3vw, 33px); line-height: 1.18; letter-spacing: -0.02em; margin: 0 0 14px; }
 .sp > section > h2 { text-wrap: balance; }
-.sp .sp-kicker { font-family: var(--font-head); font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); margin: 0 0 12px; }
+.sp .sp-kicker { font-family: var(--font-head); font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--sky-light); margin: 0 0 12px; }
 .sp .sp-sub { color: var(--text-dim); font-size: 17px; line-height: 1.65; max-width: 65ch; margin: 0 0 28px; text-wrap: pretty; }
 .sp p, .sp li { line-height: 1.68; text-wrap: pretty; }
 
 /* ---- abertura ------------------------------------------------ */
 .sp-hero { display: grid; grid-template-columns: minmax(0, 1.06fr) minmax(0, .94fr); gap: 48px; align-items: center; padding: 56px 0 24px; }
 .sp-hero h1 { font-family: var(--font-head); font-size: clamp(32px, 4.6vw, 52px); line-height: 1.08; letter-spacing: -0.03em; margin: 0 0 18px; text-wrap: balance; }
-.sp-hero h1 em { font-style: normal; color: var(--accent); }
+/* Ênfase por brilho, não por azul: azul é só ação e navegação. */
+.sp-hero h1 { color: #B8C3DA; }
+.sp-hero h1 em { font-style: normal; color: #F2F5FB; }
 .sp-hero .sp-lede { font-size: 18.5px; line-height: 1.62; color: var(--text-dim); margin: 0 0 28px; max-width: 56ch; }
-.sp-cta { display: inline-flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 10px; background: var(--accent-2); color: #fff; font-family: var(--font-head); font-weight: 700; font-size: 17px; padding: 16px 26px; border-radius: 14px; text-decoration: none; text-align: center; box-shadow: 0 12px 32px rgba(30,79,216,.38), inset 0 1px 0 rgba(255,255,255,.16); transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
+/* Rótulo e preço correm como texto: o preço (nowrap) nunca fica sozinho na 2ª linha; balance reparte as linhas. */
+.sp-cta { display: inline-block; box-sizing: border-box; min-height: 52px; background: var(--accent-2); color: #fff; font-family: var(--font-head); font-weight: 700; font-size: 17px; line-height: 1.3; text-wrap: balance; padding: 15px 26px; border-radius: 14px; text-decoration: none; text-align: center; box-shadow: 0 12px 32px rgba(30,79,216,.38), inset 0 1px 0 rgba(255,255,255,.16); transition: transform .15s ease, box-shadow .15s ease, background .15s ease; }
 .sp-cta:hover { background: #2659e6; color: #fff; transform: translateY(-1px); box-shadow: 0 16px 38px rgba(30,79,216,.48), inset 0 1px 0 rgba(255,255,255,.22); }
 .sp-cta:visited { color: #fff; }
 .sp-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.sp-cta .sp-cta-preco { opacity: .88; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sp-cta .sp-cta-preco { opacity: .88; font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; margin-left: 4px; }
 .sp-trust { list-style: none; padding: 0; margin: 18px 0 0; display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--text-faint); font-size: 14px; }
 .sp-trust li::before { content: "✓"; color: var(--green); margin-right: 6px; font-weight: 700; }
 .sp-hero-alt { margin: 14px 0 0; font-size: 14px; color: var(--text-faint); }
@@ -28,35 +31,36 @@
 /* ---- calculadora -------------------------------------------- */
 .sp-calc { background: linear-gradient(180deg, rgba(14,33,72,.82), var(--bg-elev)); border: 1px solid rgba(74,141,248,.28); border-radius: 20px; padding: 26px; box-shadow: 0 30px 80px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06); }
 .sp-calc h2 { font-size: 20px; margin: 0 0 6px; }
-.sp-calc > p { color: var(--text-dim); font-size: 14.5px; margin: 0 0 18px; }
+.sp-calc > p { color: var(--text-dim); font-size: 15px; margin: 0 0 18px; }
 .sp-campo { display: block; margin: 0 0 14px; }
 .sp-campo span { display: block; font-size: 14px; color: var(--text-dim); margin: 0 0 6px; }
 .sp-campo input[type=number] { width: 100%; box-sizing: border-box; background: var(--bg); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font: 600 18px var(--font-head); font-variant-numeric: tabular-nums; padding: 12px 14px; transition: border-color .15s ease; }
 .sp-campo input[type=number]:hover { border-color: rgba(74,141,248,.5); }
 .sp-campo input[type=number]:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
-.sp-check { display: flex; gap: 10px; align-items: center; min-height: 44px; font-size: 14px; color: var(--text-dim); margin: 4px 0 18px; cursor: pointer; }
+.sp-check { display: flex; gap: 10px; align-items: center; min-height: 44px; font-size: 15px; color: var(--text-dim); margin: 4px 0 18px; cursor: pointer; }
 .sp-check input { margin: 0; width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); }
 .sp-resultado { border-top: 1px solid var(--border); padding-top: 18px; min-height: 120px; }
-.sp-resultado .sp-limite { font-family: var(--font-head); font-size: 15px; color: var(--text-dim); margin: 0 0 4px; }
-.sp-resultado .sp-limite strong { display: block; font-size: 34px; color: var(--text); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-.sp-barra { position: relative; height: 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 999px; overflow: hidden; margin: 14px 0 10px; }
-.sp-barra i { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--green); border-radius: 999px; transition: width .5s ease, background .3s ease; }
-.sp-barra.passa i { background: var(--red); }
-.sp-msg { font-size: 15px; line-height: 1.55; margin: 0; font-variant-numeric: tabular-nums; }
-.sp-msg.ok { color: var(--green); }
-.sp-msg.passa { color: #fca5a5; }
-.sp-msg-resto { color: var(--text-dim); font-size: 14px; margin: 8px 0 0; }
+/* Número de resultado: rótulo em cima, número embaixo (Sora tabular). Quando há dois, lado a lado. */
+.sp-numeros { display: flex; flex-wrap: wrap; gap: 14px 36px; }
+.sp-numeros .sp-limite[hidden] { display: none; }
+.sp-resultado .sp-limite { font-family: var(--font-head); font-size: 15px; line-height: 1.4; color: var(--text-dim); margin: 0 0 4px; }
+.sp-resultado .sp-limite strong { display: block; font-size: 34px; line-height: 1.2; color: var(--text); letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+/* A barra e a frase seguem o grau do resultado (data-grade, posto pelo JS ou pelo HTML): verde 1, âmbar 2, laranja 3, vermelho 4. */
+.sp-barra { position: relative; height: 12px; background: #16213B; border-radius: 999px; overflow: hidden; margin: 14px 0 10px; }
+.sp-barra i { position: absolute; inset: 0 auto 0 0; width: 0; background: var(--grade-dot, var(--green)); border-radius: 999px; transition: width .5s ease, background .3s ease; }
+.sp-msg { font-size: 15px; line-height: 1.55; margin: 0; font-variant-numeric: tabular-nums; color: var(--grade-fg, var(--text)); }
+.sp-msg-resto { color: var(--text-dim); font-size: 15px; margin: 8px 0 0; }
 .sp-nota { color: var(--text-faint); font-size: 12.5px; margin: 14px 0 0; }
 
 /* ---- cena ---------------------------------------------------- */
-.sp-cena { border-left: 3px solid var(--accent-2); padding: 6px 0 6px 24px; max-width: 720px; }
+.sp-cena { border-left: 3px solid #3A4E78; padding: 6px 0 6px 24px; max-width: 720px; }
 .sp-cena p { font-size: 20px; line-height: 1.6; margin: 0 0 14px; color: var(--text); }
 .sp-cena p.sp-virada { color: var(--text-dim); font-size: 17px; margin-bottom: 0; }
 
 /* História de origem: quem criou o método, em primeira pessoa, com a
    assinatura de fundador. Uma por página de vendas, depois da cena. */
 .sp-origem { position: relative; max-width: 760px; margin-top: 8px; padding: 32px 32px 24px; border: 1px solid var(--border); border-radius: 18px; background: linear-gradient(160deg, rgba(14, 33, 72, .55), rgba(10, 17, 32, .92)); }
-.sp-origem::before { content: "\201C"; position: absolute; top: -16px; left: 22px; font-family: var(--font-head); font-size: 80px; line-height: 1; color: var(--accent); opacity: .55; }
+.sp-origem::before { content: "\201C"; position: absolute; top: -16px; left: 22px; font-family: var(--font-head); font-size: 80px; line-height: 1; color: #A9B5CC; opacity: .4; }
 .sp-origem p { font-size: 19px; line-height: 1.65; margin: 0 0 14px; color: var(--text); }
 .sp-origem p.sp-origem-virada { font-family: var(--font-head); font-weight: 700; font-size: 20px; line-height: 1.5; color: #fff; }
 .sp-origem p.sp-origem-assinatura { display: flex; align-items: center; gap: 10px; margin: 18px 0 0; padding-top: 16px; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 14px; }
@@ -66,55 +70,61 @@
 /* ---- método: trava em código + três leituras ---------------- */
 .sp-leituras { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .sp-leitura { background: linear-gradient(180deg, rgba(14,33,72,.30), var(--bg-elev)); border: 1px solid var(--border); border-radius: 18px; padding: 24px; box-shadow: inset 0 1px 0 rgba(255,255,255,.04); }
-.sp-leitura-num { display: inline-block; font-family: var(--font-head); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); background: rgba(30,79,216,.18); border: 1px solid rgba(74,141,248,.32); border-radius: 999px; padding: 4px 11px; margin: 0 0 12px; font-variant-numeric: tabular-nums; }
+.sp-leitura-num { display: inline-block; font-family: var(--font-head); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #A9B5CC; background: rgba(255,255,255,.04); border: 1px solid var(--border); border-radius: 999px; padding: 4px 11px; margin: 0 0 12px; font-variant-numeric: tabular-nums; }
 .sp-leitura h3 { font-family: var(--font-head); font-size: 19px; line-height: 1.3; margin: 0 0 8px; }
 .sp-leitura p { color: var(--text-dim); font-size: 15px; line-height: 1.62; margin: 0; }
 .sp-leitura strong { color: var(--text); font-weight: 700; }
 
 /* ---- abas de exemplo ---------------------------------------- */
-.sp-abas { display: inline-flex; gap: 6px; background: var(--bg-elev); border: 1px solid var(--border); border-radius: 14px; padding: 6px; margin: 0 0 22px; flex-wrap: wrap; }
+/* Aba escolhida = borda azul + fundo suave, como os casos da home; botão azul cheio fica só para a ação de compra. */
+.sp-abas { display: flex; gap: 8px; margin: 0 0 22px; flex-wrap: wrap; }
 .sp-abas:not([data-pronto]) { display: none; }
-.sp-aba { background: transparent; border: 0; color: var(--text-dim); font: 600 15px var(--font-head); padding: 10px 16px; border-radius: 10px; cursor: pointer; min-height: 44px; }
-.sp-aba:hover { color: var(--text); }
-.sp-aba[aria-selected=true] { background: var(--accent-2); color: #fff; }
+.sp-aba { background: transparent; border: 1px solid var(--border); color: #A9B5CC; font: 600 15px var(--font-head); padding: 10px 16px; border-radius: 12px; cursor: pointer; min-height: 44px; text-align: left; }
+.sp-aba:hover { color: var(--text); border-color: #35508A; }
+.sp-aba[aria-selected=true] { border-color: var(--accent); background: rgba(74,141,248,.12); color: var(--text); }
 .sp-aba:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .sp-relatorio { background: linear-gradient(180deg, rgba(14,33,72,.22), var(--bg-elev)); border: 1px solid var(--border); border-radius: 20px; padding: 28px; box-shadow: inset 0 1px 0 rgba(255,255,255,.04); }
 .sp-relatorio:not([hidden]) + .sp-relatorio:not([hidden]) { margin-top: 16px; }
 .sp-relatorio[hidden]:not([hidden="until-found"]) { display: none; }
 .sp-relatorio[hidden="until-found"] { padding: 0; border: 0; margin: 0; min-height: 0; box-shadow: none; overflow: hidden; }
 .sp-rel-topo { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin: 0 0 16px; }
-.sp-selo { font-family: var(--font-head); font-weight: 800; font-size: 15px; letter-spacing: .08em; padding: 8px 14px; border-radius: 10px; }
-.sp-selo.siga { background: rgba(110,231,168,.14); color: var(--green); border: 1px solid rgba(110,231,168,.4); }
-.sp-selo.nao { background: rgba(248,113,113,.14); color: #fca5a5; border: 1px solid rgba(248,113,113,.4); }
+/* Veredito: a pílula de 4 graus do dlt-patterns (.verdict-pill + data-grade): cor, palavra e pontos.
+   SIGA/AGUENTA = 1 · AJUSTE = 2 · ESPERE/FRÁGIL = 3 · NÃO/QUEBRA = 4. */
+.sp-rel-topo .verdict-pill { font-size: 14px; padding: 8px 14px; }
 .sp-frieza { flex: 1; min-width: 200px; }
-.sp-frieza span { font-size: 13px; color: var(--text-faint); font-variant-numeric: tabular-nums; }
-.sp-frieza .sp-barra { margin: 6px 0 0; height: 10px; }
-.sp-frieza .sp-barra i { background: linear-gradient(90deg, #f87171, #fbbf24, #6EE7A8); background-size: 300px 100%; }
+.sp-frieza-rot { display: block; font-size: 13px; color: var(--text-dim); margin: 0 0 2px; }
+.sp-frieza-num { display: block; font-size: 22px; line-height: 1.25; font-weight: 700; color: #F2F5FB; letter-spacing: -.01em; }
+.sp-frieza .sp-barra { margin: 8px 0 0; height: 10px; }
+/* Sem JavaScript a barra já nasce na largura do valor; com JS, produtos.js anima a partir de 0. */
+.sp-frieza [data-medidor][data-valor="18"] i { width: 18%; }
 .sp-frieza [data-medidor][data-valor="25"] i { width: 25%; }
-.sp-frieza [data-medidor][data-valor="80"] i { width: 80%; }
+.sp-frieza [data-medidor][data-valor="38"] i { width: 38%; }
+.sp-frieza [data-medidor][data-valor="45"] i { width: 45%; }
+.sp-frieza [data-medidor][data-valor="62"] i { width: 62%; }
+.sp-frieza [data-medidor][data-valor="82"] i { width: 82%; }
 .sp-rel-titulo { font-family: var(--font-head); font-size: 21px; line-height: 1.35; margin: 0 0 18px; }
-.sp-rel-grade { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-.sp-rel-grade article { background: var(--bg); border: 1px solid var(--border); border-radius: 14px; padding: 18px; }
-.sp-rel-grade h3 { font-family: var(--font-head); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin: 0 0 10px; }
+/* Dentro do cartão do relatório, os blocos são grupos separados por filete (sem caixa própria). */
+.sp-rel-grade { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 36px; }
+.sp-rel-grade article { border-top: 1px solid var(--border); padding: 18px 0 14px; }
+.sp-rel-grade h3 { font-family: var(--font-head); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: #A9B5CC; margin: 0 0 10px; }
 .sp-rel-grade p { color: var(--text-dim); font-size: 15px; line-height: 1.6; margin: 0 0 8px; }
 .sp-rel-grade p:last-child { margin: 0; }
-.sp-rel-grade .sp-cita { color: var(--text); font-style: italic; border-left: 2px solid rgba(74,141,248,.45); padding-left: 10px; }
+.sp-rel-grade .sp-cita { color: var(--text); font-style: italic; border-left: 2px solid #3A4E78; padding-left: 10px; }
 .sp-rel-grade .sp-saida { color: var(--text); }
 .sp-rel-nota { color: var(--text-faint); font-size: 13px; margin: 16px 0 0; }
 
 /* ---- vitrine tangível + o que recebe ------------------------- */
 .sp-vitrine { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 0 0 18px; }
-.sp-folha { background: linear-gradient(165deg, rgba(14,33,72,.52), rgba(6,9,15,.96)); border: 1px solid rgba(74,141,248,.34); border-radius: 20px; padding: 22px 24px; box-shadow: 0 18px 44px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.07); }
-.sp-folha-dossie { border-color: rgba(110,231,168,.3); background: linear-gradient(165deg, rgba(14,42,52,.42), rgba(6,9,15,.96)); }
+.sp-folha { background: linear-gradient(165deg, rgba(14,33,72,.40), rgba(6,9,15,.96)); border: 1px solid var(--border); border-radius: 20px; padding: 22px 24px; box-shadow: 0 18px 44px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.07); }
 .sp-folha-topo { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 12px; font-size: 12px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--text-faint); padding-bottom: 12px; border-bottom: 1px solid rgba(30,44,78,.8); margin-bottom: 14px; }
 .sp-folha-selo-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 10px; margin-bottom: 14px; }
-.sp-folha-badge { font-family: var(--font-head); font-size: 12px; font-weight: 800; letter-spacing: .06em; padding: 5px 10px; border-radius: 8px; background: rgba(74,141,248,.14); border: 1px solid rgba(74,141,248,.36); color: var(--accent); }
-.sp-folha-badge.dossie { background: rgba(110,231,168,.12); border-color: rgba(110,231,168,.35); color: var(--green); }
+.sp-folha-badge { font-family: var(--font-head); font-size: 12px; font-weight: 800; letter-spacing: .06em; padding: 5px 10px; border-radius: 8px; background: rgba(255,255,255,.04); border: 1px solid var(--border); color: #C3CDE0; }
 .sp-folha-num { font-family: var(--font-head); font-size: 13px; font-weight: 700; color: var(--text-dim); font-variant-numeric: tabular-nums; }
-.sp-folha-linhas { display: grid; gap: 8px; }
-.sp-folha-linhas > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; background: rgba(10,17,32,.75); border: 1px solid rgba(30,44,78,.7); border-radius: 10px; padding: 9px 12px; font-size: 13px; }
-.sp-folha-linhas strong { color: var(--text); font-family: var(--font-head); font-size: 13px; flex-shrink: 0; }
-.sp-folha-linhas span { color: var(--text-dim); text-align: right; font-size: 12.5px; }
+/* Linhas da folha: grupos separados por filete, sem caixa dentro do cartão. */
+.sp-folha-linhas { display: grid; gap: 0; }
+.sp-folha-linhas > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; border-top: 1px solid rgba(30,44,78,.8); padding: 11px 0; font-size: 15px; }
+.sp-folha-linhas strong { color: var(--text); font-family: var(--font-head); font-size: 15px; flex-shrink: 0; }
+.sp-folha-linhas span { color: var(--text-dim); text-align: right; font-size: 15px; }
 
 .sp-dois { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
 .sp-cartao { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 20px; padding: 26px; box-shadow: inset 0 1px 0 rgba(255,255,255,.04); }
@@ -127,7 +137,7 @@
 /* ---- passos -------------------------------------------------- */
 .sp-passos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; counter-reset: passo; list-style: none; padding: 0; margin: 0; }
 .sp-passos li { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 18px; padding: 22px; counter-increment: passo; }
-.sp-passos li::before { content: counter(passo); display: inline-flex; width: 36px; height: 36px; align-items: center; justify-content: center; border-radius: 10px; background: rgba(30,79,216,.2); border: 1px solid rgba(74,141,248,.4); color: var(--accent); font: 800 15px var(--font-head); margin: 0 0 12px; font-variant-numeric: tabular-nums; }
+.sp-passos li::before { content: counter(passo); display: inline-flex; width: 36px; height: 36px; align-items: center; justify-content: center; border-radius: 10px; background: rgba(255,255,255,.05); border: 1px solid var(--border); color: var(--text); font: 800 15px var(--font-head); margin: 0 0 12px; font-variant-numeric: tabular-nums; }
 .sp-passos h3 { font-family: var(--font-head); font-size: 18px; margin: 0 0 6px; }
 .sp-passos p { color: var(--text-dim); font-size: 15px; margin: 0; }
 
@@ -148,8 +158,10 @@
 .sp-preco small { font-size: 16px; font-weight: 600; color: var(--text-dim); letter-spacing: 0; margin-left: 6px; }
 .sp-ancora { color: var(--text-dim); font-size: 15px; margin: 12px 0 0; font-variant-numeric: tabular-nums; }
 .sp-ancora[hidden] { display: none; }
-.sp-garantia { display: flex; gap: 12px; align-items: flex-start; background: rgba(110,231,168,.07); border: 1px solid rgba(110,231,168,.25); border-radius: 14px; padding: 14px 16px; margin: 18px 0 0; font-size: 14.5px; color: var(--text-dim); }
-.sp-garantia strong { color: var(--green); }
+/* Garantia: grupo dentro do cartão da oferta, separado por filete (sem caixa própria). */
+.sp-garantia { display: flex; gap: 12px; align-items: flex-start; border-top: 1px solid var(--border); padding: 16px 0 0; margin: 20px 0 0; font-size: 15px; color: var(--text-dim); }
+.sp-garantia p { margin: 0; }
+.sp-garantia strong { color: var(--text); }
 .sp-oferta ul { margin: 0 0 22px; padding: 0 0 0 18px; color: var(--text-dim); }
 .sp-oferta li { margin: 0 0 8px; }
 .sp-oferta .sp-letra { color: var(--text-faint); font-size: 13px; margin: 14px 0 0; }
@@ -159,7 +171,7 @@
 .sp-barra-fixa.visivel { transform: none; }
 .sp-barra-fixa p { margin: 0; font-size: 14px; color: var(--text-dim); }
 .sp-barra-fixa p strong { color: var(--text); font-family: var(--font-head); font-size: 18px; display: block; font-variant-numeric: tabular-nums; }
-.sp-barra-fixa .sp-cta { padding: 12px 18px; font-size: 15px; box-shadow: none; }
+.sp-barra-fixa .sp-cta { padding: 12px 18px; min-height: 48px; font-size: 15px; box-shadow: none; white-space: nowrap; }
 
 /* ---- responsivo ---------------------------------------------- */
 @media (max-width: 860px) {
@@ -171,7 +183,8 @@
   body:has(.sp-barra-fixa) footer { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
 }
 @media (max-width: 560px) {
-  .sp-hero .sp-cta, .sp-oferta .sp-cta { width: 100%; box-sizing: border-box; }
+  .sp-hero .sp-cta, .sp-oferta .sp-cta { width: 100%; padding: 14px 18px; }
+  .sp-preco small { display: block; margin: 8px 0 0; }
   .sp-folha { padding: 18px 16px; }
   .sp-folha-linhas > div { flex-direction: column; gap: 2px; }
   .sp-folha-linhas strong { flex-shrink: 1; }
@@ -192,7 +205,7 @@
 .sp-enx-campo line { stroke: rgba(74,141,248,.12); stroke-width: 1; transition: stroke .35s ease; }
 .sp-enx-campo line.aceso { stroke: rgba(74,141,248,.6); }
 .sp-enx-caso { margin: 0 0 16px; font-size: 15.5px; line-height: 1.55; font-style: italic; }
-.sp-enx-caso span { display: block; font: 700 11.5px var(--font-head); letter-spacing: .12em; text-transform: uppercase; font-style: normal; color: var(--accent); margin: 0 0 6px; }
+.sp-enx-caso span { display: block; font: 700 12px var(--font-head); letter-spacing: .14em; text-transform: uppercase; font-style: normal; color: var(--sky-light); margin: 0 0 6px; }
 .sp-enx-status { font: 600 15px var(--font-head); color: var(--text); margin: 0 0 12px; min-height: 22px; }
 .sp-enx-status::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-right: 10px; vertical-align: middle; animation: sp-pulso 1s ease-in-out infinite; }
 @keyframes sp-pulso { 50% { opacity: .25; } }
@@ -201,10 +214,10 @@
 .sp-enx-fases li::before { content: "○"; position: absolute; left: 0; color: var(--text-faint); }
 .sp-enx-fases li.feita { color: var(--text-dim); }
 .sp-enx-fases li.feita::before { content: "✓"; color: var(--green); }
-.sp-enx-resultado { display: flex; gap: 12px; align-items: center; margin: 0 0 14px; opacity: 0; transform: translateY(6px); transition: opacity .5s ease, transform .5s ease; }
+.sp-enx-resultado { display: flex; gap: 12px; align-items: flex-start; margin: 0 0 14px; opacity: 0; transform: translateY(6px); transition: opacity .5s ease, transform .5s ease; }
 .sp-enx-resultado.visivel { opacity: 1; transform: none; }
-.sp-enx-resultado p { margin: 0; font-size: 14px; color: var(--text); line-height: 1.5; }
-.sp-orq-repetir { background: transparent; border: 1px solid var(--border); color: var(--text-dim); font: 600 13px var(--font-head); padding: 10px 14px; min-height: 44px; border-radius: 10px; cursor: pointer; }
+.sp-enx-resultado p { margin: 0; font-size: 15px; color: var(--text); line-height: 1.5; }
+.sp-orq-repetir { background: transparent; border: 1px solid var(--border); color: var(--text-dim); font: 600 14px var(--font-head); padding: 10px 14px; min-height: 44px; border-radius: 10px; cursor: pointer; }
 .sp-orq-repetir:hover { color: var(--text); border-color: var(--accent); }
 .sp-orq-repetir:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .sp-orq-nota { color: var(--text-faint); font-size: 13px; margin: 0 0 28px; }
@@ -216,6 +229,5 @@
   .sp-enx-no, .sp-enx-campo line, .sp-enx-resultado { transition: none; }
   .sp-enx-status::before { animation: none; }
 }
-.sp-selo.ajuste, .sp-selo.espere { background: rgba(251,191,36,.12); color: var(--amber); border: 1px solid rgba(251,191,36,.4); }
 .sp-rel-caso { margin: 0 0 16px; font-style: italic; color: var(--text-dim); font-size: 15px; line-height: 1.55; border-left: 2px solid var(--border); padding-left: 14px; }
 .sp-rel-caso small { display: block; margin-top: 6px; font-style: normal; font-size: 12.5px; color: var(--text-faint); }

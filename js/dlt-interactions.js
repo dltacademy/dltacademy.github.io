@@ -144,8 +144,9 @@
   /* ---------- 5 · Filtro de catálogo por situação -----------
      <div data-filter-group>
        <button data-filter="viagem" aria-pressed="false">Vou viajar</button> …
-     Cards: <a class="entry-card" data-situations="viagem custos"> …
-     Sem seleção mostra tudo. O filtro ativo fica só na URL (#), não no storage. */
+     Cards: <a class="catalog-card" data-situations="viagem custos"> …
+     Um cartão com data-format-off (filtro de formato do js/catalog.js) fica escondido
+     e não entra na contagem. Sem seleção mostra tudo. O filtro ativo fica só na URL (#), não no storage. */
   function initFilters() {
     var group = document.querySelector("[data-filter-group]");
     if (!group) return;
@@ -173,7 +174,8 @@
     function apply() {
       var shown = 0;
       cards.forEach(function (card) {
-        var ok = !active || (" " + card.getAttribute("data-situations") + " ").indexOf(" " + active + " ") > -1;
+        var ok = !card.hasAttribute("data-format-off") &&
+          (!active || (" " + card.getAttribute("data-situations") + " ").indexOf(" " + active + " ") > -1);
         card.hidden = !ok;
         if (ok) shown++;
       });
@@ -194,6 +196,7 @@
       active = readHash();
       apply();
     });
+    document.addEventListener("catalog:format", apply);
     apply();
   }
 

@@ -14,6 +14,8 @@
 //
 // O resultado declara `relatorio: { produto, perfil }` para a oferta do
 // relatório pago (js/paid-reports.js). Só o nome do perfil sai daqui.
+// Cada desfecho declara `grade` (1 siga, 2 ajuste, 3 espere, 4 não), que o motor
+// mostra na pílula do veredito.
 // No ramo em que a perda comprometeria contas ou dependentes, não há
 // oferta paga: a resposta é não usar esse dinheiro, e ponto.
 
@@ -174,6 +176,7 @@ const PROTOCOL = {
       return {
         ...base,
         id: 1,
+        grade: 4,
         tone: "bad",
         verdict: "Com esse dinheiro, a resposta é não.",
         body: [
@@ -199,6 +202,7 @@ const PROTOCOL = {
       return {
         ...base,
         id: 2,
+        grade: 4,
         tone: "bad",
         verdict: "Recuperar não é tese. Hoje, não opere.",
         body: [
@@ -227,6 +231,7 @@ const PROTOCOL = {
       return {
         ...base,
         id: risco ? 3 : 4,
+        grade: risco ? 3 : 2,
         tone: risco ? "bad" : "mixed",
         verdict: risco
           ? "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não."
@@ -240,7 +245,7 @@ const PROTOCOL = {
           ecoTravas,
         ],
         plan: risco ? plans.alavancagemRisco : plans.alavancagem,
-        stats: resultStats(alertas, risco ? "espere" : "defina", risco ? plans.alavancagemRisco : plans.alavancagem),
+        stats: resultStats(alertas, risco ? "espere" : "ajuste", risco ? plans.alavancagemRisco : plans.alavancagem),
         cta: {
           tipo: "artigo",
           headline: "Veja o que cada tamanho de posição faz com o seu patrimônio antes de abrir.",
@@ -258,6 +263,7 @@ const PROTOCOL = {
       return {
         ...base,
         id: 5,
+        grade: 3,
         tone: "mixed",
         verdict: "Ainda não é uma decisão. É uma vontade com pressa.",
         body: [
@@ -289,6 +295,7 @@ const PROTOCOL = {
       return {
         ...base,
         id: 6,
+        grade: 2,
         tone: "mixed",
         verdict: "Quase lá. Falta fechar um ponto antes de agir.",
         body: [
@@ -315,6 +322,7 @@ const PROTOCOL = {
     return {
       ...base,
       id: 7,
+      grade: 1,
       tone: "good",
       verdict: "Pode seguir, com as travas que você escreveu.",
       body: [
