@@ -93,10 +93,10 @@
 ]
 </script>
 </head>
-<body>
+<body class="home">
 
 <header class="top">
-  <div class="wrap header-row">
+  <div class="wrap wrap-home header-row">
     <a class="brand" href="#top" aria-label="DLT Academy — Início">
       <img src="assets/dlt-logo-light.png" alt="DLT Academy">
     </a>
@@ -112,156 +112,226 @@
 </header>
 
 <main id="top">
-  <div class="wrap">
 
-    <section class="home-hero" id="hero" aria-labelledby="hero-titulo">
-      <h1 id="hero-titulo">Ninguém quebra por perder uma alta. <span class="grad">Quebra por decidir no calor ou sem ver o todo.</span></h1>
-      <p class="subtitle">Unimos engenharia de tomada de decisão, sistemas multiagentes que confrontam a sua tese e simuladores de risco e custos reais — para você travar erros caros antes do clique, testar se a carteira aguenta uma queda e estancar o dreno de taxas e câmbio.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary btn-lg" href="#como-funciona">Escolher minha decisão de hoje <span aria-hidden="true">→</span></a>
-        <a class="btn btn-ghost btn-lg" href="#relatorios">Conhecer os relatórios sob medida</a>
+  <!-- 1. Hero com o caso ao vivo -->
+  <section class="home-hero" id="hero" aria-labelledby="hero-titulo">
+    <div class="wrap-home hero-grid">
+
+      <div class="hero-copy">
+        <h1 id="hero-titulo">Ninguém quebra por perder uma alta. <span class="hero-hl">Quebra por decidir no calor ou sem ver o todo.</span></h1>
+        <p class="subtitle">Unimos engenharia de tomada de decisão, sistemas multiagentes que confrontam a sua tese e simuladores de risco e custos reais — para você travar erros caros antes do clique, testar se a carteira aguenta uma queda e estancar o dreno de taxas e câmbio.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-hero" href="#como-funciona">Escolher minha decisão de hoje <svg class="icon" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+          <a class="btn btn-outline btn-hero" href="#relatorios">Conhecer os relatórios sob medida</a>
+        </div>
+        <ul class="hero-checks">
+          <li><svg class="icon icon-check" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"></path></svg>Diagnósticos práticos em menos de 5 minutos</li>
+          <li><svg class="icon icon-check" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"></path></svg>Contraditório real: feito para achar seu ponto cego</li>
+          <li><svg class="icon icon-check" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"></path></svg>13 anos de experiência real de mercado (desde 2013)</li>
+          <li><svg class="icon icon-check" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"></path></svg>Sem call de sinais, sem curso longo e sem promessa de lucro</li>
+        </ul>
       </div>
-      <ul class="hero-trust">
-        <li>Diagnósticos práticos em menos de 5 minutos</li>
-        <li>Contraditório real: feito para achar seu ponto cego</li>
-        <li>13 anos de experiência real de mercado (desde 2013)</li>
-        <li>Sem call de sinais, sem curso longo e sem promessa de lucro</li>
-      </ul>
-    </section>
 
-    <section class="proof-strip reveal" aria-label="Exemplos do que a nossa inteligência identifica">
-      <p class="proof-strip-label">O que a nossa inteligência enxerga antes do seu clique · Exemplos dos nossos testes e guias</p>
-      <div class="proof-grid">
-        <article class="proof-card">
-          <div class="proof-card-top">
-            <span class="proof-verdict is-warn">ESPERE · Frieza 38/100</span>
-            <span class="proof-origin">Decisão Fria · caso fictício</span>
-          </div>
-          <p class="proof-case">“Aportar R$ 10.000 após queda de 30%”</p>
-          <p class="proof-finding">Reserva atual cobre só 2 meses. Teto prudente travado pelo motor em R$ 7.142 — evitando resgate forçado se o emprego ou o caixa apertar.</p>
-          <a class="proof-link" href="/produtos/decisao-fria/">Abrir página do Decisão Fria <span aria-hidden="true">→</span></a>
-        </article>
+      <div class="case-card" id="case-card" role="group" aria-label="O que o motor mostra antes do clique">
+        <div class="case-card-head">
+          <p class="section-eyebrow">O que o motor mostra antes do clique</p>
+          <p class="case-card-note">casos fictícios</p>
+        </div>
 
-        <article class="proof-card">
-          <div class="proof-card-top">
-            <span class="proof-verdict is-risk">FRÁGIL · −R$ 38.500 no choque</span>
-            <span class="proof-origin">A Carteira Aguenta? · caso fictício</span>
-          </div>
-          <p class="proof-case">“Carteira de R$ 100.000 com moeda que triplicou”</p>
-          <p class="proof-finding">Lucro recente esconde perda simulada de 38,5% (6,4 meses dos seus gastos) e R$ 35.000 presos se uma única exchange travar saques.</p>
-          <a class="proof-link" href="/produtos/carteira-aguenta/">Abrir página d'A Carteira Aguenta? <span aria-hidden="true">→</span></a>
-        </article>
+        <div class="case-tabs" id="case-tabs" role="tablist" aria-label="Escolher um caso" hidden>
+          <button type="button" class="case-tab" role="tab" id="case-tab-decisao-fria" aria-controls="case-decisao-fria" aria-selected="true">Decisão Fria</button>
+          <button type="button" class="case-tab" role="tab" id="case-tab-carteira" aria-controls="case-carteira" aria-selected="false" tabindex="-1">A Carteira Aguenta?</button>
+          <button type="button" class="case-tab" role="tab" id="case-tab-china" aria-controls="case-china" aria-selected="false" tabindex="-1">Pagar na China</button>
+        </div>
 
-        <article class="proof-card">
-          <div class="proof-card-top">
-            <span class="proof-verdict is-good">ECONOMIA · −1,23% vs +7,64%</span>
-            <span class="proof-origin">Pagamentos na China · tarifas de 30/09/2026</span>
-          </div>
-          <p class="proof-case">“Conta de ¥1.000 na China paga com o cartão do banco”</p>
-          <p class="proof-finding">O cartão do banco sai de +7,64% a +10,87% acima da cotação, conforme o tipo de gasto. Com ether.fi Cash e QR local, o custo fica entre −1,23% e +1,73%.</p>
-          <a class="proof-link" href="/guias/pagamentos-china/">Abrir o guia de pagamentos na China <span aria-hidden="true">→</span></a>
-        </article>
+        <div class="case-panels">
+          <article class="case-panel" id="case-decisao-fria" data-case="decisao-fria">
+            <div class="case-top">
+              <span class="verdict-pill" data-grade="3">ESPERE<span class="verdict-dots" role="img" aria-label="grau 3 de 4"><i></i><i></i><i></i><i></i></span></span>
+              <span class="case-origin">Decisão Fria</span>
+            </div>
+            <p class="case-quote">“Aportar R$ 10.000 após queda de 30%”</p>
+            <div class="num-grid">
+              <div class="num-cell"><span class="num-label">Teto travado pelo motor</span><span class="num-value tnum">R$ 7.142</span></div>
+              <div class="num-cell"><span class="num-label">A reserva atual cobre</span><span class="num-value tnum">2 meses</span></div>
+            </div>
+            <div class="gauge-block" data-grade="3">
+              <div class="gauge-head"><span>Índice de frieza</span><span class="tnum grade-text">38/100</span></div>
+              <div class="gauge" aria-hidden="true"><div class="gauge-fill case-fill-frieza"></div></div>
+            </div>
+            <p class="case-sentence">O teto evita o resgate forçado se o emprego ou o caixa apertar.</p>
+            <a class="text-link" href="/produtos/decisao-fria/">Abrir página do Decisão Fria <svg class="icon" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+          </article>
+
+          <article class="case-panel" id="case-carteira" data-case="carteira">
+            <div class="case-top">
+              <span class="verdict-pill" data-grade="3">FRÁGIL<span class="verdict-dots" role="img" aria-label="grau 3 de 4"><i></i><i></i><i></i><i></i></span></span>
+              <span class="case-origin">A Carteira Aguenta?</span>
+            </div>
+            <p class="case-quote">“Carteira de R$ 100.000 com moeda que triplicou”</p>
+            <div class="num-grid">
+              <div class="num-cell"><span class="num-label">Perda simulada no choque</span><span class="num-value tnum grade-text" data-grade="4">−R$ 38.500</span></div>
+              <div class="num-cell"><span class="num-label">Em meses dos seus gastos</span><span class="num-value tnum">6,4 meses</span></div>
+            </div>
+            <div class="gauge-block" data-grade="4">
+              <div class="gauge-head"><span>Carteira de R$ 100.000</span><span class="tnum grade-text">38,5% no choque</span></div>
+              <div class="gauge" aria-hidden="true"><div class="gauge-fill case-fill-choque"></div></div>
+              <p class="gauge-note">e <span class="tnum gauge-note-strong">R$ 35.000</span> presos se uma única exchange travar saques</p>
+            </div>
+            <p class="case-sentence">O lucro recente esconde a perda simulada.</p>
+            <a class="text-link" href="/produtos/carteira-aguenta/">Abrir página d'A Carteira Aguenta? <svg class="icon" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+          </article>
+
+          <article class="case-panel" id="case-china" data-case="china">
+            <div class="case-top">
+              <span class="verdict-pill" data-grade="1">ECONOMIA</span>
+              <span class="case-origin">Pagamentos na China · tarifas de 30/09/2026</span>
+            </div>
+            <p class="case-quote">“Conta de ¥1.000 na China paga com o cartão do banco”</p>
+            <div class="range-box">
+              <div class="range-row" data-grade="4">
+                <div class="gauge-head"><span>Cartão do banco</span><span class="tnum grade-text">+7,64% a +10,87%</span></div>
+                <div class="range" aria-hidden="true"><span class="range-zero"></span><span class="range-fill range-fill-banco"></span></div>
+              </div>
+              <div class="range-row" data-grade="1">
+                <div class="gauge-head"><span>ether.fi Cash + QR local</span><span class="tnum grade-text">−1,23% a +1,73%</span></div>
+                <div class="range" aria-hidden="true"><span class="range-zero"></span><span class="range-fill range-fill-etherfi"></span></div>
+              </div>
+              <p class="range-note">Custo acima da cotação, conforme o tipo de gasto · a linha marca 0%</p>
+            </div>
+            <a class="text-link" href="/guias/pagamentos-china/">Abrir o guia de pagamentos na China <svg class="icon" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+          </article>
+        </div>
       </div>
-    </section>
 
-    <section class="funnel-navigator reveal" id="como-funciona" aria-labelledby="hub-titulo">
-      <div class="section-heading">
-        <p class="eyebrow">Engenharia de tomada de decisão · Triagem inteligente em 2 cliques</p>
-        <h2 id="hub-titulo">Qual decisão está na sua frente hoje?</h2>
-        <p>Escolha a família da sua decisão e depois o seu momento: mostramos qual página abrir agora, começando pelo que é grátis.</p>
+    </div>
+  </section>
+
+  <!-- 2. Triagem: por onde começar -->
+  <section class="triage" id="como-funciona" aria-labelledby="hub-titulo">
+    <div class="wrap-home">
+      <div class="section-head">
+        <p class="section-eyebrow">Por onde começar</p>
+        <h2 class="section-title" id="hub-titulo">Qual decisão está na sua frente hoje?</h2>
+        <p class="section-lead">Escolha a família da sua decisão e depois o seu momento: mostramos qual página abrir agora, começando pelo que é grátis.</p>
       </div>
-      <div class="funnel-tabs" id="funnel-tabs" role="tablist" aria-label="Trilhas de decisão DLT Academy"></div>
-      <div class="funnel-panel" id="funnel-panel" role="tabpanel" aria-label="Detalhes da trilha selecionada"></div>
+      <div class="track-tiles" id="funnel-tabs" role="group" aria-label="Trilhas de decisão"></div>
+      <div class="track-panel" id="funnel-panel" role="region" aria-label="Detalhes da trilha selecionada"></div>
       <noscript>
         <div class="noscript-box">
           <p>Ative o JavaScript para usar a triagem interativa em 2 cliques, ou acesse diretamente uma de nossas trilhas principais: <a href="/protocolos/decisao-fria/">Protocolo Decisão Fria</a> · <a href="https://sobrevive-ou-quebra.dlt.academy/">Simulador Sobrevive ou Quebra?</a> · <a href="/pagamentos-no-exterior/">Manual de Pagamentos no Exterior</a> · <a href="https://primeiros-passos-cripto.dlt.academy/">Primeiros Passos no Cripto</a>.</p>
         </div>
       </noscript>
-    </section>
+    </div>
+  </section>
 
-    <section class="reports-showcase reveal" id="relatorios" aria-labelledby="relatorios-titulo">
-      <div class="reports-showcase-head">
-        <p class="eyebrow">Inteligência sob medida · Sistema multiagente proprietário</p>
-        <h2 id="relatorios-titulo">Quando o valor na tela exige olhar a decisão de fora</h2>
-        <p>Perguntar para uma IA comum na hora da dúvida é perigoso: ela tende a concordar com quem pergunta e improvisa nas contas. Nos relatórios da DLT Academy, regras fixas em código calculam primeiro os seus limites em reais — que nenhum texto pode aliviar — e um time de agentes independentes é obrigado a construir o melhor argumento contra a sua pressa.</p>
+  <!-- 3. Relatórios sob medida -->
+  <section class="reports" id="relatorios" aria-labelledby="relatorios-titulo">
+    <div class="wrap-home reports-inner">
+
+      <div class="reports-head">
+        <div class="reports-head-title">
+          <p class="section-eyebrow">Relatórios sob medida</p>
+          <h2 class="section-title" id="relatorios-titulo">Quando o valor na tela exige olhar a decisão de fora</h2>
+        </div>
+        <p class="section-lead">Perguntar para uma IA comum na hora da dúvida é perigoso: ela tende a concordar com quem pergunta e improvisa nas contas. Nos relatórios da DLT Academy, regras fixas em código calculam primeiro os seus limites em reais — que nenhum texto pode aliviar — e um time de agentes independentes é obrigado a construir o melhor argumento contra a sua pressa.</p>
       </div>
 
-      <div class="engine-strip" aria-label="Diferenciais do motor de decisão DLT Academy">
-        <div class="engine-step">
-          <span class="engine-step-tag">01 · Limites invioláveis</span>
+      <ol class="engine-steps" aria-label="Como o motor trabalha">
+        <li class="engine-step">
+          <span class="engine-step-tag tnum">01 · Limites invioláveis</span>
           <strong>Travas em código antes do texto</strong>
-          <p>Teto em R$, queda de 80% no alto risco e de 30% no diversificado e concentração calculados por regra fixa. Nenhuma IA pode aprovar além da conta.</p>
-        </div>
-        <div class="engine-step">
-          <span class="engine-step-tag">02 · Contraditório obrigatório</span>
+          <span class="engine-step-text">Teto em R$, queda de 80% no alto risco e de 30% no diversificado e concentração calculados por regra fixa. Nenhuma IA pode aprovar além da conta.</span>
+        </li>
+        <li class="engine-step">
+          <span class="engine-step-tag tnum">02 · Contraditório obrigatório</span>
           <strong>Ângulos que discordam entre si</strong>
-          <p>Agentes opostos auditam o peso emocional, a qualidade da fonte, o que cai junto na carteira e risco de plataforma travar.</p>
-        </div>
-        <div class="engine-step">
-          <span class="engine-step-tag">03 · Menos de 1% do risco</span>
+          <span class="engine-step-text">Agentes opostos auditam o peso emocional, a qualidade da fonte, o que cai junto na carteira e risco de plataforma travar.</span>
+        </li>
+        <li class="engine-step">
+          <span class="engine-step-tag tnum">03 · Menos de 1% do risco</span>
           <strong>Barato perto do erro que evita</strong>
-          <p>Numa decisão de R$ 5.000 ou carteira de R$ 50.000, R$ 47 custam uma fração mínima para evitar uma perda que não tem volta.</p>
-        </div>
-      </div>
+          <span class="engine-step-text">Numa decisão de R$ 5.000 ou carteira de R$ 50.000, R$ 47 custam uma fração mínima para evitar uma perda que não tem volta.</span>
+        </li>
+      </ol>
 
-      <div class="product-spotlight-grid">
+      <div class="product-grid">
         <article class="product-card">
-          <div class="product-card-top">
+          <div class="product-top">
             <span class="product-scope">Uma operação específica</span>
-            <span class="product-price-pill">R$ 47 · Pagamento único</span>
+            <span class="product-price"><span class="product-price-num tnum">R$ 47</span><span class="product-price-note">pagamento único</span></span>
           </div>
           <p class="product-kicker">Relatório do seu caso + Dossiê 24 páginas em PDF</p>
           <h3>Decisão Fria: vai colocar dinheiro em risco hoje?</h3>
           <p class="product-desc">Para quem vai entrar, aumentar a mão ou sair de uma posição. O código trava os três limites da operação e os agentes confrontam a tese, a origem da informação e a pressão emocional antes do clique.</p>
-          <ul class="product-bullets">
-            <li>Veredito + índice de frieza + teto máximo inviolável em R$</li>
-            <li>Auditoria da emoção, fonte da informação e 3 argumentos contra</li>
-            <li>Mapa de risco, regras de saída e Dossiê Decisão Fria (24 pág.)</li>
+          <ul class="check-list">
+            <li><svg class="icon icon-check" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"></path></svg>Veredito + índice de frieza + teto máximo inviolável em R$</li>
+            <li><svg class="icon icon-check" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"></path></svg>Auditoria da emoção, fonte da informação e 3 argumentos contra</li>
+            <li><svg class="icon icon-check" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"></path></svg>Mapa de risco, regras de saída e Dossiê Decisão Fria (24 pág.)</li>
           </ul>
-          <div class="product-card-actions">
-            <a class="btn btn-primary" href="/produtos/decisao-fria/">Ver exemplo e calculadora <span aria-hidden="true">→</span></a>
-            <a class="btn btn-ghost" href="/protocolos/decisao-fria/">Fazer o protocolo grátis (5 min)</a>
+          <div class="verdict-scale" role="group" aria-label="Vereditos possíveis">
+            <span class="verdict-scale-label">Vereditos possíveis</span>
+            <span class="verdict-tag" data-grade="1">SIGA</span>
+            <span class="verdict-tag" data-grade="2">AJUSTE</span>
+            <span class="verdict-tag" data-grade="3">ESPERE</span>
+            <span class="verdict-tag" data-grade="4">NÃO</span>
+          </div>
+          <div class="product-actions">
+            <a class="btn btn-primary btn-md" href="/produtos/decisao-fria/">Ver exemplo e calculadora <svg class="icon" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+            <a class="text-link" href="/protocolos/decisao-fria/">Fazer o protocolo grátis (5 min)</a>
           </div>
         </article>
 
         <article class="product-card">
-          <div class="product-card-top">
+          <div class="product-top">
             <span class="product-scope">A carteira inteira</span>
-            <span class="product-price-pill">R$ 47 · Pagamento único</span>
+            <span class="product-price"><span class="product-price-num tnum">R$ 47</span><span class="product-price-note">pagamento único</span></span>
           </div>
           <p class="product-kicker">Relatório da carteira + Roteiro Trimestral PDF</p>
           <h3>A Carteira Aguenta? Teste de queda do portfólio</h3>
           <p class="product-desc">Para quem tem algumas posições e quer enxergar o que o saldo esconde antes do próximo tombo. Simula o choque na carteira inteira em reais, soma o que cai junto e mostra a distância até liquidação.</p>
-          <ul class="product-bullets">
-            <li>Perda simulada em R$ e em meses dos seus gastos</li>
-            <li>Concentração oculta por rede/ecossistema e risco de plataforma travar</li>
-            <li>Distância até a liquidação e Roteiro Trimestral em PDF</li>
+          <ul class="check-list">
+            <li><svg class="icon icon-check" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"></path></svg>Perda simulada em R$ e em meses dos seus gastos</li>
+            <li><svg class="icon icon-check" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"></path></svg>Concentração oculta por rede/ecossistema e risco de plataforma travar</li>
+            <li><svg class="icon icon-check" aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"></path></svg>Distância até a liquidação e Roteiro Trimestral em PDF</li>
           </ul>
-          <div class="product-card-actions">
-            <a class="btn btn-primary" href="/produtos/carteira-aguenta/">Ver exemplo e teste de queda <span aria-hidden="true">→</span></a>
-            <a class="btn btn-ghost" href="https://sobrevive-ou-quebra.dlt.academy/">Simular 1 posição grátis</a>
+          <div class="verdict-scale" role="group" aria-label="Vereditos possíveis">
+            <span class="verdict-scale-label">Vereditos possíveis</span>
+            <span class="verdict-tag" data-grade="1">AGUENTA</span>
+            <span class="verdict-tag" data-grade="2">AJUSTE</span>
+            <span class="verdict-tag" data-grade="3">FRÁGIL</span>
+            <span class="verdict-tag" data-grade="4">QUEBRA</span>
+          </div>
+          <div class="product-actions">
+            <a class="btn btn-primary btn-md" href="/produtos/carteira-aguenta/">Ver exemplo e teste de queda <svg class="icon" aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></a>
+            <a class="text-link" href="https://sobrevive-ou-quebra.dlt.academy/">Simular 1 posição grátis</a>
           </div>
         </article>
       </div>
 
-      <p class="product-spotlight-footnote">R$ 47 · Pagamento único via Stripe · Fica disponível na mesma hora · 7 dias para desistir com 100% de reembolso, mesmo após gerar e baixar o PDF.</p>
-    </section>
+      <ul class="conditions" aria-label="Condições">
+        <li><svg class="icon icon-line" aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"></rect><path d="M3 10h18"></path></svg><span><strong>R$ 47, pagamento único</strong> via Stripe</span></li>
+        <li><svg class="icon icon-line" aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3L5 13h6l-1 8 8-10h-6l1-8z"></path></svg><span><strong>Fica disponível na mesma hora</strong></span></li>
+        <li><svg class="icon icon-line" aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"></path><path d="M4 9h10a6 6 0 010 12h-3"></path></svg><span><strong>7 dias para desistir</strong> com 100% de reembolso, mesmo após gerar e baixar o PDF</span></li>
+      </ul>
 
-    <section id="ferramentas" aria-labelledby="ferramentas-titulo">
-      <div class="section-heading reveal">
-        <p class="eyebrow">Toda a nossa produção aberta</p>
-        <h2 id="ferramentas-titulo">Explore o acervo completo por formato ou problema</h2>
-        <p>Simuladores, protocolos de decisão, guias passo a passo e análises reais — todos abertos do começo ao fim para você testar antes de tudo.</p>
+    </div>
+  </section>
+
+  <!-- 4. Acervo -->
+  <section class="catalog" id="ferramentas" aria-labelledby="ferramentas-titulo">
+    <div class="wrap-home catalog-inner">
+      <div class="section-head">
+        <p class="section-eyebrow">Acervo aberto</p>
+        <h2 class="section-title" id="ferramentas-titulo">Explore o acervo completo por formato ou problema</h2>
+        <p class="section-lead">Simuladores, protocolos de decisão, guias passo a passo e análises reais — todos abertos do começo ao fim para você testar antes de tudo.</p>
       </div>
 
       <div class="catalog-controls">
-        <div class="filter-row">
-          <span class="filter-row-label">Formato</span>
-          <div class="type-chips" id="type-filter-group" role="group" aria-label="Filtrar por formato"></div>
-        </div>
-        <div class="filter-row">
-          <span class="filter-row-label">Situação</span>
-          <div class="situation-chips" id="situation-filter-group" role="group" aria-label="Filtrar por situação"></div>
+        <div class="segmented" id="type-filter-group" role="group" aria-label="Filtrar por formato"></div>
+        <div class="pill-row">
+          <span class="pill-row-label">Situação</span>
+          <div class="pill-group" id="situation-filter-group" role="group" aria-label="Filtrar por situação"></div>
         </div>
       </div>
 
@@ -271,57 +341,67 @@
           <p>O catálogo dinâmico usa JavaScript para filtrar as peças. Sem JavaScript, navegue pelas seções estáticas: <a href="/ferramentas/">Todas as Ferramentas</a> · <a href="/guias/">Todos os Guias</a> · <a href="/pagamentos-no-exterior/">Pagamentos no Exterior</a> · <a href="/blog/">Blog</a> · <a href="/produtos/decisao-fria/">Relatório Decisão Fria</a> · <a href="/produtos/carteira-aguenta/">Relatório A Carteira Aguenta?</a>.</p>
         </div>
       </noscript>
-      <div id="tools-grid" class="entry-grid"></div>
-    </section>
+      <div id="tools-grid" class="catalog-grid"></div>
+      <a class="btn btn-outline btn-md catalog-all" id="catalog-all" href="/ferramentas/">Ver todas as peças do acervo</a>
+    </div>
+  </section>
 
-    <section id="artigos" aria-labelledby="artigos-titulo">
-      <div class="section-heading section-heading-row reveal">
-        <div>
+  <!-- 5. Artigos -->
+  <section class="articles" id="artigos" aria-labelledby="artigos-titulo">
+    <div class="wrap-home articles-inner">
+      <div class="articles-head">
+        <div class="articles-head-copy">
           <h2 id="artigos-titulo">Últimos artigos e análises</h2>
           <p>Comparativos datados e raciocínio documentado por trás das decisões.</p>
         </div>
-        <a class="section-link" href="/blog/">Ver todos no blog <span aria-hidden="true">→</span></a>
+        <a class="text-link" href="/blog/">Ver todos no blog <span aria-hidden="true">→</span></a>
       </div>
-      <div id="latest-posts-grid"></div>
-    </section>
+      <div id="latest-posts-grid" class="article-rows"></div>
+    </div>
+  </section>
 
-    <section class="principles principles-agency reveal" id="transparencia" aria-labelledby="principios-titulo">
-      <div>
-        <p class="eyebrow">Agência de Engenharia de Tomada de Decisão · Por que confiar na nossa inteligência</p>
-        <h2 id="principios-titulo">13 anos de mercado real — dos acertos grandes aos erros mais caros.</h2>
-        <p class="principles-lead">A DLT Academy nasceu da vivência prática desde 2013 no mercado financeiro e em cripto. Depois de construir resultados expressivos e também quebrar pesado quando decidiu no calor ou deixou a carteira concentrada demais, nosso fundador uniu engenharia de tomada de decisão, sistemas multiagentes e psicologia econômica para construir as travas que protegem patrimônio próprio.</p>
-        <div class="agency-callout">
-          <p class="agency-callout-kicker">Agência de Engenharia de Tomada de Decisão · Arquitetura, IA aplicada e parcerias</p>
-          <p>Além das ferramentas abertas e dos relatórios de decisão, desenhamos sistemas AI-first, simuladores sob medida e parcerias estratégicas para operações digitais e fintechs.</p>
-          <a href="https://tiago.dlt.academy/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Consultoria, arquitetura e parcerias com o fundador <span aria-hidden="true">→</span></a>
+  <!-- 6. Confiança -->
+  <section class="trust" id="transparencia" aria-labelledby="principios-titulo">
+    <div class="wrap-home trust-grid">
+      <div class="trust-copy">
+        <p class="section-eyebrow">Por que confiar</p>
+        <h2 class="section-title" id="principios-titulo">13 anos de mercado real — dos acertos grandes aos erros mais caros.</h2>
+        <p class="trust-lead">A DLT Academy nasceu da vivência prática desde 2013 no mercado financeiro e em cripto. Depois de construir resultados expressivos e também quebrar pesado quando decidiu no calor ou deixou a carteira concentrada demais, nosso fundador uniu engenharia de tomada de decisão, sistemas multiagentes e psicologia econômica para construir as travas que protegem patrimônio próprio.</p>
+        <div class="trust-links">
+          <a class="text-link" href="/transparencia/">Como este site se mantém <span aria-hidden="true">→</span></a>
+          <a class="text-link" href="/sobre/">Sobre a DLT Academy <span aria-hidden="true">→</span></a>
         </div>
       </div>
 
-      <div class="principles-copy">
-        <ul class="promise-list">
-          <li><span><strong>Não vendemos call de sinais, curso longo nem promessa de alta.</strong> Quem ganha para indicar o ativo da vez precisa que você gire patrimônio. Nosso trabalho é mostrar o risco, o limite e o custo real antes de você agir.</span></li>
-          <li><span><strong>Você comprova a utilidade antes de pagar qualquer coisa.</strong> Nossos simuladores, protocolos rápidos e guias entregam diagnóstico completo na tela, sem trava surpresa no resultado.</span></li>
-          <li><span><strong>Modelo de negócio claro e alinhado a você.</strong> Operamos com duas fontes explícitas: relatórios sob medida opcionais (R$ 47) e links de indicação apenas de corretoras, cartões e contas que realmente usamos com patrimônio próprio.</span></li>
-          <li><span><strong>Decisão soberana, sem custódia e sem ordem de compra.</strong> Nunca tocamos no seu capital; nossos sistemas descrevem cenários, custos e limites para que a decisão final seja sempre sua.</span></li>
-        </ul>
-        <div class="principles-links">
-          <a class="section-link" href="/transparencia/">Como este site se mantém <span aria-hidden="true">→</span></a>
-          <a class="section-link" href="/sobre/">Sobre a DLT Academy <span aria-hidden="true">→</span></a>
-        </div>
-      </div>
-    </section>
+      <ul class="promise-list">
+        <li><svg class="icon icon-line" aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><path d="M5.6 5.6l12.8 12.8"></path></svg><span><strong>Não vendemos call de sinais, curso longo nem promessa de alta.</strong><span>Quem ganha para indicar o ativo da vez precisa que você gire patrimônio. Nosso trabalho é mostrar o risco, o limite e o custo real antes de você agir.</span></span></li>
+        <li><svg class="icon icon-line" aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"></path><circle cx="12" cy="12" r="3"></circle></svg><span><strong>Você comprova a utilidade antes de pagar qualquer coisa.</strong><span>Nossos simuladores, protocolos rápidos e guias entregam diagnóstico completo na tela, sem trava surpresa no resultado.</span></span></li>
+        <li><svg class="icon icon-line" aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h10"></path></svg><span><strong>Modelo de negócio claro e alinhado a você.</strong><span>Operamos com duas fontes explícitas: relatórios sob medida opcionais (R$ 47) e links de indicação apenas de corretoras, cartões e contas que realmente usamos com patrimônio próprio.</span></span></li>
+        <li><svg class="icon icon-line" aria-hidden="true" focusable="false" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.2-8 9-4.6-.8-8-4.5-8-9V6l8-3z"></path></svg><span><strong>Decisão soberana, sem custódia e sem ordem de compra.</strong><span>Nunca tocamos no seu capital; nossos sistemas descrevem cenários, custos e limites para que a decisão final seja sempre sua.</span></span></li>
+      </ul>
+    </div>
 
-  </div>
+    <div class="wrap-home">
+      <div class="partner-band">
+        <div class="partner-band-copy">
+          <p class="section-eyebrow">Para empresas e parceiros</p>
+          <p class="partner-band-text">Além das ferramentas abertas e dos relatórios de decisão, desenhamos sistemas AI-first, simuladores sob medida e parcerias estratégicas para operações digitais e fintechs.</p>
+        </div>
+        <a class="btn btn-outline btn-md" href="https://tiago.dlt.academy/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Consultoria, arquitetura e parcerias com o fundador <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+
 </main>
 
-<footer class="footer-rich">
-  <div class="wrap footer-grid">
-    <div class="footer-brand">
+<footer class="footer-rich site-footer">
+  <div class="wrap-home site-footer-main">
+    <div class="site-footer-brand">
       <img src="assets/dlt-logo-light.png" alt="DLT Academy">
       <p><strong><a href="/sobre/">DLT Academy — Agência de Engenharia de Tomada de Decisão</a>.</strong> Engenharia de tomada de decisão, sistemas multiagentes, simuladores e guias feitos com 13 anos de experiência real de mercado para quem decide com patrimônio próprio.</p>
     </div>
-    <nav class="footer-nav" aria-label="Links do rodapé">
-      <div class="footer-nav-col">
+    <nav class="site-footer-nav" aria-label="Links do rodapé">
+      <div class="site-footer-col">
         <strong>Explorar</strong>
         <a href="/ferramentas/">Ferramentas</a>
         <a href="/guias/">Guias</a>
@@ -329,7 +409,7 @@
         <a href="/produtos/decisao-fria/">Decisão Fria</a>
         <a href="/produtos/carteira-aguenta/">A Carteira Aguenta?</a>
       </div>
-      <div class="footer-nav-col">
+      <div class="site-footer-col">
         <strong>Institucional</strong>
         <a href="/sobre/">Sobre</a>
         <a href="https://tiago.dlt.academy/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Fundador e parcerias</a>
@@ -338,7 +418,7 @@
         <a href="/termos/">Termos</a>
         <a href="/comunidade/">Comunidade</a>
       </div>
-      <div class="footer-nav-col">
+      <div class="site-footer-col">
         <strong>Comunidade</strong>
         <a href="https://t.me/dltacademyc" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Canal: @dltacademyc</a>
         <a href="https://t.me/dltacademy" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Grupo: @dltacademy</a>
@@ -346,11 +426,17 @@
       </div>
     </nav>
   </div>
-  <div class="wrap footer-legal">
+  <div class="wrap-home site-footer-legal">
     <p>DLT Academy — Agência de engenharia de tomada de decisão e inteligência financeira independente. Material educacional; não é recomendação de investimento. Links de parceiros declarados com transparência.</p>
     <p>© 2026 DLT Academy</p>
   </div>
 </footer>
+
+<!-- Barra fixa do celular: só aparece depois do primeiro quadro (js/portal.js) -->
+<nav class="mobile-bar" id="mobile-bar" aria-label="Atalhos da página">
+  <a class="btn btn-primary mobile-bar-main" href="#como-funciona">Escolher minha decisão</a>
+  <a class="btn btn-outline mobile-bar-side" href="#relatorios">Relatórios</a>
+</nav>
 
 <script src="js/content-registry.js"></script>
 <script src="js/portal.js"></script>

@@ -1,6 +1,6 @@
 /* ============================================================
-   Portal DLT Academy — Triagem em 2 Cliques, Explorador do
-   Ecossistema e Últimos Artigos.
+   Portal DLT Academy — caso ao vivo do hero, Triagem em 2 Cliques,
+   Explorador do Ecossistema, Últimos Artigos e barra fixa do celular.
    ============================================================ */
 (function () {
   "use strict";
@@ -14,9 +14,9 @@
 
   const FORMAT_FILTERS = [
     { id: "all",          label: "Tudo" },
-    { id: "diagnosticos", label: "Simuladores e Protocolos" },
-    { id: "guide",        label: "Guias Passo a Passo" },
-    { id: "article",      label: "Artigos e Análises" }
+    { id: "diagnosticos", label: "Simuladores e protocolos" },
+    { id: "guide",        label: "Guias passo a passo" },
+    { id: "article",      label: "Artigos e análises" }
   ];
 
   const SITUATIONS = [
@@ -298,9 +298,32 @@
       }
     }
   ];
+  // Ícones (mesmo traço do desenho aprovado). Cada forma: [tag, atributos].
+  const SVG_NS = "http://www.w3.org/2000/svg";
+  const ICON_ARROW = [["path", { d: "M5 12h14M13 6l6 6-6 6" }]];
+  const ICON_CHEVRON = [["path", { d: "M6 9l6 6 6-6" }]];
+  const TRACK_ICONS = {
+    ordem: [["path", { d: "M7 20V4M7 4L4 7M7 4l3 3M17 4v16M17 20l-3-3M17 20l3-3" }]],
+    carteira: [["path", { d: "M12 3l9 5-9 5-9-5 9-5z" }], ["path", { d: "M3 13l9 5 9-5" }]],
+    viagem: [
+      ["circle", { cx: "12", cy: "12", r: "9" }],
+      ["path", { d: "M3 12h18M12 3c2.8 3 2.8 15 0 18M12 3c-2.8 3-2.8 15 0 18" }]
+    ],
+    base: [
+      ["rect", { x: "3", y: "14", width: "18", height: "6", rx: "1" }],
+      ["rect", { x: "6", y: "8", width: "12", height: "6", rx: "1" }],
+      ["rect", { x: "9", y: "3", width: "6", height: "5", rx: "1" }]
+    ]
+  };
+
+  const MONTHS_PT = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
 
   function reducedMotion() {
     return Boolean(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  }
+
+  function byId(id) {
+    return document.getElementById(id);
   }
 
   function el(tag, attrs, children) {
@@ -330,6 +353,30 @@
     return node;
   }
 
+  function svgIcon(shapes, size, strokeWidth, className) {
+    const svg = document.createElementNS(SVG_NS, "svg");
+    const base = {
+      viewBox: "0 0 24 24",
+      width: String(size),
+      height: String(size),
+      fill: "none",
+      stroke: "currentColor",
+      "stroke-width": String(strokeWidth),
+      "stroke-linecap": "round",
+      "stroke-linejoin": "round",
+      "aria-hidden": "true",
+      focusable: "false",
+      class: "icon" + (className ? " " + className : "")
+    };
+    Object.keys(base).forEach((key) => svg.setAttribute(key, base[key]));
+    shapes.forEach((shape) => {
+      const node = document.createElementNS(SVG_NS, shape[0]);
+      Object.keys(shape[1]).forEach((key) => node.setAttribute(key, shape[1][key]));
+      svg.appendChild(node);
+    });
+    return svg;
+  }
+
   function monogram(entry) {
     if (entry.mark) return entry.mark.slice(0, 2).toUpperCase();
     const skip = ["de", "da", "do", "em", "no", "na", "o", "a", "os", "as", "e", "com", "para", "por", "quanto", "como"];
@@ -342,15 +389,12 @@
     return (words[0][0] + words[1][0]).toUpperCase();
   }
 
+  // "03 set 2026": dia com dois dígitos, mês abreviado, ano.
   function formatDatePtBr(iso) {
     const parts = String(iso || "").split("-").map(Number);
     if (parts.length !== 3 || parts.some(Number.isNaN)) return String(iso || "");
     const [y, m, d] = parts;
-    return new Intl.DateTimeFormat("pt-BR", {
-      day: "numeric",
-      month: "long",
-      year: "numeric"
-    }).format(new Date(y, m - 1, d));
+    return String(d).padStart(2, "0") + " " + MONTHS_PT[m - 1] + " " + y;
   }
 
   function getRegistryItems() {
@@ -367,65 +411,190 @@
     });
   }
 
-  function createEntryCard(entry) {
+  // Os rótulos dos dados terminam em " →"; o botão desenha a própria seta.
+  function stripArrow(label) {
+    return String(label || "").replace(/\s*→\s*$/, "");
+  }
+
+  function lowerFirst(text) {
+    return text ? text.charAt(0).toLowerCase() + text.slice(1) : text;
+  }
+
+  // "Se o valor pesar · Segunda leitura (R$ 47)" -> ["Se o valor pesar", "segunda leitura (R$ 47)"]
+  function splitTitle(text) {
+    const parts = String(text || "").split(" · ");
+    return [parts[0], lowerFirst(parts.slice(1).join(" · "))];
+  }
+
+  // Cartão do acervo: monograma, "Formato · tema", título, frase e rodapé com esforço e ação.
+  function createCatalogCard(entry) {
     const meta = TYPE_META[entry.type] || TYPE_META.guide;
     const card = document.createElement("a");
-    card.className = "entry-card";
+    card.className = "catalog-card";
     card.href = entry.url;
     card.dataset.type = entry.type;
     if (Array.isArray(entry.sit) && entry.sit.length > 0) {
       card.dataset.situations = entry.sit.join(" ");
     }
 
-    const top = el("div", { className: "entry-top" }, [
-      el("span", { className: "entry-mark", "aria-hidden": "true", textContent: monogram(entry) }),
-      el("span", { className: "entry-type", textContent: entry.tag || meta.label })
+    const kind = entry.tag ? meta.label + " · " + entry.tag : meta.label;
+    const top = el("span", { className: "catalog-card-top" }, [
+      el("span", {
+        className: "catalog-mark tnum" + (entry.tone === "green" ? " is-green" : " is-blue"),
+        "aria-hidden": "true",
+        textContent: monogram(entry)
+      }),
+      el("span", { className: "catalog-kind", textContent: kind })
     ]);
 
-    const title = el("h3", { textContent: entry.title });
-    const desc = el("p", { textContent: entry.description });
-
-    card.append(top, title, desc);
+    const title = el("h3", { className: "catalog-card-title", textContent: entry.title });
+    const desc = el("p", { className: "catalog-card-desc", textContent: entry.description });
 
     const effortLabel = entry.effort || entry.readingTime || "";
-    if (effortLabel) {
-      card.appendChild(el("span", { className: "entry-effort", textContent: effortLabel }));
-    }
+    const foot = el("span", { className: "catalog-card-foot" }, [
+      el("span", { className: "catalog-effort", textContent: effortLabel }),
+      el("span", { className: "catalog-cta" }, [meta.cta + " ", el("span", { "aria-hidden": "true", textContent: "→" })])
+    ]);
 
-    const cta = document.createElement("span");
-    cta.className = "entry-cta";
-    cta.textContent = meta.cta + " ";
-    cta.appendChild(el("span", { className: "arrow", "aria-hidden": "true", textContent: "→" }));
-    card.appendChild(cta);
-
+    card.append(top, title, desc, foot);
     return card;
   }
 
+  // Caso ao vivo do hero. No HTML os três casos aparecem empilhados e a barra de abas
+  // está oculta; aqui ela aparece e passa a mostrar um caso por vez.
+  function initCaseCard() {
+    const card = byId("case-card");
+    const tabsHost = byId("case-tabs");
+    if (!card || !tabsHost) return;
+
+    const tabs = Array.from(tabsHost.querySelectorAll('[role="tab"]'));
+    const panels = tabs.map((tab) => byId(tab.getAttribute("aria-controls")));
+    if (tabs.length === 0 || panels.some((panel) => !panel)) return;
+
+    panels.forEach((panel, i) => {
+      panel.setAttribute("role", "tabpanel");
+      panel.setAttribute("aria-labelledby", tabs[i].id);
+    });
+
+    function select(index, moveFocus) {
+      tabs.forEach((tab, i) => {
+        const on = i === index;
+        tab.setAttribute("aria-selected", String(on));
+        tab.setAttribute("tabindex", on ? "0" : "-1");
+        panels[i].classList.toggle("is-active", on);
+      });
+      if (moveFocus) tabs[index].focus();
+    }
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener("click", () => select(i, false));
+      tab.addEventListener("keydown", (event) => {
+        const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
+        let next = -1;
+        if (event.key in keys) next = (i + keys[event.key] + tabs.length) % tabs.length;
+        else if (event.key === "Home") next = 0;
+        else if (event.key === "End") next = tabs.length - 1;
+        if (next < 0) return;
+        event.preventDefault();
+        select(next, true);
+      });
+    });
+
+    card.classList.add("is-tabbed");
+    tabsHost.hidden = false;
+    select(0, false);
+  }
+
   function initFunnelNavigator() {
-    const tabsHost = document.getElementById("funnel-tabs");
-    const panelHost = document.getElementById("funnel-panel");
-    if (!tabsHost || !panelHost) return;
+    const tilesHost = byId("funnel-tabs");
+    const panelHost = byId("funnel-panel");
+    if (!tilesHost || !panelHost) return;
 
     const registryById = new Map(getRegistryItems().map((item) => [item.id, item]));
+    const mobileQuery = window.matchMedia ? window.matchMedia("(max-width: 720px)") : null;
+    const tiles = [];
     let activeTrackId = FUNNEL_TRACKS[0].id;
     let activeScenarioIdx = 0;
+    let collapsed = false; // só no celular: a trilha aberta pode ser fechada de novo
 
-    function buildPrescription(scenario) {
-      const box = el("div", { className: "triage-prescription" });
-      box.appendChild(
-        el("div", { className: "triage-rx-top" }, [
-          el("span", { className: "triage-rx-badge", textContent: scenario.badge })
+    function isMobile() {
+      return Boolean(mobileQuery && mobileQuery.matches);
+    }
+
+    function buildPath(scenario) {
+      const chipText = scenario.badge.replace(/^Caminho sugerido\s*·\s*/, "");
+      const isFree = /gr[áa]tis/i.test(chipText);
+      return el("div", { className: "path-body" }, [
+        el("div", { className: "path-meta" }, [
+          el("span", { className: "path-label", textContent: "Caminho sugerido" }),
+          el("span", { className: "path-chip" + (isFree ? " is-free" : " is-paid"), textContent: chipText })
+        ]),
+        el("h4", { className: "path-title", textContent: scenario.title }),
+        el("p", { className: "path-why", textContent: scenario.why }),
+        el("div", { className: "path-actions" }, [
+          el("a", { className: "btn btn-primary btn-md", href: scenario.primary.url }, [
+            stripArrow(scenario.primary.label) + " ",
+            svgIcon(ICON_ARROW, 16, 2.2)
+          ]),
+          el("a", { className: "text-link", href: scenario.secondary.url, textContent: stripArrow(scenario.secondary.label) })
         ])
-      );
-      box.appendChild(el("h4", { textContent: scenario.title }));
-      box.appendChild(el("p", { className: "triage-rx-why", textContent: scenario.why }));
-
-      const actions = el("div", { className: "triage-actions" }, [
-        el("a", { className: "btn btn-primary", href: scenario.primary.url, textContent: scenario.primary.label }),
-        el("a", { className: "btn btn-ghost", href: scenario.secondary.url, textContent: scenario.secondary.label })
       ]);
-      box.appendChild(actions);
-      return box;
+    }
+
+    function buildStepList(ids) {
+      const list = el("div", { className: "link-list" });
+      ids.forEach((id) => {
+        const entry = registryById.get(id);
+        if (!entry) return;
+        const meta = TYPE_META[entry.type] || TYPE_META.guide;
+        const effort = entry.effort || entry.readingTime || "";
+        list.appendChild(
+          el("a", { className: "link-row", href: entry.url }, [
+            el("span", { className: "link-row-text" }, [
+              el("span", { className: "link-row-title", textContent: entry.title }),
+              el("span", { className: "link-row-meta", textContent: effort ? meta.label + " · " + effort : meta.label })
+            ]),
+            svgIcon(ICON_ARROW, 16, 2.2, "link-row-arrow")
+          ])
+        );
+      });
+      return list;
+    }
+
+    function buildStep(kind, number, titleText, bodyChildren, isLast) {
+      const parts = splitTitle(titleText);
+      const rail = el("div", { className: "ladder-rail" }, [
+        el("span", { className: "ladder-node tnum", textContent: String(number) }),
+        isLast ? null : el("span", { className: "ladder-line", "aria-hidden": "true" })
+      ]);
+      const title = el("p", { className: "ladder-title" }, [
+        parts[0] + " ",
+        parts[1] ? el("span", { className: "ladder-sub", textContent: "· " + parts[1] }) : null
+      ]);
+      return el("li", { className: "ladder-step is-" + kind }, [
+        rail,
+        el("div", { className: "ladder-body" }, [title].concat(bodyChildren))
+      ]);
+    }
+
+    function buildLadder(track) {
+      const step3 = track.step3;
+      const paid = el("div", { className: "ladder-card" }, [
+        el("p", { className: "ladder-card-title", textContent: step3.title }),
+        el("p", { className: "ladder-card-desc", textContent: step3.desc }),
+        el("div", { className: "ladder-card-actions" }, [
+          el("a", { className: "btn btn-primary btn-s", href: step3.primaryCta.url, textContent: stripArrow(step3.primaryCta.label) }),
+          el("a", { className: "text-link", href: step3.secondaryCta.url, textContent: stripArrow(step3.secondaryCta.label) })
+        ])
+      ]);
+      return el("div", { className: "track-ladder" }, [
+        el("p", { className: "panel-label", textContent: "A escada desta trilha" }),
+        el("ol", { className: "ladder" }, [
+          buildStep("free", 1, "Grátis agora · Diagnóstico rápido", [buildStepList(track.step1Ids)], false),
+          buildStep("guide", 2, "Para executar · Guias e análises", [buildStepList(track.step2Ids)], false),
+          buildStep("paid", 3, step3.kicker, [paid], true)
+        ])
+      ]);
     }
 
     function renderPanel(track) {
@@ -436,147 +605,123 @@
         activeScenarioIdx = 0;
       }
 
-      const headCopy = el("div", { className: "funnel-panel-head-copy" }, [
-        el("p", { className: "funnel-panel-kicker", textContent: track.num }),
+      const intro = el("div", { className: "track-intro" }, [
+        el("p", { className: "track-kicker tnum", textContent: track.num }),
         el("h3", { textContent: track.headline }),
-        el("p", { className: "funnel-panel-desc", textContent: track.summary })
+        el("p", { className: "track-summary", textContent: track.summary })
+      ]);
+
+      const choicesRow = el("div", { className: "choice-list", role: "group", "aria-label": "Cenários da trilha" });
+      const pathLive = el("div", { className: "track-path", "aria-live": "polite" });
+      pathLive.appendChild(buildPath(scenarios[activeScenarioIdx]));
+
+      scenarios.forEach((sc, idx) => {
+        const btn = el("button", {
+          type: "button",
+          className: "choice-row",
+          "aria-pressed": String(idx === activeScenarioIdx)
+        }, [
+          el("span", { className: "choice-dot", "aria-hidden": "true" }),
+          el("span", { className: "choice-text", textContent: sc.label })
+        ]);
+        btn.addEventListener("click", () => {
+          activeScenarioIdx = idx;
+          choicesRow.querySelectorAll(".choice-row").forEach((other, i) => {
+            other.setAttribute("aria-pressed", String(i === idx));
+          });
+          pathLive.replaceChildren(buildPath(scenarios[idx]));
+          writeUrlState();
+        });
+        choicesRow.appendChild(btn);
+      });
+
+      const moments = el("div", { className: "track-moments" }, [
+        el("p", { className: "panel-label", textContent: "Qual é o seu momento?" }),
+        choicesRow
       ]);
 
       const jumpBtn = el("button", {
         type: "button",
-        className: "btn btn-ghost funnel-jump-btn",
+        className: "link-button",
         textContent: "Filtrar as peças desta trilha no acervo ↓"
       });
       jumpBtn.addEventListener("click", () => {
         if (typeof window.__setEcosystemFilter === "function") {
           window.__setEcosystemFilter("all", track.situationFilter);
         }
-        const explorer = document.getElementById("ferramentas");
+        const explorer = byId("ferramentas");
         if (explorer) {
           explorer.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth" });
         }
       });
 
-      const head = el("div", { className: "funnel-panel-head" }, [headCopy, jumpBtn]);
-      panelHost.appendChild(head);
-
-      const triage = el("div", { className: "funnel-triage" }, [
-        el("p", { className: "triage-prompt", textContent: "Qual é o seu momento nessa decisão?" })
-      ]);
-
-      const scenariosRow = el("div", { className: "triage-scenarios", role: "group", "aria-label": "Cenários da trilha" });
-      const rxLive = el("div", { className: "triage-rx-live", "aria-live": "polite" });
-      rxLive.appendChild(buildPrescription(scenarios[activeScenarioIdx]));
-
-      scenarios.forEach((sc, idx) => {
-        const btn = el("button", {
-          type: "button",
-          className: "triage-scenario-btn",
-          "aria-pressed": String(idx === activeScenarioIdx),
-          textContent: sc.label
-        });
-        btn.addEventListener("click", () => {
-          activeScenarioIdx = idx;
-          scenariosRow.querySelectorAll(".triage-scenario-btn").forEach((other, i) => {
-            other.setAttribute("aria-pressed", String(i === idx));
-          });
-          rxLive.replaceChildren(buildPrescription(scenarios[idx]));
-          writeUrlState();
-        });
-        scenariosRow.appendChild(btn);
-      });
-
-      triage.appendChild(scenariosRow);
-      triage.appendChild(rxLive);
-      panelHost.appendChild(triage);
-
-      panelHost.appendChild(el("p", {
-        className: "funnel-map-label",
-        textContent: "A trilha completa: grátis agora → para executar → se o valor for alto"
-      }));
-
-      const stages = el("div", { className: "funnel-stages" });
-
-      function buildStageList(cssMod, pillText, titleText, ids) {
-        const stage = el("div", { className: "funnel-stage " + cssMod });
-        stage.appendChild(
-          el("div", { className: "funnel-stage-head" }, [
-            el("span", { className: "stage-pill", textContent: pillText }),
-            el("span", { className: "stage-link-tag", textContent: titleText })
-          ])
-        );
-        const list = el("div", { className: "stage-links" });
-        ids.forEach((id) => {
-          const entry = registryById.get(id);
-          if (!entry) return;
-          const meta = TYPE_META[entry.type] || TYPE_META.guide;
-          list.appendChild(
-            el("a", { className: "stage-link", href: entry.url }, [
-              el("span", { className: "stage-link-title", textContent: entry.title }),
-              el("span", { className: "stage-link-tag", textContent: (entry.tag || meta.label) + " →" })
-            ])
-          );
-        });
-        stage.appendChild(list);
-        return stage;
-      }
-
-      stages.appendChild(buildStageList("stage-free", "Grátis agora · Diagnóstico rápido", "Grátis", track.step1Ids));
-      stages.appendChild(buildStageList("stage-guide", "Para executar · Guias e análises", "Grátis", track.step2Ids));
-
-      const stagePaid = el("div", { className: "funnel-stage stage-paid" }, [
-        el("div", { className: "funnel-stage-head" }, [
-          el("span", { className: "stage-pill", textContent: track.step3.kicker })
-        ]),
-        el("div", { className: "stage-paid-box" }, [
-          el("div", null, [
-            el("strong", { textContent: track.step3.title }),
-            el("p", { textContent: track.step3.desc })
-          ]),
-          el("div", { className: "stage-paid-actions" }, [
-            el("a", { className: "stage-paid-cta", href: track.step3.primaryCta.url, textContent: track.step3.primaryCta.label }),
-            el("a", { className: "stage-paid-cta-alt", href: track.step3.secondaryCta.url, textContent: track.step3.secondaryCta.label })
-          ])
-        ])
-      ]);
-      stages.appendChild(stagePaid);
-      panelHost.appendChild(stages);
+      panelHost.appendChild(el("div", { className: "track-main" }, [intro, moments, pathLive, jumpBtn]));
+      panelHost.appendChild(buildLadder(track));
     }
 
-    tabsHost.replaceChildren();
-    const tabButtons = [];
+    // Celular: o painel fica logo abaixo da trilha aberta (sanfona).
+    // Computador: o painel volta para baixo da grade de trilhas.
+    function placePanel() {
+      const activeTile = tiles.find((tile) => tile.getAttribute("data-track-id") === activeTrackId);
+      if (isMobile() && activeTile) {
+        if (activeTile.nextElementSibling !== panelHost) activeTile.insertAdjacentElement("afterend", panelHost);
+        panelHost.hidden = collapsed;
+      } else {
+        if (panelHost.parentElement !== tilesHost.parentElement || panelHost.previousElementSibling !== tilesHost) {
+          tilesHost.insertAdjacentElement("afterend", panelHost);
+        }
+        panelHost.hidden = false;
+      }
+    }
+
+    function syncTiles() {
+      const mobile = isMobile();
+      tiles.forEach((tile) => {
+        const selected = tile.getAttribute("data-track-id") === activeTrackId;
+        if (mobile) {
+          tile.removeAttribute("aria-pressed");
+          tile.setAttribute("aria-expanded", String(selected && !collapsed));
+        } else {
+          tile.removeAttribute("aria-expanded");
+          tile.setAttribute("aria-pressed", String(selected));
+        }
+        tile.classList.toggle("is-selected", selected);
+      });
+    }
+
+    tilesHost.replaceChildren();
     FUNNEL_TRACKS.forEach((track) => {
       const btn = el("button", {
         type: "button",
         id: "tab-" + track.id,
-        className: "funnel-tab",
-        role: "tab",
+        className: "track-tile",
         "aria-controls": "funnel-panel",
-        "aria-selected": String(track.id === activeTrackId),
-        tabindex: track.id === activeTrackId ? "0" : "-1",
         "data-track-id": track.id
       }, [
-        el("span", { className: "funnel-tab-num", textContent: track.num }),
-        el("span", { className: "funnel-tab-title", textContent: track.tabTitle })
+        el("span", { className: "track-tile-top" }, [
+          el("span", { className: "track-tile-num tnum", textContent: track.num.replace(/^Trilha\s+/, "") }),
+          svgIcon(TRACK_ICONS[track.id] || TRACK_ICONS.base, 22, 1.8, "track-tile-icon")
+        ]),
+        el("span", { className: "track-tile-title", textContent: track.tabTitle }),
+        svgIcon(ICON_CHEVRON, 18, 2.2, "track-tile-chevron")
       ]);
       btn.addEventListener("click", () => {
+        const sameTrack = track.id === activeTrackId;
+        if (sameTrack && isMobile()) {
+          collapsed = !collapsed;
+          syncTiles();
+          placePanel();
+          return;
+        }
+        if (sameTrack) return;
         selectTrack(track.id, 0);
         writeUrlState();
+        if (isMobile()) {
+          btn.scrollIntoView({ block: "nearest", behavior: reducedMotion() ? "auto" : "smooth" });
+        }
       });
-      btn.addEventListener("keydown", (event) => {
-        const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 };
-        let next = -1;
-        const current = tabButtons.indexOf(btn);
-        if (event.key in keys) next = (current + keys[event.key] + tabButtons.length) % tabButtons.length;
-        else if (event.key === "Home") next = 0;
-        else if (event.key === "End") next = tabButtons.length - 1;
-        if (next < 0) return;
-        event.preventDefault();
-        tabButtons[next].focus();
-        tabButtons[next].click();
-      });
-      tabButtons.push(btn);
-      tabsHost.appendChild(btn);
+      tiles.push(btn);
+      tilesHost.appendChild(btn);
     });
 
     function selectTrack(trackId, scenarioIdx) {
@@ -584,16 +729,10 @@
       if (!nextTrack) return false;
       activeTrackId = nextTrack.id;
       activeScenarioIdx = typeof scenarioIdx === "number" ? scenarioIdx : 0;
-      tabButtons.forEach((other) => {
-        const selected = other.getAttribute("data-track-id") === activeTrackId;
-        other.setAttribute("aria-selected", String(selected));
-        other.setAttribute("tabindex", selected ? "0" : "-1");
-        if (selected && tabsHost.scrollWidth > tabsHost.clientWidth) {
-          const pad = parseFloat(window.getComputedStyle(tabsHost).paddingLeft) || 0;
-          tabsHost.scrollTo({ left: Math.max(0, other.offsetLeft - tabsHost.offsetLeft - pad), behavior: reducedMotion() ? "auto" : "smooth" });
-        }
-      });
+      collapsed = false;
       renderPanel(nextTrack);
+      syncTiles();
+      placePanel();
       return true;
     }
 
@@ -616,6 +755,15 @@
       if (selectTrack(trackId, scenarioIdx)) writeUrlState();
     };
 
+    if (mobileQuery) {
+      const onChange = () => {
+        syncTiles();
+        placePanel();
+      };
+      if (typeof mobileQuery.addEventListener === "function") mobileQuery.addEventListener("change", onChange);
+      else if (typeof mobileQuery.addListener === "function") mobileQuery.addListener(onChange);
+    }
+
     const params = new URLSearchParams(window.location.search);
     const initialTrack = FUNNEL_TRACKS.find((t) => t.id === params.get("trilha")) || FUNNEL_TRACKS[0];
     const momento = parseInt(params.get("momento") || "1", 10);
@@ -624,35 +772,30 @@
   }
 
   function setupEcosystemExplorer() {
-    const typeHost = document.getElementById("type-filter-group");
-    const sitHost = document.getElementById("situation-filter-group");
-    const countHost = document.getElementById("filter-count");
-    const gridHost = document.getElementById("tools-grid");
+    const typeHost = byId("type-filter-group");
+    const sitHost = byId("situation-filter-group");
+    const countHost = byId("filter-count");
+    const gridHost = byId("tools-grid");
+    const allLink = byId("catalog-all");
     if (!gridHost) return;
 
     const allItems = sortForExplorer(getRegistryItems());
-    gridHost.className = "entry-grid";
+    gridHost.className = "catalog-grid";
     gridHost.replaceChildren();
     const cards = allItems.map((entry) => {
-      const card = createEntryCard(entry);
+      const card = createCatalogCard(entry);
       gridHost.appendChild(card);
       return card;
     });
 
     let activeType = "all";
     let activeSit = "";
-    let expanded = false;
     const PREVIEW_LIMIT = 6;
 
-    // Sem filtro, o acervo mostra as 6 primeiras peças e um botão para abrir o resto.
-    const moreBtn = el("button", { type: "button", className: "btn btn-ghost catalog-more", "aria-controls": "tools-grid" });
-    moreBtn.addEventListener("click", () => {
-      expanded = true;
-      apply();
-      const firstHidden = cards[PREVIEW_LIMIT];
-      if (firstHidden) firstHidden.focus({ preventScroll: true });
-    });
-    gridHost.insertAdjacentElement("afterend", moreBtn);
+    // O link para o catálogo completo traz o total real de peças.
+    if (allLink) {
+      allLink.textContent = "Ver as " + allItems.length + " peças do acervo";
+    }
 
     const clearBtn = el("button", { type: "button", className: "catalog-clear", textContent: "Limpar filtro" });
     clearBtn.addEventListener("click", () => {
@@ -674,6 +817,7 @@
       return allItems.filter((item) => item.type === formatId).length;
     }
 
+    // Sem filtro, o acervo mostra as 6 primeiras peças; o link abaixo leva ao resto.
     function apply() {
       let shown = 0;
       let matched = 0;
@@ -688,18 +832,15 @@
         const sitOk = !activeSit || (" " + cardSits + " ").includes(" " + activeSit + " ");
         const matches = formatOk && sitOk;
         if (matches) matched += 1;
-        const visible = matches && (filtering || expanded || matched <= PREVIEW_LIMIT);
+        const visible = matches && (filtering || matched <= PREVIEW_LIMIT);
         card.hidden = !visible;
         if (visible) shown += 1;
       });
 
-      const rest = matched - shown;
-      moreBtn.hidden = rest <= 0;
-      moreBtn.textContent = "Ver as outras " + rest + (rest === 1 ? " peça" : " peças");
       clearBtn.hidden = !filtering;
 
       if (typeHost) {
-        typeHost.querySelectorAll(".type-chip").forEach((b) => {
+        typeHost.querySelectorAll(".segmented-btn").forEach((b) => {
           b.setAttribute("aria-pressed", String(b.getAttribute("data-type-filter") === activeType));
         });
       }
@@ -711,7 +852,7 @@
 
       if (countHost) {
         if (activeType === "all" && !activeSit) {
-          countHost.textContent = !expanded && matched > shown
+          countHost.textContent = matched > shown
             ? "Exibindo " + shown + " de " + matched + " peças no acervo — simuladores, protocolos, guias e artigos gratuitos."
             : matched + " peças no acervo — simuladores, protocolos, guias e artigos gratuitos.";
         } else {
@@ -728,14 +869,15 @@
     if (typeHost) {
       typeHost.replaceChildren();
       FORMAT_FILTERS.forEach((fmt) => {
-        const count = countForFormat(fmt.id);
         const btn = el("button", {
           type: "button",
-          className: "type-chip",
+          className: "segmented-btn",
           "aria-pressed": String(fmt.id === activeType),
-          "data-type-filter": fmt.id,
-          textContent: fmt.label + " (" + count + ")"
-        });
+          "data-type-filter": fmt.id
+        }, [
+          fmt.label + " ",
+          el("span", { className: "segmented-count tnum", textContent: String(countForFormat(fmt.id)) })
+        ]);
         btn.addEventListener("click", () => {
           activeType = fmt.id;
           apply();
@@ -749,7 +891,7 @@
       SITUATIONS.forEach((sit) => {
         const btn = el("button", {
           type: "button",
-          className: "situation-chip",
+          className: "pill",
           "aria-pressed": String(sit.id === activeSit),
           "data-sit-filter": sit.id,
           textContent: sit.label
@@ -772,7 +914,7 @@
   }
 
   function renderLatestPosts() {
-    const grid = document.getElementById("latest-posts-grid");
+    const grid = byId("latest-posts-grid");
     if (!grid) return;
     grid.replaceChildren();
 
@@ -790,12 +932,12 @@
     }
 
     posts.slice(-3).reverse().forEach((entry) => {
-      const card = document.createElement("a");
-      card.className = "article-card";
-      card.href = entry.url;
+      const row = document.createElement("a");
+      row.className = "article-row";
+      row.href = entry.url;
 
       const date = document.createElement("time");
-      date.className = "article-card-date";
+      date.className = "article-row-date tnum";
       date.dateTime = entry.publishedAt;
       date.textContent = formatDatePtBr(entry.publishedAt);
 
@@ -805,35 +947,44 @@
       const desc = document.createElement("p");
       desc.textContent = entry.description;
 
-      card.append(date, title, desc);
-      grid.appendChild(card);
+      const body = document.createElement("span");
+      body.className = "article-row-body";
+      body.append(title, desc);
+
+      row.append(date, body);
+      grid.appendChild(row);
     });
   }
 
-  function setupReveal() {
-    const targets = document.querySelectorAll(".reveal");
-    if (!targets.length) return;
-    if (!("IntersectionObserver" in window)) {
-      targets.forEach((node) => node.classList.add("in"));
-      return;
+  // Barra fixa do celular (CSS só a mostra em até 720 px). Aparece depois do primeiro
+  // quadro e some enquanto o painel da triagem, os relatórios ou o rodapé estão na tela.
+  function initMobileBar() {
+    const bar = byId("mobile-bar");
+    if (!bar || !("IntersectionObserver" in window)) return;
+
+    const watched = [byId("hero"), byId("funnel-panel"), byId("relatorios"), document.querySelector("footer")].filter(Boolean);
+    const visible = new Map(watched.map((node) => [node, false]));
+    const hero = byId("hero");
+    if (hero) visible.set(hero, true);
+
+    function apply() {
+      let anyVisible = false;
+      visible.forEach((isVisible) => {
+        if (isVisible) anyVisible = true;
+      });
+      bar.classList.toggle("is-visible", !anyVisible);
     }
-    document.documentElement.classList.add("js-reveal");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("in");
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.08, rootMargin: "0px 0px -32px 0px" }
-    );
-    targets.forEach((node) => observer.observe(node));
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => visible.set(entry.target, entry.isIntersecting));
+      apply();
+    });
+    watched.forEach((node) => observer.observe(node));
   }
 
+  initCaseCard();
   initFunnelNavigator();
   setupEcosystemExplorer();
   renderLatestPosts();
-  setupReveal();
+  initMobileBar();
 })();
