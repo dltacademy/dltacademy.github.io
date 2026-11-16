@@ -437,7 +437,7 @@
       card.dataset.situations = entry.sit.join(" ");
     }
 
-    const kind = entry.tag ? meta.label + " · " + entry.tag : meta.label;
+    const kind = !entry.tag ? meta.label : entry.tag.toLowerCase().startsWith(meta.label.toLowerCase()) ? entry.tag : meta.label + " · " + entry.tag;
     const top = el("span", { className: "catalog-card-top" }, [
       el("span", {
         className: "catalog-mark tnum" + (entry.tone === "green" ? " is-green" : " is-blue"),

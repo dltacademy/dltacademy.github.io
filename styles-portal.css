@@ -87,12 +87,13 @@ html { scroll-padding-top: 84px; }
 .value-card h2, .value-card h3 { font-family: var(--font-head); font-size: 19px; margin: 0 0 7px; }
 .value-card p { color: var(--text-dim); font-size: 14.5px; line-height: 1.65; margin: 0; }
 .page-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
-.catalog-page .entry-grid { margin-top: 24px; }
-.catalog-page .situation-chips { margin-top: 22px; }
+.catalog-page .catalog-grid { margin-top: 24px; }
+.catalog-page .situation-chips { margin-top: 14px; }
+.page-hero .segmented { margin-top: 22px; }
 .catalog-page [data-filter-count] { margin-top: 12px; }
 
 .eyebrow {
-  color: var(--accent);
+  color: var(--sky-light, #8FBBFF);
   font-family: var(--font-head);
   font-size: 12px;
   font-weight: 700;
@@ -176,8 +177,7 @@ section { padding: 52px 0; }
 }
 .section-heading p { color: var(--text-dim); font-size: 15px; margin: 0; }
 /* ---------- Cards de ferramentas ---------- */
-.catalog-section .tools-grid,
-.next-step-grid {
+.catalog-section .tools-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
   gap: 18px;
@@ -186,79 +186,9 @@ section { padding: 52px 0; }
 .catalog-section { padding-top: 0; }
 .catalog-section h2 { font-size: clamp(22px, 3vw, 28px); letter-spacing: -0.02em; margin-bottom: 4px; }
 
-/* ---------- Grafo de conteúdo (T3) — "Próximo passo"/"Relacionados",
-   componente reutilizável entre artigo e guia, mesmos cards acima. ---------- */
+/* ---------- Grafo de conteúdo (T3) — "Próximo passo"/"Relacionados" ----------
+   Os cartões são os do acervo (dlt-patterns 39) e a grade mora em dlt-patterns 13. */
 .next-step-section + .next-step-section { padding-top: 0; }
-
-.tool-card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
-  background: linear-gradient(180deg, rgba(14, 33, 72, .30), rgba(10, 17, 32, .9));
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 24px 22px;
-  text-decoration: none;
-  color: var(--text);
-  overflow: hidden;
-  transition: border-color .2s, transform .2s, box-shadow .2s;
-}
-.tool-card::before {
-  content: "";
-  position: absolute;
-  inset: 0 0 auto;
-  height: 2px;
-  background: var(--grad-brand);
-  opacity: 0;
-  transition: opacity .2s;
-}
-.tool-card:hover {
-  border-color: rgba(74, 141, 248, .55);
-  transform: translateY(-4px);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, .38), 0 0 24px rgba(30, 79, 216, .12);
-}
-.tool-card:hover::before { opacity: 1; }
-
-.tool-card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-.tool-card-icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 42px; height: 42px;
-  border-radius: 12px;
-  background: rgba(30, 79, 216, .16);
-  border: 1px solid rgba(74, 141, 248, .3);
-  font-size: 20px;
-  line-height: 1;
-}
-.tool-card h3 {
-  font-family: var(--font-head);
-  font-size: 19px;
-  font-weight: 700;
-  margin: 4px 0 0;
-  letter-spacing: -0.01em;
-}
-.tool-card p { color: var(--text-dim); font-size: 14.5px; margin: 0; line-height: 1.55; }
-.tool-card-cta {
-  margin-top: auto;
-  padding-top: 10px;
-  font-family: var(--font-head);
-  font-weight: 700;
-  font-size: 13.5px;
-  color: var(--accent);
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.tool-card-cta .arrow { transition: transform .2s; display: inline-block; }
-.tool-card:hover .tool-card-cta .arrow { transform: translateX(4px); }
 
 .section-empty { color: var(--text-dim); margin: 0; }
 
@@ -327,13 +257,6 @@ footer.footer-rich { text-align: left; padding: 0; }
   .principles { grid-template-columns: 1fr; gap: 22px; padding: 26px 20px; }
 }
 
-/* Usados por outras páginas (acervo, guias, blog): ficam fora do bloco da home. */
-.entry-card .entry-type { font-size: 12px; }
-.entry-card[data-type="article"] .entry-type {
-  color: var(--amber);
-  background: rgba(251, 191, 36, 0.08);
-  border-color: rgba(251, 191, 36, 0.3);
-}
 .catalog-count { font-size: 13.5px; color: var(--text-faint); margin: 0 0 16px; }
 .catalog-count:focus { outline: none; }
 .footer-nav { flex-wrap: wrap; row-gap: 22px; }
