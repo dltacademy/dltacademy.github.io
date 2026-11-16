@@ -69,7 +69,10 @@
       if (limiteEl) limiteEl.textContent = brl(limite);
       const passa = v > limite;
       const proporcao = limite > 0 ? Math.min(1, limite / v) : 0;
-      if (barra) barra.classList.toggle("passa", passa);
+      // Cor pelo grau (1 verde, 3 laranja): estourar o limite pede esperar, não é um "não" da conta.
+      const grau = passa ? "3" : "1";
+      if (saida) saida.dataset.grade = grau;
+      if (barra) barra.dataset.grade = grau;
       if (barraI) barraI.style.width = (passa ? proporcao * 100 : 100) + "%";
       if (msg) {
         msg.className = "sp-msg " + (passa ? "passa" : "ok");
@@ -100,6 +103,8 @@
     const gasto = raiz.querySelector("[data-gasto]");
     const saida = raiz.querySelector("[data-saida]");
     const perdaEl = raiz.querySelector("[data-perda-teste]");
+    const mesesBloco = raiz.querySelector("[data-meses-bloco]");
+    const mesesEl = raiz.querySelector("[data-meses]");
     const barra = raiz.querySelector("[data-barra]");
     const barraI = barra && barra.querySelector("i");
     const msg = raiz.querySelector("[data-msg]");
@@ -124,11 +129,17 @@
       if (saida) saida.hidden = false;
       if (perdaEl) perdaEl.textContent = brl(perda);
       const pe = Math.round((1 - fracao) * 100);
-      if (barra) barra.classList.toggle("passa", fracao > 1 / 3);
+      // Grau da queda, o mesmo das frases abaixo: de pé = 1 (verde), mais de um terço = 3 (laranja), mais da metade = 4 (vermelho).
+      const grau = fracao > 0.5 ? "4" : fracao > 0.33 ? "3" : "1";
+      if (saida) saida.dataset.grade = grau;
+      if (barra) barra.dataset.grade = grau;
       if (barraI) barraI.style.width = pe + "%";
       const pctTxt = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 }).format(fracao * 100) + "%";
       const g = num(gasto);
-      const meses = g > 0 ? " Isso é " + new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 }).format(perda / g) + " meses dos seus gastos." : "";
+      const mesesTxt = g > 0 ? new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 }).format(perda / g) : "";
+      const meses = g > 0 ? " Isso é " + mesesTxt + " meses dos seus gastos." : "";
+      if (mesesBloco) mesesBloco.hidden = !(g > 0);
+      if (mesesEl) mesesEl.textContent = g > 0 ? mesesTxt + " meses" : "";
       if (msg) {
         const grave = fracao > 0.5, fragil = fracao > 0.33;
         msg.className = "sp-msg " + (fragil ? "passa" : "ok");
