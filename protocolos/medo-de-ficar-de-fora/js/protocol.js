@@ -139,6 +139,7 @@ const PROTOCOL = {
     if (a.dinheiro === "nao_tenho") {
       return {
         id: 1,
+        grade: 4,
         tone: "bad",
         verdict: "O passo de hoje é não dar o passo.",
         body: [
@@ -162,6 +163,7 @@ const PROTOCOL = {
     if (a.dinheiro === "tirar") {
       return {
         id: 2,
+        grade: 3,
         tone: "mixed",
         verdict: "Antes de tirar de outro lugar, olhe o que você trocaria.",
         body: [
@@ -185,6 +187,7 @@ const PROTOCOL = {
     if (a.sentimento !== "tranquilo") {
       return {
         id: 3,
+        grade: 3,
         tone: "mixed",
         verdict: "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
         body: [
@@ -212,6 +215,7 @@ const PROTOCOL = {
     // nem elegibilidade para uma plataforma, então não há presente direto.
     return {
       id: 4,
+      grade: 1,
       tone: "good",
       verdict: "Decidir com calma, com dinheiro que sobra, é legítimo — inclusive decidir sim.",
       body: [
