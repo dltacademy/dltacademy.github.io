@@ -89,7 +89,7 @@ body {
    1,8:1 de contraste — o mínimo legível é 4,5:1, então o link visitado
    ficava praticamente invisível e o comum parecia um azul neon fora da
    identidade. O --accent rende 6,1:1 e já é a cor de destaque da marca.
-   Componentes estruturais (.btn-*, .tool-card, .section-link, header,
+   Componentes estruturais (.btn-*, .section-link, header,
    footer) declaram a própria cor e continuam intactos. */
 a {
   color: var(--accent);
@@ -374,7 +374,7 @@ footer a { color: var(--text-dim); }
 .plan-step { counter-increment: plano; }
 .plan-check { display: flex; gap: 12px; align-items: flex-start; background: var(--bg-elev-2); border: 1px solid var(--border); border-radius: 10px; padding: 13px 14px; cursor: pointer; }
 .plan-check input[type="checkbox"] { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--green); flex-shrink: 0; }
-.plan-body::before { content: "Passo " counter(plano); display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); margin-bottom: 2px; }
+.plan-body::before { content: "Passo " counter(plano); display: block; font-size: 10.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--sky-light, #8FBBFF); margin-bottom: 2px; }
 .plan-title { font-weight: 700; font-size: 15px; }
 .plan-text { color: var(--text-dim); font-size: 13.5px; margin-top: 3px; }
 .plan-step.done .plan-check { opacity: .55; }

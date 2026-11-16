@@ -6,7 +6,7 @@
 .guide-card { background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
 .guide-hero-cta { margin-top: 22px; }
 .guide-hero-cta p { color: var(--text-faint); font-size: 12px; line-height: 1.5; margin: 10px 0 0; }
-.guide-step-label { color: var(--accent); font-family: var(--font-head); font-size: 12px; font-weight: 700; letter-spacing: .08em; margin: 0 0 8px; text-transform: uppercase; }
+.guide-step-label { color: var(--sky-light, #8FBBFF); font-family: var(--font-head); font-size: 12px; font-weight: 700; letter-spacing: .08em; margin: 0 0 8px; text-transform: uppercase; }
 .guide-card h2 { font-size: 24px; margin-bottom: 10px; }
 .guide-card > p { color: var(--text-dim); margin: 0 0 18px; }
 .guide-list { color: var(--text-dim); line-height: 1.65; margin: 0 0 22px; padding-left: 20px; }
