@@ -251,6 +251,16 @@ class PageContractTests(unittest.TestCase):
                 with self.subTest(page=self.label(path)):
                     self.assertLessEqual(block.count("btn-primary"), 1)
 
+    def test_stacked_tables_label_every_cell(self) -> None:
+        # .compare.is-stack vira cartão no celular com o rótulo vindo de data-label.
+        # Célula sem rótulo aparece como valor solto; rowspan/colspan não empilha.
+        for path in self.real_pages():
+            for table in re.findall(r'<div class="compare[^"]*\bis-stack\b[^"]*"[^>]*>(.*?)</table>', TEXT[path], re.DOTALL):
+                with self.subTest(page=self.label(path)):
+                    self.assertNotRegex(table, r"\b(?:rowspan|colspan)=")
+                    body = table.split("<tbody>", 1)[-1]
+                    self.assertEqual([], re.findall(r"<td(?![^>]*\bdata-label=\"[^\"]+\")[^>]*>", body))
+
     def test_sitemap_lists_each_public_page_once(self) -> None:
         sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
         locs = re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", sitemap)
