@@ -39,7 +39,8 @@
     var output = row.querySelector(".calc-out");
     rows[key] = {
       root: row,
-      track: row.querySelector(".calc-track > span"),
+      fill: row.querySelector(".calc-track .range-fill"),
+      zero: row.querySelector(".calc-track .range-zero"),
       total: output.querySelector("[data-calc-total]"),
       detail: output.querySelector("[data-calc-detail]"),
     };
@@ -51,6 +52,28 @@
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
+
+  // Barras numa escala só, com o zero marcado: cada barra sai da linha do zero até o valor
+  // (para a esquerda quando o cashback passa do custo). Só apresentação; os números vêm do modelo.
+  // Verde = mais barato (ou valor negativo), vermelho = mais caro, cinza = os demais.
+  function paintBars(rows, values, best, worst) {
+    var keys = Object.keys(values);
+    var nums = keys.map(function (key) { return values[key]; });
+    var low = Math.min.apply(null, nums.concat(0));
+    var span = (Math.max.apply(null, nums.concat(0)) - low) || 1;
+    var zero = (0 - low) / span * 100;
+    keys.forEach(function (key) {
+      var entry = rows[key];
+      var value = values[key];
+      var width = value === 0 ? 0 : Math.max(Math.abs(value) / span * 100, 1.5);
+      entry.fill.style.left = ((Math.min(value, 0) - low) / span * 100) + "%";
+      entry.fill.style.width = width + "%";
+      entry.zero.style.left = zero + "%";
+      var grade = key === best || value < 0 ? "1" : (key === worst && value > values[best] ? "4" : "");
+      if (grade) entry.root.setAttribute("data-grade", grade);
+      else entry.root.removeAttribute("data-grade");
+    });
+  }
 
   function percentage(value) {
     return value.toLocaleString("pt-BR", {
@@ -106,9 +129,6 @@
 
     var costs = costModel(options);
     var keys = Object.keys(costs);
-    var max = Math.max.apply(null, keys.map(function (key) {
-      return costs[key].total;
-    }).concat(1));
     var best = keys.reduce(function (current, candidate) {
       return costs[candidate].total < costs[current].total ? candidate : current;
     }, "binance");
@@ -124,10 +144,15 @@
       var entry = rows[key];
       entry.total.textContent = money.format(costs[key].total);
       entry.detail.textContent = costs[key].detail;
-      entry.track.style.width = Math.max(costs[key].total > 0 ? (costs[key].total / max) * 100 : 0, 1.5) + "%";
       entry.root.classList.toggle("is-best", key === best);
-      entry.track.classList.toggle("is-best", key === best);
     });
+
+    var worst = keys.reduce(function (current, candidate) {
+      return costs[candidate].total > costs[current].total ? candidate : current;
+    }, best);
+    var totals = {};
+    keys.forEach(function (key) { totals[key] = costs[key].total; });
+    paintBars(rows, totals, best, worst);
 
     var second = keys.filter(function (key) {
       return key !== best;

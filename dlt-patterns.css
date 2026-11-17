@@ -119,8 +119,8 @@
   letter-spacing: .1em; text-transform: uppercase; margin: 0 0 6px;
 }
 .note > p:last-child { margin: 0; font-size: 15px; line-height: 1.6; color: var(--text); }
-.note.is-info { background: rgba(30,79,216,.10); border-color: rgba(74,141,248,.32); }
-.note.is-info > p:first-child { color: var(--sky-light); }
+/* is-info = tom neutro (o mesmo da .note base): azul é ação, não decoração de nota. */
+.note.is-info { background: var(--bg-elev); border-color: var(--border); }
 .note.is-warn { background: rgba(251,191,36,.08); border-color: rgba(251,191,36,.28); }
 .note.is-warn > p:first-child { color: var(--amber); }
 .note.is-risk { background: rgba(248,113,113,.08); border-color: rgba(248,113,113,.28); }
@@ -132,7 +132,7 @@
   border-radius: 14px; overflow: hidden; margin: 0 0 26px;
 }
 .compare .compare-scroll { overflow-x: auto; }
-.compare table { border-collapse: collapse; width: 100%; min-width: 480px; font-size: 14px; }
+.compare table { border-collapse: collapse; width: 100%; min-width: 480px; font-size: 15px; }
 .compare th {
   text-align: left; padding: 14px 16px; background: var(--bg-elev-2);
   font-family: var(--font-head); font-size: 12.5px; font-weight: 700;
@@ -241,7 +241,7 @@
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary::after { content: "+"; color: var(--accent); }
 .faq details[open] summary::after { content: "–"; }
-.faq p { color: var(--text-dim); font-size: 14.5px; line-height: 1.65; margin: 12px 0 0; }
+.faq p { color: var(--text-dim); font-size: 15px; line-height: 1.65; margin: 12px 0 0; }
 
 /* ---------- 11 · Fontes e transparência ------------------- */
 .sources {
@@ -377,17 +377,24 @@
 .calc .calc-controls { display: grid; gap: 18px; margin-bottom: 22px; }
 .calc .calc-row { display: grid; grid-template-columns: 90px minmax(0, 1fr) 120px; gap: 14px; align-items: center; }
 .calc .calc-name { min-width: 0; overflow-wrap: anywhere; font-size: 14px; color: var(--text-dim); }
-.calc .calc-track { height: 10px; border-radius: 999px; background: var(--bg-elev-2); overflow: hidden; }
-.calc .calc-track > span {
-  display: block; height: 100%; width: 0; border-radius: 999px;
-  background: rgba(74,141,248,.55); transition: width .35s cubic-bezier(.22,1,.36,1);
-}
-.calc .calc-track > span.is-best { background: var(--green); }
-@media (prefers-reduced-motion: reduce) { .calc .calc-track > span { transition: none; } }
+/* Barras de custo: uma escala só para todas as linhas, com a linha do zero (.range-zero,
+   bloco 35). O preenchimento sai do zero para a direita (custo) ou para a esquerda
+   (cashback maior que o custo). A cor segue o resultado: data-grade 1 = mais barato,
+   4 = mais caro; sem data-grade, cinza neutro. A posição vem do JS da peça (CSSOM). */
+.calc .calc-track.range { min-width: 0; }
+/* Legenda da linha do zero, logo abaixo de um grupo de barras. */
+.range-caption { color: var(--text-faint); font-size: 12.5px; line-height: 1.5; margin: 0 0 18px; }
+.calc .calc-rows + .range-caption { margin-top: -6px; }
+.compare .range-caption { margin: 0; padding: 12px 16px 0; background: #080D18; border-top: 1px solid var(--border); }
+.compare .range-caption + .compare-foot { border-top: 0; padding-top: 4px; }
+.calc .calc-track .range-zero { left: 0; width: 2px; margin-left: -1px; background: var(--text-dim); }
+.calc .calc-track .range-fill { background: var(--grade-dot, var(--text-faint)); transition: left .35s cubic-bezier(.22,1,.36,1), width .35s cubic-bezier(.22,1,.36,1); }
+@media (prefers-reduced-motion: reduce) { .calc .calc-track .range-fill { transition: none; } }
 .calc .calc-out { font-family: var(--font-head); font-size: 16px; font-weight: 700; text-align: right; color: var(--text-dim); }
 .calc .calc-out { min-width: 0; display: grid; gap: 2px; }
-.calc .calc-out [data-calc-detail] { color: var(--text-faint); font-family: var(--font-body); font-size: 10px; font-weight: 500; line-height: 1.25; }
+.calc .calc-out [data-calc-detail] { color: var(--text-faint); font-family: var(--font-body); font-size: 12px; font-weight: 500; line-height: 1.35; }
 .calc .calc-row.is-best .calc-out, .calc .calc-row.is-best .calc-name { color: var(--green); }
+.calc .calc-row[data-grade="4"] .calc-out { color: var(--grade-fg); }
 .calc .calc-verdict {
   border-top: 1px solid var(--border); padding-top: 16px; margin: 0;
   font-family: var(--font-head); font-size: 16px; font-weight: 600; color: var(--text);
@@ -419,7 +426,7 @@
 .guide-step .guide-step-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
 .guide-step .guide-step-num {
   width: 38px; height: 38px; border-radius: 12px;
-  background: rgba(30,79,216,.18); border: 1px solid rgba(74,141,248,.4); color: var(--sky-light);
+  background: transparent; border: 2px solid #3A4E78; color: var(--text);
   font-family: var(--font-head); font-weight: 800; font-size: 14px;
   display: inline-flex; align-items: center; justify-content: center;
 }
