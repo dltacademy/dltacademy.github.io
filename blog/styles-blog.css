@@ -70,7 +70,7 @@
 .article-body blockquote {
   margin: 24px 0;
   padding: 4px 20px;
-  border-left: 3px solid var(--accent);
+  border-left: 3px solid #3A4E78;
   color: var(--text-dim);
   font-style: italic;
 }
@@ -139,6 +139,9 @@
 .calc .calc-rows { display: grid; gap: 12px; margin-bottom: 18px; }
 .calc .calc-rows.bar-chart { grid-auto-flow: row; height: auto; }
 .calc .calc-assumption-note { color: var(--text-faint); font-size: 12.5px; line-height: 1.55; margin: -4px 0 18px; }
+/* Linha de resultado: nome, barra e número com espaço para o texto de 12 px; no celular, em pilha (nome, barra, número). */
+.calc .calc-rows .calc-row { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.4fr); }
+.calc .calc-rows .calc-out { text-align: left; }
 .calc .calc-rows + .calc-verdict { margin-bottom: 18px; }
 .calc .calc-verdict { min-height: 2.8em; }
 .calc .btn { margin-top: 4px; }
@@ -151,13 +154,23 @@
   white-space: nowrap;
 }
 .cost-parts .figure-cell { padding: 16px; }
-.cost-parts .figure-value { font-size: 25px; color: var(--sky-light); }
+.cost-parts .figure-value { font-size: 25px; color: var(--text); }
 
-/* Largura inicial das barras antes do JS (ou sem JS); o script recalcula. */
-.calc .calc-track > span.calc-bar-90 { width: 90%; }
-.calc .calc-track > span.calc-bar-92 { width: 92%; }
-.calc .calc-track > span.calc-bar-95 { width: 95%; }
-.calc .calc-track > span.calc-bar-100 { width: 100%; }
+/* Largura inicial das barras (do zero) antes do JS ou sem JS; o script recalcula. */
+.calc .calc-track .range-fill.calc-bar-90 { left: 0; width: 90%; }
+.calc .calc-track .range-fill.calc-bar-92 { left: 0; width: 92%; }
+.calc .calc-track .range-fill.calc-bar-95 { left: 0; width: 95%; }
+.calc .calc-track .range-fill.calc-bar-100 { left: 0; width: 100%; }
+
+/* Veredito: uma superfície neutra com um filete claro no topo. Azul é ação, não decoração. */
+.article-wrap .verdict {
+  background: var(--bg-elev);
+  border: 1px solid var(--border);
+  border-top: 2px solid rgba(232,237,247,.45);
+}
+/* Rótulo da nota nunca abaixo de 12 px; número do passo em anel neutro (azul é ação). */
+.article-wrap .note > p:first-child { font-size: 12px; }
+.article-wrap .steps .step-num { background: transparent; border: 2px solid #3A4E78; color: var(--text); }
 
 /* Cartão de próximo passo prático dentro do artigo. */
 .card-next-action {
@@ -174,10 +187,18 @@
 .card-next-action p.next-action-alt { margin: 1rem 0 0; color: var(--text-dim); font-size: 15px; line-height: 1.6; }
 .card-next-action p.next-action-alt a { display: block; width: fit-content; padding: 10px 0; font-weight: 600; }
 
+@media (max-width: 720px) {
+  .calc .calc-rows .calc-row { grid-template-columns: 1fr; gap: 6px; }
+}
+
 @media (max-width: 560px) {
   .calc .calc-control label { display: block; }
   .calc .calc-control output { display: block; margin-top: 4px; }
   .cost-parts { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 380px) {
+  .article-wrap .figure-row, .cost-parts { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (max-width: 480px) {

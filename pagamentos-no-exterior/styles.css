@@ -187,7 +187,7 @@
 }
 
 .layer-index {
-  color: var(--accent);
+  color: var(--text);
   font-family: var(--font-head);
   font-size: 13px;
   font-weight: 800;
@@ -311,7 +311,7 @@
 }
 
 .formula span {
-  color: var(--accent);
+  color: var(--text);
 }
 
 .cost-grid {
@@ -367,7 +367,7 @@
 
 .cashback-order span {
   padding: 12px 14px;
-  border-left: 3px solid var(--accent);
+  border-left: 3px solid var(--border);
   border-radius: 0 9px 9px 0;
   background: var(--bg-elev-2);
   color: var(--text);
@@ -395,11 +395,9 @@
 
 .finder-preview {
   padding: 34px;
-  border: 1px solid rgba(74, 141, 248, .4);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  background:
-    linear-gradient(145deg, rgba(30, 79, 216, .2), rgba(10, 17, 32, .9)),
-    var(--bg-elev);
+  background: var(--bg-elev);
 }
 
 .finder-preview h2 {

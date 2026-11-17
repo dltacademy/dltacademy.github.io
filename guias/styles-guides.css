@@ -11,11 +11,14 @@
 .guide-card > p { color: var(--text-dim); margin: 0 0 18px; }
 .guide-list { color: var(--text-dim); line-height: 1.65; margin: 0 0 22px; padding-left: 20px; }
 .guide-list li + li { margin-top: 8px; }
-.guide-note { background: var(--bg-elev-2); border-left: 3px solid var(--accent); border-radius: 0 10px 10px 0; color: var(--text-dim); font-size: 14px; margin: 0 0 20px; padding: 12px 14px; }
+.guide-wrap .note { margin-bottom: 20px; }
+/* Rótulo da nota: nunca abaixo de 12 px. Nota sem rótulo (fórmula, fonte no corpo do texto) é só um parágrafo. */
+.guide-wrap .note > p:first-child { font-size: 12px; }
+.guide-wrap .note > p:only-child { font-family: var(--font-body); font-size: 15px; font-weight: 400; letter-spacing: 0; line-height: 1.6; text-transform: none; }
 .guide-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .guide-progress { display: flex; gap: 8px; list-style: none; margin: 0 0 18px; padding: 0; }
 .guide-progress li { background: var(--bg-elev-2); border-radius: 999px; color: var(--text-faint); flex: 1; font-size: 11px; height: 5px; }
-.guide-progress li.active { background: var(--accent); }
+.guide-progress li.active { background: var(--green); }
 .guide-noscript { color: var(--text-dim); padding-bottom: 40px; }
 .guide-reference, .guide-faq { border-top: 1px solid var(--border); margin-top: 40px; padding: 32px 0 0; }
 .guide-reference h2, .guide-faq h2 { font-size: 22px; }
@@ -26,11 +29,17 @@
 .table-scroll table { border-collapse: collapse; min-width: 420px; width: 100%; }
 .table-scroll th, .table-scroll td { border-bottom: 1px solid var(--border); padding: 11px 12px; text-align: left; }
 .table-scroll th { background: var(--bg-elev-2); color: var(--text); font-family: var(--font-head); font-size: 13px; }
-.table-scroll td { color: var(--text-dim); font-size: 14px; }
+.table-scroll td { color: var(--text-dim); font-size: 15px; }
 .guide-faq { padding-bottom: 20px; }
 .guide-faq details { border-bottom: 1px solid var(--border); color: var(--text-dim); padding: 14px 0; }
-.guide-faq summary { color: var(--text); cursor: pointer; font-family: var(--font-head); font-size: 14px; font-weight: 600; }
-.guide-faq p { font-size: 14px; line-height: 1.6; margin: 10px 0 0; }
+.guide-faq summary { color: var(--text); cursor: pointer; font-family: var(--font-head); font-size: 15px; font-weight: 600; }
+.guide-faq.faq p { line-height: 1.6; margin: 10px 0 0; }
+
+/* Veredito/conclusão: uma superfície neutra com um filete claro no topo. Azul é ação, não decoração. */
+.guide-wrap .verdict {
+  background: var(--bg-elev); border: 1px solid var(--border);
+  border-top: 2px solid rgba(232,237,247,.45);
+}
 
 @media (max-width: 560px) {
   .guide-hero { padding-top: 38px; }

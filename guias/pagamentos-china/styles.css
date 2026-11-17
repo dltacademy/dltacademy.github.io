@@ -64,6 +64,14 @@
 .calc .calc-rows.bar-chart { grid-auto-flow: row; height: auto; }
 #china-calc .calc-row { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr) minmax(0, 1.4fr); }
 #china-calc .calc-out { text-align: left; }
+/* Posição inicial das barras (escala de -0,94% a +7,96%, zero em 10,56%) antes do JS ou sem JS; o script recalcula. */
+#china-calc .range-zero { left: 10.56%; }
+#china-calc [data-calc-row="etherfi"] .range-fill { left: 0; width: 10.56%; }
+#china-calc [data-calc-row="arq"] .range-fill { left: 10.56%; width: 8.99%; }
+#china-calc [data-calc-row="revolut"] .range-fill { left: 10.56%; width: 44.72%; }
+#china-calc [data-calc-row="wise"] .range-fill { left: 10.56%; width: 50.34%; }
+#china-calc [data-calc-row="nomad"] .range-fill { left: 10.56%; width: 66.18%; }
+#china-calc [data-calc-row="bank"] .range-fill { left: 10.56%; width: 89.44%; }
 #china-calc .calc-out [data-calc-detail] { font-size: 13px; line-height: 1.4; }
 .calc .calc-rows + .calc-verdict { margin-bottom: 18px; }
 .calc .calc-verdict { min-height: 2.8em; }
@@ -148,3 +156,28 @@
   .compare tbody td::before { content: attr(data-label); float: left; margin-right: 12px; text-align: left; color: var(--text-faint); font-size: 13px; }
   .compare tbody td::after { content: ""; display: block; clear: both; }
 }
+
+/* Tabela de custo com barras: escala única de -2% a +12% nas duas colunas (zero em 14,29%), a mesma da home.
+   As colunas de números têm a mesma largura, então a barra vale o mesmo nas duas. A cor segue o resultado (data-grade). */
+@media (min-width: 601px) {
+  .compare-cost table { table-layout: fixed; }
+  .compare-cost th:first-child { width: 28%; }
+}
+.compare-cost .range { display: block; clear: both; margin-top: 10px; text-align: left; }
+.compare-cost .range + .range { margin-top: 6px; }
+.compare-cost .range-fill { background: var(--grade-dot, var(--text-faint)); }
+.compare-cost .range-zero { left: 14.29%; width: 2px; margin-left: -1px; background: var(--text-dim); }
+.compare-cost .rv-n123 { left: 5.50%; width: 8.79%; }
+.compare-cost .rv-p000 { left: 14.29%; width: 0.00%; }
+.compare-cost .rv-p050 { left: 14.29%; width: 3.57%; }
+.compare-cost .rv-p1087 { left: 14.29%; width: 77.64%; }
+.compare-cost .rv-p173 { left: 14.29%; width: 12.36%; }
+.compare-cost .rv-p300 { left: 14.29%; width: 21.43%; }
+.compare-cost .rv-p352 { left: 14.29%; width: 25.14%; }
+.compare-cost .rv-p417 { left: 14.29%; width: 29.79%; }
+.compare-cost .rv-p495 { left: 14.29%; width: 35.36%; }
+.compare-cost .rv-p557 { left: 14.29%; width: 39.79%; }
+.compare-cost .rv-p730 { left: 14.29%; width: 52.14%; }
+.compare-cost .rv-p764 { left: 14.29%; width: 54.57%; }
+.compare-cost .rv-p810 { left: 14.29%; width: 57.86%; }
+.compare-cost .rv-p874 { left: 14.29%; width: 62.43%; }

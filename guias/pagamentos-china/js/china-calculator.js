@@ -67,7 +67,8 @@
   Array.prototype.forEach.call(root.querySelectorAll("[data-calc-row]"), function (row) {
     rows[row.getAttribute("data-calc-row")] = {
       root: row,
-      track: row.querySelector(".calc-track > span"),
+      fill: row.querySelector(".calc-track .range-fill"),
+      zero: row.querySelector(".calc-track .range-zero"),
       total: row.querySelector("[data-calc-total]"),
       detail: row.querySelector("[data-calc-detail]"),
     };
@@ -97,6 +98,28 @@
     var text = Math.abs(value).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + "%";
     return (value < -0.005 ? "−" : "+") + text;
   }
+  // Barras numa escala só, com o zero marcado: cada barra sai da linha do zero até o valor
+  // (para a esquerda quando o cashback passa do custo). Só apresentação; os números vêm do modelo.
+  // Verde = mais barato (ou valor negativo), vermelho = mais caro, cinza = os demais.
+  function paintBars(rows, values, best, worst) {
+    var keys = Object.keys(values);
+    var nums = keys.map(function (key) { return values[key]; });
+    var low = Math.min.apply(null, nums.concat(0));
+    var span = (Math.max.apply(null, nums.concat(0)) - low) || 1;
+    var zero = (0 - low) / span * 100;
+    keys.forEach(function (key) {
+      var entry = rows[key];
+      var value = values[key];
+      var width = value === 0 ? 0 : Math.max(Math.abs(value) / span * 100, 1.5);
+      entry.fill.style.left = ((Math.min(value, 0) - low) / span * 100) + "%";
+      entry.fill.style.width = width + "%";
+      entry.zero.style.left = zero + "%";
+      var grade = key === best || value < 0 ? "1" : (key === worst && value > values[best] ? "4" : "");
+      if (grade) entry.root.setAttribute("data-grade", grade);
+      else entry.root.removeAttribute("data-grade");
+    });
+  }
+
   function money(value) { return (value < 0 ? "−" : "") + brl.format(Math.abs(value)); }
 
   function options() {
@@ -130,8 +153,7 @@
     summary.textContent = "¥" + yuan.format(m.spend) + " custam " + brl.format(m.base) + " no câmbio comercial." + feeText;
 
     var best = m.cards[m.ranking[0]];
-    var worst = m.cards[m.ranking[m.ranking.length - 1]];
-    var span = worst.total - best.total;
+    var pcts = {};
     m.ranking.forEach(function (key, rank) {
       var card = m.cards[key];
       var row = rows[key];
@@ -142,10 +164,11 @@
         .map(function (part) { return part[0] + " " + money(part[1]); });
       if (key === "etherfi" && card.level !== o.etherfiLevel) parts.push("sobe para " + levelLabel[card.level] + " durante a viagem");
       row.detail.textContent = parts.join(" · ") || "sem custo além do câmbio comercial";
-      row.track.style.width = (span > 0 ? Math.max((card.total - best.total) / span * 100, 3) : 3) + "%";
+      pcts[key] = card.pct;
       row.root.classList.toggle("is-best", rank === 0);
-      row.track.classList.toggle("is-best", rank === 0);
     });
+    // Barras pelo custo sobre o câmbio comercial (a mesma % do texto), com o zero marcado.
+    paintBars(rows, pcts, m.ranking[0], m.ranking[m.ranking.length - 1]);
 
     if (cta) {
       var pick = m.ranking.filter(function (key) {
