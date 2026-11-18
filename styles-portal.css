@@ -74,15 +74,16 @@ html { scroll-padding-top: 84px; }
 .page-section > ul li + li { margin-top: 10px; }
 .page-section > .page-updated { color: var(--text-faint); font-size: 13px; margin-top: 18px; }
 .value-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+/* Cartão e número neutros: azul é ação e navegação, não selo. */
 .value-card {
-  background: linear-gradient(180deg, rgba(14,33,72,.3), rgba(10,17,32,.9));
+  background: var(--bg-elev);
   border: 1px solid var(--border); border-radius: 16px; padding: 22px;
 }
 .value-card .value-mark {
   width: 40px; height: 40px; border-radius: 12px; display: inline-flex;
   align-items: center; justify-content: center; margin-bottom: 14px;
-  background: rgba(30,79,216,.16); border: 1px solid rgba(74,141,248,.3);
-  color: var(--sky-light); font-family: var(--font-head); font-weight: 800;
+  background: transparent; border: 2px solid #3A4E78;
+  color: var(--text); font-family: var(--font-head); font-weight: 800;
 }
 .value-card h2, .value-card h3 { font-family: var(--font-head); font-size: 19px; margin: 0 0 7px; }
 .value-card p { color: var(--text-dim); font-size: 14.5px; line-height: 1.65; margin: 0; }

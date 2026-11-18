@@ -35,12 +35,6 @@
 .guide-faq summary { color: var(--text); cursor: pointer; font-family: var(--font-head); font-size: 15px; font-weight: 600; }
 .guide-faq.faq p { line-height: 1.6; margin: 10px 0 0; }
 
-/* Veredito/conclusão: uma superfície neutra com um filete claro no topo. Azul é ação, não decoração. */
-.guide-wrap .verdict {
-  background: var(--bg-elev); border: 1px solid var(--border);
-  border-top: 2px solid rgba(232,237,247,.45);
-}
-
 @media (max-width: 560px) {
   .guide-hero { padding-top: 38px; }
   .guide-card { padding: 20px; }

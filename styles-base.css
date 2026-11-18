@@ -170,8 +170,9 @@ h2 .num {
   width: 26px;
   height: 26px;
   border-radius: 8px;
-  background: var(--accent-2);
-  color: white;
+  background: transparent;
+  border: 2px solid #3A4E78;
+  color: var(--text);
   font-size: 14px;
   margin-right: 8px;
 }
