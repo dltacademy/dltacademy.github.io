@@ -162,15 +162,8 @@
 .calc .calc-track .range-fill.calc-bar-95 { left: 0; width: 95%; }
 .calc .calc-track .range-fill.calc-bar-100 { left: 0; width: 100%; }
 
-/* Veredito: uma superfície neutra com um filete claro no topo. Azul é ação, não decoração. */
-.article-wrap .verdict {
-  background: var(--bg-elev);
-  border: 1px solid var(--border);
-  border-top: 2px solid rgba(232,237,247,.45);
-}
-/* Rótulo da nota nunca abaixo de 12 px; número do passo em anel neutro (azul é ação). */
+/* Rótulo da nota nunca abaixo de 12 px. */
 .article-wrap .note > p:first-child { font-size: 12px; }
-.article-wrap .steps .step-num { background: transparent; border: 2px solid #3A4E78; color: var(--text); }
 
 /* Cartão de próximo passo prático dentro do artigo. */
 .card-next-action {

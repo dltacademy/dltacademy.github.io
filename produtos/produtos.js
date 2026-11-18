@@ -69,8 +69,8 @@
       if (limiteEl) limiteEl.textContent = brl(limite);
       const passa = v > limite;
       const proporcao = limite > 0 ? Math.min(1, limite / v) : 0;
-      // Cor pelo grau (1 verde, 3 laranja): estourar o limite pede esperar, não é um "não" da conta.
-      const grau = passa ? "3" : "1";
+      // Cor pelo grau (1 verde, 4 vermelho): passar do limite em reais é o "não" da conta.
+      const grau = passa ? "4" : "1";
       if (saida) saida.dataset.grade = grau;
       if (barra) barra.dataset.grade = grau;
       if (barraI) barraI.style.width = (passa ? proporcao * 100 : 100) + "%";
