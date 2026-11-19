@@ -58,7 +58,7 @@
       <h1>Se vier uma queda forte, <em>a sua carteira aguenta?</em></h1>
       <p class="sp-lede">Cada posição parece segura sozinha. O que quebra alguém está na soma: várias moedas da mesma rede, uma plataforma guardando quase tudo, uma alavancagem cuja garantia cai junto. Em dez minutos — sem conectar conta nem informar senhas — regras em código rodam o teste de queda da sua carteira inteira, e um sistema multiagente proprietário entrega o diagnóstico na tela e em PDF no seu e-mail.</p>
       <a class="sp-cta" href="https://relatorio.dlt.academy/comprar/carteira-aguenta?utm_source=portal&amp;utm_medium=pagina-de-vendas&amp;utm_content=topo" rel="noopener noreferrer" referrerpolicy="no-referrer">Quero o relatório da minha carteira <span class="sp-cta-preco">· R$ 47</span></a>
-      <ul class="sp-trust"><li>Pagamento único</li><li>PDF no seu e-mail + roteiro incluso</li><li>Garantia total de 7 dias</li></ul>
+      <ul class="sp-trust"><li>Pix ou cartão · pagamento único</li><li>PDF, simulador, agenda (.ics) e roteiro</li><li>Garantia total de 7 dias</li></ul>
       <p class="sp-hero-alt">Quer proteger uma posição só? Comece pelo <a href="https://sobrevive-ou-quebra.dlt.academy/" rel="noopener noreferrer" referrerpolicy="no-referrer">Sobrevive ou Quebra? (grátis)</a>.</p>
     </div>
 
@@ -70,7 +70,7 @@
       <label class="sp-campo"><span>No alto risco: moedas pequenas, projetos novos, opções (R$)</span><input type="number" inputmode="decimal" min="0" step="any" placeholder="Ex.: 20000" data-alto></label>
       <label class="sp-campo"><span>Quanto você gasta por mês (R$, opcional)</span><input type="number" inputmode="decimal" min="0" step="any" placeholder="Ex.: 5000" data-gasto></label>
       <div class="sp-resultado" aria-live="polite">
-        <div data-saida hidden>
+        <div class="sp-saida" data-saida hidden>
           <div class="sp-numeros">
             <p class="sp-limite">Perda no teste de queda <strong data-perda-teste></strong></p>
             <p class="sp-limite" data-meses-bloco hidden>Meses dos seus gastos <strong data-meses></strong></p>
@@ -78,6 +78,7 @@
           <div class="sp-barra" data-barra aria-hidden="true"><i></i></div>
           <p class="sp-msg" data-msg></p>
           <p class="sp-msg-resto" data-resto></p>
+          <a class="sp-calc-cta" href="https://relatorio.dlt.academy/comprar/carteira-aguenta?utm_source=portal&amp;utm_medium=pagina-de-vendas&amp;utm_content=calculadora" rel="noopener noreferrer" referrerpolicy="no-referrer">Fazer o relatório completo da minha carteira · R$ 47 →</a>
         </div>
       </div>
       <p class="sp-nota">O teste supõe uma queda de 80% no alto risco e de 30% no diversificado; a parte segura não cai. A barra mostra o que fica de pé. Nada do que você digita sai daqui.</p>
@@ -102,9 +103,9 @@
       <div class="sp-origem-assinatura">
         <img src="/assets/dlt-mark.png" alt="" width="32" height="32">
         <div class="sp-origem-bio">
-          <strong>Fundador da DLT Academy</strong>
+          <strong>Tiago · Fundador da DLT Academy</strong>
           <span>No mercado financeiro e cripto desde 2013. Pesquisa aplicada em psicologia econômica, gestão de risco e engenharia de decisão com sistemas multiagentes. Relatórios independentes: sem indicação de ativos, sem promessa de retorno e sem comissão sobre a sua decisão.</span>
-          <span class="sp-origem-links"><a href="/sobre/">Sobre a DLT Academy</a> · <a href="/transparencia/">Transparência</a></span>
+          <span class="sp-origem-links"><a href="https://tiago.dlt.academy/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Perfil do fundador</a> · <a href="/sobre/">Sobre a DLT Academy</a> · <a href="/transparencia/">Transparência</a></span>
         </div>
       </div>
     </div>
@@ -151,7 +152,7 @@
   <section aria-labelledby="metodo">
     <p class="sp-kicker">O motor A Carteira Aguenta?</p>
     <h2 id="metodo">Um sistema multiagente proprietário, olhando a sua carteira inteira.</h2>
-    <p class="sp-sub">O teste de queda e todas as somas rodam em código, com regra fixa e sem margem para alívio. Um time de agentes de IA lê o seu contexto, caça riscos escondidos nas entrelinhas e escreve o relatório — sempre descrevendo e simulando, sem dizer o que comprar ou vender.</p>
+    <p class="sp-sub">O teste de queda e todas as somas rodam em código, com regra fixa e sem margem para alívio. Um time de agentes de IA lê o seu contexto, caça riscos escondidos nas entrelinhas e escreve o relatório: ele não diz o que comprar ou vender, e sim descreve a exposição real da carteira e simula cenários de queda e estresse para você decidir com os seus números.</p>
     <div class="sp-enxame" data-enxame aria-label="Animação: os agentes trabalhando numa carteira de exemplo">
       <div class="sp-enx-campo" data-enx-campo aria-hidden="true"></div>
       <div class="sp-enx-painel">
@@ -185,9 +186,9 @@
         <p>Para que serve esse dinheiro, o que você faria numa queda de 50% e a posição que você não compraria hoje. O relatório responde à sua carteira, não a uma média.</p>
       </article>
       <article class="sp-leitura">
-        <span class="sp-leitura-num">Descreve</span>
-        <h3>Não diz o que fazer</h3>
-        <p>O relatório descreve e simula. Um texto com ordem de comprar, vender ou mudar de plataforma é recusado pelo próprio sistema e escrito de novo. As regras são suas, com a conta de cada uma.</p>
+        <span class="sp-leitura-num">Soberania</span>
+        <h3>Mostra a exposição real, sem dar ordem</h3>
+        <p>O relatório não diz o que comprar ou vender: ele descreve a exposição real da carteira e simula cenários de queda e estresse para você decidir com os seus números. Um texto com ordem de comprar, vender ou mudar de plataforma é recusado pelo próprio sistema e escrito de novo. As regras são suas, com a conta de cada uma.</p>
       </article>
       <article class="sp-leitura">
         <span class="sp-leitura-num">Blindagem</span>
@@ -242,7 +243,8 @@
         <article><h3>Continuar no jogo</h3><p class="sp-saida">O teste não mede quanto a carteira pode ganhar, mede se ela continua de pé. Perder uma alta tem conserto; quebrar, não.</p></article>
       </div>
     </div>
-    <p class="sp-rel-nota">O relatório completo abre com um painel (o veredito, a perda no teste em reais e em meses de gastos, a maior concentração e a maior plataforma) e traz os gráficos por classe e por ativo, a tabela das posições com a distância até a liquidação, o teste do sono, o que falta ver, as suas regras com a conta e a revisão em 90 dias, na tela, em PDF e em texto (.md).</p>
+    <p class="sp-rel-nota">O relatório completo abre com um painel (o veredito, a perda no teste em reais e em meses de gastos, a maior concentração e a maior plataforma) e traz os gráficos por classe e por ativo, a tabela das posições com a distância até a liquidação, o teste do sono, o que falta ver, as suas regras com a conta e a revisão em 90 dias — na tela com simulador interativo pós-relatório e lembrete trimestral em 1 clique (.ics), além de PDF no e-mail e texto (.md).</p>
+    <a class="sp-pdf-exemplo" href="/produtos/carteira-aguenta/exemplo-relatorio-carteira-aguenta.pdf" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Ver exemplo completo em PDF (6 páginas, carteira fictícia)</a>
     <div class="sp-atalho">
       <p><strong>Quer testar se a sua carteira aguenta?</strong> Contas em código e diagnóstico multiagente em uma sentada.</p>
       <a class="sp-atalho-link" href="#oferta">Ver a oferta · R$ 47 →</a>
@@ -255,13 +257,13 @@
 
     <div class="sp-vitrine" aria-hidden="true">
       <div class="sp-folha">
-        <div class="sp-folha-topo"><span>Relatório individual</span><span>Tela · PDF no e-mail</span></div>
+        <div class="sp-folha-topo"><span>Relatório individual</span><span>Tela · PDF · Simulador · .ics</span></div>
         <div class="sp-folha-selo-row"><span class="sp-folha-badge">VEREDITO + TESTE DE QUEDA</span><span class="sp-folha-num">0–100</span></div>
         <div class="sp-folha-linhas">
           <div><strong>Painel + contas em código</strong><span>Perda no teste, concentração e plataforma</span></div>
-          <div><strong>A carteira em gráficos</strong><span>Por classe, por ativo e contra o seu teto</span></div>
-          <div><strong>Alavancagem e plataformas</strong><span>Liquidação, garantia e o que fica preso</span></div>
-          <div><strong>Teste do sono e regras</strong><span>Como você atravessaria a queda, com a conta</span></div>
+          <div><strong>Gráficos + liquidação</strong><span>Classes, ativos, garantia e o que fica preso</span></div>
+          <div><strong>Teste do sono e regras</strong><span>Como atravessaria a queda, com a conta</span></div>
+          <div><strong>Simulador + agenda (.ics)</strong><span>Teste cenários na tela + lembrete trimestral em 1 clique</span></div>
         </div>
       </div>
       <div class="sp-folha sp-folha-dossie">
@@ -287,7 +289,8 @@
           <li><strong>O que fica preso:</strong> quanto está em cada exchange, protocolo ou projeto novo, e o que acontece se um deles travar os saques.</li>
           <li><strong>A alavancagem:</strong> a que queda cada posição é liquidada e se a garantia cai junto.</li>
           <li><strong>O teste do sono:</strong> como você atravessaria a queda, o que falta ver e a posição que você não compraria hoje.</li>
-          <li><strong>As suas regras, com a conta</strong>, e a revisão em 90 dias — salvo no seu link por 7 dias, em PDF no seu e-mail e em arquivo de texto.</li>
+          <li><strong>Simulador interativo pós-relatório:</strong> com o diagnóstico pronto, ajuste classes, cenários de queda e concentração na mesma página para testar mudanças sem pagar de novo.</li>
+          <li><strong>As suas regras e revisão em 1 clique (.ics):</strong> regras com a conta e lembrete trimestral de 90 dias para a agenda — com acesso automático por e-mail (salvo por 7 dias no link), PDF anexado e texto (.md).</li>
         </ul>
       </div>
       <div class="sp-cartao">
@@ -307,9 +310,9 @@
     <p class="sp-kicker">Como funciona</p>
     <h2 id="como">Do pagamento ao PDF, em uma sentada</h2>
     <ol class="sp-passos">
-      <li><h3>Você paga</h3><p>R$ 47 no cartão de crédito, em checkout seguro pelo Stripe (sem cadastro e sem guardarmos seus dados de cartão). Na mesma hora abre a página da sua compra — e o link de acesso já vai para o seu e-mail, para você voltar quando quiser.</p></li>
+      <li><h3>Você paga</h3><p>R$ 47 no Pix (confirma na hora) ou no cartão de crédito, em checkout seguro pelo Stripe (sem cadastro e sem guardarmos seus dados de pagamento). Na mesma hora abre a página da sua compra — e o link de acesso automático já vai para o seu e-mail, para você voltar quando quiser.</p></li>
       <li><h3>Você conta a carteira</h3><p>Leva de oito a dez minutos, sem conectar carteira, chave API nem nome real de corretora: algumas escolhas, cada posição com valores arredondados (use apelidos se preferir) e três respostas com as suas palavras.</p></li>
-      <li><h3>O relatório fica pronto</h3><p>O código faz as contas e o sistema multiagente escreve o diagnóstico em um a dois minutos, liberando também o roteiro em PDF e enviando o PDF do relatório para o seu e-mail. Se precisar fechar a aba antes, tudo bem: ele termina sozinho no servidor, fica salvo no seu link por 7 dias e o link chega na sua caixa.</p></li>
+      <li><h3>O relatório fica pronto</h3><p>O código faz as contas e o sistema multiagente escreve o diagnóstico em um a dois minutos, abrindo o simulador interativo de cenários e o lembrete trimestral em 1 clique (.ics), liberando também o roteiro em PDF e enviando o PDF do relatório para o seu e-mail. Se precisar fechar a aba antes, tudo bem: ele termina sozinho no servidor, fica salvo no seu link por 7 dias e o link automático chega na sua caixa.</p></li>
     </ol>
   </section>
 
@@ -323,7 +326,7 @@
         <li>usa alavancagem e quer ver a distância até a liquidação de tudo junto.</li>
       </ul></div>
       <div class="nao"><h3>Não é para você se</h3><ul>
-        <li>procura dica do que comprar ou vender: o relatório não indica ativo, não prevê preço e não promete resultado;</li>
+        <li>procura dica do que comprar ou vender: o relatório não indica ativo, não prevê preço e não promete resultado — ele descreve a exposição real da carteira e simula cenários de queda e estresse para você decidir com os seus números;</li>
         <li>a carteira hoje compromete contas, dívidas caras ou quem depende de você. Aí o primeiro passo é a reserva e a dívida, e isso não precisa de relatório pago;</li>
         <li>está em sofrimento. O CVV atende 24 horas pelo telefone 188.</li>
       </ul></div>
@@ -340,27 +343,28 @@
     </div>
     <div>
       <ul>
-        <li><strong>Diagnóstico completo da sua carteira:</strong> contas em código + o relatório escrito pelo sistema multiagente proprietário — salvo no seu link por 7 dias e enviado em PDF no seu e-mail</li>
+        <li><strong>Diagnóstico completo da sua carteira:</strong> contas em código + análise multiagente, acesso automático por e-mail, PDF anexado e link salvo por 7 dias</li>
+        <li><strong>Simulador interativo + agenda (.ics):</strong> teste cenários de queda e estresse pós-relatório sem pagar de novo e salve o lembrete trimestral em 1 clique</li>
         <li><strong>Roteiro de revisão trimestral (PDF · 5 páginas):</strong> as cinco contas e tabelas prontas para você repetir a auditoria sozinho a cada 3 meses sem pagar de novo</li>
         <li><strong>Privacidade sem cadastro:</strong> sem senha, sem chave API e sem conectar conta; suas respostas são apagadas dos nossos servidores assim que o relatório fica pronto</li>
       </ul>
       <a class="sp-cta" href="https://relatorio.dlt.academy/comprar/carteira-aguenta?utm_source=portal&amp;utm_medium=pagina-de-vendas&amp;utm_content=oferta" rel="noopener noreferrer" referrerpolicy="no-referrer">Quero o relatório da minha carteira <span class="sp-cta-preco">· R$ 47</span></a>
-      <p class="sp-letra">Cartão de crédito em checkout seguro Stripe · pagamento único, sem assinatura. Material educacional, não é recomendação de investimento. Prefere começar de graça? Faça o <a href="https://sobrevive-ou-quebra.dlt.academy/" rel="noopener noreferrer" referrerpolicy="no-referrer">Sobrevive ou Quebra?</a>.</p>
+      <p class="sp-letra">Pix (confirmação na hora) ou cartão de crédito em checkout seguro Stripe · pagamento único, sem assinatura. Material educacional, não é recomendação de investimento. Prefere começar de graça? Faça o <a href="https://sobrevive-ou-quebra.dlt.academy/" rel="noopener noreferrer" referrerpolicy="no-referrer">Sobrevive ou Quebra?</a>.</p>
     </div>
   </section>
 
   <section class="faq" aria-labelledby="perguntas"><h2 id="perguntas">Perguntas frequentes</h2>
     <details><summary>Quanto tempo leva?</summary><p>De oito a dez minutos para contar a carteira com calma e um a dois minutos para os agentes terminarem o seu relatório.</p></details>
-    <details><summary>O relatório diz o que eu devo vender?</summary><p>Não. Ele descreve e simula: mostra o que cai junto, o que fica preso, o que liquida e a diferença entre a carteira e as regras que você mesmo escolhe. O sistema recusa e reescreve qualquer texto com ordem de comprar, vender ou mudar de plataforma. A decisão é sua.</p></details>
+    <details><summary>O relatório diz o que eu devo vender?</summary><p>Não. Ele não diz o que vender nem o que comprar: descreve a exposição real da carteira e simula cenários de queda e estresse — mostrando o que cai junto, o que fica preso, o que liquida e a diferença até as regras que você mesmo escolheu — para decidir com os seus números. O sistema recusa e reescreve qualquer texto com ordem de comprar, vender ou mudar de plataforma.</p></details>
     <details><summary>Quem escreve o relatório?</summary><p>Um sistema multiagente proprietário, com agentes de IA sob as regras da DLT Academy. O que é conta, como o teste de queda, as somas e o veredito máximo, é calculado em código, e o texto gerado não pode aliviar essa conta.</p></details>
     <details><summary>Por que não jogar a minha carteira num chat de IA comum?</summary><p>Um chat de IA comum costuma errar contas de soma e liquidação, não tem trava contra recomendações e tende a suavizar riscos se você demonstrar apego à posição. Aqui, o teste de queda, a soma por ecossistema, o risco de plataforma e o teto do veredito rodam em código fixo — nenhum agente pode aliviar o resultado — e um sistema multiagente proprietário audita a saída antes de chegar a você.</p></details>
     <details><summary>O que acontece com as minhas respostas?</summary><p>Elas são enviadas uma vez ao serviço de IA que roda os agentes só para escrever o seu relatório, ficam nos nossos servidores apenas durante os 1 a 2 minutos da escrita e são apagadas assim que ele fica pronto. Não pedimos CPF, senha, chave API nem nome real de corretora — nos nomes das posições e plataformas, use só o necessário para se reconhecer. Detalhes na página de <a href="/privacidade/">Privacidade</a>.</p></details>
     <details><summary>E se eu fechar a página?</summary><p>Nada se perde. Na primeira visita, mandamos o link de acesso para o e-mail da compra; se você fechar a aba enquanto o relatório está sendo escrito, ele termina sozinho no servidor, fica guardado no seu link por 7 dias e chega de novo no seu e-mail (com o PDF anexado quando a página está aberta). A página também permite copiar, salvar ou reenviar o link para o seu e-mail até 3 vezes.</p></details>
-    <details><summary>Posso gerar mais de um relatório?</summary><p>Cada compra gera um relatório e permite até 10 downloads do roteiro em PDF. Para revisar a carteira de novo, é outra compra, ou o roteiro, que você refaz sozinho. Se a geração falhar por erro técnico nosso, a vaga volta uma vez para você tentar de novo.</p></details>
+    <details><summary>Posso gerar mais de um relatório?</summary><p>Cada compra gera um relatório (com simulador interativo na tela para testar cenários da sua carteira sem pagar de novo) e permite até 10 downloads do roteiro em PDF. Para revisar outra foto da carteira meses depois, é outra compra, ou o roteiro, que você refaz sozinho. Se a geração falhar por erro técnico nosso, a vaga volta uma vez para você tentar de novo.</p></details>
     <details><summary>Vou colocar dinheiro numa posição nova. É este?</summary><p>Para uma decisão só, de entrar ou aumentar, o relatório certo é o <a href="/produtos/decisao-fria/">Decisão Fria</a>. O A Carteira Aguenta? olha a carteira inteira.</p></details>
     <details><summary>E se o relatório disser que quebra e nada cair?</summary><p>Você não errou em olhar. O teste mostra o risco que a carteira carrega naquele dia, não prevê o que vai acontecer. Perder uma alta tem conserto; quebrar, não. O objetivo é continuar no jogo.</p></details>
-    <details><summary>Como peço o reembolso?</summary><p>Em até 7 dias da compra, responda ao e-mail do recibo ou escreva para <a href="mailto:contatodltnet@gmail.com">contatodltnet@gmail.com</a>. Devolvemos o valor integral pelo mesmo meio de pagamento.</p></details>
-    <details><summary>Isso é recomendação de investimento?</summary><p>Não. É material educacional: descreve e simula a carteira com os números que você informa. A decisão e as consequências dela continuam sendo suas.</p></details>
+    <details><summary>Como peço o reembolso?</summary><p>Em até 7 dias da compra, responda ao e-mail do recibo ou escreva para <a href="mailto:contatodltnet@gmail.com">contatodltnet@gmail.com</a>. Devolvemos o valor integral pelo mesmo meio de pagamento (no Pix, volta para a conta de origem; no cartão, como estorno na fatura).</p></details>
+    <details><summary>Isso é recomendação de investimento?</summary><p>Não. É material educacional e diagnóstico técnico: não diz o que vender nem o que comprar, apenas descreve a exposição real da carteira e simula cenários de queda e estresse com os números que você informa. A decisão e as consequências dela continuam sendo suas.</p></details>
   </section>
 
   <section class="sp-continuar" aria-labelledby="continuar">

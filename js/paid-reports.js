@@ -27,17 +27,17 @@ const PAID_REPORTS = {
     conteudo: [
       "Seu veredito, com o nível de frieza da decisão e os pontos cegos do seu caso",
       "O limite em reais, calculado a partir do que você aguenta perder",
-      "Três argumentos contra a sua tese, cada um virando uma condição de saída, e as travas com revisão de 7, 30 e 90 dias, em PDF",
-      "O Dossiê Decisão Fria em PDF: o método completo, com fichas para preencher",
+      "Três argumentos contra a sua tese, cada um virando condição de saída, e travas com lembretes de revisão de 7, 30 e 90 dias em 1 clique (.ics)",
+      "Simulador interativo pós-relatório para testar cenários sem pagar de novo + Dossiê Decisão Fria (24 pág. em PDF com fichas)",
     ],
     preco: "R$ 47",
-    formato: "relatório escrito na hora + Dossiê em PDF",
+    formato: "relatório na hora + simulador + Dossiê em PDF",
     botao: "Quero o relatório e o Dossiê →",
     paginaUrl: "/produtos/decisao-fria/",
     botaoPagina: "Ver exemplo do relatório",
     plataforma: "Stripe",
     checkoutUrl: "https://relatorio.dlt.academy/comprar/decisao-fria?utm_source=portal&utm_medium=protocolo",
-    aviso: "Pagamento pelo Stripe. Nada do que você escreveu aqui vai junto. Depois de pagar, você responde algumas perguntas e baixa o Dossiê na mesma página. As respostas são enviadas uma vez a um serviço de geração de texto contratado por nós, para escrever o relatório, e não são guardadas por nós. Um relatório por compra. É material educacional, não recomendação de investimento. Você tem 7 dias para pedir reembolso.",
+    aviso: "Pagamento via Pix (confirma na hora) ou cartão de crédito pelo Stripe. Nada do que você escreveu aqui vai junto. Depois de pagar, você responde algumas perguntas, testa cenários no simulador na mesma página e baixa o relatório e o Dossiê em PDF (o link de acesso também vai para o seu e-mail). As respostas são enviadas uma vez a um serviço de geração de texto contratado por nós, para escrever o relatório, e não são guardadas por nós. Um relatório por compra. É material educacional, não recomendação de investimento. Você tem 7 dias para pedir reembolso.",
     perfis: {
       recuperacao: {
         capitulo: "Depois da perda",
