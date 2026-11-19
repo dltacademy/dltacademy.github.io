@@ -63,8 +63,11 @@
 .sp-origem::before { content: "\201C"; position: absolute; top: -16px; left: 22px; font-family: var(--font-head); font-size: 80px; line-height: 1; color: #A9B5CC; opacity: .4; }
 .sp-origem p { font-size: 19px; line-height: 1.65; margin: 0 0 14px; color: var(--text); }
 .sp-origem p.sp-origem-virada { font-family: var(--font-head); font-weight: 700; font-size: 20px; line-height: 1.5; color: #fff; }
-.sp-origem p.sp-origem-assinatura { display: flex; align-items: center; gap: 10px; margin: 18px 0 0; padding-top: 16px; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 14px; }
-.sp-origem-assinatura img { width: 28px; height: 28px; flex: 0 0 28px; }
+.sp-origem .sp-origem-assinatura { display: flex; align-items: flex-start; gap: 14px; margin: 20px 0 0; padding-top: 18px; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 14px; line-height: 1.6; }
+.sp-origem-assinatura img { width: 32px; height: 32px; flex: 0 0 32px; margin-top: 2px; }
+.sp-origem-bio { min-width: 0; }
+.sp-origem-bio strong { display: block; color: var(--text); font-family: var(--font-head); font-size: 15px; font-weight: 700; margin: 0 0 4px; }
+.sp-origem-bio .sp-origem-links { display: block; margin-top: 8px; font-size: 13.5px; color: var(--text-faint); }
 @media (max-width: 560px) { .sp-origem { padding: 26px 18px 18px; } .sp-origem p { font-size: 17.5px; } .sp-origem p.sp-origem-virada { font-size: 18.5px; } }
 
 /* ---- método: trava em código + três leituras ---------------- */
@@ -112,6 +115,14 @@
 .sp-rel-grade .sp-cita { color: var(--text); font-style: italic; border-left: 2px solid #3A4E78; padding-left: 10px; }
 .sp-rel-grade .sp-saida { color: var(--text); }
 .sp-rel-nota { color: var(--text-faint); font-size: 13px; margin: 16px 0 0; }
+/* Atalho discreto pós-exemplos: outline suave para não competir com o azul cheio de compra. */
+.sp-atalho { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 20px; margin: 22px 0 0; padding: 16px 20px; border: 1px solid rgba(74,141,248,.28); border-radius: 16px; background: rgba(14,33,72,.28); }
+.sp-atalho p { margin: 0; color: var(--text-dim); font-size: 15.5px; line-height: 1.5; }
+.sp-atalho strong { color: var(--text); }
+.sp-atalho-link { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 10px 18px; border-radius: 12px; border: 1px solid rgba(74,141,248,.55); background: rgba(74,141,248,.12); color: var(--text); font-family: var(--font-head); font-weight: 700; font-size: 15px; text-decoration: none; white-space: nowrap; transition: border-color .15s ease, background .15s ease, transform .15s ease; }
+.sp-atalho-link:hover { border-color: var(--accent); background: rgba(74,141,248,.22); color: #fff; transform: translateY(-1px); }
+.sp-atalho-link:visited { color: var(--text); }
+.sp-atalho-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
 /* ---- vitrine tangível + o que recebe ------------------------- */
 .sp-vitrine { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 0 0 18px; }
@@ -184,6 +195,7 @@
 }
 @media (max-width: 560px) {
   .sp-hero .sp-cta, .sp-oferta .sp-cta { width: 100%; padding: 14px 18px; }
+  .sp-atalho-link { width: 100%; box-sizing: border-box; }
   .sp-preco small { display: block; margin: 8px 0 0; }
   .sp-folha { padding: 18px 16px; }
   .sp-folha-linhas > div { flex-direction: column; gap: 2px; }
@@ -191,7 +203,7 @@
   .sp-folha-linhas span { text-align: left; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .sp-barra i, .sp-cta, .sp-barra-fixa { transition: none; }
+  .sp-barra i, .sp-cta, .sp-atalho-link, .sp-barra-fixa { transition: none; }
 }
 
 /* ---- enxame: nós de agentes acendendo sobre o caso ----------- */
