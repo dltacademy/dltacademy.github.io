@@ -9,8 +9,16 @@ pessoal (PDF/.md).
 import json
 import re
 import subprocess
+import sys
 import unittest
+import zlib
 from pathlib import Path
+
+TESTS_DIR = Path(__file__).resolve().parent
+if str(TESTS_DIR) not in sys.path:
+    sys.path.insert(0, str(TESTS_DIR))
+
+from test_site_contract import PRIVATE_MARKERS  # noqa: E402
 
 
 UTM_CHECKOUT_RE = (
@@ -345,10 +353,124 @@ console.log(JSON.stringify({{ vazio, soSegura, fragil, negativo, bloqueou }}));
     def test_pagina_da_carteira_aponta_para_o_link_curto_e_nao_prescreve(self):
         html = (self.root / "produtos/carteira-aguenta/index.html").read_text(encoding="utf-8")
         self.assertNotIn("buy.stripe.com", html)
+        ctas = re.findall(r'<a[^>]*class="sp-cta"[^>]*>', html)
+        self.assertEqual(3, len(ctas))
         for content in ("topo", "oferta", "barra-celular"):
             self.assertIn("https://relatorio.dlt.academy/comprar/carteira-aguenta?utm_source=portal&amp;utm_medium=pagina-de-vendas&amp;utm_content=" + content, html)
         self.assertIn("data-calc-queda", html)
         self.assertIn("CVV", html)
+        self.assertIn("não diz o que", html)
+        self.assertIn("descreve a exposição real da carteira", html)
+        self.assertIn("simula cenários de queda e estresse", html)
+
+    def test_ctas_da_calculadora_herdam_utm_e_mantem_contrato(self):
+        produtos_js = str(self.root / "produtos/produtos.js")
+        for slug in ("decisao-fria", "carteira-aguenta"):
+            html = (self.root / f"produtos/{slug}/index.html").read_text(encoding="utf-8")
+            with self.subTest(produto=slug):
+                calc_ctas = re.findall(r'<a[^>]*class="sp-calc-cta"[^>]*>', html)
+                self.assertEqual(1, len(calc_ctas))
+                tag = calc_ctas[0]
+                href_match = re.search(r'href="([^"]+)"', tag)
+                self.assertIsNotNone(href_match)
+                raw_href = href_match.group(1).replace("&amp;", "&")
+                self.assertRegex(raw_href, UTM_CHECKOUT_RE)
+                self.assertTrue(raw_href.startswith(f"https://relatorio.dlt.academy/comprar/{slug}"))
+                self.assertIn('rel="noopener noreferrer"', tag)
+                self.assertIn('referrerpolicy="no-referrer"', tag)
+                self.assertIn("data-saida hidden", html)
+                saida_match = re.search(r'<div[^>]*data-saida hidden[^>]*>(.*?)</div>\s*</div>', html, re.S)
+                self.assertIsNotNone(saida_match)
+                self.assertIn('class="sp-calc-cta"', saida_match.group(1))
+
+                script = f"""
+const fs = require("node:fs");
+const codigo = fs.readFileSync({json.dumps(produtos_js)}, "utf8");
+const link = {{
+  href: {json.dumps(raw_href)},
+  getAttribute() {{ return this.href; }},
+  setAttribute(k, v) {{ this[k] = v; }}
+}};
+global.window = {{ location: {{ search: "?utm_source=yt&utm_medium=video&utm_campaign={slug}&utm_content=hook1" }} }};
+global.requestAnimationFrame = (fn) => fn();
+global.document = {{
+  body: {{ onbeforematch: null }},
+  getElementById: () => null,
+  querySelector: () => null,
+  querySelectorAll(sel) {{ return sel.startsWith('a[href^="https://relatorio.dlt.academy/comprar/"]') ? [link] : []; }},
+}};
+eval(codigo);
+console.log(link.href);
+"""
+                proc = subprocess.run(["node", "-e", script], capture_output=True, text=True, check=True)
+                self.assertEqual(
+                    f"https://relatorio.dlt.academy/comprar/{slug}?utm_source=yt&utm_medium=video&utm_campaign={slug}&utm_content=hook1&utm_term=calculadora",
+                    proc.stdout.strip(),
+                )
+
+    def test_exemplos_pdf_existem_limpos_e_links_sao_seguros(self):
+        specs = (
+            ("decisao-fria", "exemplo-relatorio-decisao-fria.pdf", 7),
+            ("carteira-aguenta", "exemplo-relatorio-carteira-aguenta.pdf", 6),
+        )
+        for slug, filename, expected_pages in specs:
+            pdf_path = self.root / "produtos" / slug / filename
+            html = (self.root / f"produtos/{slug}/index.html").read_text(encoding="utf-8")
+            with self.subTest(produto=slug):
+                self.assertTrue(pdf_path.is_file(), f"PDF ausente: {pdf_path}")
+                raw = pdf_path.read_bytes()
+                self.assertTrue(raw.startswith(b"%PDF-"))
+                self.assertIn(b"%%EOF", raw[-64:])
+                self.assertIn(b"/Producer (jsPDF", raw)
+                pages = len(re.findall(rb"/Type\s*/Page\b(?!s)", raw))
+                self.assertEqual(expected_pages, pages)
+                chunks = [raw]
+                for m in re.finditer(rb"stream\r?\n(.*?)\r?\nendstream", raw, re.S):
+                    try:
+                        chunks.append(zlib.decompress(m.group(1)))
+                    except zlib.error:
+                        pass
+                decoded = b"\n".join(chunks).decode("latin1", errors="ignore").lower()
+                for marker in PRIVATE_MARKERS:
+                    self.assertNotIn(marker.lower(), decoded, f"marcador proibido no PDF: {marker}")
+
+                links = re.findall(r'<a[^>]*class="sp-pdf-exemplo"[^>]*>', html)
+                self.assertEqual(1, len(links))
+                tag = links[0]
+                self.assertIn(f'href="/produtos/{slug}/{filename}"', tag)
+                self.assertIn('target="_blank"', tag)
+                self.assertIn('rel="noopener noreferrer"', tag)
+                self.assertIn('referrerpolicy="no-referrer"', tag)
+
+    def test_pix_biografia_entregas_e_datas_alinhadas(self):
+        for rel in (
+            "index.html",
+            "termos/index.html",
+            "privacidade/index.html",
+            "js/paid-reports.js",
+            "produtos/decisao-fria/index.html",
+            "produtos/carteira-aguenta/index.html",
+        ):
+            with self.subTest(arquivo=rel):
+                text = (self.root / rel).read_text(encoding="utf-8")
+                self.assertIn("Pix", text)
+                self.assertIn("Stripe", text)
+                if rel.endswith(".html"):
+                    self.assertIn('"dateModified": "2026-11-19"', text)
+        for legal in ("termos/index.html", "privacidade/index.html"):
+            text = (self.root / legal).read_text(encoding="utf-8")
+            self.assertIn('<time datetime="2026-11-19">19 de novembro de 2026</time>', text)
+        for slug in ("decisao-fria", "carteira-aguenta"):
+            html = (self.root / f"produtos/{slug}/index.html").read_text(encoding="utf-8")
+            with self.subTest(sales_page=slug):
+                self.assertIn("<strong>Tiago · Fundador da DLT Academy</strong>", html)
+                bio_links = re.findall(r'<a[^>]*href="https://tiago\.dlt\.academy/"[^>]*>', html)
+                self.assertEqual(1, len(bio_links))
+                self.assertIn('target="_blank"', bio_links[0])
+                self.assertIn('rel="noopener noreferrer"', bio_links[0])
+                self.assertIn('referrerpolicy="no-referrer"', bio_links[0])
+                self.assertIn("simulador interativo", html.lower())
+                self.assertIn(".ics", html)
 
     def test_pagina_de_vendas_nao_fica_orfa_no_portal(self):
         self.assertIn('paginaUrl: "/produtos/decisao-fria/"', self.catalog)
