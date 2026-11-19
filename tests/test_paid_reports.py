@@ -107,6 +107,45 @@ console.log(JSON.stringify({
             json.loads(proc.stdout),
         )
 
+    def test_botoes_de_compra_herdam_utm_da_visita(self):
+        produtos_js = str(self.root / "produtos/produtos.js")
+        script = f"""
+const fs = require("node:fs");
+const codigo = fs.readFileSync({json.dumps(produtos_js)}, "utf8");
+const PORTAL = "https://relatorio.dlt.academy/comprar/decisao-fria?utm_source=portal&utm_medium=pagina-de-vendas&utm_content=topo";
+function rodar(search, href = PORTAL) {{
+  const link = {{ href, getAttribute() {{ return this.href; }}, setAttribute(k, v) {{ this[k] = v; }} }};
+  global.window = {{ location: {{ search }} }};
+  global.requestAnimationFrame = (fn) => fn();
+  global.document = {{
+    body: {{ onbeforematch: null }},
+    getElementById: () => null,
+    querySelector: () => null,
+    querySelectorAll(sel) {{ return sel.startsWith('a[href^="https://relatorio.dlt.academy/comprar/"]') ? [link] : []; }},
+  }};
+  eval(codigo);
+  return link.href;
+}}
+console.log(JSON.stringify({{
+  doVideo: rodar("?utm_source=video&utm_medium=short&utm_campaign=decisao-fria&utm_content=v1-obvia&foo=bar"),
+  semUtm: rodar("?foo=bar"),
+  vazio: rodar(""),
+  controle: rodar("?utm_source=a%00b"),
+  longo: rodar("?utm_source=" + "x".repeat(201)),
+  outroHost: rodar("?utm_source=video", "https://evil.example/comprar/x?utm_source=portal"),
+}}));
+"""
+        proc = subprocess.run(["node", "-e", script], capture_output=True, text=True, check=True)
+        out = json.loads(proc.stdout)
+        self.assertEqual(
+            "https://relatorio.dlt.academy/comprar/decisao-fria?utm_source=video&utm_medium=short&utm_campaign=decisao-fria&utm_content=v1-obvia&utm_term=topo",
+            out["doVideo"],
+        )
+        portal = "https://relatorio.dlt.academy/comprar/decisao-fria?utm_source=portal&utm_medium=pagina-de-vendas&utm_content=topo"
+        for caso in ("semUtm", "vazio", "controle", "longo"):
+            self.assertEqual(portal, out[caso], caso)
+        self.assertEqual("https://evil.example/comprar/x?utm_source=portal", out["outroHost"])
+
     def test_calculadora_da_pagina_de_vendas_ignora_vazio_e_bloqueia_submit(self):
         produtos_js = str(self.root / "produtos/produtos.js")
         script = f"""
