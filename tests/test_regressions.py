@@ -17,7 +17,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from security_check import parse_csp  # noqa: E402
+from security_check import REQUIRED_CSP, SALES_PAGE_CSP, parse_csp  # noqa: E402
 
 SKIP_DIRS = {".git", "node_modules", "tests", "_site", "scripts"}
 SERVED_SUFFIXES = {".html", ".css", ".js", ".xml", ".txt", ".webmanifest"}
@@ -97,14 +97,17 @@ class PrivacyAndPublishingGuards(unittest.TestCase):
                     self.assertNotIn(host, text)
 
     def test_every_page_csp_allows_only_the_site_itself(self) -> None:
-        # A CSP aceitou gc.zgo.at, *.goatcounter.com e Google Fonts sem que o portal usasse nenhum deles.
+        # Apenas as páginas de oferta em produtos/*/index.html liberam os hosts
+        # exatos do Meta Pixel; todo o resto do portal fica restrito a 'self'.
         for path in html_pages():
+            rel = path.relative_to(ROOT)
+            expected = SALES_PAGE_CSP if (len(rel.parts) == 3 and rel.parts[0] == "produtos" and rel.parts[2] == "index.html") else REQUIRED_CSP
             match = re.search(r'http-equiv="Content-Security-Policy"\s+content="([^"]+)"', path.read_text(encoding="utf-8"))
-            with self.subTest(page=path.relative_to(ROOT).as_posix()):
+            with self.subTest(page=rel.as_posix()):
                 self.assertIsNotNone(match, "página sem CSP")
                 csp = parse_csp(match.group(1))
                 for directive in ("script-src", "style-src", "font-src", "connect-src"):
-                    self.assertEqual("'self'", csp.get(directive), directive)
+                    self.assertEqual(expected[directive], csp.get(directive), directive)
 
     def test_deploy_publishes_only_the_built_site(self) -> None:
         # O deploy com path: . publicou AGENTS.md, README.md, os .py, tests/ e .claude/launch.json.

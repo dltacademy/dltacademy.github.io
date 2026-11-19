@@ -158,6 +158,32 @@ class RecursiveScanTests(unittest.TestCase):
         self.assertEqual(result.returncode, 1)
         self.assertIn("JavaScript executável inline", result.stdout)
 
+    def test_sales_page_csp_is_restricted_to_produtos(self) -> None:
+        sales_csp = (
+            "default-src 'self'; script-src 'self' https://connect.facebook.net; "
+            "style-src 'self'; font-src 'self'; "
+            "img-src 'self' data: blob: https://www.facebook.com; "
+            "connect-src 'self' https://www.facebook.com https://connect.facebook.net; "
+            "object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'self'"
+        )
+        sales_head = (
+            f'<meta http-equiv="Content-Security-Policy" content="{sales_csp}">'
+            '<meta name="referrer" content="no-referrer">'
+        )
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            ok_dir = root / "produtos" / "decisao-fria"
+            ok_dir.mkdir(parents=True)
+            (ok_dir / "index.html").write_text(page("<p>ok</p>", head=sales_head), encoding="utf-8")
+            self.assertEqual(self.run_checker(root).returncode, 0)
+
+            bad_dir = root / "protocolos" / "decisao-fria"
+            bad_dir.mkdir(parents=True)
+            (bad_dir / "index.html").write_text(page("<p>bad</p>", head=sales_head), encoding="utf-8")
+            res = self.run_checker(root)
+            self.assertEqual(res.returncode, 1)
+            self.assertIn("CSP incompleta ou com host de terceiro", res.stdout)
+
     def test_real_portal_passes(self) -> None:
         result = self.run_checker(REPO_ROOT)
         self.assertEqual(result.returncode, 0, msg=result.stdout)

@@ -146,6 +146,59 @@ console.log(JSON.stringify({{
             self.assertEqual(portal, out[caso], caso)
         self.assertEqual("https://evil.example/comprar/x?utm_source=portal", out["outroHost"])
 
+    def test_meta_pixel_inerte_sem_id_e_dispara_eventos_com_id(self):
+        pixel_js = str(self.root / "produtos/meta-pixel.js")
+        script = f"""
+const fs = require("node:fs");
+const codigo = fs.readFileSync({json.dumps(pixel_js)}, "utf8");
+function rodar(pixelId) {{
+  const scripts = [];
+  const cliques = [];
+  const link = {{ addEventListener(ev, fn) {{ if (ev === "click") cliques.push(fn); }} }};
+  const main = {{
+    getAttribute(k) {{
+      if (k === "data-meta-pixel") return pixelId;
+      if (k === "data-produto") return "decisao-fria";
+      if (k === "data-preco") return "47";
+      return null;
+    }},
+  }};
+  global.window = {{}};
+  global.document = {{
+    head: {{ appendChild(el) {{ scripts.push(el); }} }},
+    createElement(tag) {{ return {{ tag, async: false, src: "" }}; }},
+    getElementsByTagName() {{ return []; }},
+    querySelector(sel) {{ return sel === "main[data-produto]" ? main : null; }},
+    querySelectorAll(sel) {{ return sel.startsWith('a[href^="https://relatorio.dlt.academy/comprar/"]') ? [link] : []; }},
+  }};
+  eval(codigo);
+  cliques.forEach((fn) => fn());
+  return {{
+    scripts: scripts.map((s) => s.src),
+    eventos: window.fbq ? window.fbq.queue.map((a) => Array.from(a)) : [],
+  }};
+}}
+console.log(JSON.stringify({{
+  vazio: rodar(""),
+  invalido: rodar("abc123"),
+  valido: rodar("123456789012345"),
+}}));
+"""
+        proc = subprocess.run(["node", "-e", script], capture_output=True, text=True, check=True)
+        out = json.loads(proc.stdout)
+        self.assertEqual({"scripts": [], "eventos": []}, out["vazio"])
+        self.assertEqual({"scripts": [], "eventos": []}, out["invalido"])
+        self.assertEqual(["https://connect.facebook.net/en_US/fbevents.js"], out["valido"]["scripts"])
+        self.assertEqual(
+            [
+                ["init", "123456789012345"],
+                ["track", "PageView"],
+                ["track", "ViewContent", {"content_ids": ["decisao-fria"], "content_type": "product", "value": 47, "currency": "BRL"}],
+                ["track", "InitiateCheckout", {"content_ids": ["decisao-fria"], "content_type": "product", "value": 47, "currency": "BRL"}],
+            ],
+            out["valido"]["eventos"],
+        )
+
     def test_calculadora_da_pagina_de_vendas_ignora_vazio_e_bloqueia_submit(self):
         produtos_js = str(self.root / "produtos/produtos.js")
         script = f"""

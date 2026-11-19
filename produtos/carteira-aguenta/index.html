@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self'; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://connect.facebook.net; style-src 'self'; font-src 'self'; img-src 'self' data: blob: https://www.facebook.com; connect-src 'self' https://www.facebook.com https://connect.facebook.net; object-src 'none'; frame-src 'none'; worker-src 'none'; base-uri 'none'; form-action 'self'; upgrade-insecure-requests">
 <title>A Carteira Aguenta?: relatório da sua carteira + roteiro — DLT Academy</title>
 <meta name="description" content="O relatório da sua carteira inteira: o teste de queda calculado em código, o que cai junto, o que fica preso se uma plataforma travar, a distância até a liquidação e as suas regras com a conta. Descreve e simula, não diz o que comprar ou vender. R$ 47, 7 dias para desistir.">
 <link rel="canonical" href="https://dlt.academy/produtos/carteira-aguenta/">
@@ -50,7 +50,7 @@
 </head>
 <body>
 <header class="top"><div class="wrap header-row"><a class="brand" href="/"><img src="/assets/dlt-logo-light.png" alt="DLT Academy"></a><nav class="header-nav" aria-label="Navegação principal"><a class="nav-catalog" href="/ferramentas/">Ferramentas</a><a class="nav-catalog" href="/guias/">Guias</a><a href="/blog/">Blog</a><a href="/sobre/">Sobre</a></nav></div></header>
-<main class="sp" id="top">
+<main class="sp" id="top" data-produto="carteira-aguenta" data-preco="47">
 
   <section class="sp-hero" data-topo>
     <div>
@@ -381,5 +381,6 @@
 <footer><div class="wrap"><p>DLT Academy — Ferramentas e protocolos independentes de decisão financeira.</p><p><a href="/sobre/">Sobre a DLT Academy</a> · <a href="/transparencia/">Transparência</a> · <a href="/privacidade/">Privacidade</a> · <a href="/termos/">Termos</a></p><p class="footer-social"><a href="/comunidade/">Comunidade</a>: <a href="https://t.me/dltacademyc" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Canal no Telegram</a> · <a href="https://t.me/dltacademy" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Grupo</a> · <a href="https://www.youtube.com/c/DLTAcademy" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">YouTube</a></p><p>© 2026 DLT Academy</p></div></footer>
 <script src="/js/dlt-interactions.js"></script>
 <script src="/produtos/produtos.js"></script>
+<script src="/produtos/meta-pixel.js" defer></script>
 </body>
 </html>
