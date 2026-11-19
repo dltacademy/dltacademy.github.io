@@ -13,9 +13,10 @@ import sys
 # Política de segurança aplicada (T1A/T1B): zero JavaScript executável inline;
 # o único <script> sem src permitido é o data block type="application/ld+json"
 # com JSON estático válido.
-# 2026-10-07: script, estilo, fonte e conexão só do próprio site. O portal não
-# carrega analytics nem fontes de terceiros, então nenhum host externo entra.
-SECURITY_POLICY_VERSION = "2026-10-07"
+# 2026-11-19: no restante do portal, script, estilo, fonte e conexão vêm só do
+# próprio site. Apenas as páginas de oferta em produtos/*/index.html podem usar
+# a CSP explícita do Meta Pixel (sem unsafe-inline nem outros hosts).
+SECURITY_POLICY_VERSION = "2026-11-19"
 
 # Diretiva -> valor exato exigido. Valor exato, não "contém": um host de
 # terceiro somado a 'self' reprova.
@@ -30,6 +31,22 @@ REQUIRED_CSP = {
     "base-uri": "'none'",
     "form-action": "'self'",
 }
+
+# Exceção restrita às páginas de oferta (/produtos/<slug>/index.html) para o
+# Meta Pixel: hosts exatos da Meta, sem inline nem eval.
+SALES_PAGE_CSP = {
+    **REQUIRED_CSP,
+    "script-src": "'self' https://connect.facebook.net",
+    "img-src": "'self' data: blob: https://www.facebook.com",
+    "connect-src": "'self' https://www.facebook.com https://connect.facebook.net",
+}
+
+
+def _is_sales_page(path: Path, root: Path | None = None) -> bool:
+    parts = path.relative_to(root).parts if root is not None else path.parts
+    if root is not None:
+        return len(parts) == 3 and parts[0] == "produtos" and parts[2] == "index.html"
+    return len(parts) >= 3 and parts[-3] == "produtos" and parts[-1] == "index.html"
 
 
 def parse_csp(policy: str) -> dict[str, str]:
@@ -109,7 +126,11 @@ def _reject_non_finite(value: str) -> None:
     raise ValueError(f"constante não permitida ({value})")
 
 
-def check_html(path: Path) -> list[str]:
+def _csp_matches(directives: dict[str, str], expected: dict[str, str]) -> bool:
+    return all(directives.get(name) == value for name, value in expected.items())
+
+
+def check_html(path: Path, root: Path | None = None) -> list[str]:
     parser = SecurityHTMLParser(path)
     parser.feed(path.read_text(encoding="utf-8"))
     parser.close()
@@ -117,10 +138,15 @@ def check_html(path: Path) -> list[str]:
     errors = parser.errors
     if not parser.csp:
         errors.append(f"{path}: CSP ausente")
-    elif any(parse_csp(parser.csp).get(name) != value for name, value in REQUIRED_CSP.items()):
-        errors.append(f"{path}: CSP incompleta ou com host de terceiro")
-    elif "unsafe-inline" in parser.csp or "unsafe-eval" in parser.csp:
-        errors.append(f"{path}: CSP contém diretiva insegura")
+    else:
+        parsed = parse_csp(parser.csp)
+        allowed = _csp_matches(parsed, REQUIRED_CSP) or (
+            _is_sales_page(path, root) and _csp_matches(parsed, SALES_PAGE_CSP)
+        )
+        if not allowed:
+            errors.append(f"{path}: CSP incompleta ou com host de terceiro")
+        elif "unsafe-inline" in parser.csp or "unsafe-eval" in parser.csp:
+            errors.append(f"{path}: CSP contém diretiva insegura")
     if parser.referrer != "no-referrer":
         errors.append(f"{path}: meta referrer deve ser no-referrer")
     return errors
@@ -133,7 +159,7 @@ def main() -> int:
         # _site/ é cópia montada por scripts/montar_site.sh; a fonte é conferida aqui.
         if {"_site", ".git", "node_modules"} & set(path.relative_to(root).parts):
             continue
-        errors.extend(check_html(path))
+        errors.extend(check_html(path, root=root))
     for path in (root / ".github" / "workflows").glob("*.yml"):
         for line_no, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
             match = re.search(r"\buses:\s*[^@\s]+@([^\s#]+)", line)
