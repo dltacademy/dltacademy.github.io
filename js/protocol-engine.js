@@ -1942,10 +1942,10 @@ function wrapCardText(texto, largura, medir) {
 function layoutCartao(spec, largura, altura, medir) {
   const margem = Math.round(largura * 0.08);
   const larguraUtil = largura - margem * 2;
-  const topo = Math.round(altura * 0.42);
+  const topo = Math.round(altura * 0.37);
   const base = Math.round(altura * 0.86);
   const secoes = Array.isArray(spec.secoes) ? spec.secoes : [];
-  const maior = Math.round(largura * 0.034);
+  const maior = Math.round(largura * 0.04);
   const menor = Math.round(largura * 0.022);
 
   const montar = (tamanho) => {

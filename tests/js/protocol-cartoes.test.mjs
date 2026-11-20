@@ -22,8 +22,8 @@ test("layoutCartao: cada linha dentro da área, os títulos antes dos itens e o 
   assert.equal(linhas[0].texto, "Os seus sinais");
   linhas.forEach((l) => {
     assert.equal(l.x, 86);
-    assert.ok(l.y >= 1920 * 0.42 && l.y <= 1920 * 0.86, `y ${l.y}`);
-    assert.ok(l.tamanho >= 20 && l.tamanho <= 40);
+    assert.ok(l.y >= 1920 * 0.37 && l.y <= 1920 * 0.86, `y ${l.y}`);
+    assert.ok(l.tamanho >= 20 && l.tamanho <= 44);
   });
   assert.ok(linhas.filter((l) => l.tipo === "item")[0].texto.startsWith("• "), "vários itens, com marca");
   assert.ok(!linhas.find((l) => l.texto === "os 60 segundos").texto.startsWith("•"), "item único, sem marca");
@@ -39,7 +39,7 @@ test("layoutCartao: texto longo quebra em linhas que cabem, e muito texto diminu
   const muitos = { secoes: [{ titulo: "Muitos", itens: Array.from({ length: 60 }, (_, i) => "item número " + i + " com um texto razoável") }] };
   const cheio = motor.layoutCartao(muitos, 1080, 1920, medida);
   assert.ok(cheio.every((l) => l.y <= 1920 * 0.86), "nada passa da base");
-  assert.ok(Math.min(...cheio.map((l) => l.tamanho)) < 36, "a letra diminuiu");
+  assert.ok(Math.min(...cheio.map((l) => l.tamanho)) < 40, "a letra diminuiu");
   assert.deepEqual(motor.layoutCartao({ secoes: [] }, 1080, 1920, medida), []);
   assert.deepEqual(motor.layoutCartao({}, 1080, 1920, medida), []);
 });

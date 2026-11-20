@@ -412,6 +412,7 @@
   justify-content: center;
   align-items: center;
 }
+.protocol-scale-btn { white-space: nowrap; }
 .protocol-scale-btn:hover,
 .protocol-grade-btn:hover,
 .protocol-triad-btn:hover { border-color: #35508A; }
@@ -446,7 +447,8 @@
 .protocol-nav .btn:disabled { opacity: .55; cursor: not-allowed; }
 
 @media (max-width: 560px) {
-  .protocol-scale-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); }
+  .protocol-scale-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(52px, 1fr)); }
+  .protocol-scale-btn { padding: 8px 6px; }
   .protocol-grade-btn { flex: 1 1 120px; }
 }
 
@@ -511,6 +513,12 @@
 }
 .protocol-section-item-title { color: var(--text); font-size: 15px; font-weight: 650; }
 .protocol-section-item-text { color: var(--text-dim); }
+
+/* O fio e o plano de 90 dias, no resultado completo do Teto. */
+.protocol-section.is-fio .protocol-body { max-width: 64ch; line-height: 1.7; }
+.protocol-section.is-ajuste { padding-left: 16px; border-left: 3px solid var(--accent); }
+.protocol-section.is-plano90 .protocol-section-items { margin-top: 18px; }
+.protocol-card-png { min-height: 44px; }
 
 .protocol-registro .protocol-actions { margin: 16px 0 10px; }
 .protocol-registro-details { margin: 16px 0 0; }
