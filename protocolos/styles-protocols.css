@@ -449,3 +449,41 @@
   .protocol-scale-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); }
   .protocol-grade-btn { flex: 1 1 120px; }
 }
+
+/* ============================================================
+   Ciclo de volta: checkpoint, o que está guardado, retornos e recuperação.
+   ============================================================ */
+.protocol-cycle-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.protocol-cycle .protocol-record { margin-top: 18px; }
+.protocol-cycle-status,
+.protocol-save-status {
+  margin: 12px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+.protocol-cycle-status:empty,
+.protocol-save-status:empty { display: none; }
+
+/* Arquivo: o campo de verdade fica escondido sem sair do teclado; o rótulo é o botão. */
+.protocol-file { position: relative; display: inline-flex; align-items: center; margin: 14px 0 0; cursor: pointer; }
+.protocol-file-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.protocol-file:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+.protocol-recovery-code { display: grid; gap: 10px; margin: 16px 0 0; justify-items: start; }
+.protocol-recovery-code .protocol-write { width: 100%; }
+
+.protocol-checkpoint-actions { margin-top: 24px; }
+.protocol-checkpoint .protocol-back { margin-top: 12px; }
+
+@media (max-width: 560px) {
+  .protocol-cycle-actions .btn,
+  .protocol-recovery-code .btn,
+  .protocol-file { width: 100%; justify-content: center; text-align: center; }
+}

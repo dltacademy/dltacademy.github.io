@@ -682,7 +682,12 @@
         texto = "mais: " + nome(valor.mais) + "; menos: " + nome(valor.menos);
       } else texto = String(valor) + (step.type === "scale" && step.format ? step.format : "");
       if (texto === undefined || texto === "") return;
-      var pergunta = resolverValor(step.prompt, answers);
+      var pergunta;
+      try {
+        pergunta = resolverValor(step.prompt, answers);
+      } catch (erro) {
+        pergunta = step.id;
+      }
       var linha = { q: String(pergunta), value: String(texto) };
       if (step.followUp && step.followUp.id && answers[step.followUp.id] !== undefined && answers[step.followUp.id] !== "") {
         linha.value += " — " + answers[step.followUp.id] + (step.followUp.type === "scale" && step.followUp.format ? step.followUp.format : "");
