@@ -310,9 +310,20 @@ async function esperarProtocolo(espera, tentativas = 40) {
 export async function tocarCaso(letra, { ate, espera = 220 } = {}) {
   if (!CASOS[letra]) throw new Error("Caso desconhecido: " + letra);
   const protocolo = await esperarProtocolo(espera);
+  const mount = document.getElementById("protocol-mount");
+  const dorme = () => new Promise((resolve) => setTimeout(resolve, espera));
+  // Resultado na tela ou "você tem um Teto guardado": recomeça, em vez de responder no meio do caminho.
+  for (const texto of ["Refazer o protocolo", "Começar de novo"]) {
+    const recomecar = lista(mount.querySelectorAll("button")).find((b) => b.textContent.trim() === texto);
+    if (recomecar) {
+      recomecar.click();
+      await dorme();
+      break;
+    }
+  }
   const respostas = JSON.parse(JSON.stringify(Object.assign({}, CASOS[letra], ATO2[letra] || {})));
   return percorrer({
-    mount: document.getElementById("protocol-mount"),
+    mount,
     passos: protocolo.steps,
     kit: DLTProtocolKit,
     respostas,
