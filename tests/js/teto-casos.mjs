@@ -8,6 +8,15 @@
 //   await m.tocarCaso("A", { ate: "fim_ato1" });   // só o Ato 1, até o checkpoint
 //   await m.tocarCaso("A", { ate: "se_entao" });   // até uma tela do Ato 2, sem responder
 //
+// O ciclo de volta, no console (a página precisa estar aberta no protocolo):
+//
+//   await m.semearCiclo("A", { diasAtras: 7 });    // joga o caso, guarda no aparelho e recua o dia 0 em 7 dias
+//   location.hash = "#volta=dia7"; location.reload();
+//   const m2 = await import("/tests/js/teto-casos.mjs");
+//   await m2.tocarRetorno("dia7");                 // responde o retorno do marco (dia3, dia7, dia7_travou, dia30,
+//                                                  // semana, sinais, dia90)
+//   await m2.tocarRetorno("sinais", { respostas: { mesmo_teto: "nenhum" } });   // troca uma resposta
+//
 // Nos casos D, E e F o fluxo termina antes (cuidado ou "nenhum"). Não é teste: o nome não
 // termina em .test.mjs.
 
@@ -273,12 +282,21 @@ async function responderPasso({ mount, passo, respostas, kit, esperar }) {
 }
 
 // Responde os passos do fluxo, na ordem em que a página os mostra, até o checkpoint (a menos que
-// `seguir`), o passo `ate` (sem responder) ou o fim. Com `seguir`, toca em "Continuar agora" no
+// `seguir`), o passo `ate` (sem responder) ou o fim; com `desde`, começa a responder nesse passo. Com `seguir`, toca em "Continuar agora" no
 // checkpoint e segue para o Ato 2. Devolve o id em que parou (null: o fim do fluxo).
-export async function percorrer({ mount, passos, kit, respostas, ate, seguir = false, esperar }) {
+export async function percorrer({ mount, passos, kit, respostas, ate, desde, seguir = false, esperar }) {
   let i = kit.proximoIndice(passos, -1, respostas);
+  // `desde`: a página já está nesse passo (retomada); os anteriores seguem só no cálculo do caminho.
+  let respondendo = !desde;
   while (i < passos.length) {
     const passo = passos[i];
+    if (!respondendo) {
+      if (passo.id !== desde) {
+        i = kit.proximoIndice(passos, i, respostas);
+        continue;
+      }
+      respondendo = true;
+    }
     if (passo.id === ate) return passo.id;
     if (passo.type === "checkpoint") {
       if (!seguir) return passo.id;
@@ -331,4 +349,96 @@ export async function tocarCaso(letra, { ate, espera = 220 } = {}) {
     seguir: ate !== "fim_ato1",
     esperar: () => new Promise((resolve) => setTimeout(resolve, espera)),
   });
+}
+
+
+// ---- o ciclo de volta -----------------------------------------------------------------------------
+
+const SEGURO = { chao: { contas: "fecham", divida: "nao", risco: "nao" }, humor: { interesse: 0, animo: 1 }, sinais_risco: ["nenhum"] };
+
+// A volta curta do caso A (o mesmo teto, a previsão errou), usada em `sinais` e em `dia90`.
+const VOLTA_A = {
+  ...SEGURO,
+  fatos: { olhou: 3, preco_cheio: 2, extra: "na", pedido_amanha: "na", sobrou: 2 },
+  mesmo_teto: "sim",
+  frases_agora: { evitar_1: 1, evitar_3: 2 },
+  refazer: "nao",
+  cena: "Em outubro, o cliente pediu um desconto e eu cedi antes de ele terminar a frase.",
+  terreno: ["cansaco"],
+  sinais: ["aperto_peito"],
+  frase: "ele vai achar caro",
+  ponto_escolha: "cedi o desconto na mesma hora",
+  alivio: "medo_nao",
+  custo_depois: "perdi parte da margem outra vez",
+  para_que: "ser_testado",
+  excecao: "cobrei cheio de quem me indicou",
+  previsao_acertou: "errou",
+  crenca_agora: 40,
+  regra_decisao: "manter",
+  travou: "nao",
+  desconforto: "sim",
+  experimento: "preco_em_voz_alta",
+  confianca: 8,
+  proximas_24h: "amanhã às 9h mando o valor cheio",
+};
+
+// As respostas de cada retorno do caso A. `dia7_travou` é o dia 7 com o protocolo do deslize.
+export const RETORNOS = {
+  dia3: { fez: "sim", aconteceu: "falei o preço em voz alta e ele não sumiu", crenca: 40 },
+  dia7: { travou: "nao", acertou: "errou", crenca: 30, passo: "sobe" },
+  dia7_travou: {
+    travou: "sim", deslize_fato: "mandei com desconto na terça", deslize_gentileza: "foi uma semana pesada e você fez o que deu",
+    deslize_bem: "percebi o aperto antes de responder", deslize_metade: "escrever o preço, sem mandar", acertou: "em_parte", crenca: 50, passo: "desce",
+  },
+  dia30: { travou: "nao", fatos: { olhou: 3, preco_cheio: 2, extra: "na", pedido_amanha: "na", sobrou: 2 }, vazamento: "nao" },
+  semana: { sinal: "sim", cedo: "sim", se_entao: "em_parte", previu: "achei que ele sumiria, e ele respondeu" },
+  sinais: { motivo: "venceu", ...VOLTA_A },
+  dia90: { ...VOLTA_A, fatos_retro: { olhou: 0, preco_cheio: 0, extra: "na", pedido_amanha: "na", sobrou: 1 } },
+};
+
+const CHAVE_ESTADO = "dlt-protocol-state:protocolo-teto-financeiro";
+
+// Joga o caso até o resultado, guarda no aparelho e recua o dia 0 `diasAtras` dias, para os marcos
+// já estarem no dia. Depois, abra o link do marco (location.hash = "#volta=dia7") e recarregue.
+export async function semearCiclo(letra, { diasAtras = 0, espera = 220 } = {}) {
+  await tocarCaso(letra, { espera });
+  const mount = document.getElementById("protocol-mount");
+  const guardar = lista(mount.querySelectorAll("button")).find((b) => b.textContent.trim() === "Guardar neste aparelho para os retornos");
+  if (!guardar) throw new Error("O caso " + letra + " não termina num resultado que se guarda (cuidado ou \"nenhum\").");
+  guardar.click();
+  await new Promise((resolve) => setTimeout(resolve, espera));
+  const kit = DLTProtocolKit;
+  const estado = JSON.parse(window.localStorage.getItem(CHAVE_ESTADO));
+  if (diasAtras) {
+    const dia0 = kit.somarDias(estado.volta.dia0, -diasAtras);
+    estado.volta.dia0 = dia0;
+    estado.criado = dia0;
+    estado.volta.registro.data = dia0;
+    estado.volta.registro.datas = kit.datasDoCiclo(dia0, [7, 30, 60, 90]);
+    window.localStorage.setItem(CHAVE_ESTADO, JSON.stringify(estado));
+  }
+  return { dia0: estado.volta.dia0, volta: estado.volta.n };
+}
+
+// Responde o retorno `marco` na página aberta no link dele (com o estado guardado): toca em
+// "Começar" (ou "Adiantar agora") e responde os passos. `respostas` troca respostas do atalho.
+export async function tocarRetorno(nome, { respostas: troca = {}, espera = 220 } = {}) {
+  const marco = nome === "dia7_travou" ? "dia7" : nome;
+  if (!RETORNOS[nome]) throw new Error("Retorno desconhecido: " + nome);
+  const protocolo = await esperarProtocolo(espera);
+  const retorno = protocolo.retornos && protocolo.retornos[marco];
+  if (!retorno) throw new Error("Marco sem retorno: " + marco);
+  const mount = document.getElementById("protocol-mount");
+  const dorme = () => new Promise((resolve) => setTimeout(resolve, espera));
+  const botao = (t) => lista(mount.querySelectorAll("button")).find((b) => b.textContent.trim() === t);
+  const iniciar = ["Começar", "Adiantar agora", "Refazer este retorno"].map(botao).find(Boolean);
+  if (!iniciar) throw new Error("Abra a página no link do marco (#volta=" + marco + ") com o Teto guardado: não achei o botão de começar.");
+  iniciar.click();
+  await dorme();
+  const bruto = window.localStorage.getItem(CHAVE_ESTADO);
+  if (!bruto) throw new Error("Não há Teto guardado neste navegador.");
+  const estado = JSON.parse(bruto);
+  const contexto = { respostas: estado.respostas, volta: estado.volta, historico: estado.historico, criado: estado.criado, ciclo: estado.ciclo, marco };
+  const respostas = JSON.parse(JSON.stringify(Object.assign({ __estado: contexto }, RETORNOS[nome], troca)));
+  return percorrer({ mount, passos: retorno.steps, kit: DLTProtocolKit, respostas, esperar: dorme });
 }

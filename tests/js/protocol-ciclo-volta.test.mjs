@@ -288,3 +288,13 @@ test("restaurarProgresso devolve só os derivados verdadeiros que o protocolo de
   assert.deepEqual(kit.restaurarProgresso(passos, estado, [], ["baixo", "cru", "ausente"]).respostas, { a: "x", baixo: true });
   assert.deepEqual(kit.restaurarProgresso(passos, estado, []).respostas, { a: "x" }, "sem a lista, nada volta");
 });
+
+test("a recuperação só oferece colar o código quando o retorno sabe usar só o registro", () => {
+  const comCodigo = abrir({ hash: "#volta=dia3" });
+  assert.ok(comCodigo.p.textarea(), "o retorno que declara codigo");
+  const semCodigo = abrir({ hash: "#volta=semana" });
+  assert.equal(semCodigo.p.textarea(), null, "o retorno que não declara");
+  assert.ok(semCodigo.p.porClasse("protocol-file-input").length > 0, "o arquivo continua sendo oferecido");
+  const geral = abrir({ local: { [CHAVE]: "{ não é json" } });
+  assert.ok(geral.p.textarea(), "a recuperação sem marco oferece o código");
+});
