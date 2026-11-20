@@ -523,3 +523,21 @@
   line-height: 1.45;
   overflow-wrap: anywhere;
 }
+
+/* ============================================================
+   Aviso calmo (navegador de aplicativo) e abertura em mais de um parágrafo.
+   ============================================================ */
+.protocol-notice {
+  margin: 18px 0;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-left: 3px solid #E5BC58;
+  border-radius: var(--radius);
+  background: rgba(229, 188, 88, .07);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.55;
+}
+.protocol-notice[hidden] { display: none; }
+.protocol-intro > p { margin: 0; }
+.protocol-intro > p + p { margin-top: 10px; }
