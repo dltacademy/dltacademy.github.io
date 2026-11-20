@@ -1417,7 +1417,13 @@
             "value": "outro",
             "label": "Outro (escrever)"
           }
-        ]
+        ],
+        "ajuda": "Só o clima em geral. Não precisa lembrar de nenhuma cena difícil, e o resto pode ficar em branco.",
+        "complemento": {
+          "prompt": "Se quiser, diga em uma frase como era (opcional).",
+          "placeholder": "Ex.: dinheiro era assunto de adulto, ninguém explicava.",
+          "max": 200
+        }
       },
       "terreno": {
         "prompt": "Como o seu dia já vinha antes?",
@@ -1447,13 +1453,20 @@
             "value": "nada",
             "label": "Nada disso"
           }
-        ]
+        ],
+        "ajuda": "Pode marcar mais de um."
       },
       "sinais": {
         "prompt": "O que você notou primeiro, no corpo ou na cabeça?",
         "outro": {
           "value": "outro",
           "label": "Outro (escrever)"
+        },
+        "ajuda": "Marque o que veio primeiro. Se foi outra coisa, escreva abaixo.",
+        "complemento": {
+          "prompt": "Se marcou “Outro (escrever)”, diga qual foi, com as suas palavras.",
+          "placeholder": "Ex.: calor no rosto.",
+          "max": 200
         }
       },
       "alivio": {
@@ -1487,7 +1500,13 @@
             "value": "nada",
             "label": "Nada que eu perceba"
           }
-        ]
+        ],
+        "ajuda": "Escolha o que mais se aproxima.",
+        "complemento": {
+          "prompt": "Quer dizer em poucas palavras? (opcional)",
+          "placeholder": "Ex.: o aperto passou na hora.",
+          "max": 200
+        }
       },
       "para_que": {
         "prompt": "Se naquela vez tivesse dado certo até o fim, o que você teria que enfrentar?",
@@ -1516,7 +1535,13 @@
             "value": "nao_sei",
             "label": "Não sei"
           }
-        ]
+        ],
+        "ajuda": "Escolha o que mais se aproxima.",
+        "complemento": {
+          "prompt": "Quer dizer com as suas palavras? (opcional)",
+          "placeholder": "Ex.: ter que sustentar um preço mais alto.",
+          "max": 200
+        }
       },
       "desconforto": {
         "prompt": "O próximo passo vai trazer de volta o que esse movimento tirava de você. Topa levar isso junto por 7 dias?",
@@ -1533,7 +1558,8 @@
             "value": "nao",
             "label": "Agora não (começa um degrau abaixo)"
           }
-        ]
+        ],
+        "modelo_alivio": "O próximo passo vai trazer de volta o que esse movimento tirava de você: {alivio}. Topa levar isso junto por 7 dias?"
       },
       "desgrudar": {
         "prompt": "Como soa agora?",
@@ -1550,7 +1576,9 @@
             "value": "mais_forte",
             "label": "Fica mais forte"
           }
-        ]
+        ],
+        "modelo": "Estou tendo o pensamento de que “{frase}”.",
+        "ajuda": "Dizer assim ajuda a ver o pensamento como um pensamento, e não como um fato."
       },
       "frases_grade": {
         "prompt": "Quanto esta frase soa verdadeira para você hoje?",
@@ -1582,10 +1610,130 @@
         "outro": {
           "value": "outro",
           "label": "Escrever o meu"
+        },
+        "prompt": "Qual será o seu primeiro experimento?",
+        "ajuda": "Ele vai testar a previsão da regra antiga: “{previsao}”.",
+        "ajuda_menor": "Pelo que você respondeu até aqui, o dia 3 começa com um passo menor, que não tem como falhar: {degrau0}. O experimento que você escolher agora fica para o dia 5.",
+        "complemento": {
+          "prompt": "O seu experimento, com as suas palavras (vale se você escolheu “Escrever o meu”).",
+          "placeholder": "Ex.: dizer o preço em voz alta antes da proposta.",
+          "max": 200
         }
       },
       "fatos": {
         "prompt": "Olhando só para os últimos 30 dias:"
+      },
+      "seguranca_escrita": "Se isto pesar, pare por aqui: o CVV atende pelo 188, a qualquer hora.",
+      "cena": {
+        "prompt": "Pense na última vez em que isso aconteceu. Quando foi, o que estava acontecendo e qual era o valor aproximado?",
+        "ajuda": "Só os fatos, em até 400 caracteres: o que você sentiu vem nas próximas telas. Se der, diga também o que estava indo bem ou perto de melhorar.",
+        "placeholder": "Ex.: em março, mandei o orçamento de R$ 8 mil para um cliente grande, no mesmo mês em que fechei um contrato bom.",
+        "max": 400
+      },
+      "frase": {
+        "prompt": "Que frase passou pela sua cabeça naquela hora?",
+        "ajuda": "A frase como veio, sem corrigir.",
+        "placeholder": "Ex.: vão achar caro.",
+        "max": 200
+      },
+      "ponto_escolha": {
+        "prompt": "Teve um instante em que dava para ir por outro caminho. O que você fez ali?",
+        "ajuda": "O que você fez, sem julgar: é nesse instante que o seu plano vai mirar.",
+        "placeholder": "Ex.: adiei e mandei com desconto.",
+        "max": 300
+      },
+      "custo_depois": {
+        "prompt": "E o que isso custou depois? Pode ser dinheiro, uma oportunidade ou como você se sentiu.",
+        "ajuda": "Pode ser pouco ou muito. O que importa é o que foi de verdade.",
+        "placeholder": "Ex.: perdi a margem do projeto e fiquei com raiva de mim.",
+        "max": 300
+      },
+      "excecao": {
+        "prompt": "Lembre de uma vez em que esse padrão apareceu e não venceu, nem que um pouco. O que foi diferente?",
+        "ajuda": "Se não lembrar de nenhuma, pode deixar em branco.",
+        "placeholder": "Ex.: cobrei o valor cheio de um cliente que me indicou.",
+        "max": 300
+      },
+      "regra_antiga": {
+        "prompt": "A frase daquela vez e esta, que você marcou como verdadeira, parecem a mesma regra? Escolha a que mais se parece com a sua regra antiga, ou escreva a sua.",
+        "ajuda": "A regra antiga é o que você aprendeu a fazer para se proteger. Ela fez sentido em algum momento.",
+        "outra": {
+          "value": "outra",
+          "label": "Escrever a minha"
+        },
+        "complemento": {
+          "prompt": "A regra com as suas palavras (vale se você escolheu “Escrever a minha”).",
+          "placeholder": "Ex.: se eu cobrar o preço cheio, ele some.",
+          "max": 200
+        }
+      },
+      "regra_origem": {
+        "prompt": "Se quiser: onde você aprendeu essa regra, e em que época ela fez sentido?",
+        "ajuda": "É opcional, e não precisa lembrar de nada difícil.",
+        "placeholder": "Ex.: com os meus pais, quando o dinheiro era curto.",
+        "max": 300
+      },
+      "previsao": {
+        "prompt": "Se você fizer o contrário do que essa regra manda, o que ela diz que vai acontecer?",
+        "ajuda": "Escreva a previsão da regra, mesmo que você já duvide dela.",
+        "placeholder": "Ex.: o cliente some.",
+        "max": 300,
+        "complemento": {
+          "prompt": "De 0 a 100%, quanto você acredita nessa previsão agora?",
+          "ends": {
+            "min": "Nada",
+            "max": "Totalmente"
+          }
+        }
+      },
+      "dia_um_ano": {
+        "prompt": "Imagine um dia comum daqui a um ano, em que esse teto já subiu. O que está diferente? Quem está com você?",
+        "ajuda": "Um dia comum, com detalhes pequenos.",
+        "placeholder": "Ex.: acordo sem a pressa do fim do mês e almoço com a minha filha.",
+        "max": 400
+      },
+      "importancia": {
+        "prompt": "De 0 a 10, quanto importa para você mudar isso agora?",
+        "ends": {
+          "min": "Nada",
+          "max": "Muito"
+        },
+        "complemento": {
+          "prompt": "Por que esse número, e não um menor? (opcional)",
+          "placeholder": "Ex.: porque eu quero parar de adiar o que importa.",
+          "max": 300
+        }
+      },
+      "regra_trabalho": {
+        "prompt": "Reescreva a regra antiga de um jeito que sirva a esse dia daqui a um ano.",
+        "ajuda": "Precisa ser algo que você topa testar por 7 dias, não algo em que você já acredite.",
+        "exemplo": "Se travar, um exemplo: “{exemplo}”.",
+        "placeholder": "Ex.: cobrar o justo é o que me deixa atender bem.",
+        "max": 160
+      },
+      "se_entao": {
+        "prompt": "Escreva o seu “se, então”: quando você notar o sinal, o que vai fazer?",
+        "ajuda": "Uma frase só, do jeito que soar natural, e uma meta só. O rascunho vem das suas respostas: reescreva como quiser.",
+        "exemplo": "Exemplo do padrão: “{exemplo}”.",
+        "max": 280
+      },
+      "confianca": {
+        "prompt": "De 0 a 10, quanto você confia que vai fazer esse experimento?",
+        "ends": {
+          "min": "Nada",
+          "max": "Totalmente"
+        },
+        "complemento": {
+          "prompt": "O que faria essa confiança subir 1 ponto? (opcional)",
+          "placeholder": "Ex.: combinar com alguém que vai perguntar como foi.",
+          "max": 300
+        }
+      },
+      "proximas_24h": {
+        "prompt": "Quais são os seus primeiros passos nas próximas 24 horas, e quando?",
+        "ajuda": "O primeiro passo e a hora em que ele acontece.",
+        "placeholder": "Ex.: amanhã, às 9h, escrevo o preço e mando a mensagem.",
+        "max": 300
       }
     },
     "retornos": {
@@ -1820,7 +1968,7 @@
         {
           "dia": 1,
           "rotulo": "Perceber",
-          "texto": "Conte o sinal e anote o terreno do dia. Use \"lá vem o {nome}\".",
+          "texto": "Conte o sinal e anote o terreno do dia. Use \"lá vem {nome}\".",
           "extra": {
             "familias": [
               "evitar",
@@ -1943,7 +2091,7 @@
         "passos": [
           {
             "id": "nomear",
-            "texto": "Nomeie: \"lá vem o {nome}\"."
+            "texto": "Nomeie: \"lá vem {nome}\"."
           },
           {
             "id": "respirar",
@@ -1974,20 +2122,86 @@
         "quando_voltar": "Quando o padrão vencer de novo, ou dois sinais aparecerem na mesma semana: refaça o protocolo, em versão curta."
       },
       "fio": {
-        "conectores": {
-          "cena": "Na última vez,",
-          "terreno": "O dia já vinha",
-          "sinal": "Veio",
-          "ponto": "No ponto de escolha, você",
-          "alivio": "Na hora, isso te tirou",
-          "custo": "Depois, custou",
-          "protegia": "Esse padrão te protegia de",
-          "clima": "Você cresceu num clima em que",
-          "regra": "e a regra soa verdadeira para você:",
-          "excecao": "Na vez em que ele não venceu,",
-          "previsao": "A regra antiga prevê:",
-          "trabalho": "A sua regra de trabalho diz:"
-        }
+        "blocos": [
+          {
+            "id": "como",
+            "titulo": "Como ele funciona em você",
+            "segmentos": [
+              "Na última vez, “{cena:sp}”.",
+              "O dia já vinha marcado por {terreno}.",
+              "Os primeiros sinais foram: {sinais}.",
+              "A frase que passou pela cabeça foi “{frase:sp}”.",
+              "No ponto de escolha, você fez isto: “{ponto:sp}”.",
+              "Na hora, isso te tirou {alivio}.",
+              "Nas suas palavras: “{alivio_texto:sp}”.",
+              "Depois, custou: “{custo:sp}”."
+            ],
+            "fechos": []
+          },
+          {
+            "id": "para_que",
+            "titulo": "Para que ele serve, e de onde veio",
+            "segmentos": [
+              "Esse padrão te protegia disto: {para_que}.",
+              "Nas suas palavras: “{para_que_texto:sp}”.",
+              "Faz sentido: você cresceu num clima em que o dinheiro {clima}.",
+              "Sobre o clima de casa, você escreveu: “{clima_texto:sp}”.",
+              "A regra “{regra:sp}” soa verdadeira para você."
+            ],
+            "fechos": [
+              {
+                "exige": [
+                  "regra"
+                ],
+                "texto": "Não é defeito: é uma solução antiga que hoje custa caro."
+              }
+            ]
+          },
+          {
+            "id": "funciona",
+            "titulo": "O que já funciona em você",
+            "segmentos": [
+              "Na vez em que ele não venceu, “{excecao:sp}”."
+            ],
+            "fechos": [
+              {
+                "exige": [
+                  "excecao"
+                ],
+                "texto": "O seu plano começa daí."
+              }
+            ]
+          },
+          {
+            "id": "aposta",
+            "titulo": "A sua aposta para a semana",
+            "segmentos": [
+              "A regra antiga prevê: “{previsao:sp}”.",
+              "Hoje, você acredita nisso em {crenca}%.",
+              "A sua regra de trabalho diz: “{regra_trabalho:sp}”."
+            ],
+            "fechos": [
+              {
+                "exige": [
+                  "previsao",
+                  "regra_trabalho"
+                ],
+                "texto": "Os experimentos dos dias 3 e 5 vão mostrar qual das duas acerta."
+              }
+            ]
+          },
+          {
+            "id": "motivos",
+            "titulo": "Por que mudar, nas suas palavras",
+            "segmentos": [
+              "Você deu {importancia}/10 para a importância de mudar isso agora.",
+              "Nas suas palavras, por quê: “{motivos:sp}”.",
+              "Um dia daqui a um ano: “{dia_um_ano:sp}”."
+            ],
+            "fechos": []
+          }
+        ],
+        "juncao": "e"
       },
       "nao_indica": {
         "titulo": "O que o seu resultado não indica",
@@ -2002,7 +2216,140 @@
         ]
       },
       "disclaimer": "Reflexão sobre hábitos com dinheiro. Não é diagnóstico, avaliação psicológica nem recomendação de investimento.",
-      "rascunho": true
+      "rascunho": true,
+      "se_entao": {
+        "segmentos": [
+          "Quando eu notar {sinal:sp,min},",
+          "no ponto em que antes eu {ponto:sp,min},",
+          "vou lembrar da vez em que {excecao:sp,min} e fazer o mesmo."
+        ],
+        "exige": [
+          "excecao"
+        ]
+      },
+      "resultado": {
+        "mapa": {
+          "eyebrow": "Fim do Ato 1 · o seu mapa",
+          "verdict": "Seu teto hoje: ",
+          "trilha": {
+            "ganho": "É um teto de ganho: o limite está em quanto você cobra, pede ou arrisca para ganhar.",
+            "retencao": "É um teto de retenção: o dinheiro chega, mas não fica, ou sai antes de cumprir o que você planejou."
+          },
+          "perto": "Os dois lados, ganho e retenção, pontuaram perto um do outro. Vale observar o outro também.",
+          "frases_marcadas": "As frases que você marcou:",
+          "sem_familia": "Nenhuma crença se destacou das outras: as suas respostas ficaram equilibradas.",
+          "familia": "A crença que mais pesa: ",
+          "vazamento_titulo": "O vazamento em observação",
+          "vazamento": "Você também marcou sinais de “{nome}”, do outro lado. Será que você destrava num lado e devolve no outro?",
+          "vazamento_nota": "Não é a meta de agora: fica em observação e é o alvo da próxima volta.",
+          "sessenta_regra": " Por enquanto, use esta: “{exemplo}”. Na parte 2 você escreve a sua.",
+          "trava_titulo": "A sua trava de hoje",
+          "trava_alvo": "O que você escreveu: ",
+          "sinais_empurrao": "O que costuma empurrar você: {empurrao}.",
+          "parte2": "Se quiser seguir agora, a parte 2 (cerca de 15 minutos) traz a escrita sobre a última vez, a sua regra de trabalho e o plano da semana. Dá para guardar e continuar depois.",
+          "seguranca": "Isto é uma reflexão sobre hábitos com dinheiro, e não substitui conversar com alguém. Se o peso for grande, o CVV atende pelo 188, a qualquer hora.",
+          "arquivo": "teto-financeiro-mapa"
+        },
+        "final": {
+          "eyebrow": "O seu Teto, completo",
+          "arquivo": "teto-financeiro",
+          "arquivo_ics": "teto-financeiro-retornos",
+          "titulo_teto": "Onde o seu teto pega",
+          "titulo_leitura": "A leitura do padrão",
+          "titulo_ajuste": "O ajuste do seu plano",
+          "titulo_plano7": "Seu plano de 7 dias",
+          "titulo_plano90": "O plano de 90 dias",
+          "ajuste": "Pelo que você respondeu ({motivos}), o seu plano começa um degrau abaixo: o dia 3 é um passo menor, que não tem como falhar, e o experimento que você escolheu fica para o dia 5.",
+          "ajuste_motivos": {
+            "confianca": "a confiança ficou abaixo de {minimo}",
+            "terreno": "o dia já vinha com estresse e mês apertado",
+            "desconforto": "você disse que agora não ao desconforto",
+            "humor": "as últimas semanas foram pesadas"
+          },
+          "ajuste_juncao": "e",
+          "raiox_clima": "O clima do dinheiro na casa em que você cresceu: {clima}.",
+          "raiox_clima_texto": "Você acrescentou: “{texto}”.",
+          "sessenta_regra": " A sua é: “{regra}”.",
+          "sessenta_se_entao": " O seu: “{se_entao}”.",
+          "sinais_dela": "Os seus sinais: {sinais}.",
+          "sinais_frase": "A frase que costuma vir: “{frase}”.",
+          "sinais_terreno": "O terreno em que ele aparece: {terreno}.",
+          "raiox_clima_so_texto": "O clima do dinheiro na casa em que você cresceu, nas suas palavras: “{texto}”."
+        },
+        "raiox": {
+          "titulo": "O Raio-X da sua relação com o dinheiro",
+          "areas": {
+            "ganhar": "Ganhar",
+            "guardar": "Guardar",
+            "decidir": "Decidir",
+            "dar": "Dar"
+          },
+          "faixas": [
+            "não apareceu nas suas respostas",
+            "apareceu de leve",
+            "apareceu",
+            "apareceu com força"
+          ],
+          "linha": "{area}: {faixa}"
+        },
+        "nenhum": {
+          "eyebrow": "O seu resultado",
+          "voltar": "Quando voltar aqui"
+        },
+        "cuidado": {
+          "eyebrow": "Primeiro, o cuidado",
+          "noventa": "O plano de 90 dias"
+        },
+        "registro": {
+          "titulo": "O registro do seu teto",
+          "teto": "O teto",
+          "trilha": "O tipo de teto",
+          "familia": "A crença que mais pesa",
+          "regra": "A sua regra de trabalho",
+          "data": "Feito em"
+        },
+        "app": {
+          "semana": {
+            "resumo": "Teto Financeiro: revisão semanal",
+            "descricao": "Dez minutos para olhar a semana: o sinal apareceu? Abra o link."
+          },
+          "continuar": {
+            "resumo": "Teto Financeiro: continuar de onde parou",
+            "descricao": "Retome o seu Teto. Se não houver nada guardado neste navegador, carregue o seu arquivo (.md). Se você já terminou, ignore este lembrete."
+          },
+          "retorno": {
+            "prefixo": "Teto Financeiro: ",
+            "abrir": "Abra o link para responder em 2 a 3 minutos."
+          },
+          "rotulo": "Baixar os lembretes (.ics)"
+        },
+        "cartoes": {
+          "sinais": {
+            "arquivo": "teto-financeiro-sinais.png",
+            "rotulo": "Baixar o cartão dos sinais (PNG)",
+            "eyebrow": "Teto Financeiro",
+            "gerais": "Os sinais do padrão",
+            "dela": "Os seus sinais",
+            "na_hora": "Na hora",
+            "voltar": "Quando voltar",
+            "rodape": [
+              "Guarde no celular.",
+              "dlt.academy/protocolos/teto-financeiro"
+            ]
+          },
+          "compartilhar": {
+            "arquivo": "teto-financeiro-cartao.png",
+            "rotulo": "Baixar o cartão para compartilhar (PNG)",
+            "eyebrow": "Teto Financeiro",
+            "frase": "O meu teto hoje:",
+            "pergunta": "O que segura o seu dinheiro?",
+            "rodape": [
+              "Descubra o seu, em uns 8 minutos.",
+              "dlt.academy/protocolos/teto-financeiro"
+            ]
+          }
+        }
+      }
     }
   };
 
