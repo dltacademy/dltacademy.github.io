@@ -697,6 +697,635 @@
     return saida;
   }
 
+  // ---- utilidades de texto -------------------------------------------------
+
+  // Tira a pontuação final, para o eco entre aspas não sair com ".”.".
+  function semPontoFinal(texto) {
+    return String(texto == null ? "" : texto).trim().replace(/[.!?…;,\s]+$/, "");
+  }
+
+  function primeiraMinuscula(texto) {
+    var t = String(texto == null ? "" : texto);
+    return t.charAt(0).toLowerCase() + t.slice(1);
+  }
+
+  // O texto cortado para caber em `maxBytes` em UTF-8, sem partir um caractere ao meio.
+  function cortarPorBytes(texto, maxBytes) {
+    var t = String(texto);
+    if (!(maxBytes > 0)) return "";
+    var total = 0;
+    var fim = 0;
+    var i = 0;
+    while (i < t.length) {
+      var ponto = t.codePointAt(i);
+      var unidades = ponto > 0xffff ? 2 : 1;
+      var b = ponto < 0x80 ? 1 : ponto < 0x800 ? 2 : ponto < 0x10000 ? 3 : 4;
+      if (total + b > maxBytes) break;
+      total += b;
+      i += unidades;
+      fim = i;
+    }
+    return t.slice(0, fim);
+  }
+
+  // O que a fonte padrão do PDF (WinAnsi) desenha, além de Latin-1.
+  var PDF_EXTRAS = "\u20ac\u201a\u0192\u201e\u2026\u2020\u2021\u02c6\u2030\u0160\u2039\u0152\u017d\u2018\u2019\u201c\u201d\u2022\u2013\u2014\u02dc\u2122\u0161\u203a\u0153\u017e\u0178";
+  var PDF_TROCAS = {
+    "\u2192": "->", "\u2190": "<-", "\u2194": "<->", "\u21d2": "=>", "\u2713": "v", "\u2714": "v",
+    "\u2717": "x", "\u2718": "x", "\u2715": "x", "\u2265": ">=", "\u2264": "<=", "\u2260": "!=",
+    "\u2212": "-", "\u00d7": "x", "\u2010": "-", "\u2011": "-", "\u2012": "-", "\u2015": "-",
+    "\u00a0": " ", "\u2009": " ", "\u202f": " ", "\u2007": " ", "\u2002": " ", "\u2003": " ",
+  };
+
+  // O texto como o PDF consegue desenhar: emoji e símbolos que a fonte padrão não tem
+  // saem (ou viram o equivalente simples); o resto fora da fonte vira "?". O .md mantém o original.
+  function textoSeguroPdf(valor) {
+    var t = String(valor == null ? "" : valor).replace(/\r\n?/g, "\n");
+    if (typeof t.normalize === "function") t = t.normalize("NFC");
+    var saida = "";
+    for (var i = 0; i < t.length; i += 1) {
+      var ponto = t.codePointAt(i);
+      if (ponto > 0xffff) {
+        i += 1;
+        continue;
+      }
+      var c = t.charAt(i);
+      if (c === "\n") saida += c;
+      else if (c === "\t") saida += " ";
+      else if (ponto < 0x20 || ponto === 0x7f) continue;
+      else if (ponto < 0x7f || (ponto >= 0xa0 && ponto <= 0xff && ponto !== 0xa0 && ponto !== 0xad)) saida += c;
+      else if (PDF_EXTRAS.indexOf(c) !== -1) saida += c;
+      else if (Object.prototype.hasOwnProperty.call(PDF_TROCAS, c)) saida += PDF_TROCAS[c];
+      else if ((ponto >= 0x200b && ponto <= 0x200f) || ponto === 0x2060 || ponto === 0xfeff || ponto === 0xad ||
+               (ponto >= 0xfe00 && ponto <= 0xfe0f) || (ponto >= 0x0300 && ponto <= 0x036f) ||
+               (ponto >= 0x2190 && ponto <= 0x2bff) || (ponto >= 0x2600 && ponto <= 0x27bf) ||
+               (ponto >= 0xe000 && ponto <= 0xf8ff) || (ponto >= 0xd800 && ponto <= 0xdfff)) continue;
+      else saida += "?";
+    }
+    return saida;
+  }
+
+  // Frases com lacunas. Cada segmento é um texto com campos entre chaves ({frase},
+  // {frase:sp} sem ponto final, {frase:min} com a primeira letra minúscula, ou os dois
+  // com {frase:sp,min}). O segmento cujo campo está vazio sai inteiro: nunca sobra
+  // "undefined", aspas vazias ou frase pela metade. Segmento sem campo fica sempre.
+  function comporTexto(segmentos, valores) {
+    var dados = valores || {};
+    var partes = [];
+    (segmentos || []).forEach(function (segmento) {
+      var texto = typeof segmento === "string" ? segmento : segmento && typeof segmento.texto === "string" ? segmento.texto : "";
+      if (!texto) return;
+      var vazio = false;
+      var preenchido = texto.replace(/\{([A-Za-z0-9_]+)(?::([a-z,]+))?\}/g, function (inteiro, nome, modos) {
+        var bruto = Object.prototype.hasOwnProperty.call(dados, nome) ? dados[nome] : undefined;
+        var valor = typeof bruto === "string" ? bruto.trim() : typeof bruto === "number" && isFinite(bruto) ? String(bruto) : "";
+        (modos ? modos.split(",") : []).forEach(function (modo) {
+          if (modo === "sp") valor = semPontoFinal(valor);
+          else if (modo === "min") valor = primeiraMinuscula(valor);
+        });
+        if (valor === "") vazio = true;
+        return valor;
+      });
+      if (!vazio) partes.push(preenchido.trim());
+    });
+    return partes.filter(function (p) { return p !== ""; }).join(" ");
+  }
+
+  // ---- UTF-8 e base64url, sem depender do navegador ----------------------------
+
+  function bytesDoTexto(texto) {
+    var t = String(texto);
+    var saida = [];
+    for (var i = 0; i < t.length; i += 1) {
+      var ponto = t.codePointAt(i);
+      if (ponto > 0xffff) i += 1;
+      if (ponto >= 0xd800 && ponto <= 0xdfff) ponto = 0xfffd;
+      if (ponto < 0x80) saida.push(ponto);
+      else if (ponto < 0x800) saida.push(0xc0 | (ponto >> 6), 0x80 | (ponto & 63));
+      else if (ponto < 0x10000) saida.push(0xe0 | (ponto >> 12), 0x80 | ((ponto >> 6) & 63), 0x80 | (ponto & 63));
+      else saida.push(0xf0 | (ponto >> 18), 0x80 | ((ponto >> 12) & 63), 0x80 | ((ponto >> 6) & 63), 0x80 | (ponto & 63));
+    }
+    return saida;
+  }
+
+  // Decodifica UTF-8 estrito; devolve null para byte solto, sequência curta, forma
+  // longa demais, par substituto ou ponto acima de U+10FFFF.
+  function textoDosBytes(bytes) {
+    var saida = "";
+    var i = 0;
+    while (i < bytes.length) {
+      var b = bytes[i];
+      var ponto;
+      var extra;
+      var minimo;
+      if (b < 0x80) { ponto = b; extra = 0; minimo = 0; }
+      else if (b >= 0xc2 && b <= 0xdf) { ponto = b & 0x1f; extra = 1; minimo = 0x80; }
+      else if (b >= 0xe0 && b <= 0xef) { ponto = b & 0x0f; extra = 2; minimo = 0x800; }
+      else if (b >= 0xf0 && b <= 0xf4) { ponto = b & 0x07; extra = 3; minimo = 0x10000; }
+      else return null;
+      for (var k = 1; k <= extra; k += 1) {
+        var c = bytes[i + k];
+        if (c === undefined || (c & 0xc0) !== 0x80) return null;
+        ponto = (ponto << 6) | (c & 0x3f);
+      }
+      if (ponto < minimo || ponto > 0x10ffff || (ponto >= 0xd800 && ponto <= 0xdfff)) return null;
+      saida += String.fromCodePoint(ponto);
+      i += extra + 1;
+    }
+    return saida;
+  }
+
+  var B64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
+
+  function base64urlDeBytes(bytes) {
+    var saida = "";
+    for (var i = 0; i < bytes.length; i += 3) {
+      var a = bytes[i];
+      var b = i + 1 < bytes.length ? bytes[i + 1] : 0;
+      var c = i + 2 < bytes.length ? bytes[i + 2] : 0;
+      saida += B64.charAt(a >> 2) + B64.charAt(((a & 3) << 4) | (b >> 4));
+      if (i + 1 < bytes.length) saida += B64.charAt(((b & 15) << 2) | (c >> 6));
+      if (i + 2 < bytes.length) saida += B64.charAt(c & 63);
+    }
+    return saida;
+  }
+
+  // null se o texto não é base64url sem preenchimento.
+  function bytesDeBase64url(texto) {
+    if (!/^[A-Za-z0-9_-]*$/.test(texto) || texto.length % 4 === 1) return null;
+    var bytes = [];
+    for (var i = 0; i < texto.length; i += 4) {
+      var v = [0, 0, 0, 0];
+      var n = Math.min(4, texto.length - i);
+      for (var k = 0; k < n; k += 1) v[k] = B64.indexOf(texto.charAt(i + k));
+      bytes.push((v[0] << 2) | (v[1] >> 4));
+      if (n > 2) bytes.push(((v[1] & 15) << 4) | (v[2] >> 2));
+      if (n > 3) bytes.push(((v[2] & 3) << 6) | v[3]);
+    }
+    return bytes;
+  }
+
+  // ---- o registro em código ---------------------------------------------------------
+
+  // As folhas de texto do objeto, para poder cortá-las: { texto, bytes, dono, chave }.
+  function folhasDeTexto(valor, permitidas, saida) {
+    if (typeof valor === "string") return saida;
+    if (valor === null || typeof valor !== "object") return saida;
+    Object.keys(valor).forEach(function (chave) {
+      var v = valor[chave];
+      if (typeof v === "string") {
+        if (!permitidas || permitidas.indexOf(chave) !== -1) saida.push({ dono: valor, chave: chave, bytes: bytesUtf8(v) });
+      } else {
+        folhasDeTexto(v, permitidas, saida);
+      }
+    });
+    return saida;
+  }
+
+  // O objeto em JSON UTF-8 e base64url, com no máximo `maxCaracteres` (2048 por padrão).
+  // Se passar, corta os textos pelo limite em bytes (o mais longo primeiro, nivelando
+  // por baixo) até caber; `opcoes.cortar` limita o corte a essas chaves.
+  // { ok, codigo, objeto (o que foi codificado, já cortado), cortado } ou { ok: false, erro }.
+  function codificarRegistro(obj, maxCaracteres, opcoes) {
+    if (!ehObjetoSimples(obj)) return { ok: false, erro: "tipo" };
+    var max = Number.isInteger(maxCaracteres) && maxCaracteres > 0 ? maxCaracteres : LIMITE_CODIGO;
+    var trabalho;
+    try {
+      trabalho = copiaJson(obj);
+    } catch (erro) {
+      return { ok: false, erro: "tipo" };
+    }
+    var maxBytes = Math.floor(max / 4) * 3 + [0, 0, 1, 2][max % 4];
+    var permitidas = opcoes && Array.isArray(opcoes.cortar) ? opcoes.cortar : null;
+    var cortado = false;
+    for (var volta = 0; volta < 20000; volta += 1) {
+      var json = JSON.stringify(trabalho);
+      var total = bytesUtf8(json);
+      if (total <= maxBytes) {
+        return { ok: true, codigo: base64urlDeBytes(bytesDoTexto(json)), objeto: trabalho, cortado: cortado };
+      }
+      var folhas = folhasDeTexto(trabalho, permitidas, [])
+        .filter(function (f) { return f.bytes > 0; })
+        .sort(function (a, b) { return b.bytes - a.bytes; });
+      if (!folhas.length) return { ok: false, erro: "grande" };
+      var maior = folhas[0];
+      var segundo = folhas.length > 1 ? folhas[1].bytes : 0;
+      var tirar = Math.max(1, Math.min(total - maxBytes, maior.bytes - segundo));
+      maior.dono[maior.chave] = cortarPorBytes(maior.dono[maior.chave], maior.bytes - tirar);
+      cortado = true;
+    }
+    return { ok: false, erro: "grande" };
+  }
+
+  // O contrário, com leitura estrita: texto, no máximo `maxCaracteres` (2048), só
+  // [A-Za-z0-9_-], base64 que fecha, UTF-8 válido e um objeto JSON. Nenhuma chave de
+  // protótipo passa e os objetos saem sem protótipo.
+  // { ok, objeto } ou { ok: false, erro: "tipo" | "vazio" | "grande" | "caracteres" | "base64" | "utf8" | "json" }.
+  function decodificarRegistro(codigo, maxCaracteres) {
+    var max = Number.isInteger(maxCaracteres) && maxCaracteres > 0 ? maxCaracteres : LIMITE_CODIGO;
+    if (typeof codigo !== "string") return { ok: false, erro: "tipo" };
+    if (codigo.length === 0) return { ok: false, erro: "vazio" };
+    if (codigo.length > max) return { ok: false, erro: "grande" };
+    if (!/^[A-Za-z0-9_-]+$/.test(codigo)) return { ok: false, erro: "caracteres" };
+    var bytes = bytesDeBase64url(codigo);
+    if (bytes === null) return { ok: false, erro: "base64" };
+    var texto = textoDosBytes(bytes);
+    if (texto === null) return { ok: false, erro: "utf8" };
+    var bruto;
+    try {
+      bruto = JSON.parse(texto);
+    } catch (erro) {
+      return { ok: false, erro: "json" };
+    }
+    if (!ehObjetoSimples(bruto)) return { ok: false, erro: "json" };
+    var objeto = copiaSegura(bruto);
+    return objeto === undefined ? { ok: false, erro: "json" } : { ok: true, objeto: objeto };
+  }
+
+  // ---- esquema: o objeto está no formato? ------------------------------------------------
+
+  var MAX_ERROS = 50;
+
+  function contarCaracteres(texto) {
+    var n = 0;
+    for (var i = 0; i < texto.length; i += 1) {
+      var c = texto.charCodeAt(i);
+      if (c >= 0xd800 && c <= 0xdbff && i + 1 < texto.length) i += 1;
+      n += 1;
+    }
+    return n;
+  }
+
+  function ehObjetoPuro(v) {
+    if (v === null || typeof v !== "object" || Array.isArray(v)) return false;
+    var proto = Object.getPrototypeOf(v);
+    return proto === Object.prototype || proto === null;
+  }
+
+  function validarRegra(valor, regra, caminho, erros) {
+    var onde = caminho || "(raiz)";
+    var falha = function (mensagem) { if (erros.length < MAX_ERROS) erros.push(onde + ": " + mensagem); };
+    if (valor === null) {
+      if (!regra.nulo) falha("não pode ser nulo");
+      return;
+    }
+    switch (regra.tipo) {
+      case "texto": {
+        if (typeof valor !== "string") return falha("tem de ser texto");
+        if (regra.enum && regra.enum.indexOf(valor) === -1) return falha("valor fora da lista");
+        if (typeof regra.max === "number" && contarCaracteres(valor) > regra.max) return falha("passa de " + regra.max + " caracteres");
+        if (typeof regra.min === "number" && contarCaracteres(valor) < regra.min) return falha("tem menos de " + regra.min + " caracteres");
+        if (typeof regra.maxBytes === "number" && bytesUtf8(valor) > regra.maxBytes) return falha("passa de " + regra.maxBytes + " bytes");
+        if (regra.padrao && !new RegExp(regra.padrao).test(valor)) return falha("formato inválido");
+        return;
+      }
+      case "inteiro":
+      case "numero": {
+        if (typeof valor !== "number" || !isFinite(valor)) return falha("tem de ser número");
+        if (regra.tipo === "inteiro" && !Number.isInteger(valor)) return falha("tem de ser inteiro");
+        if (regra.enum && regra.enum.indexOf(valor) === -1) return falha("valor fora da lista");
+        if (typeof regra.min === "number" && valor < regra.min) return falha("abaixo do mínimo " + regra.min);
+        if (typeof regra.max === "number" && valor > regra.max) return falha("acima do máximo " + regra.max);
+        if (typeof regra.casas === "number" && Math.abs(valor * Math.pow(10, regra.casas) - Math.round(valor * Math.pow(10, regra.casas))) > 1e-9) {
+          return falha("mais de " + regra.casas + " casas decimais");
+        }
+        return;
+      }
+      case "booleano":
+        if (typeof valor !== "boolean") falha("tem de ser verdadeiro ou falso");
+        return;
+      case "data":
+        if (!dataValida(valor)) falha("não é uma data AAAA-MM-DD");
+        return;
+      case "lista": {
+        if (!Array.isArray(valor)) return falha("tem de ser lista");
+        if (typeof regra.max === "number" && valor.length > regra.max) return falha("mais de " + regra.max + " itens");
+        if (typeof regra.min === "number" && valor.length < regra.min) return falha("menos de " + regra.min + " itens");
+        if (regra.item) valor.forEach(function (item, i) { validarRegra(item, regra.item, onde + "[" + i + "]", erros); });
+        return;
+      }
+      case "objeto": {
+        if (!ehObjetoPuro(valor)) return falha("tem de ser objeto");
+        var campos = regra.campos || {};
+        Object.keys(valor).forEach(function (chave) {
+          if (!Object.prototype.hasOwnProperty.call(campos, chave)) falha("chave desconhecida \"" + chave + "\"");
+        });
+        Object.keys(campos).forEach(function (chave) {
+          var filho = campos[chave];
+          if (!Object.prototype.hasOwnProperty.call(valor, chave)) {
+            if (!filho.opcional) falha("falta \"" + chave + "\"");
+            return;
+          }
+          validarRegra(valor[chave], filho, caminho ? caminho + "." + chave : chave, erros);
+        });
+        return;
+      }
+      case "mapa": {
+        if (!ehObjetoPuro(valor)) return falha("tem de ser objeto");
+        var chaves = Object.keys(valor);
+        if (typeof regra.max === "number" && chaves.length > regra.max) return falha("mais de " + regra.max + " chaves");
+        chaves.forEach(function (chave) {
+          var permitida = regra.chaves ? regra.chaves.indexOf(chave) !== -1 : regra.padraoChave ? new RegExp(regra.padraoChave).test(chave) : false;
+          if (!permitida) falha("chave desconhecida \"" + chave + "\"");
+          else if (regra.valor) validarRegra(valor[chave], regra.valor, (caminho ? caminho + "." : "") + chave, erros);
+        });
+        if (regra.completo && regra.chaves) {
+          regra.chaves.forEach(function (chave) {
+            if (!Object.prototype.hasOwnProperty.call(valor, chave)) falha("falta \"" + chave + "\"");
+          });
+        }
+        return;
+      }
+      default:
+        falha("regra desconhecida");
+    }
+  }
+
+  // Confere `obj` contra o descritor (uma regra, normalmente do tipo "objeto"). Tipos de
+  // regra: texto (enum, min, max, maxBytes, padrao), inteiro e numero (min, max, enum,
+  // casas), booleano, data, lista (item, min, max), objeto (campos; chave de fora é erro;
+  // `opcional: true` deixa faltar) e mapa (chaves ou padraoChave, valor, max, completo).
+  // `nulo: true` aceita null. { ok, erros: [texto] }.
+  function validarEsquema(obj, descritor) {
+    var erros = [];
+    if (!descritor || typeof descritor !== "object") return { ok: false, erros: ["descritor inválido"] };
+    validarRegra(obj, descritor, "", erros);
+    return { ok: erros.length === 0, erros: erros };
+  }
+
+  // ---- o .md em blocos marcados ---------------------------------------------------------
+
+  var RE_ID_BLOCO = /^[a-z0-9_.-]{1,64}$/;
+  var LIMITE_MD = 256 * 1024;
+  var LIMITE_CAMPO = 5000;
+  var LIMITE_JSON_BLOCO = 64 * 1024;
+
+  function idDeBlocoValido(id) {
+    return typeof id === "string" && RE_ID_BLOCO.test(id) && CHAVES_PERIGOSAS.indexOf(id) === -1;
+  }
+
+  // No texto dela, o que fecharia ou abriria um comentário de máquina perde a forma.
+  function neutralizar(texto) {
+    var t = String(texto == null ? "" : texto).replace(/\r\n?/g, "\n");
+    while (/<!--|-->/.test(t)) t = t.replace(/<!--/g, "< !--").replace(/-->/g, "-- >");
+    return t;
+  }
+
+  function umaLinha(texto) {
+    return neutralizar(texto).replace(/\n+/g, " ").trim();
+  }
+
+  function valorDeMaquina(valor) {
+    var t = Array.isArray(valor) ? valor.join(",") : valor == null ? "" : String(valor);
+    return t.replace(/[^a-z0-9_,.-]/g, "");
+  }
+
+  // Cada bloco: { id, v, titulo, leitura, campos: [{ id, rotulo, valor, texto }], linhas, json, codigo }.
+  // Campos levam o texto dela (neutralizado) depois do rótulo em negrito; `valor` é o
+  // valor de máquina ([a-z0-9_,.-]); `linhas` é texto só de leitura humana; `json` vai
+  // em bloco cercado (com < e > escapados) e `codigo` numa linha própria.
+  function escreverBlocos(blocos) {
+    var partes = [];
+    (Array.isArray(blocos) ? blocos : []).forEach(function (bloco) {
+      if (!bloco || !idDeBlocoValido(bloco.id)) return;
+      var v = Number.isInteger(bloco.v) && bloco.v >= 1 ? bloco.v : 1;
+      var l = [];
+      l.push('<!-- dlt:bloco id="' + bloco.id + '" v="' + v + '"' + (bloco.leitura ? ' leitura="1"' : "") + " -->");
+      if (bloco.titulo) {
+        l.push("## " + umaLinha(bloco.titulo));
+        l.push("");
+      }
+      (Array.isArray(bloco.campos) ? bloco.campos : []).forEach(function (campo) {
+        if (!campo || !idDeBlocoValido(campo.id)) return;
+        var valor = valorDeMaquina(campo.valor);
+        l.push('<!-- dlt:campo id="' + campo.id + '"' + (valor ? ' valor="' + valor + '"' : "") + " -->");
+        l.push("**" + (umaLinha(campo.rotulo || campo.id) || campo.id) + "**");
+        var texto = neutralizar(campo.texto).replace(/\s+$/, "");
+        if (texto) l.push(texto);
+        l.push("");
+      });
+      (Array.isArray(bloco.linhas) ? bloco.linhas : []).forEach(function (linha) {
+        l.push(neutralizar(linha).replace(/\n+/g, " "));
+      });
+      if (Array.isArray(bloco.linhas) && bloco.linhas.length) l.push("");
+      if (bloco.json !== undefined) {
+        l.push("<!-- dlt:json -->");
+        l.push("```json");
+        l.push(JSON.stringify(bloco.json, null, 2).replace(/</g, "\\u003c").replace(/>/g, "\\u003e"));
+        l.push("```");
+        l.push("");
+      }
+      if (typeof bloco.codigo === "string" && /^[A-Za-z0-9_-]{1,2048}$/.test(bloco.codigo)) {
+        l.push("<!-- dlt:codigo -->");
+        l.push("codigo: " + bloco.codigo);
+        l.push("");
+      }
+      l.push('<!-- /dlt:bloco id="' + bloco.id + '" -->');
+      partes.push(l.join("\n"));
+    });
+    return partes.join("\n\n");
+  }
+
+  var RE_ABRE = /^<!-- dlt:bloco id="([a-z0-9_.-]{1,64})" v="(\d{1,3})"( leitura="1")? -->$/;
+  var RE_FECHA = /^<!-- \/dlt:bloco id="([a-z0-9_.-]{1,64})" -->$/;
+  var RE_CAMPO = /^<!-- dlt:campo id="([a-z0-9_.-]{1,64})"(?: valor="([a-z0-9_,.-]*)")? -->$/;
+
+  // Lê o que `escreverBlocos` escreveu. `ids`: lista de ids conhecidos (versão 1), ou
+  // { <id>: { v, campos: { <campo>: limiteDeCaracteres } } } para fixar a versão e os
+  // campos de cada bloco. Só entram blocos conhecidos, na versão conhecida e sem
+  // `leitura="1"`; campo desconhecido (com `campos` declarado) é descartado e cada texto
+  // é cortado no limite. Nada é interpretado como HTML, e marcador só vale na linha inteira.
+  // Devolve { <idDoBloco>: { v, campos: { <id>: { valor, texto } }, json, codigo } }.
+  function lerBlocos(textoMd, ids) {
+    var saida = novoObjeto();
+    if (typeof textoMd !== "string" || textoMd.length > LIMITE_MD) return saida;
+    var conhecidos = novoObjeto();
+    if (Array.isArray(ids)) {
+      ids.forEach(function (id) { if (idDeBlocoValido(id)) conhecidos[id] = { v: 1, campos: null }; });
+    } else if (ids && typeof ids === "object") {
+      Object.keys(ids).forEach(function (id) {
+        if (!idDeBlocoValido(id)) return;
+        var d = ids[id] || {};
+        conhecidos[id] = { v: Number.isInteger(d.v) ? d.v : 1, campos: d.campos && typeof d.campos === "object" ? d.campos : null };
+      });
+    }
+    var linhas = textoMd.split(/\r\n|\r|\n/);
+    var atual = null;
+    var ignorando = null;
+    var campo = null;
+
+    function fecharCampo() {
+      if (!campo || !atual) { campo = null; return; }
+      var limite = atual.limites && typeof atual.limites[campo.id] === "number" ? atual.limites[campo.id] : LIMITE_CAMPO;
+      var permitido = !atual.limites || Object.prototype.hasOwnProperty.call(atual.limites, campo.id);
+      if (permitido && Object.keys(atual.campos).length < 200 && !Object.prototype.hasOwnProperty.call(atual.campos, campo.id)) {
+        atual.campos[campo.id] = { valor: campo.valor, texto: cortarTexto(campo.linhas.join("\n"), limite) };
+      }
+      campo = null;
+    }
+
+    for (var i = 0; i < linhas.length; i += 1) {
+      var linha = linhas[i];
+      var abre = RE_ABRE.exec(linha);
+      if (ignorando !== null) {
+        var fecha = RE_FECHA.exec(linha);
+        if (fecha && fecha[1] === ignorando) ignorando = null;
+        else if (abre) { ignorando = null; i -= 1; }
+        continue;
+      }
+      if (abre) {
+        atual = null;
+        campo = null;
+        var conhecido = Object.prototype.hasOwnProperty.call(conhecidos, abre[1]) ? conhecidos[abre[1]] : null;
+        if (!conhecido || Number(abre[2]) !== conhecido.v || abre[3] || Object.prototype.hasOwnProperty.call(saida, abre[1])) {
+          ignorando = abre[1];
+        } else {
+          atual = { id: abre[1], v: conhecido.v, limites: conhecido.campos, campos: novoObjeto(), json: null, codigo: null };
+        }
+        continue;
+      }
+      if (!atual) continue;
+      var fechaAtual = RE_FECHA.exec(linha);
+      if (fechaAtual) {
+        fecharCampo();
+        if (fechaAtual[1] === atual.id) saida[atual.id] = { v: atual.v, campos: atual.campos, json: atual.json, codigo: atual.codigo };
+        atual = null;
+        continue;
+      }
+      var abreCampo = RE_CAMPO.exec(linha);
+      if (abreCampo) {
+        fecharCampo();
+        campo = { id: abreCampo[1], valor: abreCampo[2] === undefined ? null : abreCampo[2], linhas: [], esperaRotulo: true };
+        continue;
+      }
+      if (linha === "<!-- dlt:json -->") {
+        fecharCampo();
+        var cerca = linhas[i + 1] === "```json" ? i + 2 : -1;
+        if (cerca !== -1) {
+          var corpo = [];
+          var j = cerca;
+          while (j < linhas.length && linhas[j] !== "```") { corpo.push(linhas[j]); j += 1; }
+          var textoJson = corpo.join("\n");
+          if (j < linhas.length && textoJson.length <= LIMITE_JSON_BLOCO) {
+            try {
+              var lido = copiaSegura(JSON.parse(textoJson));
+              atual.json = lido === undefined ? null : lido;
+            } catch (erro) {
+              atual.json = null;
+            }
+          }
+          i = j;
+        }
+        continue;
+      }
+      if (linha === "<!-- dlt:codigo -->") {
+        fecharCampo();
+        var m = /^codigo: ([A-Za-z0-9_-]{1,2048})$/.exec(linhas[i + 1] || "");
+        if (m) { atual.codigo = m[1]; i += 1; }
+        continue;
+      }
+      if (campo) {
+        if (campo.esperaRotulo) {
+          campo.esperaRotulo = false;
+          if (/^\*\*.*\*\*$/.test(linha)) continue;
+        }
+        campo.linhas.push(linha);
+      }
+    }
+    return saida;
+  }
+
+  // ---- o .ics ---------------------------------------------------------------------------
+
+  var RE_URL_EVENTO = /^https:\/\/[a-z0-9.-]+(?::\d{1,5})?\/[A-Za-z0-9\/._~-]*(?:#volta=[a-z0-9]{1,24})?$/;
+
+  // Quebra a linha em 75 octetos UTF-8; as seguintes começam com um espaço.
+  function dobrarLinha(linha) {
+    var saida = [];
+    var atual = "";
+    var bytes = 0;
+    for (var i = 0; i < linha.length; i += 1) {
+      var ponto = linha.codePointAt(i);
+      var ch = String.fromCodePoint(ponto);
+      if (ponto > 0xffff) i += 1;
+      var b = ponto < 0x80 ? 1 : ponto < 0x800 ? 2 : ponto < 0x10000 ? 3 : 4;
+      if (bytes + b > 75) {
+        saida.push(atual);
+        atual = " ";
+        bytes = 1;
+      }
+      atual += ch;
+      bytes += b;
+    }
+    saida.push(atual);
+    return saida;
+  }
+
+  function escaparIcs(texto) {
+    return String(texto == null ? "" : texto)
+      .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "")
+      .replace(/\\/g, "\\\\")
+      .replace(/;/g, "\;")
+      .replace(/,/g, "\\,")
+      .replace(/\r\n|\r|\n/g, "\\n");
+  }
+
+  function instanteIcs(agora) {
+    var d = agora instanceof Date ? agora : new Date(agora);
+    if (isNaN(d.getTime())) throw new TypeError("agora inválido");
+    return d.getUTCFullYear() + doisDigitos(d.getUTCMonth() + 1) + doisDigitos(d.getUTCDate()) +
+      "T" + doisDigitos(d.getUTCHours()) + doisDigitos(d.getUTCMinutes()) + doisDigitos(d.getUTCSeconds()) + "Z";
+  }
+
+  function duracaoIcs(minutos) {
+    var m = Number.isInteger(minutos) && minutos >= 1 && minutos <= 1440 ? minutos : 10;
+    var h = Math.floor(m / 60);
+    var r = m % 60;
+    return "PT" + (h ? h + "H" : "") + (r || !h ? r + "M" : "");
+  }
+
+  // Calendário iCalendar (RFC 5545) com linhas CRLF dobradas em 75 octetos. Cada evento:
+  // { uid, inicio: "AAAA-MM-DD", hora: "HH:MM" (hora flutuante, sem fuso), duracaoMin,
+  // resumo, descricao, url, repetir: { semanal: true, vezes } }. A `url` só pode ser
+  // https, sem "?", e no máximo com o fragmento #volta=<marco>: nada que a pessoa respondeu.
+  // Evento fora do formato levanta TypeError.
+  function montarIcs(config) {
+    var cfg = config || {};
+    var prodid = typeof cfg.prodid === "string" && /^[A-Za-z0-9 \/._-]{1,100}$/.test(cfg.prodid) ? cfg.prodid : "-//DLT Academy//Protocolo//PT-BR";
+    var carimbo = instanteIcs(cfg.agora);
+    var linhas = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:" + prodid, "CALSCALE:GREGORIAN", "METHOD:PUBLISH"];
+    (Array.isArray(cfg.eventos) ? cfg.eventos : []).forEach(function (e) {
+      if (!e || typeof e.uid !== "string" || !/^[A-Za-z0-9@._-]{1,128}$/.test(e.uid)) throw new TypeError("uid do evento inválido");
+      if (!dataValida(e.inicio)) throw new TypeError("data do evento inválida");
+      if (typeof e.hora !== "string" || !RE_HORA.test(e.hora)) throw new TypeError("hora do evento inválida");
+      if (typeof e.resumo !== "string" || !e.resumo.trim() || e.resumo.length > 200) throw new TypeError("resumo do evento inválido");
+      if (e.descricao !== undefined && (typeof e.descricao !== "string" || e.descricao.length > 1000)) throw new TypeError("descrição do evento inválida");
+      if (e.url !== undefined && (typeof e.url !== "string" || !RE_URL_EVENTO.test(e.url))) throw new TypeError("link do evento inválido");
+      linhas.push("BEGIN:VEVENT");
+      linhas.push("UID:" + e.uid);
+      linhas.push("DTSTAMP:" + carimbo);
+      linhas.push("DTSTART:" + e.inicio.replace(/-/g, "") + "T" + e.hora.replace(":", "") + "00");
+      linhas.push("DURATION:" + duracaoIcs(e.duracaoMin));
+      linhas.push("SUMMARY:" + escaparIcs(e.resumo));
+      if (e.descricao) linhas.push("DESCRIPTION:" + escaparIcs(e.descricao));
+      if (e.url) linhas.push("URL:" + e.url);
+      if (e.repetir && e.repetir.semanal === true) {
+        var vezes = Number.isInteger(e.repetir.vezes) && e.repetir.vezes >= 1 && e.repetir.vezes <= 60 ? e.repetir.vezes : 1;
+        linhas.push("RRULE:FREQ=WEEKLY;COUNT=" + vezes);
+      }
+      linhas.push("BEGIN:VALARM");
+      linhas.push("ACTION:DISPLAY");
+      linhas.push("DESCRIPTION:" + escaparIcs(e.resumo));
+      linhas.push("TRIGGER:-PT0M");
+      linhas.push("END:VALARM");
+      linhas.push("END:VEVENT");
+    });
+    linhas.push("END:VCALENDAR");
+    var saida = [];
+    linhas.forEach(function (linha) { dobrarLinha(linha).forEach(function (parte) { saida.push(parte); }); });
+    return saida.join("\r\n") + "\r\n";
+  }
+
   var api = {
     TIPOS_NOVOS: TIPOS_NOVOS,
     passoVisivel: passoVisivel,
@@ -726,6 +1355,17 @@
     situacaoDoMarco: situacaoDoMarco,
     lerMarco: lerMarco,
     resumoDasRespostas: resumoDasRespostas,
+    semPontoFinal: semPontoFinal,
+    primeiraMinuscula: primeiraMinuscula,
+    cortarPorBytes: cortarPorBytes,
+    textoSeguroPdf: textoSeguroPdf,
+    comporTexto: comporTexto,
+    codificarRegistro: codificarRegistro,
+    decodificarRegistro: decodificarRegistro,
+    validarEsquema: validarEsquema,
+    escreverBlocos: escreverBlocos,
+    lerBlocos: lerBlocos,
+    montarIcs: montarIcs,
     ESQUEMA_ESTADO: ESQUEMA_ESTADO,
     LIMITE_ESTADO: LIMITE_ESTADO,
     LIMITE_CODIGO: LIMITE_CODIGO,

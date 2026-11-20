@@ -482,3 +482,397 @@ test("resumoDasRespostas escreve rótulos, não valores", () => {
     { q: "E?", value: "texto — 3" },
   ]);
 });
+
+
+// ---- F3: blocos do .md, registro, esquema, .ics e texto ----------------------
+
+const HOSTIL = [
+  "Primeira linha com --> no meio e <!-- aberto",
+  "<!-- dlt:campo id=\"cena\" -->",
+  "<!-- /dlt:bloco id=\"teto.ultima_vez\" -->",
+  "**Um rótulo falso**",
+  "<script>alert(1)</script> <b>negrito</b> [link](https://exemplo.com) ![img](x)",
+  "```json",
+  "{\"padrao\": \"forjado\"}",
+  "```",
+  "codigo: forjado123",
+  "",
+  "## Um título dentro do texto",
+  "<!<!---->-->",
+].join("\n");
+
+function blocoDeTeste() {
+  return [
+    {
+      id: "teto.ultima_vez", v: 1, titulo: "A última vez",
+      campos: [
+        { id: "cena", rotulo: "A cena", texto: HOSTIL },
+        { id: "terreno", rotulo: "O terreno do dia", valor: ["cansaco", "mes_apertado"], texto: "cansaço, mês apertado" },
+        { id: "vazio", rotulo: "Em branco", texto: "" },
+      ],
+    },
+    { id: "teto.registro", v: 1, titulo: "Seu registro", json: { v: 1, padrao: "freio", regra: "a <b> & \"c\" -->" }, codigo: "abc_DEF-123" },
+    { id: "teto.fio", v: 1, leitura: true, titulo: "O fio", linhas: ["Linha só para ler com <!-- e -->."] },
+  ];
+}
+const IDS = {
+  "teto.ultima_vez": { v: 1, campos: { cena: 400, terreno: 100, vazio: 10 } },
+  "teto.registro": { v: 1 },
+  "teto.fio": { v: 1 },
+};
+
+test("escreverBlocos escreve o formato marcado e neutraliza o que fecharia um comentário", () => {
+  const md = kit.escreverBlocos(blocoDeTeste());
+  assert.match(md, /^<!-- dlt:bloco id="teto\.ultima_vez" v="1" -->\n## A última vez\n\n<!-- dlt:campo id="cena" -->\n\*\*A cena\*\*\n/);
+  assert.match(md, /<!-- dlt:campo id="terreno" valor="cansaco,mes_apertado" -->\n\*\*O terreno do dia\*\*\ncansaço, mês apertado/);
+  assert.match(md, /<!-- dlt:bloco id="teto\.fio" v="1" leitura="1" -->/);
+  assert.match(md, /<!-- \/dlt:bloco id="teto\.fio" -->$/);
+  // Marcadores de máquina só aparecem nas linhas que o escritor pôs.
+  const marcadores = md.split("\n").filter((l) => l.includes("<!--") || l.includes("-->"));
+  marcadores.forEach((linha) => {
+    assert.match(linha, /^<!-- \/?dlt:(?:bloco|campo|json|codigo)[^<>]*-->$/, "linha inesperada: " + linha);
+  });
+  assert.equal(md.split("\n").filter((l) => l.startsWith("<!-- dlt:bloco id=")).length, 3);
+  assert.equal(md.includes("<script>"), true, "HTML do texto dela fica como texto, sem ser tirado");
+});
+
+test("lerBlocos: ida e volta com texto hostil, sem marcador forjado", () => {
+  const md = kit.escreverBlocos(blocoDeTeste());
+  const lido = kit.lerBlocos(md, IDS);
+  assert.deepEqual(Object.keys(lido).sort(), ["teto.registro", "teto.ultima_vez"], "bloco de leitura não é lido por máquina");
+  const b = lido["teto.ultima_vez"];
+  assert.equal(b.v, 1);
+  assert.deepEqual(Object.keys(b.campos).sort(), ["cena", "terreno", "vazio"]);
+  const esperadoCena = HOSTIL.replace(/<!--/g, "< !--").replace(/-->/g, "-- >");
+  assert.equal(b.campos.cena.texto.replace(/<!<!---->-->/, "").length > 0, true);
+  // Depois de neutralizar, o texto volta igual, linha por linha (inclusive a linha em negrito falsa).
+  const neutra = (t) => { let x = t; while (/<!--|-->/.test(x)) x = x.replace(/<!--/g, "< !--").replace(/-->/g, "-- >"); return x; };
+  assert.equal(b.campos.cena.texto, neutra(HOSTIL).trim());
+  assert.ok(b.campos.cena.texto.includes("**Um rótulo falso**"));
+  assert.ok(esperadoCena.length > 0);
+  assert.equal(b.campos.cena.valor, null);
+  assert.equal(b.campos.terreno.valor, "cansaco,mes_apertado");
+  assert.equal(b.campos.terreno.texto, "cansaço, mês apertado");
+  assert.equal(b.campos.vazio.texto, "");
+  assert.equal(b.json, null);
+  const r = lido["teto.registro"];
+  assert.deepEqual(normal(r.json), { v: 1, padrao: "freio", regra: "a <b> & \"c\" -->" }, "o JSON volta exato, mesmo com < > e -->");
+  assert.equal(r.codigo, "abc_DEF-123");
+  assert.equal(r.json.padrao, "freio", "não foi trocado pelo JSON forjado dentro do texto");
+});
+
+test("lerBlocos: só ids conhecidos, na versão certa, e cada campo no limite", () => {
+  const md = kit.escreverBlocos([
+    { id: "teto.padrao", v: 1, campos: [{ id: "padrao", texto: "x" }] },
+    { id: "teto.registro", v: 2, json: { a: 1 } },
+    { id: "teto.fatos", v: 1, campos: [{ id: "olhou", texto: "abcdefghij" }, { id: "intruso", texto: "não" }] },
+    { id: "teto.fatos", v: 1, campos: [{ id: "olhou", texto: "repetido" }] },
+  ]);
+  const lido = kit.lerBlocos(md, { "teto.registro": { v: 1 }, "teto.fatos": { v: 1, campos: { olhou: 4 } } });
+  assert.deepEqual(Object.keys(lido), ["teto.fatos"], "padrao é desconhecido, registro está em outra versão");
+  assert.deepEqual(Object.keys(lido["teto.fatos"].campos), ["olhou"], "campo desconhecido sai");
+  assert.equal(lido["teto.fatos"].campos.olhou.texto, "abcd", "cortado no limite do passo");
+  assert.deepEqual(Object.keys(kit.lerBlocos(md, ["teto.padrao"])), ["teto.padrao"], "lista simples vale como versão 1");
+  assert.deepEqual(Object.keys(kit.lerBlocos(md, [])), []);
+  assert.deepEqual(Object.keys(kit.lerBlocos(md)), []);
+});
+
+test("lerBlocos: arquivo adulterado não quebra nem polui", () => {
+  const forjado = [
+    '<!-- dlt:bloco id="__proto__" v="1" -->',
+    '<!-- dlt:campo id="polui" -->',
+    "**x**",
+    "y",
+    '<!-- /dlt:bloco id="__proto__" -->',
+    '<!-- dlt:bloco id="teto.registro" v="1" -->',
+    "<!-- dlt:json -->",
+    "```json",
+    '{"__proto__": {"polui": 1}, "constructor": 1, "ok": 2}',
+    "```",
+    "<!-- dlt:codigo -->",
+    "codigo: não é base64!",
+    '<!-- dlt:bloco id="teto.outro" v="1" -->',
+    "sem fechar",
+  ].join("\n");
+  const lido = kit.lerBlocos(forjado, ["teto.registro", "__proto__", "teto.outro"]);
+  assert.equal(({}).polui, undefined);
+  assert.deepEqual(Object.keys(lido), [], "bloco aberto sem fechar não vale");
+  const fechado = kit.lerBlocos(forjado.replace('<!-- dlt:bloco id="teto.outro" v="1" -->\nsem fechar', '<!-- /dlt:bloco id="teto.registro" -->'), ["teto.registro"]);
+  assert.deepEqual(Object.keys(fechado["teto.registro"].json), ["ok"], "chaves de protótipo caem");
+  assert.equal(fechado["teto.registro"].codigo, null, "código fora do formato");
+  assert.deepEqual(Object.keys(kit.lerBlocos("x".repeat(300 * 1024), ["a"])), [], "arquivo grande demais");
+  assert.deepEqual(Object.keys(kit.lerBlocos(null, ["a"])), []);
+  assert.deepEqual(Object.keys(kit.lerBlocos("<!-- dlt:bloco id=\"a\" v=\"1\" -->\r\n<!-- /dlt:bloco id=\"a\" -->", ["a"])), ["a"], "aceita quebra de linha do Windows");
+});
+
+test("escreverBlocos ignora bloco e campo com id fora do formato e limpa o valor de máquina", () => {
+  const md = kit.escreverBlocos([
+    { id: "Ruim Id", v: 1 },
+    { id: "ok", v: 1, campos: [{ id: "c d", texto: "x" }, { id: "k", valor: 'a"b<c>,D', texto: "t" }] },
+    null,
+  ]);
+  assert.ok(!md.includes("Ruim"));
+  assert.match(md, /<!-- dlt:campo id="k" valor="abc,"/);
+  assert.equal(kit.escreverBlocos("não é lista"), "");
+});
+
+test("codificarRegistro e decodificarRegistro: ida e volta com acento e emoji", () => {
+  const obj = { v: 1, tipo: "padrao", regra: "cobrar o justo é o que me deixa atender bem ✓ 😀", datas: { d0: "2026-11-20" } };
+  const c = kit.codificarRegistro(obj, 2048);
+  assert.equal(c.ok, true);
+  assert.equal(c.cortado, false);
+  assert.match(c.codigo, /^[A-Za-z0-9_-]+$/);
+  const d = kit.decodificarRegistro(c.codigo);
+  assert.equal(d.ok, true);
+  assert.deepEqual(normal(d.objeto), obj);
+  assert.equal(Object.getPrototypeOf(d.objeto), null);
+  assert.equal(c.codigo, Buffer.from(JSON.stringify(obj), "utf8").toString("base64url"), "é base64url comum, sem preenchimento");
+});
+
+test("codificarRegistro: pior caso (textos no limite só com emoji de 4 bytes) cabe em 2048", () => {
+  const emoji = (n) => "😀".repeat(n);
+  const objeto = {
+    v: 1, tipo: "padrao", produto: "teto-financeiro", origem: "gratis", bib: "2026.11-1", data: "2026-11-20", volta: 1, ato: 2,
+    padrao: "freio-na-cobranca", variante: null, trilha: "ganho", trilhas_perto: false, vazamento: "ganho-que-escorre",
+    familia: "evitar", modo_crenca: "triade",
+    notas: Object.fromEntries(["a", "b", "c", "d", "e", "f", "g"].map((k) => [k + "-padrao", { f: 0.67, c: 1 }])),
+    itens: Object.fromEntries(Array.from({ length: 15 }, (_, i) => ["item_" + i, -1])),
+    familias: { evitar: 0.67, idolatrar: -0.33, status: -0.67, vigilancia: 0, lealdade: 0.33 },
+    areas: { ganhar: 3, guardar: 2, decidir: 0, dar: 0 },
+    regra_trabalho: emoji(160), se_entao: emoji(200), previsao: emoji(140),
+    datas: { d0: "2026-11-20", d7: "2026-11-27", d30: "2026-12-20", d60: "2027-01-19", d90: "2027-02-18" },
+  };
+  const c = kit.codificarRegistro(objeto, 2048, { cortar: ["regra_trabalho", "se_entao", "previsao"] });
+  assert.equal(c.ok, true);
+  assert.equal(c.cortado, true, "com tudo no limite, foi preciso cortar");
+  assert.ok(c.codigo.length <= 2048, "tamanho " + c.codigo.length);
+  assert.ok(c.codigo.length >= 2040, "aproveita o espaço: " + c.codigo.length);
+  const volta = kit.decodificarRegistro(c.codigo).objeto;
+  assert.deepEqual(normal(volta), normal(c.objeto));
+  ["regra_trabalho", "se_entao", "previsao"].forEach((k) => {
+    assert.match(volta[k], /^(?:😀)*$/u, k + " cortado sem partir o emoji");
+    assert.ok(volta[k].length > 0, k + " não foi zerado");
+  });
+  assert.equal(volta.padrao, "freio-na-cobranca", "o que não é texto livre fica");
+  assert.equal(objeto.regra_trabalho, emoji(160), "não altera o original");
+  const nivelado = [volta.regra_trabalho, volta.se_entao, volta.previsao].map((t) => Buffer.byteLength(t));
+  assert.ok(Math.max(...nivelado) - Math.min(...nivelado) <= 8, "corte nivelado: " + nivelado);
+  // Sem a lista de chaves, também cabe.
+  assert.ok(kit.codificarRegistro(objeto, 2048).codigo.length <= 2048);
+});
+
+test("codificarRegistro: sem texto para cortar, recusa; tamanho pedido é respeitado", () => {
+  const grande = { lista: Array.from({ length: 800 }, (_, i) => i) };
+  assert.deepEqual(kit.codificarRegistro(grande, 2048), { ok: false, erro: "grande" });
+  assert.equal(kit.codificarRegistro([1], 2048).erro, "tipo");
+  assert.equal(kit.codificarRegistro(null, 2048).erro, "tipo");
+  const c = kit.codificarRegistro({ t: "x".repeat(500) }, 100);
+  assert.ok(c.codigo.length <= 100);
+  assert.ok(c.objeto.t.length > 0 && c.objeto.t.length < 500);
+  assert.equal(kit.codificarRegistro({ t: "ab" }, 2).ok, false, "dois caracteres não guardam nada");
+});
+
+test("decodificarRegistro: leitura estrita", () => {
+  const cod = (o) => kit.codificarRegistro(o, 2048).codigo;
+  assert.equal(kit.decodificarRegistro(undefined).erro, "tipo");
+  assert.equal(kit.decodificarRegistro("").erro, "vazio");
+  assert.equal(kit.decodificarRegistro("a".repeat(2049)).erro, "grande", "código acima do limite é recusado");
+  assert.notEqual(kit.decodificarRegistro("a".repeat(2048)).erro, "grande", "no limite ainda é lido");
+  assert.equal(kit.decodificarRegistro("abc+/=").erro, "caracteres");
+  assert.equal(kit.decodificarRegistro("abc def").erro, "caracteres");
+  assert.equal(kit.decodificarRegistro("abcde").erro, "base64", "5 caracteres não fecham");
+  assert.equal(kit.decodificarRegistro(Buffer.from([0xff, 0xfe, 0x7b, 0x7d]).toString("base64url")).erro, "utf8");
+  assert.equal(kit.decodificarRegistro(Buffer.from([0xc0, 0x80]).toString("base64url")).erro, "utf8", "forma longa demais");
+  assert.equal(kit.decodificarRegistro(Buffer.from([0xed, 0xa0, 0x80]).toString("base64url")).erro, "utf8", "par substituto solto");
+  assert.equal(kit.decodificarRegistro(Buffer.from("não é json").toString("base64url")).erro, "json");
+  assert.equal(kit.decodificarRegistro(Buffer.from("[1,2]").toString("base64url")).erro, "json", "tem de ser objeto");
+  assert.equal(kit.decodificarRegistro(Buffer.from("42").toString("base64url")).erro, "json");
+  assert.equal(kit.decodificarRegistro(Buffer.from("null").toString("base64url")).erro, "json");
+  const comProto = kit.decodificarRegistro(Buffer.from('{"__proto__":{"polui":1},"a":1}').toString("base64url"));
+  assert.deepEqual(Object.keys(comProto.objeto), ["a"]);
+  assert.equal(({}).polui, undefined);
+  assert.equal(kit.decodificarRegistro(cod({ a: 1 }), 5).erro, "grande", "limite pedido");
+  assert.equal(kit.decodificarRegistro(Buffer.from('{"a":"\u00e9"}').toString("base64url")).objeto.a, "é");
+});
+
+test("validarEsquema: tipos, enum, faixas, tamanho e chave desconhecida", () => {
+  const descritor = {
+    tipo: "objeto",
+    campos: {
+      v: { tipo: "inteiro", enum: [1] },
+      tipo: { tipo: "texto", enum: ["padrao"] },
+      data: { tipo: "data" },
+      ok: { tipo: "booleano" },
+      variante: { tipo: "texto", enum: ["a", "b"], nulo: true },
+      notas: { tipo: "mapa", chaves: ["x", "y"], valor: { tipo: "objeto", campos: { f: { tipo: "numero", min: 0, max: 1, casas: 2 }, c: { tipo: "inteiro", enum: [0, 1] } } } },
+      itens: { tipo: "mapa", padraoChave: "^[a-z]+_[0-9]+$", valor: { tipo: "inteiro", min: -1, max: 3 }, max: 15 },
+      regra: { tipo: "texto", max: 10, maxBytes: 20, opcional: true },
+      lista: { tipo: "lista", item: { tipo: "texto" }, max: 2, opcional: true },
+    },
+  };
+  const bom = { v: 1, tipo: "padrao", data: "2026-11-20", ok: true, variante: null, notas: { x: { f: 0.67, c: 1 } }, itens: { evitar_1: 1 } };
+  assert.deepEqual(kit.validarEsquema(bom, descritor), { ok: true, erros: [] });
+  assert.equal(kit.validarEsquema({ ...bom, regra: "curta", lista: ["a"] }, descritor).ok, true);
+  const erro = (mudanca) => kit.validarEsquema({ ...bom, ...mudanca }, descritor);
+  assert.match(erro({ v: 2 }).erros[0], /^v: valor fora da lista/);
+  assert.match(erro({ v: "1" }).erros[0], /tem de ser número/);
+  assert.match(erro({ v: 1.5 }).erros[0], /tem de ser inteiro/);
+  assert.match(erro({ tipo: "outro" }).erros[0], /^tipo:/);
+  assert.match(erro({ data: "2026-02-30" }).erros[0], /^data: não é uma data/);
+  assert.match(erro({ ok: 1 }).erros[0], /verdadeiro ou falso/);
+  assert.match(erro({ variante: "c" }).erros[0], /^variante:/);
+  assert.match(erro({ tipo: null }).erros[0], /não pode ser nulo/);
+  assert.match(erro({ notas: { z: { f: 0, c: 0 } } }).erros[0], /chave desconhecida "z"/);
+  assert.match(erro({ notas: { x: { f: 1.5, c: 1 } } }).erros[0], /^notas\.x\.f: acima do máximo/);
+  assert.match(erro({ notas: { x: { f: 0.123, c: 1 } } }).erros[0], /casas decimais/);
+  assert.match(erro({ notas: { x: { f: 0.5, c: 2 } } }).erros[0], /^notas\.x\.c:/);
+  assert.match(erro({ notas: { x: { f: 0.5 } } }).erros[0], /falta "c"/);
+  assert.match(erro({ itens: { Evitar1: 1 } }).erros[0], /chave desconhecida/);
+  assert.match(erro({ itens: { evitar_1: 4 } }).erros[0], /acima do máximo/);
+  assert.match(erro({ regra: "x".repeat(11) }).erros[0], /passa de 10 caracteres/);
+  assert.match(erro({ regra: "😀".repeat(8) }).erros[0], /passa de 20 bytes/);
+  assert.match(erro({ lista: ["a", "b", "c"] }).erros[0], /mais de 2 itens/);
+  assert.match(erro({ lista: [1] }).erros[0], /^lista\[0\]: tem de ser texto/);
+  assert.match(kit.validarEsquema({ ...bom, intruso: 1 }, descritor).erros[0], /chave desconhecida "intruso"/);
+  const semV = { ...bom };
+  delete semV.v;
+  assert.match(kit.validarEsquema(semV, descritor).erros[0], /falta "v"/);
+  assert.equal(kit.validarEsquema(null, descritor).ok, false);
+  assert.equal(kit.validarEsquema([], descritor).ok, false);
+  assert.equal(kit.validarEsquema(new Date(), descritor).ok, false, "objeto com protótipo de outra classe");
+  assert.equal(kit.validarEsquema(JSON.parse('{"__proto__": 1}'), { tipo: "objeto", campos: {} }).ok, false, "chave de protótipo não passa");
+  assert.equal(kit.validarEsquema(Object.create(null), { tipo: "objeto", campos: {} }).ok, true, "objeto sem protótipo vale");
+  assert.equal(kit.validarEsquema(1, null).ok, false);
+});
+
+function eventoDeTeste(extra = {}) {
+  return {
+    uid: "teto-dia7-k3f9x2qa@dlt.academy", inicio: "2026-11-27", hora: "20:00", duracaoMin: 3,
+    resumo: "Teto Financeiro: retorno do dia 7",
+    descricao: "Três perguntas rápidas. Abra o link.",
+    url: "https://dlt.academy/protocolos/teto-financeiro/#volta=dia7",
+    ...extra,
+  };
+}
+const AGORA = new Date(Date.UTC(2026, 10, 20, 21, 3, 5));
+
+test("montarIcs: estrutura, CRLF, UID estável, hora flutuante e alarme", () => {
+  const ics = kit.montarIcs({ eventos: [eventoDeTeste(), eventoDeTeste({ uid: "teto-semana-k3f9x2qa@dlt.academy", inicio: "2026-11-27", resumo: "Revisão semanal", duracaoMin: 10, url: "https://dlt.academy/protocolos/teto-financeiro/#volta=semana", repetir: { semanal: true, vezes: 13 } })], prodid: "-//DLT Academy//Teto Financeiro//PT-BR", agora: AGORA });
+  assert.ok(ics.endsWith("END:VCALENDAR\r\n"));
+  assert.ok(!/[^\r]\n/.test(ics), "só CRLF");
+  const linhas = ics.split("\r\n");
+  assert.deepEqual(linhas.slice(0, 5), ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//DLT Academy//Teto Financeiro//PT-BR", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"]);
+  assert.ok(linhas.includes("UID:teto-dia7-k3f9x2qa@dlt.academy"));
+  assert.ok(linhas.includes("DTSTAMP:20261120T210305Z"));
+  assert.ok(linhas.includes("DTSTART:20261127T200000"), "hora flutuante, sem fuso");
+  assert.ok(linhas.includes("DURATION:PT3M"));
+  assert.ok(linhas.includes("DURATION:PT10M"));
+  assert.ok(linhas.includes("SUMMARY:Teto Financeiro: retorno do dia 7"));
+  assert.ok(linhas.includes("URL:https://dlt.academy/protocolos/teto-financeiro/#volta=dia7"));
+  assert.ok(linhas.includes("RRULE:FREQ=WEEKLY;COUNT=13"));
+  assert.equal(linhas.filter((l) => l.startsWith("RRULE")).length, 1, "só a revisão semanal repete");
+  assert.equal(linhas.filter((l) => l === "BEGIN:VALARM").length, 2);
+  assert.equal(linhas.filter((l) => l === "TRIGGER:-PT0M").length, 2);
+  assert.equal(linhas.filter((l) => l.startsWith("BEGIN:VEVENT")).length, 2);
+  assert.equal(kit.montarIcs({ eventos: [eventoDeTeste()], agora: AGORA }), kit.montarIcs({ eventos: [eventoDeTeste()], agora: AGORA }), "mesma entrada, mesmo arquivo");
+  assert.match(kit.montarIcs({ eventos: [], agora: AGORA }), /PRODID:-\/\/DLT Academy\/\/Protocolo\/\/PT-BR/, "prodid padrão");
+});
+
+test("montarIcs: dobra em 75 octetos sem partir caractere, e escapa o texto", () => {
+  const longo = "Pergunta número um, com acentuação: ação, coração, não, é, à, ç; e emoji 😀 " + "ação ".repeat(40);
+  const ics = kit.montarIcs({ eventos: [eventoDeTeste({ descricao: longo + "\\ fim", resumo: "Um; dois, três\nquatro" })], agora: AGORA });
+  ics.split("\r\n").forEach((linha) => {
+    assert.ok(Buffer.byteLength(linha, "utf8") <= 75, "linha de " + Buffer.byteLength(linha, "utf8") + " octetos: " + linha);
+  });
+  assert.ok(ics.split("\r\n").some((l) => l.startsWith(" ")), "há continuação com espaço");
+  const desdobrado = ics.replace(/\r\n /g, "");
+  assert.ok(desdobrado.includes("SUMMARY:Um\; dois\\, três\\nquatro"));
+  assert.ok(desdobrado.includes("DESCRIPTION:" + longo.replace(/,/g, "\\,").replace(/;/g, "\;") + "\\\\ fim"), "desdobrar devolve o texto escapado inteiro");
+  assert.ok(!ics.includes("\uFFFD"), "nenhum caractere partido");
+  assert.ok(ics.includes("😀"));
+});
+
+test("montarIcs: datas na virada de mês, de ano e no bissexto", () => {
+  const dtstart = (inicio) => kit.montarIcs({ eventos: [eventoDeTeste({ inicio })], agora: AGORA }).match(/DTSTART:(\S+)/)[1];
+  assert.equal(dtstart(kit.somarDias("2026-11-28", 3)), "20261201T200000");
+  assert.equal(dtstart(kit.somarDias("2026-12-29", 3)), "20270101T200000");
+  assert.equal(dtstart(kit.somarDias("2028-02-27", 2)), "20280229T200000");
+  assert.equal(dtstart(kit.somarDias("2026-11-20", 90)), "20270218T200000");
+  assert.equal(kit.montarIcs({ eventos: [eventoDeTeste({ hora: "08:05" })], agora: "2027-01-01T00:00:00Z" }).match(/DTSTART:(\S+)/)[1], "20261127T080500");
+  assert.ok(kit.montarIcs({ eventos: [eventoDeTeste()], agora: "2027-01-01T00:00:00Z" }).includes("DTSTAMP:20270101T000000Z"));
+});
+
+test("montarIcs: o link leva só o marco; nada de resposta, query ou código", () => {
+  const ok = (url) => kit.montarIcs({ eventos: [eventoDeTeste({ url })], agora: AGORA });
+  ok("https://dlt.academy/protocolos/teto-financeiro/#volta=semana");
+  ok("https://dlt.academy/protocolos/teto-financeiro/");
+  const ruins = [
+    "https://dlt.academy/protocolos/teto-financeiro/?padrao=freio",
+    "https://dlt.academy/protocolos/teto-financeiro/#c=abc123",
+    "https://dlt.academy/protocolos/teto-financeiro/#volta=dia7&x=1",
+    "https://dlt.academy/protocolos/teto-financeiro/#volta=DIA7",
+    "http://dlt.academy/protocolos/teto-financeiro/",
+    "javascript:alert(1)",
+    "https://dlt.academy/a b",
+    "https://dlt.academy/\nBEGIN:VEVENT",
+    "//dlt.academy/x",
+  ];
+  ruins.forEach((url) => assert.throws(() => ok(url), TypeError, url));
+  assert.throws(() => kit.montarIcs({ eventos: [eventoDeTeste({ uid: "uid com espaço" })], agora: AGORA }), TypeError);
+  assert.throws(() => kit.montarIcs({ eventos: [eventoDeTeste({ uid: "x\r\nBEGIN:VEVENT" })], agora: AGORA }), TypeError);
+  assert.throws(() => kit.montarIcs({ eventos: [eventoDeTeste({ inicio: "2026-02-30" })], agora: AGORA }), TypeError);
+  assert.throws(() => kit.montarIcs({ eventos: [eventoDeTeste({ hora: "25:00" })], agora: AGORA }), TypeError);
+  assert.throws(() => kit.montarIcs({ eventos: [eventoDeTeste({ resumo: "" })], agora: AGORA }), TypeError);
+  assert.throws(() => kit.montarIcs({ eventos: [eventoDeTeste()], agora: "ontem" }), TypeError);
+  assert.equal(kit.montarIcs({ eventos: [eventoDeTeste()], prodid: "x\r\nBEGIN:VEVENT", agora: AGORA }).includes("BEGIN:VEVENT\r\nBEGIN:VEVENT"), false, "prodid inválido cai no padrão");
+  const injetado = kit.montarIcs({ eventos: [eventoDeTeste({ descricao: "linha\r\nEND:VCALENDAR\r\nBEGIN:VEVENT" })], agora: AGORA });
+  assert.equal(injetado.split("\r\n").filter((l) => l === "END:VCALENDAR").length, 1, "quebra de linha no texto vira \\n");
+});
+
+test("comporTexto: lacuna vazia tira o segmento inteiro", () => {
+  const segmentos = [
+    "Quando {gatilho:sp,min}, eu reajo.",
+    "O que mais pesa é “{custo:sp}”.",
+    "Isto sempre fica.",
+    "A regra era “{regra}” e não “{outra}”.",
+  ];
+  assert.equal(
+    kit.comporTexto(segmentos, { gatilho: "Chega a hora do preço.", custo: "perder o cliente!", regra: "x", outra: "y" }),
+    "Quando chega a hora do preço, eu reajo. O que mais pesa é “perder o cliente”. Isto sempre fica. A regra era “x” e não “y”.",
+  );
+  assert.equal(kit.comporTexto(segmentos, { gatilho: "a", custo: "   ", regra: "x" }), "Quando a, eu reajo. Isto sempre fica.");
+  assert.equal(kit.comporTexto(segmentos, {}), "Isto sempre fica.");
+  assert.equal(kit.comporTexto(segmentos, { gatilho: null, custo: undefined, regra: "", outra: NaN }), "Isto sempre fica.");
+  assert.equal(kit.comporTexto([{ texto: "Nota {n}." }], { n: 0 }), "Nota 0.", "zero é valor");
+  assert.equal(kit.comporTexto(["{a} {b}"], { a: "x", b: ["lista"] }), "", "valor que não é texto nem número conta como vazio");
+  assert.equal(kit.comporTexto(["{toString}"], {}), "", "não lê o protótipo");
+  assert.equal(kit.comporTexto(null, {}), "");
+  assert.ok(!/undefined|null|NaN|“”/.test(kit.comporTexto(segmentos, { gatilho: "a" })));
+});
+
+test("utilidades de texto: ponto final, minúscula, corte em bytes", () => {
+  assert.equal(kit.semPontoFinal("  frase.  "), "frase");
+  assert.equal(kit.semPontoFinal("frase?!…"), "frase");
+  assert.equal(kit.semPontoFinal(null), "");
+  assert.equal(kit.primeiraMinuscula("Olá Mundo"), "olá Mundo");
+  assert.equal(kit.primeiraMinuscula(""), "");
+  assert.equal(kit.cortarPorBytes("abc", 2), "ab");
+  assert.equal(kit.cortarPorBytes("ação", 3), "aç", "ç tem 2 bytes: a(1)+ç(2)");
+  assert.equal(kit.cortarPorBytes("😀😀", 5), "😀", "não parte o emoji");
+  assert.equal(kit.cortarPorBytes("😀", 3), "");
+  assert.equal(kit.cortarPorBytes("abc", 0), "");
+  assert.equal(kit.cortarPorBytes("abc", 100), "abc");
+  assert.equal(kit.bytesUtf8("😀ç"), 6);
+});
+
+test("textoSeguroPdf troca o que a fonte padrão não desenha, sem quebrar", () => {
+  assert.equal(kit.textoSeguroPdf("Ação — “aspas” • 10% … ok"), "Ação — “aspas” • 10% … ok", "o que a fonte desenha fica");
+  assert.equal(kit.textoSeguroPdf("Bom 😀 dia 👍🏽 ✓"), "Bom  dia  v");
+  assert.equal(kit.textoSeguroPdf("a → b ≥ c"), "a -> b >= c");
+  assert.equal(kit.textoSeguroPdf("中文 ok"), "?? ok");
+  assert.equal(kit.textoSeguroPdf("a\u0000b\u200bc\r\nd"), "abc\nd");
+  assert.equal(kit.textoSeguroPdf(null), "");
+  assert.equal(kit.textoSeguroPdf("e\u0301"), "é", "normaliza a composição");
+  assert.equal(kit.textoSeguroPdf("a\tb"), "a b");
+  assert.equal(kit.textoSeguroPdf("❤️"), "");
+});
