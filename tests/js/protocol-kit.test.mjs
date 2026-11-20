@@ -794,8 +794,8 @@ test("montarIcs: dobra em 75 octetos sem partir caractere, e escapa o texto", ()
   });
   assert.ok(ics.split("\r\n").some((l) => l.startsWith(" ")), "há continuação com espaço");
   const desdobrado = ics.replace(/\r\n /g, "");
-  assert.ok(desdobrado.includes("SUMMARY:Um\; dois\\, três\\nquatro"));
-  assert.ok(desdobrado.includes("DESCRIPTION:" + longo.replace(/,/g, "\\,").replace(/;/g, "\;") + "\\\\ fim"), "desdobrar devolve o texto escapado inteiro");
+  assert.ok(desdobrado.includes("SUMMARY:Um\\; dois\\, três\\nquatro"));
+  assert.ok(desdobrado.includes("DESCRIPTION:" + longo.replace(/,/g, "\\,").replace(/;/g, "\\;") + "\\\\ fim"), "desdobrar devolve o texto escapado inteiro");
   assert.ok(!ics.includes("\uFFFD"), "nenhum caractere partido");
   assert.ok(ics.includes("😀"));
 });
