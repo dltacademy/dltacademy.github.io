@@ -232,12 +232,12 @@ export function criarAmbiente({ dataFixa = "2026-11-20T12:00:00", reduzMovimento
   });
   janela.window = janela;
   contexto.window.window = janela;
-  contexto.self = janela;
   // A data fixa vive dentro do contexto, para `new Date()` e `Date.now()` do motor.
   vm.runInContext(
     `(() => {
       const Real = Date;
       const FIXA = new Real(${JSON.stringify(dataFixa)}).getTime();
+      globalThis.self = globalThis;
       globalThis.Date = class extends Real {
         constructor(...args) { if (args.length === 0) super(FIXA); else super(...args); }
         static now() { return FIXA; }

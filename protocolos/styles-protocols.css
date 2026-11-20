@@ -72,6 +72,26 @@
 }
 .protocol-progress-dot.is-current { background: var(--sky-light); }
 .protocol-progress-dot.is-done { background: var(--accent); }
+/* Progresso por grupo: "Ato 1 · 5 de 20" com barra. */
+.protocol-progress-track {
+  display: block;
+  flex: 1 1 auto;
+  height: 5px;
+  min-width: 80px;
+  max-width: 300px;
+  border-radius: 999px;
+  background: var(--bg-elev-2);
+  overflow: hidden;
+}
+.protocol-progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--accent);
+  transition: width .2s ease;
+}
+@media (prefers-reduced-motion: reduce) { .protocol-progress-fill { transition: none; } }
+
 .protocol-eyebrow { color: var(--sky-light, #8FBBFF); font-weight: 700; font-size: 12.5px; letter-spacing: .04em; text-transform: uppercase; margin: 0 0 10px; }
 .protocol-q { font-size: 22px; line-height: 1.25; margin: 0 0 8px; }
 .protocol-help { color: var(--text-dim); font-size: 15px; line-height: 1.55; margin: 0 0 18px; }
@@ -364,4 +384,66 @@
     white-space: normal;
   }
   .protocol-ladder .ladder-step { gap: 14px; }
+}
+
+/* ============================================================
+   Tipos de passo com mais de uma marca: vários, régua, grade, tríade,
+   e o complemento na mesma tela. Botões de 44 px, texto de 15 px.
+   ============================================================ */
+.choice-multi .choice-dot,
+.choice-row.choice-multi[aria-pressed="true"] .choice-dot { border-radius: 4px; }
+
+.protocol-scale-row,
+.protocol-grade-options,
+.protocol-triad-options { display: flex; flex-wrap: wrap; gap: 8px; }
+.protocol-scale-btn,
+.protocol-grade-btn,
+.protocol-triad-btn {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: #0B1222;
+  color: #C3CDE0;
+  font: 600 15px/1.3 var(--font-body);
+  cursor: pointer;
+  text-align: center;
+}
+.protocol-scale-btn:hover,
+.protocol-grade-btn:hover,
+.protocol-triad-btn:hover { border-color: #35508A; }
+.protocol-scale-btn[aria-pressed="true"],
+.protocol-grade-btn[aria-pressed="true"],
+.protocol-triad-btn[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: rgba(74, 141, 248, .16);
+  color: #F2F5FB;
+}
+.protocol-scale-btn:focus-visible,
+.protocol-grade-btn:focus-visible,
+.protocol-triad-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.protocol-scale-ends {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 10px 0 0;
+  color: var(--text-faint);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.protocol-grade,
+.protocol-triad { display: grid; gap: 18px; }
+.protocol-grade-label,
+.protocol-triad-label { margin: 0 0 8px; font-size: 15px; line-height: 1.45; font-weight: 600; color: var(--text); }
+.protocol-triad-btn { flex: 1 1 140px; }
+
+.protocol-followup { margin-top: 22px; padding-top: 18px; border-top: 1px solid rgba(255, 255, 255, .08); }
+.protocol-followup-q { margin: 0 0 10px; font-size: 16px; line-height: 1.45; font-weight: 600; }
+.protocol-nav .btn:disabled { opacity: .55; cursor: not-allowed; }
+
+@media (max-width: 560px) {
+  .protocol-scale-btn { flex: 1 1 44px; }
+  .protocol-grade-btn { flex: 1 1 120px; }
 }

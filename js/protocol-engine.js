@@ -30,6 +30,16 @@ function runProtocol(protocol, mountId) {
   const state = { answers: {}, path: [] };
   prepareProtocolPdfBrand();
 
+  // Tipos novos de passo, showIf, followUp e afins usam o kit (js/protocol-kit.js).
+  // Protocolo que não declara nada disso roda exatamente como antes e nem precisa
+  // do arquivo na página.
+  const usesKit = protocolNeedsKit(protocol);
+  const kit = typeof DLTProtocolKit !== "undefined" ? DLTProtocolKit : null;
+  if (usesKit && !kit) {
+    console.error("Este protocolo usa recursos que pedem /js/protocol-kit.js antes do motor.");
+    return;
+  }
+
   // ---- helpers de DOM seguro ----
   const el = (tag, cls, text) => {
     const n = document.createElement(tag);
@@ -90,6 +100,7 @@ function runProtocol(protocol, mountId) {
 
   // Um passo pode declarar um `next(answers)` para ramificar; senão segue em ordem.
   function nextIndex(index) {
+    if (usesKit) return kit.proximoIndice(protocol.steps, index, state.answers);
     const step = currentStep(index);
     if (typeof step.next === "function") {
       const target = step.next(state.answers);
@@ -100,6 +111,11 @@ function runProtocol(protocol, mountId) {
       }
     }
     return index + 1;
+  }
+
+  // O primeiro passo a mostrar: o primeiro visível, quando há showIf.
+  function startIndex() {
+    return usesKit ? kit.proximoIndice(protocol.steps, -1, state.answers) : 0;
   }
 
   function prefersReducedMotion() {
@@ -115,20 +131,25 @@ function runProtocol(protocol, mountId) {
     const step = currentStep(index);
     const card = el("div", "protocol-card flow-card");
 
-    const progress = el("div", "protocol-progress");
-    progress.setAttribute("role", "progressbar");
-    progress.setAttribute("aria-valuemin", "1");
-    progress.setAttribute("aria-valuemax", String(protocol.steps.length));
-    progress.setAttribute("aria-valuenow", String(Math.min(index + 1, protocol.steps.length)));
-    const progressLabel = el("span", "protocol-progress-label", "Passo " + Math.min(index + 1, protocol.steps.length) + " de " + protocol.steps.length);
-    progress.appendChild(progressLabel);
-    const progressDots = el("span", "protocol-progress-dots");
-    protocol.steps.forEach((_, dotIndex) => {
-      const dot = el("span", "protocol-progress-dot" + (dotIndex < index ? " is-done" : dotIndex === index ? " is-current" : ""));
-      dot.setAttribute("aria-hidden", "true");
-      progressDots.appendChild(dot);
-    });
-    progress.appendChild(progressDots);
+    let progress;
+    if (usesKit) {
+      progress = buildKitProgress(el, protocol, kit, index, state.answers);
+    } else {
+      progress = el("div", "protocol-progress");
+      progress.setAttribute("role", "progressbar");
+      progress.setAttribute("aria-valuemin", "1");
+      progress.setAttribute("aria-valuemax", String(protocol.steps.length));
+      progress.setAttribute("aria-valuenow", String(Math.min(index + 1, protocol.steps.length)));
+      const progressLabel = el("span", "protocol-progress-label", "Passo " + Math.min(index + 1, protocol.steps.length) + " de " + protocol.steps.length);
+      progress.appendChild(progressLabel);
+      const progressDots = el("span", "protocol-progress-dots");
+      protocol.steps.forEach((_, dotIndex) => {
+        const dot = el("span", "protocol-progress-dot" + (dotIndex < index ? " is-done" : dotIndex === index ? " is-current" : ""));
+        dot.setAttribute("aria-hidden", "true");
+        progressDots.appendChild(dot);
+      });
+      progress.appendChild(progressDots);
+    }
     card.appendChild(progress);
 
     if (step.eyebrow) card.appendChild(el("p", "protocol-eyebrow section-eyebrow", step.eyebrow));
@@ -139,7 +160,9 @@ function runProtocol(protocol, mountId) {
     const help = resolve(step.help);
     if (help) card.appendChild(el("p", "protocol-help", help));
 
-    if (step.type === "choice") {
+    if (usesKit && stepUsesControls(step)) {
+      renderKitStep(step, index, card);
+    } else if (step.type === "choice") {
       // Cada opção é uma linha de escolha (.choice-row) com estado marcado.
       // Clicar marca a linha e segue para o próximo passo, como antes; ao
       // voltar, a resposta já dada aparece marcada.
@@ -147,7 +170,7 @@ function runProtocol(protocol, mountId) {
       group.setAttribute("role", "group");
       group.setAttribute("aria-labelledby", "protocol-question");
       let chosen = false;
-      step.options.forEach((opt) => {
+      resolve(step.options).forEach((opt) => {
         const b = el("button", "choice-row");
         b.type = "button";
         const dot = el("span", "choice-dot");
@@ -208,7 +231,37 @@ function runProtocol(protocol, mountId) {
     if (moveFocus) question.focus({ preventScroll: true });
   }
 
+  // Passo com controle novo (multi, scale, grade, triad), com complemento
+  // (followUp) ou com texto pré-preenchido/limitado. Nada aqui avança sozinho:
+  // a pessoa marca e toca em "Continuar", que só habilita com a resposta válida.
+  function renderKitStep(step, index, card) {
+    const ctx = { el, kit, answers: state.answers, resolve, changed: () => refresh() };
+    const parts = [buildMainControl(step, ctx)];
+    card.appendChild(parts[0].node);
+    if (step.followUp) {
+      const follow = buildFollowUpControl(step.followUp, ctx);
+      parts.push(follow);
+      card.appendChild(follow.node);
+    }
+    const row = el("div", "protocol-nav");
+    const cont = el("button", "btn btn-primary", step.cta || "Continuar");
+    cont.type = "button";
+    const refresh = () => { cont.disabled = !parts.every((part) => part.ready()); };
+    cont.addEventListener("click", () => {
+      if (!parts.every((part) => part.ready())) return;
+      parts.forEach((part) => part.commit(state.answers));
+      state.path.push(index);
+      render(nextIndex(index), true);
+      window.scrollTo({ top: mount.offsetTop - 20, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+    });
+    row.appendChild(cont);
+    card.appendChild(row);
+    refresh();
+  }
+
   function renderResult(moveFocus) {
+    // Resposta de um ramo abandonado (a pessoa voltou e trocou de caminho) não chega ao resultado.
+    if (usesKit) state.answers = kit.limparForaDoCaminho(protocol.steps, state.path, state.answers);
     const result = protocol.result(state.answers);
     const grade = resultGrade(result);
     const toneClass = result.tone === "good" ? "is-good" : result.tone === "bad" ? "is-bad" : "is-mixed";
@@ -379,7 +432,7 @@ function runProtocol(protocol, mountId) {
       clearPlanState();
       state.answers = {};
       state.path = [];
-      render(0, true);
+      render(startIndex(), true);
       window.scrollTo({ top: mount.offsetTop - 20, behavior: prefersReducedMotion() ? "auto" : "smooth" });
     });
 
@@ -508,7 +561,7 @@ function runProtocol(protocol, mountId) {
     if (moveFocus) verdictHeading.focus({ preventScroll: true });
   }
 
-  render(0);
+  render(startIndex());
 }
 
 // Grau do veredito (1 a 4): SIGA, AJUSTE, ESPERE, NÃO. O desfecho declara
@@ -988,6 +1041,319 @@ function downloadTextFile(filename, content) {
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
+// ---- recursos novos (usam o kit): tipos de passo, progresso e complemento ----
+// Cada controle devolve { node, ready(), commit(answers) }: `ready` diz se a
+// resposta dele já é válida e `commit` a grava em `answers`. Só createElement e
+// textContent; nenhum texto vira HTML.
+
+const PROTOCOL_KIT_STEP_TYPES = ["multi", "scale", "grade", "triad"];
+
+// O protocolo declara algo que só o kit sabe tratar?
+function protocolNeedsKit(protocol) {
+  if (protocol.progresso === "grupos") return true;
+  return protocol.steps.some((step) =>
+    PROTOCOL_KIT_STEP_TYPES.indexOf(step.type) !== -1 ||
+    typeof step.showIf === "function" ||
+    Boolean(step.followUp) ||
+    Boolean(step.grupo) ||
+    typeof step.value === "function" ||
+    typeof step.maxLength === "number"
+  );
+}
+
+// O passo precisa de um controle próprio, em vez do clique que avança sozinho?
+function stepUsesControls(step) {
+  if (PROTOCOL_KIT_STEP_TYPES.indexOf(step.type) !== -1 || step.followUp) return true;
+  return step.type === "write" && (typeof step.value === "function" || typeof step.maxLength === "number");
+}
+
+function safeDomId(texto) {
+  return String(texto).replace(/[^A-Za-z0-9_-]/g, "");
+}
+
+// Progresso dos protocolos que usam o kit: conta só os passos visíveis e, com
+// `protocol.progresso = "grupos"`, mostra "Ato 1 · 5 de 20" com uma barra.
+// Os pontos ficam para 12 passos ou menos.
+function buildKitProgress(el, protocol, kit, index, answers) {
+  const step = protocol.steps[index];
+  const grouped = protocol.progresso === "grupos" && Boolean(step.grupo);
+  const pos = grouped
+    ? kit.posicaoNoGrupo(protocol.steps, index, answers)
+    : kit.posicaoNoProtocolo(protocol.steps, index, answers);
+  const progress = el("div", "protocol-progress");
+  progress.setAttribute("role", "progressbar");
+  progress.setAttribute("aria-valuemin", "1");
+  progress.setAttribute("aria-valuemax", String(pos.total));
+  progress.setAttribute("aria-valuenow", String(pos.posicao));
+  progress.appendChild(el("span", "protocol-progress-label",
+    grouped ? pos.grupo + " · " + pos.posicao + " de " + pos.total : "Passo " + pos.posicao + " de " + pos.total));
+  if (grouped) {
+    const track = el("span", "protocol-progress-track");
+    track.setAttribute("aria-hidden", "true");
+    const fill = el("span", "protocol-progress-fill");
+    fill.style.width = Math.round((pos.posicao / pos.total) * 100) + "%";
+    track.appendChild(fill);
+    progress.appendChild(track);
+  } else if (pos.total <= 12) {
+    const dots = el("span", "protocol-progress-dots");
+    for (let i = 1; i <= pos.total; i += 1) {
+      const dot = el("span", "protocol-progress-dot" + (i < pos.posicao ? " is-done" : i === pos.posicao ? " is-current" : ""));
+      dot.setAttribute("aria-hidden", "true");
+      dots.appendChild(dot);
+    }
+    progress.appendChild(dots);
+  }
+  return progress;
+}
+
+// Botão de marcar (aria-pressed), no mesmo gesto do .choice-row.
+function buildToggleRow(ctx, label, pressed, onClick, extraClass) {
+  const b = ctx.el("button", "choice-row" + (extraClass ? " " + extraClass : ""));
+  b.type = "button";
+  const dot = ctx.el("span", "choice-dot");
+  dot.setAttribute("aria-hidden", "true");
+  b.appendChild(dot);
+  b.appendChild(ctx.el("span", "choice-label", label));
+  b.setAttribute("aria-pressed", String(pressed));
+  b.addEventListener("click", onClick);
+  return b;
+}
+
+function buildOptionsGroup(ctx, labelledBy) {
+  const group = ctx.el("div", "protocol-options choice-list");
+  group.setAttribute("role", "group");
+  group.setAttribute("aria-labelledby", labelledBy);
+  return group;
+}
+
+function buildMainControl(step, ctx) {
+  if (step.type === "choice") return buildChoiceControl(step, ctx);
+  if (step.type === "multi") return buildMultiControl(step, ctx);
+  if (step.type === "scale") return buildScaleControl(step, ctx, step.id, "protocol-question");
+  if (step.type === "grade") return buildGradeControl(step, ctx);
+  if (step.type === "triad") return buildTriadControl(step, ctx);
+  return buildWriteControl(step, ctx, step.id, "protocol-question", false);
+}
+
+// Escolha que não avança sozinha (tem complemento): marca e espera "Continuar".
+function buildChoiceControl(step, ctx) {
+  const options = ctx.kit.opcoesDoPasso(step, ctx.answers);
+  const saved = ctx.answers[step.id];
+  let selected = options.find((o) => o.value === saved) || null;
+  const group = buildOptionsGroup(ctx, "protocol-question");
+  const rows = options.map((opt) => {
+    const b = buildToggleRow(ctx, opt.label, selected === opt, () => {
+      selected = opt;
+      rows.forEach((row) => row.setAttribute("aria-pressed", String(row === b)));
+      ctx.changed();
+    });
+    group.appendChild(b);
+    return b;
+  });
+  return {
+    node: group,
+    ready: () => selected !== null,
+    commit(answers) {
+      answers[step.id] = selected.value;
+      answers[step.id + "__label"] = selected.label;
+    },
+  };
+}
+
+// Vários: marca e desmarca; a opção `exclusive` limpa as outras (e é limpa por elas).
+function buildMultiControl(step, ctx) {
+  const options = ctx.kit.opcoesDoPasso(step, ctx.answers);
+  const first = ctx.kit.validarResposta(step, ctx.answers[step.id], ctx.answers);
+  let chosen = first.ok ? first.valor.slice() : [];
+  const group = buildOptionsGroup(ctx, "protocol-question");
+  const rows = options.map((opt) => {
+    const b = buildToggleRow(ctx, opt.label, chosen.indexOf(opt.value) !== -1, () => {
+      if (chosen.indexOf(opt.value) !== -1) {
+        chosen = chosen.filter((v) => v !== opt.value);
+      } else if (step.exclusive !== undefined && opt.value === step.exclusive) {
+        chosen = [opt.value];
+      } else {
+        chosen = chosen.filter((v) => v !== step.exclusive).concat([opt.value]);
+      }
+      rows.forEach((row, i) => row.setAttribute("aria-pressed", String(chosen.indexOf(options[i].value) !== -1)));
+      ctx.changed();
+    }, "choice-multi");
+    group.appendChild(b);
+    return b;
+  });
+  const ordered = () => options.filter((o) => chosen.indexOf(o.value) !== -1);
+  return {
+    node: group,
+    ready: () => ctx.kit.validarResposta(step, ordered().map((o) => o.value), ctx.answers).ok,
+    commit(answers) {
+      const picked = ordered();
+      answers[step.id] = picked.map((o) => o.value);
+      answers[step.id + "__labels"] = picked.map((o) => o.label);
+    },
+  };
+}
+
+// Régua em botões (sem <input type="range">): nenhum valor vem marcado, para não ancorar a resposta.
+function buildScaleControl(cfg, ctx, key, labelledBy) {
+  const min = typeof cfg.min === "number" ? cfg.min : 0;
+  const max = typeof cfg.max === "number" ? cfg.max : 10;
+  const stepSize = typeof cfg.step === "number" && cfg.step > 0 ? cfg.step : 1;
+  const check = { type: "scale", min, max, step: stepSize };
+  const saved = ctx.kit.validarResposta(check, ctx.answers[key]);
+  let value = saved.ok ? saved.valor : null;
+  const wrap = ctx.el("div", "protocol-scale");
+  const group = ctx.el("div", "protocol-scale-row");
+  group.setAttribute("role", "group");
+  group.setAttribute("aria-labelledby", labelledBy);
+  const buttons = [];
+  for (let v = min; v <= max + 1e-9; v += stepSize) {
+    const n = Math.round(v * 1e6) / 1e6;
+    const b = ctx.el("button", "protocol-scale-btn", String(n) + (cfg.format || ""));
+    b.type = "button";
+    b.setAttribute("aria-pressed", String(value === n));
+    b.addEventListener("click", () => {
+      value = n;
+      buttons.forEach((other) => other.btn.setAttribute("aria-pressed", String(other.n === value)));
+      ctx.changed();
+    });
+    buttons.push({ btn: b, n });
+    group.appendChild(b);
+  }
+  wrap.appendChild(group);
+  if (cfg.ends && (cfg.ends.min || cfg.ends.max)) {
+    const ends = ctx.el("p", "protocol-scale-ends");
+    ends.appendChild(ctx.el("span", null, cfg.ends.min || ""));
+    ends.appendChild(ctx.el("span", null, cfg.ends.max || ""));
+    wrap.appendChild(ends);
+  }
+  return {
+    node: wrap,
+    ready: () => value !== null,
+    commit(answers) { answers[key] = value; },
+  };
+}
+
+// Grade: uma linha por item, as mesmas opções (ou as do item) em cada uma.
+function buildGradeControl(step, ctx) {
+  const saved = ctx.kit.validarResposta(step, ctx.answers[step.id], ctx.answers);
+  const current = {};
+  if (saved.ok) Object.keys(saved.valor).forEach((k) => { current[k] = saved.valor[k]; });
+  const wrap = ctx.el("div", "protocol-grade");
+  step.items.forEach((item) => {
+    const row = ctx.el("div", "protocol-grade-item");
+    const labelId = "protocol-grade-" + safeDomId(step.id) + "-" + safeDomId(item.id);
+    const label = ctx.el("p", "protocol-grade-label", item.label);
+    label.id = labelId;
+    row.appendChild(label);
+    const group = ctx.el("div", "protocol-grade-options");
+    group.setAttribute("role", "group");
+    group.setAttribute("aria-labelledby", labelId);
+    const options = ctx.kit.opcoesDoPasso(item.options ? item : step, ctx.answers);
+    const buttons = options.map((opt) => {
+      const b = ctx.el("button", "protocol-grade-btn", opt.label);
+      b.type = "button";
+      b.setAttribute("aria-pressed", String(current[item.id] === opt.value));
+      b.addEventListener("click", () => {
+        current[item.id] = opt.value;
+        buttons.forEach((other, i) => other.setAttribute("aria-pressed", String(options[i].value === opt.value)));
+        ctx.changed();
+      });
+      group.appendChild(b);
+      return b;
+    });
+    row.appendChild(group);
+    wrap.appendChild(row);
+  });
+  return {
+    node: wrap,
+    ready: () => ctx.kit.validarResposta(step, current, ctx.answers).ok,
+    commit(answers) { answers[step.id] = ctx.kit.validarResposta(step, current, ctx.answers).valor; },
+  };
+}
+
+// Tríade de escolha forçada: um item é o "mais", outro o "menos", nunca o mesmo.
+function buildTriadControl(step, ctx) {
+  const labels = Object.assign({ mais: "Mais como eu", menos: "Menos como eu" }, step.labels);
+  const saved = ctx.kit.validarResposta(step, ctx.answers[step.id]);
+  const picks = { mais: saved.ok ? saved.valor.mais : null, menos: saved.ok ? saved.valor.menos : null };
+  const wrap = ctx.el("div", "protocol-triad");
+  const buttons = [];
+  const paint = () => buttons.forEach((b) => b.node.setAttribute("aria-pressed", String(picks[b.kind] === b.id)));
+  step.items.forEach((item) => {
+    const row = ctx.el("div", "protocol-triad-item");
+    const labelId = "protocol-triad-" + safeDomId(step.id) + "-" + safeDomId(item.id);
+    const label = ctx.el("p", "protocol-triad-label", item.label);
+    label.id = labelId;
+    row.appendChild(label);
+    const group = ctx.el("div", "protocol-triad-options");
+    group.setAttribute("role", "group");
+    group.setAttribute("aria-labelledby", labelId);
+    ["mais", "menos"].forEach((kind) => {
+      const other = kind === "mais" ? "menos" : "mais";
+      const b = ctx.el("button", "protocol-triad-btn is-" + kind, labels[kind]);
+      b.type = "button";
+      b.setAttribute("aria-label", labels[kind] + ": " + item.label);
+      b.addEventListener("click", () => {
+        if (picks[kind] === item.id) picks[kind] = null;
+        else {
+          picks[kind] = item.id;
+          if (picks[other] === item.id) picks[other] = null;
+        }
+        paint();
+        ctx.changed();
+      });
+      buttons.push({ node: b, kind, id: item.id });
+      group.appendChild(b);
+    });
+    row.appendChild(group);
+    wrap.appendChild(row);
+  });
+  paint();
+  return {
+    node: wrap,
+    ready: () => ctx.kit.validarResposta(step, picks).ok,
+    commit(answers) { answers[step.id] = ctx.kit.validarResposta(step, picks).valor; },
+  };
+}
+
+// Escrita. Passo principal: pode seguir em branco, como sempre. Complemento
+// (`isFollowUp`): só em branco quando declara `optional`. O texto vem
+// pré-preenchido por `value(answers)` só enquanto não há resposta.
+function buildWriteControl(cfg, ctx, key, labelledBy, isFollowUp) {
+  const ta = ctx.el("textarea", "protocol-write");
+  ta.rows = isFollowUp ? 3 : 4;
+  ta.placeholder = cfg.placeholder || "Escreva com suas palavras…";
+  ta.setAttribute("aria-labelledby", labelledBy);
+  if (typeof cfg.maxLength === "number") ta.maxLength = cfg.maxLength;
+  const saved = ctx.answers[key];
+  if (typeof saved === "string") ta.value = saved;
+  else if (typeof cfg.value === "function") ta.value = String(cfg.value(ctx.answers) || "");
+  ta.addEventListener("input", () => ctx.changed());
+  const normalized = () => {
+    const rule = isFollowUp ? ctx.kit.validarComplemento : ctx.kit.validarResposta;
+    return rule({ type: "write", maxLength: cfg.maxLength, optional: cfg.optional }, ta.value);
+  };
+  return {
+    node: ta,
+    ready: () => normalized().ok,
+    commit(answers) { answers[key] = normalized().valor; },
+  };
+}
+
+// Complemento na mesma tela: um texto curto ou uma régua, com a própria pergunta.
+function buildFollowUpControl(followUp, ctx) {
+  const box = ctx.el("section", "protocol-followup");
+  const labelId = "protocol-followup-" + safeDomId(followUp.id);
+  const label = ctx.el("p", "protocol-followup-q", ctx.resolve(followUp.prompt));
+  label.id = labelId;
+  box.appendChild(label);
+  const control = followUp.type === "scale"
+    ? buildScaleControl(followUp, ctx, followUp.id, labelId)
+    : buildWriteControl(followUp, ctx, followUp.id, labelId, true);
+  box.appendChild(control.node);
+  return { node: box, ready: control.ready, commit: control.commit };
+}
+
 // No navegador estas funções são globais; no Node os testes as carregam por require().
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
@@ -1001,5 +1367,7 @@ if (typeof module !== "undefined" && module.exports) {
     safePdfText,
     buildMarkdown,
     downloadTextFile,
+    protocolNeedsKit,
+    stepUsesControls,
   };
 }
