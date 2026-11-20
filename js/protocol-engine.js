@@ -119,7 +119,7 @@ function runProtocol(protocol, mountId) {
   // De onde veio o estado em uso: "novo", "sessao", "local" (o que ela guardou),
   // "arquivo" ou "codigo" (trazidos por ela). `base` é o estado lido, para gravar
   // um retorno de volta sem perder o resto.
-  const freshMeta = () => ({ ciclo: null, criado: null, volta: null, historico: [], lembrete: null, origem: "novo", base: null });
+  const freshMeta = () => ({ ciclo: null, criado: null, volta: null, historico: [], lembrete: null, origem: "novo", base: null, patch: null });
   let meta = freshMeta();
 
   const shortDate = (iso) => (typeof iso === "string" && iso.length >= 10 ? iso.slice(8, 10) + "/" + iso.slice(5, 7) + "/" + iso.slice(0, 4) : "");
@@ -189,6 +189,22 @@ function runProtocol(protocol, mountId) {
     return out;
   }
 
+  // Valores que o protocolo guarda no lugar de uma resposta que nunca se guarda: só verdadeiro
+  // ou falso, calculados das respostas na hora de gravar (`persist.derivar`) e restaurados como estavam.
+  const derivedKeys = () => (persist && Array.isArray(persist.derivados) ? persist.derivados : []);
+  function deriveValues(answers) {
+    if (!derivedKeys().length || typeof persist.derivar !== "function") return {};
+    let out = {};
+    try {
+      out = persist.derivar(answers) || {};
+    } catch (error) {
+      out = {};
+    }
+    const safe = {};
+    derivedKeys().forEach((key) => { if (out[key] === true) safe[key] = true; });
+    return safe;
+  }
+
   const stageFor = () => (state.path.some((i) => protocol.steps[i].type === "checkpoint") ? "ato2" : "ato1");
 
   // O estado do fluxo principal, como vai para o armazenamento. `stepIndex` é o
@@ -199,6 +215,9 @@ function runProtocol(protocol, mountId) {
     if (!meta.ciclo) meta.ciclo = kit.gerarCiclo(randomBytes());
     if (!meta.criado) meta.criado = hoje;
     const answers = kit.limparForaDoCaminho(protocol.steps, state.path, cleanAnswers());
+    const derived = deriveValues(answers);
+    derivedKeys().forEach((key) => { delete answers[key]; });
+    Object.assign(answers, derived);
     const estado = {
       esquema: kit.ESQUEMA_ESTADO,
       v: stateSchema.versao,
@@ -229,7 +248,22 @@ function runProtocol(protocol, mountId) {
   function saveLocal(estado) {
     const text = stateText(estado);
     if (text === null) return "grande";
-    return writeArea("localStorage", stateKey, text) ? "ok" : "erro";
+    if (!writeArea("localStorage", stateKey, text)) return "erro";
+    requestPersistentStorage();
+    return "ok";
+  }
+
+  // Pede ao navegador que não apague o que ela guardou (o Safari limpa o que um script
+  // escreve depois de 7 dias sem uso). É um pedido: o navegador pode negar, e nada depende da resposta.
+  function requestPersistentStorage() {
+    try {
+      if (typeof navigator !== "undefined" && navigator.storage && typeof navigator.storage.persist === "function") {
+        const asked = navigator.storage.persist();
+        if (asked && typeof asked.catch === "function") asked.catch(() => {});
+      }
+    } catch (error) {
+      // Sem a API, o arquivo (.md) continua sendo a reserva.
+    }
   }
 
   // Durante o protocolo as respostas ficam só na aba (sessionStorage): sobrevivem a
@@ -255,6 +289,16 @@ function runProtocol(protocol, mountId) {
       return { erro: read.erro };
     }
     return { estado: read.estado };
+  }
+
+  // Abrir a página com o que ela guardou conta como uso: o prazo volta a valer a partir de hoje
+  // (retenção "desde o último uso"). Não mostra nem muda nenhuma resposta.
+  function renewLocalState(estado) {
+    const novo = kit.somarDias(todayISO(), retentionDays);
+    if (estado.expira >= novo) return estado;
+    const renovado = Object.assign({}, estado, { expira: novo });
+    if (stateText(renovado) !== null) writeArea("localStorage", stateKey, JSON.stringify(renovado));
+    return renovado;
   }
 
   // Dá ao estado lido (do arquivo, do código) os campos que ele não traz e o passa pela mesma leitura estrita.
@@ -291,6 +335,7 @@ function runProtocol(protocol, mountId) {
       lembrete: estado.lembrete,
       origem,
       base: estado,
+      patch: null,
     };
   }
 
@@ -299,7 +344,7 @@ function runProtocol(protocol, mountId) {
     flow = mainFlow;
     let restored = null;
     try {
-      restored = kit.restaurarProgresso(protocol.steps, estado, persist ? persist.naoGuardar : []);
+      restored = kit.restaurarProgresso(protocol.steps, estado, persist ? persist.naoGuardar : [], derivedKeys());
     } catch (error) {
       restored = null;
     }
@@ -371,11 +416,15 @@ function runProtocol(protocol, mountId) {
   function savedPromptActions(estado, origem) {
     const actions = [];
     const concluded = estado.etapa === "concluido";
-    actions.push({
-      label: concluded ? "Ver o meu resultado" : "Continuar de onde parei",
-      primary: true,
-      onClick: () => resumeFrom(estado, origem),
-    });
+    // Um registro trazido sem respostas (só o código) não tem resultado para ver: só os retornos.
+    const hasAnswers = Boolean(estado.respostas) && Object.keys(estado.respostas).length > 0;
+    if (hasAnswers || !concluded) {
+      actions.push({
+        label: concluded ? "Ver o meu resultado" : "Continuar de onde parei",
+        primary: true,
+        onClick: () => resumeFrom(estado, origem),
+      });
+    }
     if (concluded && retornos) {
       Object.keys(retornos).forEach((marco) => {
         if (Array.isArray(retornos[marco].steps)) {
@@ -385,6 +434,7 @@ function runProtocol(protocol, mountId) {
     }
     actions.push({ label: "Começar de novo", onClick: startFresh });
     if (origem === "local") actions.push({ label: "Apagar o que está guardado", onClick: eraseAndTell });
+    if (!actions.some((action) => action.primary)) actions[0].primary = true;
     return actions;
   }
 
@@ -416,13 +466,27 @@ function runProtocol(protocol, mountId) {
       resumeFrom(estado, origem);
       return;
     }
-    const sit = kit.situacaoDoMarco(estado.volta, marco, ret.dias, todayISO());
+    let sit = kit.situacaoDoMarco(estado.volta, marco, ret.dias, todayISO());
+    // Retorno que se repete (a revisão da semana) nunca está "feito": mostra só quando foi a última.
+    const lastDone = sit.feitoEm;
+    if (ret.recorrente === true && sit.situacao === "feito") sit = { situacao: "no_dia", data: null, feitoEm: lastDone };
     const start = () => startReturn(marco, estado, origem, sit);
     const done = sit.situacao === "feito";
+    const intro = [returnIntroText(sit, ret)];
+    if (ret.recorrente === true && lastDone) intro.push("A última foi em " + shortDate(lastDone) + ".");
+    if (typeof ret.intro === "function") {
+      let extra = [];
+      try {
+        extra = ret.intro(returnContext(estado, marco));
+      } catch (error) {
+        extra = [];
+      }
+      (Array.isArray(extra) ? extra : []).forEach((text) => { if (typeof text === "string" && text) intro.push(text); });
+    }
     showScreen({
       eyebrow: ret.titulo ? "Retorno" : undefined,
       title: ret.titulo || "Retorno",
-      paragraphs: [returnIntroText(sit, ret)],
+      paragraphs: intro,
       extra: done ? (card) => {
         const feito = estado.volta.retornos[marco];
         const list = el("div", "protocol-record");
@@ -465,21 +529,46 @@ function runProtocol(protocol, mountId) {
       progresso: ret.progresso,
       seed,
       result: () => ret.result({ answers: cleanAnswers(), estado: context, hoje: todayISO(), marco, situacao: sit.situacao }),
+      recordContext: () => ({ answers: cleanAnswers(), estado: JSON.parse(JSON.stringify(context)), hoje: todayISO(), marco, situacao: sit.situacao }),
     };
     state.answers = seed();
     state.path = [];
     render(startIndex(), true);
   }
 
+  // As respostas do retorno que podem ir para o ciclo guardado: sem as dos passos que nunca se guardam.
+  function storableReturnAnswers() {
+    const never = persist && Array.isArray(persist.naoGuardar) ? persist.naoGuardar : [];
+    const keep = flow.steps.filter((step) => never.indexOf(step.id) === -1).map((step) => step.id);
+    return kit.limparForaDoCaminho(flow.steps, keep, cleanAnswers());
+  }
+
   // O retorno terminado entra no ciclo guardado. Se ela guardou no aparelho, grava;
-  // se trouxe de fora, só grava quando ela escolher guardar.
+  // se trouxe de fora, só grava quando ela escolher guardar. O retorno que declara
+  // `gravar(ctx)` decide sozinho o que muda (uma volta nova, por exemplo): devolve
+  // { volta, historico, respostas?, caminho? } ou null para não mudar nada.
   function recordReturn() {
+    const ret = retornos[flow.marco] || {};
+    if (typeof ret.gravar === "function") {
+      let out = null;
+      try {
+        out = ret.gravar(flow.recordContext());
+      } catch (error) {
+        out = null;
+      }
+      if (!out || typeof out !== "object") return false;
+      if (out.volta) meta.volta = out.volta;
+      if (Array.isArray(out.historico)) meta.historico = out.historico;
+      meta.patch = out.respostas ? { respostas: out.respostas, caminho: Array.isArray(out.caminho) ? out.caminho : [] } : null;
+      return true;
+    }
     const volta = meta.volta
       ? JSON.parse(JSON.stringify(meta.volta))
       : { n: 1, dia0: null, registro: null, retornos: {} };
     volta.retornos = volta.retornos || {};
-    volta.retornos[flow.marco] = { em: todayISO(), r: cleanAnswers() };
+    volta.retornos[flow.marco] = { em: todayISO(), r: storableReturnAnswers() };
     meta.volta = volta;
+    return true;
   }
 
   function stateWithReturn() {
@@ -488,6 +577,13 @@ function runProtocol(protocol, mountId) {
     const base = meta.base ? JSON.parse(JSON.stringify(meta.base)) : null;
     if (!base) return null;
     base.volta = meta.volta;
+    base.historico = meta.historico;
+    if (meta.patch) {
+      base.respostas = JSON.parse(JSON.stringify(meta.patch.respostas));
+      base.caminho = meta.patch.caminho.slice();
+      base.etapa = "concluido";
+      base.passo = null;
+    }
     base.atualizado = now.toISOString();
     base.expira = kit.somarDias(hoje, retentionDays);
     return base;
@@ -642,6 +738,7 @@ function runProtocol(protocol, mountId) {
     // Só o que é nosso é limpo da barra: marco que não existe, código ou o #c= recusado.
     if (/^#?(?:volta|c)=/.test(hash) && !(found && found.marco)) cleanHash();
     const local = readStored("localStorage");
+    if (local && local.estado) local.estado = renewLocalState(local.estado);
 
     if (found && found.marco) {
       if (local && local.estado) showReturnIntro(found.marco, local.estado, "local");
@@ -937,7 +1034,8 @@ function runProtocol(protocol, mountId) {
       }
       return null;
     }
-    recordReturn();
+    if (result.guardar === false) return null;
+    if (!recordReturn()) return null;
     if (meta.origem !== "local") return null;
     const estado = stateWithReturn();
     const saved = estado ? saveLocal(estado) : "erro";
@@ -965,7 +1063,7 @@ function runProtocol(protocol, mountId) {
   // grava por ação dela e diz o que fez em texto. Retorno que veio de fora também pode ser guardado.
   function buildSaveControl(result) {
     if (!persist) return null;
-    const offer = flow === mainFlow ? result.guardar === true : meta.origem !== "local";
+    const offer = flow === mainFlow ? result.guardar === true : meta.origem !== "local" && result.guardar !== false;
     if (!offer) return null;
     const button = el("button", "btn btn-secondary protocol-save", "Guardar neste aparelho para os retornos");
     button.type = "button";

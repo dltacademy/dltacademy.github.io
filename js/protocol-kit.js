@@ -597,7 +597,7 @@
   // de `naoGuardar` nunca estão no estado: são pulados, e quem parou dentro do
   // bloco deles (o `passo` do estado está nele) recomeça no primeiro. Devolve { respostas, caminho (índices),
   // indice (steps.length = tudo respondido), descartou }.
-  function restaurarProgresso(steps, estado, naoGuardar) {
+  function restaurarProgresso(steps, estado, naoGuardar, derivados) {
     var nao = Array.isArray(naoGuardar) ? naoGuardar : [];
     var respostas = {};
     var caminho = [];
@@ -628,6 +628,11 @@
         caminho = caminho.filter(function (i) { return i < primeiro; });
       }
     }
+    // Valores derivados que o protocolo guarda no lugar da resposta que nunca se guarda (um
+    // verdadeiro ou falso): voltam como estavam, só se forem verdadeiros.
+    (Array.isArray(derivados) ? derivados : []).forEach(function (chave) {
+      if (typeof chave === "string" && RE_ID.test(chave) && guardadas[chave] === true) respostas[chave] = true;
+    });
     return { respostas: respostas, caminho: caminho, indice: indice, descartou: pos < ids.length };
   }
 
