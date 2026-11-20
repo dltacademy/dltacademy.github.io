@@ -987,3 +987,19 @@ function downloadTextFile(filename, content) {
   a.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
 }
+
+// No navegador estas funções são globais; no Node os testes as carregam por require().
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    runProtocol,
+    resultGrade,
+    buildVerdictPill,
+    buildLadder,
+    buildPaidReportOffer,
+    paidReportCheckoutUrl,
+    paidReportPageUrl,
+    safePdfText,
+    buildMarkdown,
+    downloadTextFile,
+  };
+}
