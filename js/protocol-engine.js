@@ -101,7 +101,7 @@ function runProtocol(protocol, mountId) {
     id: "principal",
     steps: protocol.steps,
     progresso: protocol.progresso,
-    result: (answers) => protocol.result(answers),
+    result: (answers) => protocol.result(answers, cycleContext()),
   };
   let flow = mainFlow;
   const persist = protocol.persist || null;
@@ -124,6 +124,14 @@ function runProtocol(protocol, mountId) {
 
   const shortDate = (iso) => (typeof iso === "string" && iso.length >= 10 ? iso.slice(8, 10) + "/" + iso.slice(5, 7) + "/" + iso.slice(0, 4) : "");
   const todayISO = () => kit.dataISO(new Date());
+
+  // O que o resultado (e o checkpoint) recebe além das respostas: o ciclo, o dia de hoje e o
+  // que já está guardado da volta. O ciclo nasce aqui, na primeira vez em que alguém pede.
+  function cycleContext() {
+    if (!cycleEnabled) return undefined;
+    if (!meta.ciclo) meta.ciclo = kit.gerarCiclo(randomBytes());
+    return { ciclo: meta.ciclo, hoje: todayISO(), volta: meta.volta, historico: meta.historico, lembrete: meta.lembrete, origem: meta.origem };
+  }
 
   // Armazenamento: qualquer acesso pode falhar (janela privada, bloqueio, cota).
   // Sem ele o protocolo segue em memória.
@@ -814,7 +822,7 @@ function runProtocol(protocol, mountId) {
   // continuar agora ou guardar e continuar depois.
   function renderCheckpoint(step, index, moveFocus) {
     const answers = kit.limparForaDoCaminho(flow.steps, state.path, state.answers);
-    const result = step.render(answers);
+    const result = step.render(answers, cycleContext());
     const grade = resultGrade(result);
     const toneClass = result.tone === "good" ? "is-good" : result.tone === "bad" ? "is-bad" : "is-mixed";
     const card = el("div", "protocol-card protocol-result protocol-checkpoint " + toneClass);

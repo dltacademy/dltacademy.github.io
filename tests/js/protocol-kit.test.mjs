@@ -462,6 +462,14 @@ test("o checkpoint não entra na contagem de passos", () => {
   assert.equal(kit.passosVisiveis(FLUXO, { p1: "x" }).length, FLUXO.length - 1);
 });
 
+test("resumoDasRespostas calcula o rótulo quando o estado só guardou o valor", () => {
+  const passos = [
+    { id: "a", type: "choice", prompt: "A?", options: [{ value: "x", label: "Xis" }] },
+    { id: "b", type: "multi", prompt: "B?", options: [{ value: "p", label: "Pê" }, { value: "q", label: "Quê" }] },
+  ];
+  assert.deepEqual(kit.resumoDasRespostas(passos, { a: "x", b: ["q", "p"] }), [{ q: "A?", value: "Xis" }, { q: "B?", value: "q, p" }].map((l, i) => (i === 1 ? { q: "B?", value: "Quê, Pê" } : l)));
+});
+
 test("resumoDasRespostas escreve rótulos, não valores", () => {
   const passos = [
     { id: "a", type: "choice", prompt: "Pergunta A?", options: [{ value: "x", label: "X" }] },

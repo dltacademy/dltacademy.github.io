@@ -667,8 +667,14 @@
       if (step.type === "checkpoint" || !Object.prototype.hasOwnProperty.call(answers, step.id)) return;
       var valor = answers[step.id];
       var texto;
-      if (step.type === "choice") texto = answers[step.id + "__label"];
-      else if (step.type === "multi") texto = (answers[step.id + "__labels"] || []).join(", ");
+      var rotuloDe = function (v) {
+        var achada = opcoesDoPasso(step, answers).filter(function (o) { return o.value === v; })[0];
+        return achada ? achada.label : String(v);
+      };
+      if (step.type === "choice") texto = answers[step.id + "__label"] !== undefined ? answers[step.id + "__label"] : rotuloDe(valor);
+      else if (step.type === "multi") {
+        texto = (Array.isArray(answers[step.id + "__labels"]) ? answers[step.id + "__labels"] : (Array.isArray(valor) ? valor : []).map(rotuloDe)).join(", ");
+      }
       else if (step.type === "grade" && ehObjetoSimples(valor)) {
         texto = (step.items || []).map(function (item) {
           var o = opcoesDoPasso(item.options ? item : step, answers).filter(function (x) { return x.value === valor[item.id]; })[0];
