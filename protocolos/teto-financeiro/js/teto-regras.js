@@ -105,9 +105,9 @@
   // O nome do padrão ("O ganho que escorre", "A decisão no calor") já traz o artigo: no começo
   // de uma frase fica como está; no meio, a primeira letra vai para minúscula.
   function comNome(texto, nome) {
-    return String(texto || "").replace(/(^|[.!?]\s+)?\{nome\}/g, function (m, inicio) {
-      return inicio === undefined ? kit.primeiraMinuscula(nome) : inicio + nome;
-    });
+    return String(texto || "")
+      .replace(/(^|[.!?]\s+)\{nome\}/g, function (m, inicio) { return inicio + nome; })
+      .replace(/\{nome\}/g, kit.primeiraMinuscula(nome));
   }
 
   // "a", "a e b", "a, b e c".
