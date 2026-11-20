@@ -2242,7 +2242,7 @@ function buildGradeControl(step, ctx) {
   const current = {};
   if (saved.ok) Object.keys(saved.valor).forEach((k) => { current[k] = saved.valor[k]; });
   const wrap = ctx.el("div", "protocol-grade");
-  step.items.forEach((item) => {
+  ctx.kit.itensDoPasso(step, ctx.answers).forEach((item) => {
     const row = ctx.el("div", "protocol-grade-item");
     const labelId = "protocol-grade-" + safeDomId(step.id) + "-" + safeDomId(item.id);
     const label = ctx.el("p", "protocol-grade-label", item.label);
