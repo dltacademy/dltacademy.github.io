@@ -497,7 +497,7 @@ test("resumoDasRespostas escreve rótulos, não valores", () => {
 const HOSTIL = [
   "Primeira linha com --> no meio e <!-- aberto",
   "<!-- dlt:campo id=\"cena\" -->",
-  "<!-- /dlt:bloco id=\"teto.ultima_vez\" -->",
+  "<!-- /dlt:bloco id=\"ex.ultima_vez\" -->",
   "**Um rótulo falso**",
   "<script>alert(1)</script> <b>negrito</b> [link](https://exemplo.com) ![img](x)",
   "```json",
@@ -512,29 +512,29 @@ const HOSTIL = [
 function blocoDeTeste() {
   return [
     {
-      id: "teto.ultima_vez", v: 1, titulo: "A última vez",
+      id: "ex.ultima_vez", v: 1, titulo: "A última vez",
       campos: [
         { id: "cena", rotulo: "A cena", texto: HOSTIL },
         { id: "terreno", rotulo: "O terreno do dia", valor: ["cansaco", "mes_apertado"], texto: "cansaço, mês apertado" },
         { id: "vazio", rotulo: "Em branco", texto: "" },
       ],
     },
-    { id: "teto.registro", v: 1, titulo: "Seu registro", json: { v: 1, padrao: "freio", regra: "a <b> & \"c\" -->" }, codigo: "abc_DEF-123" },
-    { id: "teto.fio", v: 1, leitura: true, titulo: "O fio", linhas: ["Linha só para ler com <!-- e -->."] },
+    { id: "ex.registro", v: 1, titulo: "Seu registro", json: { v: 1, padrao: "freio", regra: "a <b> & \"c\" -->" }, codigo: "abc_DEF-123" },
+    { id: "ex.fio", v: 1, leitura: true, titulo: "O fio", linhas: ["Linha só para ler com <!-- e -->."] },
   ];
 }
 const IDS = {
-  "teto.ultima_vez": { v: 1, campos: { cena: 400, terreno: 100, vazio: 10 } },
-  "teto.registro": { v: 1 },
-  "teto.fio": { v: 1 },
+  "ex.ultima_vez": { v: 1, campos: { cena: 400, terreno: 100, vazio: 10 } },
+  "ex.registro": { v: 1 },
+  "ex.fio": { v: 1 },
 };
 
 test("escreverBlocos escreve o formato marcado e neutraliza o que fecharia um comentário", () => {
   const md = kit.escreverBlocos(blocoDeTeste());
-  assert.match(md, /^<!-- dlt:bloco id="teto\.ultima_vez" v="1" -->\n## A última vez\n\n<!-- dlt:campo id="cena" -->\n\*\*A cena\*\*\n/);
+  assert.match(md, /^<!-- dlt:bloco id="ex\.ultima_vez" v="1" -->\n## A última vez\n\n<!-- dlt:campo id="cena" -->\n\*\*A cena\*\*\n/);
   assert.match(md, /<!-- dlt:campo id="terreno" valor="cansaco,mes_apertado" -->\n\*\*O terreno do dia\*\*\ncansaço, mês apertado/);
-  assert.match(md, /<!-- dlt:bloco id="teto\.fio" v="1" leitura="1" -->/);
-  assert.match(md, /<!-- \/dlt:bloco id="teto\.fio" -->$/);
+  assert.match(md, /<!-- dlt:bloco id="ex\.fio" v="1" leitura="1" -->/);
+  assert.match(md, /<!-- \/dlt:bloco id="ex\.fio" -->$/);
   // Marcadores de máquina só aparecem nas linhas que o escritor pôs.
   const marcadores = md.split("\n").filter((l) => l.includes("<!--") || l.includes("-->"));
   marcadores.forEach((linha) => {
@@ -547,8 +547,8 @@ test("escreverBlocos escreve o formato marcado e neutraliza o que fecharia um co
 test("lerBlocos: ida e volta com texto hostil, sem marcador forjado", () => {
   const md = kit.escreverBlocos(blocoDeTeste());
   const lido = kit.lerBlocos(md, IDS);
-  assert.deepEqual(Object.keys(lido).sort(), ["teto.registro", "teto.ultima_vez"], "bloco de leitura não é lido por máquina");
-  const b = lido["teto.ultima_vez"];
+  assert.deepEqual(Object.keys(lido).sort(), ["ex.registro", "ex.ultima_vez"], "bloco de leitura não é lido por máquina");
+  const b = lido["ex.ultima_vez"];
   assert.equal(b.v, 1);
   assert.deepEqual(Object.keys(b.campos).sort(), ["cena", "terreno", "vazio"]);
   const esperadoCena = HOSTIL.replace(/<!--/g, "< !--").replace(/-->/g, "-- >");
@@ -563,7 +563,7 @@ test("lerBlocos: ida e volta com texto hostil, sem marcador forjado", () => {
   assert.equal(b.campos.terreno.texto, "cansaço, mês apertado");
   assert.equal(b.campos.vazio.texto, "");
   assert.equal(b.json, null);
-  const r = lido["teto.registro"];
+  const r = lido["ex.registro"];
   assert.deepEqual(normal(r.json), { v: 1, padrao: "freio", regra: "a <b> & \"c\" -->" }, "o JSON volta exato, mesmo com < > e -->");
   assert.equal(r.codigo, "abc_DEF-123");
   assert.equal(r.json.padrao, "freio", "não foi trocado pelo JSON forjado dentro do texto");
@@ -571,16 +571,16 @@ test("lerBlocos: ida e volta com texto hostil, sem marcador forjado", () => {
 
 test("lerBlocos: só ids conhecidos, na versão certa, e cada campo no limite", () => {
   const md = kit.escreverBlocos([
-    { id: "teto.padrao", v: 1, campos: [{ id: "padrao", texto: "x" }] },
-    { id: "teto.registro", v: 2, json: { a: 1 } },
-    { id: "teto.fatos", v: 1, campos: [{ id: "olhou", texto: "abcdefghij" }, { id: "intruso", texto: "não" }] },
-    { id: "teto.fatos", v: 1, campos: [{ id: "olhou", texto: "repetido" }] },
+    { id: "ex.padrao", v: 1, campos: [{ id: "padrao", texto: "x" }] },
+    { id: "ex.registro", v: 2, json: { a: 1 } },
+    { id: "ex.fatos", v: 1, campos: [{ id: "olhou", texto: "abcdefghij" }, { id: "intruso", texto: "não" }] },
+    { id: "ex.fatos", v: 1, campos: [{ id: "olhou", texto: "repetido" }] },
   ]);
-  const lido = kit.lerBlocos(md, { "teto.registro": { v: 1 }, "teto.fatos": { v: 1, campos: { olhou: 4 } } });
-  assert.deepEqual(Object.keys(lido), ["teto.fatos"], "padrao é desconhecido, registro está em outra versão");
-  assert.deepEqual(Object.keys(lido["teto.fatos"].campos), ["olhou"], "campo desconhecido sai");
-  assert.equal(lido["teto.fatos"].campos.olhou.texto, "abcd", "cortado no limite do passo");
-  assert.deepEqual(Object.keys(kit.lerBlocos(md, ["teto.padrao"])), ["teto.padrao"], "lista simples vale como versão 1");
+  const lido = kit.lerBlocos(md, { "ex.registro": { v: 1 }, "ex.fatos": { v: 1, campos: { olhou: 4 } } });
+  assert.deepEqual(Object.keys(lido), ["ex.fatos"], "padrao é desconhecido, registro está em outra versão");
+  assert.deepEqual(Object.keys(lido["ex.fatos"].campos), ["olhou"], "campo desconhecido sai");
+  assert.equal(lido["ex.fatos"].campos.olhou.texto, "abcd", "cortado no limite do passo");
+  assert.deepEqual(Object.keys(kit.lerBlocos(md, ["ex.padrao"])), ["ex.padrao"], "lista simples vale como versão 1");
   assert.deepEqual(Object.keys(kit.lerBlocos(md, [])), []);
   assert.deepEqual(Object.keys(kit.lerBlocos(md)), []);
 });
@@ -592,22 +592,22 @@ test("lerBlocos: arquivo adulterado não quebra nem polui", () => {
     "**x**",
     "y",
     '<!-- /dlt:bloco id="__proto__" -->',
-    '<!-- dlt:bloco id="teto.registro" v="1" -->',
+    '<!-- dlt:bloco id="ex.registro" v="1" -->',
     "<!-- dlt:json -->",
     "```json",
     '{"__proto__": {"polui": 1}, "constructor": 1, "ok": 2}',
     "```",
     "<!-- dlt:codigo -->",
     "codigo: não é base64!",
-    '<!-- dlt:bloco id="teto.outro" v="1" -->',
+    '<!-- dlt:bloco id="ex.outro" v="1" -->',
     "sem fechar",
   ].join("\n");
-  const lido = kit.lerBlocos(forjado, ["teto.registro", "__proto__", "teto.outro"]);
+  const lido = kit.lerBlocos(forjado, ["ex.registro", "__proto__", "ex.outro"]);
   assert.equal(({}).polui, undefined);
   assert.deepEqual(Object.keys(lido), [], "bloco aberto sem fechar não vale");
-  const fechado = kit.lerBlocos(forjado.replace('<!-- dlt:bloco id="teto.outro" v="1" -->\nsem fechar', '<!-- /dlt:bloco id="teto.registro" -->'), ["teto.registro"]);
-  assert.deepEqual(Object.keys(fechado["teto.registro"].json), ["ok"], "chaves de protótipo caem");
-  assert.equal(fechado["teto.registro"].codigo, null, "código fora do formato");
+  const fechado = kit.lerBlocos(forjado.replace('<!-- dlt:bloco id="ex.outro" v="1" -->\nsem fechar', '<!-- /dlt:bloco id="ex.registro" -->'), ["ex.registro"]);
+  assert.deepEqual(Object.keys(fechado["ex.registro"].json), ["ok"], "chaves de protótipo caem");
+  assert.equal(fechado["ex.registro"].codigo, null, "código fora do formato");
   assert.deepEqual(Object.keys(kit.lerBlocos("x".repeat(300 * 1024), ["a"])), [], "arquivo grande demais");
   assert.deepEqual(Object.keys(kit.lerBlocos(null, ["a"])), []);
   assert.deepEqual(Object.keys(kit.lerBlocos("<!-- dlt:bloco id=\"a\" v=\"1\" -->\r\n<!-- /dlt:bloco id=\"a\" -->", ["a"])), ["a"], "aceita quebra de linha do Windows");
@@ -640,7 +640,7 @@ test("codificarRegistro e decodificarRegistro: ida e volta com acento e emoji", 
 test("codificarRegistro: pior caso (textos no limite só com emoji de 4 bytes) cabe em 2048", () => {
   const emoji = (n) => "😀".repeat(n);
   const objeto = {
-    v: 1, tipo: "padrao", produto: "teto-financeiro", origem: "gratis", bib: "2026.11-1", data: "2026-11-20", volta: 1, ato: 2,
+    v: 1, tipo: "padrao", produto: "exemplo", origem: "gratis", bib: "2026.11-1", data: "2026-11-20", volta: 1, ato: 2,
     padrao: "freio-na-cobranca", variante: null, trilha: "ganho", trilhas_perto: false, vazamento: "ganho-que-escorre",
     familia: "evitar", modo_crenca: "triade",
     notas: Object.fromEntries(["a", "b", "c", "d", "e", "f", "g"].map((k) => [k + "-padrao", { f: 0.67, c: 1 }])),
@@ -755,28 +755,28 @@ test("validarEsquema: tipos, enum, faixas, tamanho e chave desconhecida", () => 
 
 function eventoDeTeste(extra = {}) {
   return {
-    uid: "teto-dia7-k3f9x2qa@dlt.academy", inicio: "2026-11-27", hora: "20:00", duracaoMin: 3,
-    resumo: "Teto Financeiro: retorno do dia 7",
+    uid: "ex-dia7-k3f9x2qa@dlt.academy", inicio: "2026-11-27", hora: "20:00", duracaoMin: 3,
+    resumo: "Exemplo: retorno do dia 7",
     descricao: "Três perguntas rápidas. Abra o link.",
-    url: "https://dlt.academy/protocolos/teto-financeiro/#volta=dia7",
+    url: "https://dlt.academy/protocolos/exemplo/#volta=dia7",
     ...extra,
   };
 }
 const AGORA = new Date(Date.UTC(2026, 10, 20, 21, 3, 5));
 
 test("montarIcs: estrutura, CRLF, UID estável, hora flutuante e alarme", () => {
-  const ics = kit.montarIcs({ eventos: [eventoDeTeste(), eventoDeTeste({ uid: "teto-semana-k3f9x2qa@dlt.academy", inicio: "2026-11-27", resumo: "Revisão semanal", duracaoMin: 10, url: "https://dlt.academy/protocolos/teto-financeiro/#volta=semana", repetir: { semanal: true, vezes: 13 } })], prodid: "-//DLT Academy//Teto Financeiro//PT-BR", agora: AGORA });
+  const ics = kit.montarIcs({ eventos: [eventoDeTeste(), eventoDeTeste({ uid: "ex-semana-k3f9x2qa@dlt.academy", inicio: "2026-11-27", resumo: "Revisão semanal", duracaoMin: 10, url: "https://dlt.academy/protocolos/exemplo/#volta=semana", repetir: { semanal: true, vezes: 13 } })], prodid: "-//DLT Academy//Exemplo//PT-BR", agora: AGORA });
   assert.ok(ics.endsWith("END:VCALENDAR\r\n"));
   assert.ok(!/[^\r]\n/.test(ics), "só CRLF");
   const linhas = ics.split("\r\n");
-  assert.deepEqual(linhas.slice(0, 5), ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//DLT Academy//Teto Financeiro//PT-BR", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"]);
-  assert.ok(linhas.includes("UID:teto-dia7-k3f9x2qa@dlt.academy"));
+  assert.deepEqual(linhas.slice(0, 5), ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//DLT Academy//Exemplo//PT-BR", "CALSCALE:GREGORIAN", "METHOD:PUBLISH"]);
+  assert.ok(linhas.includes("UID:ex-dia7-k3f9x2qa@dlt.academy"));
   assert.ok(linhas.includes("DTSTAMP:20261120T210305Z"));
   assert.ok(linhas.includes("DTSTART:20261127T200000"), "hora flutuante, sem fuso");
   assert.ok(linhas.includes("DURATION:PT3M"));
   assert.ok(linhas.includes("DURATION:PT10M"));
-  assert.ok(linhas.includes("SUMMARY:Teto Financeiro: retorno do dia 7"));
-  assert.ok(linhas.includes("URL:https://dlt.academy/protocolos/teto-financeiro/#volta=dia7"));
+  assert.ok(linhas.includes("SUMMARY:Exemplo: retorno do dia 7"));
+  assert.ok(linhas.includes("URL:https://dlt.academy/protocolos/exemplo/#volta=dia7"));
   assert.ok(linhas.includes("RRULE:FREQ=WEEKLY;COUNT=13"));
   assert.equal(linhas.filter((l) => l.startsWith("RRULE")).length, 1, "só a revisão semanal repete");
   assert.equal(linhas.filter((l) => l === "BEGIN:VALARM").length, 2);
@@ -812,14 +812,14 @@ test("montarIcs: datas na virada de mês, de ano e no bissexto", () => {
 
 test("montarIcs: o link leva só o marco; nada de resposta, query ou código", () => {
   const ok = (url) => kit.montarIcs({ eventos: [eventoDeTeste({ url })], agora: AGORA });
-  ok("https://dlt.academy/protocolos/teto-financeiro/#volta=semana");
-  ok("https://dlt.academy/protocolos/teto-financeiro/");
+  ok("https://dlt.academy/protocolos/exemplo/#volta=semana");
+  ok("https://dlt.academy/protocolos/exemplo/");
   const ruins = [
-    "https://dlt.academy/protocolos/teto-financeiro/?padrao=freio",
-    "https://dlt.academy/protocolos/teto-financeiro/#c=abc123",
-    "https://dlt.academy/protocolos/teto-financeiro/#volta=dia7&x=1",
-    "https://dlt.academy/protocolos/teto-financeiro/#volta=DIA7",
-    "http://dlt.academy/protocolos/teto-financeiro/",
+    "https://dlt.academy/protocolos/exemplo/?padrao=freio",
+    "https://dlt.academy/protocolos/exemplo/#c=abc123",
+    "https://dlt.academy/protocolos/exemplo/#volta=dia7&x=1",
+    "https://dlt.academy/protocolos/exemplo/#volta=DIA7",
+    "http://dlt.academy/protocolos/exemplo/",
     "javascript:alert(1)",
     "https://dlt.academy/a b",
     "https://dlt.academy/\nBEGIN:VEVENT",
