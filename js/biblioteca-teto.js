@@ -1737,6 +1737,18 @@
       }
     },
     "retornos": {
+      "comum": {
+        "seguranca": "Se isto pesar, pare por aqui: o CVV atende pelo 188, a qualquer hora.",
+        "deslize_intro": "Deslize não é recaída. São 90 segundos e um passo menor, sem nota e sem sequência.",
+        "deslize_fecho": "O plano travou, e você usou os 90 segundos. O próximo passo ficou pela metade: {metade}.",
+        "proximo": "O próximo retorno é o {retorno}, em {data}.",
+        "proximo_volta": "No dia 90, em {data}, vem a volta curta, com o antes e o depois.",
+        "sem_data": "Quando os sinais voltarem, a volta curta está aqui, a qualquer momento.",
+        "registrado": "O que você registrou",
+        "daqui": "Daqui para a frente",
+        "rotulo_arquivo": "teto-financeiro",
+        "rascunho": true
+      },
       "dia3": {
         "titulo": "Retorno do dia 3",
         "perguntas": [
@@ -1762,7 +1774,11 @@
           {
             "id": "aconteceu",
             "tipo": "write",
-            "prompt": "O que a regra antiga previa, e o que aconteceu?"
+            "prompt": "O que a regra antiga previa, e o que aconteceu?",
+            "prompt_previsao": "A regra antiga previa: “{previsao}”. O que aconteceu?",
+            "prompt_nao": "O que atrapalhou?",
+            "placeholder": "Escreva com as suas palavras.",
+            "max": 400
           },
           {
             "id": "crenca",
@@ -1770,9 +1786,29 @@
             "prompt": "Quanto você acredita na previsão agora?",
             "min": 0,
             "max": 100,
-            "step": 10
+            "step": 10,
+            "ends": {
+              "min": "Nada",
+              "max": "Totalmente"
+            }
           }
         ],
+        "resultado": {
+          "verdict": "Dia 3 anotado",
+          "fez": {
+            "sim": "Você fez o experimento. Isso conta, qualquer que tenha sido o resultado.",
+            "em_parte": "Você fez uma parte. Uma parte também é evidência.",
+            "nao": "Desta vez você não fez. Sem julgamento: o que atrapalhou também é informação, e o dia 5 é outra chance."
+          },
+          "previsao": "A previsão era: “{previsao}”.",
+          "crenca_antes": "Você acreditava nela em {antes}% e agora acredita em {agora}%.",
+          "crenca_agora": "Hoje você acredita nela em {agora}%.",
+          "crenca": {
+            "subiu": "A crença subiu.",
+            "igual": "A crença ficou onde estava.",
+            "caiu": "A crença caiu."
+          }
+        },
         "rascunho": true
       },
       "dia7": {
@@ -1794,9 +1830,43 @@
             ]
           },
           {
+            "id": "deslize_fato",
+            "tipo": "write",
+            "prompt": "O que aconteceu, sem adjetivo?",
+            "placeholder": "Ex.: mandei a proposta com desconto na terça.",
+            "max": 400,
+            "so_se": "travou"
+          },
+          {
+            "id": "deslize_gentileza",
+            "tipo": "write",
+            "prompt": "Uma frase de gentileza consigo, como você diria a um amigo.",
+            "placeholder": "Ex.: Foi uma semana pesada, e você fez o que deu.",
+            "max": 300,
+            "so_se": "travou"
+          },
+          {
+            "id": "deslize_bem",
+            "tipo": "write",
+            "prompt": "Uma coisa que você já fez bem nessas semanas.",
+            "placeholder": "Ex.: percebi o aperto antes de responder.",
+            "max": 300,
+            "so_se": "travou"
+          },
+          {
+            "id": "deslize_metade",
+            "tipo": "write",
+            "prompt": "O próximo passo, pela metade do tamanho.",
+            "ajuda": "Se não souber por onde começar, o passo que não tem como falhar é: {degrau0}.",
+            "placeholder": "Ex.: escrever o preço, sem mandar.",
+            "max": 300,
+            "so_se": "travou"
+          },
+          {
             "id": "acertou",
             "tipo": "choice",
             "prompt": "A regra antiga acertou?",
+            "prompt_previsao": "A previsão era: “{previsao}”. Ela acertou?",
             "opcoes": [
               {
                 "value": "acertou",
@@ -1818,7 +1888,11 @@
             "prompt": "Quanto você acredita nela agora?",
             "min": 0,
             "max": 100,
-            "step": 10
+            "step": 10,
+            "ends": {
+              "min": "Nada",
+              "max": "Totalmente"
+            }
           },
           {
             "id": "passo",
@@ -1840,6 +1914,32 @@
             ]
           }
         ],
+        "resultado": {
+          "verdict": "Dia 7 anotado",
+          "travou": {
+            "sim": "O plano travou em algum ponto, e isso é parte do caminho.",
+            "nao": "O plano andou sem travar."
+          },
+          "acertou": {
+            "acertou": "A regra antiga acertou desta vez. Vale olhar o que ela estava protegendo.",
+            "em_parte": "A regra antiga acertou em parte.",
+            "errou": "A regra antiga errou desta vez: a previsão não se confirmou."
+          },
+          "passo": {
+            "mantem": "Os próximos 7 dias seguem no mesmo degrau.",
+            "sobe": "Os próximos 7 dias sobem um degrau.",
+            "desce": "Os próximos 7 dias descem um degrau, para o passo caber na semana."
+          },
+          "oferta_titulo": "Se quiser aprofundar com o que você viu nesta semana",
+          "oferta": "Você escolheu o padrão {nome}. Agora que o plano passou pela vida real, o Teto avançado reescreve o plano com essa evidência.",
+          "crenca_antes": "Você acreditava nela em {antes}% e agora acredita em {agora}%.",
+          "crenca_agora": "Hoje você acredita nela em {agora}%.",
+          "crenca": {
+            "subiu": "A crença subiu.",
+            "igual": "A crença ficou onde estava.",
+            "caiu": "A crença caiu."
+          }
+        },
         "rascunho": true
       },
       "dia30": {
@@ -1861,6 +1961,39 @@
             ]
           },
           {
+            "id": "deslize_fato",
+            "tipo": "write",
+            "prompt": "O que aconteceu, sem adjetivo?",
+            "placeholder": "Ex.: mandei a proposta com desconto na terça.",
+            "max": 400,
+            "so_se": "travou"
+          },
+          {
+            "id": "deslize_gentileza",
+            "tipo": "write",
+            "prompt": "Uma frase de gentileza consigo, como você diria a um amigo.",
+            "placeholder": "Ex.: Foi uma semana pesada, e você fez o que deu.",
+            "max": 300,
+            "so_se": "travou"
+          },
+          {
+            "id": "deslize_bem",
+            "tipo": "write",
+            "prompt": "Uma coisa que você já fez bem nessas semanas.",
+            "placeholder": "Ex.: percebi o aperto antes de responder.",
+            "max": 300,
+            "so_se": "travou"
+          },
+          {
+            "id": "deslize_metade",
+            "tipo": "write",
+            "prompt": "O próximo passo, pela metade do tamanho.",
+            "ajuda": "Se não souber por onde começar, o passo que não tem como falhar é: {degrau0}.",
+            "placeholder": "Ex.: escrever o preço, sem mandar.",
+            "max": 300,
+            "so_se": "travou"
+          },
+          {
             "id": "fatos",
             "tipo": "grade",
             "prompt": "Os fatos dos últimos 30 dias, de novo."
@@ -1869,6 +2002,7 @@
             "id": "vazamento",
             "tipo": "choice",
             "prompt": "O vazamento em observação apareceu?",
+            "prompt_nome": "O vazamento em observação (“{nome}”) apareceu?",
             "opcoes": [
               {
                 "value": "sim",
@@ -1886,6 +2020,19 @@
             "so_se": "vazamento"
           }
         ],
+        "resultado": {
+          "verdict": "Dia 30 anotado",
+          "travou": {
+            "sim": "O plano travou em algum ponto, e você usou os 90 segundos.",
+            "nao": "O plano andou sem travar."
+          },
+          "fatos_titulo": "Os fatos, contra o dia 0",
+          "vazamento": {
+            "sim": "O vazamento apareceu. É o alvo da próxima volta.",
+            "um_pouco": "O vazamento apareceu um pouco. Vale seguir observando.",
+            "nao": "O vazamento não apareceu nestes 30 dias."
+          }
+        },
         "rascunho": true
       },
       "dia90": {
@@ -1953,13 +2100,170 @@
                 "label": "Não"
               }
             ]
+          },
+          {
+            "id": "previu",
+            "tipo": "write",
+            "prompt": "O que a regra antiga previu, e o que aconteceu?",
+            "prompt_previsao": "A regra antiga previu: “{previsao}”. O que aconteceu?",
+            "placeholder": "Pode deixar em branco.",
+            "max": 400,
+            "opcional": true
           }
         ],
+        "resultado": {
+          "verdict": "Revisão da semana feita",
+          "sinal": {
+            "sim": "O sinal apareceu. Perceber já é o primeiro passo.",
+            "nao": "O sinal não apareceu nesta semana."
+          },
+          "cedo": {
+            "sim": "Você percebeu mais cedo. Esse é o progresso.",
+            "igual": "Você percebeu no mesmo ponto de sempre.",
+            "nao": "Desta vez você percebeu mais tarde. Sem julgamento: anote em que ponto percebeu."
+          },
+          "se_entao": {
+            "sim": "Você fez o \"se, então\".",
+            "em_parte": "Você fez o \"se, então\" em parte.",
+            "nao": "O \"se, então\" ficou para a próxima."
+          },
+          "nota": "Deslize não é recaída: progresso é perceber mais cedo e voltar mais rápido.",
+          "privacidade": "Esta revisão só guarda a data. Nenhuma das respostas acima fica guardada.",
+          "sinais_voltaram": "Se o padrão venceu de novo, ou apareceram dois sinais na mesma semana, vale fazer a volta curta."
+        },
         "rascunho": true
       },
       "continuar": {
         "titulo": "Continuar de onde parou",
         "perguntas": [],
+        "rascunho": true
+      },
+      "volta": {
+        "motivo": {
+          "prompt": "O que trouxe você de volta?",
+          "ajuda": "A última volta foi em {data}.",
+          "ajuda_sem_data": "Quando quiser olhar de novo, esta volta leva uns 12 minutos.",
+          "opcoes": [
+            {
+              "value": "venceu",
+              "label": "O padrão venceu de novo"
+            },
+            {
+              "value": "dois_sinais",
+              "label": "Dois sinais na mesma semana"
+            },
+            {
+              "value": "olhar",
+              "label": "Quero olhar de novo, por conta própria"
+            }
+          ]
+        },
+        "fatos": {
+          "prompt": "Os fatos dos últimos 30 dias, de novo.",
+          "ajuda": "As mesmas cinco contagens do dia 0, para comparar. Se uma não se aplica, marque “Não se aplica”."
+        },
+        "fatos_retro": {
+          "prompt": "Olhando de hoje: como foram os 30 dias antes do dia 0?",
+          "ajuda": "Responda de novo as cinco contagens, só que sobre o período antes do dia 0 e com o olhar de hoje. Assim dá para separar “eu mudei” de “mudou o meu jeito de medir”."
+        },
+        "mesmo_teto": {
+          "prompt": "É o mesmo teto?",
+          "ajuda": "Da última vez, o seu teto foi {nome}.",
+          "ajuda_frases": " Você marcou: {frases}.",
+          "opcoes": {
+            "sim": "Sim, é o mesmo: {nome}",
+            "outro": "Não, é outro. Quero rever as cenas",
+            "nenhum": "Nenhum teto agora"
+          }
+        },
+        "frases_agora": {
+          "prompt": "Estas frases ainda soam assim?",
+          "ajuda": "São as que mais soavam verdadeiras para você. Responda como soam hoje."
+        },
+        "refazer": {
+          "prompt": "Quer refazer as cinco frases do começo?",
+          "opcoes": {
+            "nao": "Não, seguir com estas",
+            "sim": "Sim, refazer as frases"
+          }
+        },
+        "previsao_acertou": {
+          "prompt": "Desde a última vez, a previsão acertou?",
+          "prompt_previsao": "A previsão era: “{previsao}”. Desde a última vez, ela acertou?",
+          "opcoes": {
+            "acertou": "Acertou",
+            "em_parte": "Acertou em parte",
+            "errou": "Errou"
+          },
+          "crenca": {
+            "prompt": "Quanto você acredita nela hoje?",
+            "ends": {
+              "min": "Nada",
+              "max": "Totalmente"
+            }
+          }
+        },
+        "regra_decisao": {
+          "prompt": "A regra de trabalho continua servindo?",
+          "ajuda": "Hoje ela diz: “{regra}”.",
+          "opcoes": {
+            "manter": "Manter como está",
+            "reescrever": "Reescrever"
+          }
+        },
+        "grupos": {
+          "seguranca": "Antes de começar",
+          "fatos": "Os fatos",
+          "teto": "O teto",
+          "frases": "As frases",
+          "ultima": "A nova última vez",
+          "regra": "A regra",
+          "plano": "O plano"
+        },
+        "resultado": {
+          "eyebrow": "A sua volta",
+          "verdict": "Volta {n} anotada",
+          "verdict_nenhum": "Nenhum teto agora",
+          "corpo_nenhum": "Você disse que, agora, nenhum teto pesa. Isso também é um resultado: o que mudou desde a última volta está abaixo. Se os sinais voltarem, a volta curta está aqui.",
+          "antes_depois": "O antes e o depois",
+          "voltas": "Esta é a sua volta número {n}.",
+          "voltas_primeira": "Esta é a sua primeira volta.",
+          "padrao_mesmo": "O mesmo teto: {nome}.",
+          "padrao_outro": "Antes: {antes}. Agora: {agora}.",
+          "padrao_nenhum": "Antes: {antes}. Agora: nenhum teto pesa.",
+          "fatos_titulo": "Os fatos",
+          "fato": "{rotulo} Antes: {antes}. Agora: {agora} ({leitura}).",
+          "fato_retro": "{rotulo} No dia 0 você marcou “{antes}”. Olhando de hoje, você diria “{retro}”. Agora: “{agora}”. Mudou a régua: por isso aparecem os três.",
+          "fato_sem_base": "{rotulo} Agora: {agora}. Não há base para comparar.",
+          "leitura": {
+            "melhor": "melhor",
+            "pior": "pior",
+            "igual": "igual"
+          },
+          "frases_titulo": "As frases",
+          "frase_nivel": "“{texto}” Antes: {antes}. Agora: {agora} ({leitura}).",
+          "frase_qualitativa": "“{texto}” Era das frases que mais soavam verdadeiras. Agora soa: {agora}.",
+          "frase_sem_base": "“{texto}” Sem base para comparar.",
+          "leitura_frase": {
+            "menos": "soa menos",
+            "igual": "soa igual",
+            "mais": "soa mais"
+          },
+          "familia_titulo": "A crença que mais pesa",
+          "familia": "Antes: {antes}. Agora: {agora}.",
+          "familia_nenhuma": "nenhuma se destacou",
+          "sinais_titulo": "Os seus sinais",
+          "sinais": "Na última vez você marcou {antes} sinais. Agora, {agora}.",
+          "crenca_titulo": "A crença na previsão",
+          "crenca": "Ao longo das voltas: {serie}.",
+          "previsao_acertou": {
+            "acertou": "A previsão acertou desde a última vez.",
+            "em_parte": "A previsão acertou em parte desde a última vez.",
+            "errou": "A previsão não se confirmou desde a última vez."
+          },
+          "plano_ajustado": "O plano continua, com o passo ajustado pelo que aconteceu.",
+          "cuidado_eyebrow": "A sua volta"
+        },
         "rascunho": true
       }
     },
@@ -2264,7 +2568,8 @@
             "confianca": "a confiança ficou abaixo de {minimo}",
             "terreno": "o dia já vinha com estresse e mês apertado",
             "desconforto": "você disse que agora não ao desconforto",
-            "humor": "as últimas semanas foram pesadas"
+            "humor": "as últimas semanas foram pesadas",
+            "deslize": "o plano travou"
           },
           "ajuste_juncao": "e",
           "raiox_clima": "O clima do dinheiro na casa em que você cresceu: {clima}.",

@@ -442,6 +442,20 @@ const PROTOCOL = (function montarProtocolo() {
 
   // ---- retomar em outro aparelho: o .md ------------------------------------------------------------
 
+  // Os campos do bloco dos retornos que o importar lê: `<marco>.em`, `<marco>.<pergunta>` e, no
+  // dia 30, um por fato.
+  function camposDosRetornos() {
+    const campos = {};
+    R.MARCOS_GUARDADOS.forEach((marco) => {
+      campos[marco + ".em"] = 20;
+      R.perguntasDoRetorno(marco, bib).forEach((def) => {
+        if (def.tipo === "grade") bib.fatos.forEach((f) => { campos[marco + ".fatos_" + f.id] = 20; });
+        else campos[marco + "." + def.id] = def.tipo === "write" ? (def.max || 400) + 100 : 60;
+      });
+    });
+    return campos;
+  }
+
   const CAMPOS_CENAS = {};
   bib.cenas.forEach((cena) => { CAMPOS_CENAS[cena.id] = 1500; });
   CAMPOS_CENAS.custo = 600;
@@ -451,7 +465,7 @@ const PROTOCOL = (function montarProtocolo() {
   bib.fatos.forEach((f) => { CAMPOS_FATOS[f.id] = 200; });
   const BLOCOS_LIDOS = {
     "teto.registro": { v: 1 },
-    "teto.padrao": { v: 1, campos: { padrao: 200, variante: 200, trilha: 200, vazamento: 200, espelho: 2000, trava: 1000, renda: 200, alvo: 200 } },
+    "teto.padrao": { v: 1, campos: { padrao: 200, variante: 200, trilha: 200, vazamento: 200, espelho: 2000, trava: 1000, renda: 200, alvo: 200, degrau_abaixo: 10 } },
     "teto.fatos": { v: 1, campos: CAMPOS_FATOS },
     "teto.raiox": { v: 1, campos: { familia: 200, itens: 800, areas: 400, clima: 200, clima_texto: 400 } },
     "teto.cenas": { v: 1, campos: CAMPOS_CENAS },
@@ -477,6 +491,8 @@ const PROTOCOL = (function montarProtocolo() {
         confianca: 50, sobe_um_ponto: 600, proximas_24h: 600,
       },
     },
+    "teto.retornos": { v: 1, campos: camposDosRetornos() },
+    "teto.historico": { v: 1 },
   };
 
   const valores = (campo) => (campo && typeof campo.valor === "string" && campo.valor ? campo.valor.split(",").filter(Boolean) : []);
@@ -518,6 +534,7 @@ const PROTOCOL = (function montarProtocolo() {
     if (padrao.padrao && padrao.padrao.valor) resp.espelho = padrao.padrao.valor;
     if (padrao.variante && padrao.variante.valor) resp.variante = padrao.variante.valor;
     if (padrao.renda && padrao.renda.valor) resp.renda = padrao.renda.valor;
+    if (padrao.degrau_abaixo && padrao.degrau_abaixo.valor === "1") resp.degrau_abaixo = true;
     // O que ela escreveu para a trava só existe nos padrões de ganho; nos outros a tela nem aparece.
     const trava = resp.espelho && bib.padroes[resp.espelho] ? R.travaImediata(resp.espelho, null, resp.renda, bib) : null;
     if (padrao.alvo && trava && trava.campo) resp.alvo = padrao.alvo.texto;
@@ -616,8 +633,25 @@ const PROTOCOL = (function montarProtocolo() {
     const registro = blocos["teto.registro"];
     if (!registro || !registro.json || !kit.validarEsquema(registro.json, R.esquemaDoRegistro).ok) return erro;
     const resp = respostasDoArquivo(blocos);
+    // Um arquivo que só traz o registro (o que um retorno feito pelo código baixa) volta sem respostas.
+    if (!blocos["teto.padrao"] && bib.padroes[registro.json.padrao]) {
+      return {
+        estado: {
+          criado: registro.json.data,
+          etapa: "concluido",
+          passo: null,
+          caminho: [],
+          respostas: {},
+          volta: { n: registro.json.volta, dia0: registro.json.data, registro: registro.json, retornos: blocos["teto.retornos"] ? R.lerRetornosDosBlocos(blocos["teto.retornos"].campos, bib) : {} },
+          historico: blocos["teto.historico"] ? R.lerHistorico(blocos["teto.historico"].json) : [],
+        },
+        resumo: "O seu Teto de " + dataBR(registro.json.data) + ": " + bib.padroes[registro.json.padrao].nome + ".",
+      };
+    }
     if (resp.espelho !== registro.json.padrao || !bib.padroes[resp.espelho]) return erro;
     const caminho = caminhoDoArquivo(passos, resp);
+    const retornos = blocos["teto.retornos"] ? R.lerRetornosDosBlocos(blocos["teto.retornos"].campos, bib) : {};
+    const historico = blocos["teto.historico"] ? R.lerHistorico(blocos["teto.historico"].json) : [];
     return {
       estado: {
         criado: registro.json.data,
@@ -625,15 +659,291 @@ const PROTOCOL = (function montarProtocolo() {
         passo: null,
         caminho: caminho.ids,
         respostas: resp,
-        volta: { n: registro.json.volta, dia0: registro.json.data, registro: registro.json, retornos: {} },
+        volta: { n: registro.json.volta, dia0: registro.json.data, registro: registro.json, retornos },
+        historico,
       },
       resumo: "O seu Teto de " + dataBR(registro.json.data) + ": " + bib.padroes[resp.espelho].nome + ".",
     };
   }
 
+  // ---- os retornos: dia 3, 7 e 30, a revisão da semana e a volta curta -----------------------------
+
+  const RET = bib.retornos;
+  const VOLTA = RET.volta;
+  const GRUPO_RETORNO = "Retorno";
+
+  // O que o retorno enxerga do ciclo guardado: `a.__estado` (cópia, a cada passo).
+  const estadoDe = (a) => (a && a.__estado) || {};
+  const semEstado = (a) => { const out = Object.assign({}, a); delete out.__estado; return out; };
+  const baseDe = (a) => R.baseDoEstado(estadoDe(a), bib);
+  const vazamentoDe = (a) => { const resumo = R.resumoDaVolta(estadoDe(a), bib); return resumo ? resumo.vazamento : null; };
+  const degrau0De = (a) => {
+    const b = baseDe(a);
+    const escada = b.padrao ? R.escadaDoPadrao(b.padrao, b.variante, bib) : null;
+    return escada && escada.degrau0 ? kit.semPontoFinal(escada.degrau0) : "";
+  };
+
+  function passoDaPergunta(marco, def) {
+    const passo = { id: def.id, grupo: GRUPO_RETORNO, prompt: def.prompt };
+    if (def.tipo === "choice") {
+      passo.type = "choice";
+      passo.options = def.opcoes;
+    } else if (def.tipo === "write") {
+      passo.type = "write";
+      passo.maxLength = def.max;
+      passo.placeholder = def.placeholder;
+      passo.help = bib.retornos.comum.seguranca;
+    } else if (def.tipo === "scale") {
+      passo.type = "scale";
+      passo.min = def.min;
+      passo.max = def.max;
+      passo.step = def.step;
+      passo.ends = def.ends;
+      if (def.max === 100) passo.format = "%";
+    } else if (def.tipo === "grade") {
+      passo.type = "grade";
+      passo.help = TEXTOS.fatos.ajuda;
+      passo.items = bib.fatos.map((f) => ({ id: f.id, label: f.label, options: f.opcoes.concat([f.na]) }));
+    }
+    if (def.so_se === "travou") passo.showIf = (a) => a.travou === "sim";
+    if (def.so_se === "vazamento") passo.showIf = (a) => Boolean(vazamentoDe(a));
+    return passo;
+  }
+
+  // O texto da pergunta com a previsão dela (ou, sem ela, o texto de sempre).
+  function comPrevisao(def, chave) {
+    return (a) => {
+      const previsao = baseDe(a).previsao;
+      return previsao && def[chave] ? preencher(def[chave], { previsao: kit.semPontoFinal(previsao) }) : def.prompt;
+    };
+  }
+
+  function passosDoRetorno(marco) {
+    return RET[marco].perguntas.map((def) => {
+      const passo = passoDaPergunta(marco, def);
+      if (def.id === "aconteceu") {
+        passo.prompt = (a) => (a.fez === "nao" ? def.prompt_nao : comPrevisao(def, "prompt_previsao")(a));
+      } else if (def.id === "acertou" || def.id === "previu") {
+        passo.prompt = comPrevisao(def, "prompt_previsao");
+      } else if (def.id === "vazamento") {
+        passo.prompt = (a) => { const v = vazamentoDe(a); return v ? R.comNome(def.prompt_nome, bib.padroes[v].nome) : def.prompt; };
+      } else if (def.id === "deslize_metade") {
+        passo.help = (a) => [degrau0De(a) ? preencher(def.ajuda, { degrau0: degrau0De(a) }) : "", bib.retornos.comum.seguranca].filter(Boolean).join(" ");
+      } else if (def.id === "deslize_fato") {
+        passo.help = RET.comum.deslize_intro + " " + RET.comum.seguranca;
+      }
+      if (def.opcional) passo.cta = "Continuar";
+      return passo;
+    });
+  }
+
+  // ---- a volta curta ------------------------------------------------------------------------------
+
+  // As respostas como as telas das partes que a volta reaproveita enxergam: o que está guardado
+  // (sem a última vez e o plano antigos) e, por cima, o que ela já respondeu nesta volta.
+  const respostasDaVolta = (a) => Object.assign({}, R.respostasBaseDaVolta(estadoDe(a), bib), semEstado(a));
+
+  // O passo reaproveitado do mapa ou do Ato 2: as funções dele leem as respostas da volta, e
+  // `quando` (opcional) diz em que condição ele aparece.
+  function passoDaVolta(passo, grupo, quando) {
+    const novo = Object.assign({}, passo, { grupo });
+    ["prompt", "help", "options", "items", "value", "next"].forEach((k) => {
+      if (typeof passo[k] === "function") novo[k] = (a) => passo[k](respostasDaVolta(a));
+    });
+    const original = typeof passo.showIf === "function" ? passo.showIf : null;
+    if (original || quando) {
+      novo.showIf = (a) => (quando ? quando(a) : true) && (original ? original(respostasDaVolta(a)) : true);
+    }
+    return novo;
+  }
+
+  function passosDaVolta(marco) {
+    const G = VOLTA.grupos;
+    const ate = (lista, ids) => lista.filter((p) => ids.indexOf(p.id) !== -1);
+    const mapa = passosDoMapa();
+    const ato2 = passosDoAto2();
+    const outro = (a) => a.mesmo_teto === "outro";
+    const reescrever = (a) => a.regra_decisao === "reescrever";
+    const temBase = (chave) => (a) => Boolean(baseDe(a)[chave]);
+    const itensDoTopo = (a) => {
+      const resumo = R.resumoDaVolta(estadoDe(a), bib);
+      return resumo ? resumo.itens_topo.map((id) => ({ id, label: bib.itens[id].texto })) : [];
+    };
+    const temTriades = (a) => bib.triades.every((t) => Boolean(estadoDe(a).respostas && estadoDe(a).respostas[t.id]));
+    const passos = [];
+
+    if (marco === "sinais") {
+      passos.push({
+        id: "motivo",
+        grupo: G.seguranca,
+        type: "choice",
+        prompt: VOLTA.motivo.prompt,
+        help: (a) => { const d = baseDe(a).dia0; return d ? preencher(VOLTA.motivo.ajuda, { data: dataBR(d) }) : VOLTA.motivo.ajuda_sem_data; },
+        options: VOLTA.motivo.opcoes,
+      });
+    }
+    passosDoCuidado().forEach((p) => passos.push(Object.assign({}, p, { grupo: G.seguranca })));
+
+    passos.push({
+      id: "fatos",
+      grupo: G.fatos,
+      type: "grade",
+      eyebrow: TEXTOS.fatos.eyebrow,
+      prompt: VOLTA.fatos.prompt,
+      help: VOLTA.fatos.ajuda,
+      items: bib.fatos.map((f) => ({ id: f.id, label: f.label, options: f.opcoes.concat([f.na]) })),
+    });
+    if (marco === "dia90") {
+      passos.push({
+        id: "fatos_retro",
+        grupo: G.fatos,
+        type: "grade",
+        prompt: VOLTA.fatos_retro.prompt,
+        help: VOLTA.fatos_retro.ajuda,
+        showIf: (a) => { const r = estadoDe(a).respostas; return Boolean(r && r.fatos); },
+        items: bib.fatos.map((f) => ({ id: f.id, label: f.label, options: f.opcoes.concat([f.na]) })),
+      });
+    }
+
+    passos.push({
+      id: "mesmo_teto",
+      grupo: G.teto,
+      type: "choice",
+      prompt: VOLTA.mesmo_teto.prompt,
+      help: (a) => {
+        const b = baseDe(a);
+        if (!b.padrao) return "";
+        const frases = b.temRespostas ? R.marcasDoPadrao(respostasDaVolta(a), b.padrao, bib).map((m) => aspas(m.label)) : [];
+        return R.comNome(VOLTA.mesmo_teto.ajuda, bib.padroes[b.padrao].nome)
+          + (frases.length ? preencher(VOLTA.mesmo_teto.ajuda_frases, { frases: frases.join("; ") }) : "");
+      },
+      options: (a) => {
+        const b = baseDe(a);
+        const nome = b.padrao ? bib.padroes[b.padrao].nome : "";
+        return [
+          { value: "sim", label: R.comNome(VOLTA.mesmo_teto.opcoes.sim, nome) },
+          { value: "outro", label: VOLTA.mesmo_teto.opcoes.outro },
+          { value: "nenhum", label: VOLTA.mesmo_teto.opcoes.nenhum },
+        ];
+      },
+      next: (a) => (a.mesmo_teto === "nenhum" ? null : undefined),
+    });
+    // "Não, é outro": volta às cenas, ao custo e ao espelho, com o resto do que ela já tem.
+    const idsDoOutro = bib.cenas.map((c) => c.id).concat(["custo", "espelho", "variante", "renda", "alvo"]);
+    ate(mapa, idsDoOutro).forEach((p) => passos.push(passoDaVolta(p, G.teto, outro)));
+
+    passos.push({
+      id: "frases_agora",
+      grupo: G.frases,
+      type: "grade",
+      prompt: bib.telas.frases_grade.prompt,
+      help: VOLTA.frases_agora.ajuda,
+      options: bib.telas.frases_grade.opcoes,
+      showIf: (a) => itensDoTopo(a).length > 0,
+      items: itensDoTopo,
+    });
+    passos.push({
+      id: "refazer",
+      grupo: G.frases,
+      type: "choice",
+      prompt: VOLTA.refazer.prompt,
+      showIf: temTriades,
+      options: [{ value: "nao", label: VOLTA.refazer.opcoes.nao }, { value: "sim", label: VOLTA.refazer.opcoes.sim }],
+    });
+    const refazer = (a) => a.refazer === "sim";
+    ate(mapa, bib.triades.map((t) => t.id).concat(["frases_nivel"])).forEach((p) => passos.push(passoDaVolta(p, G.frases, refazer)));
+
+    ate(ato2, ["cena", "terreno", "sinais", "frase", "ponto_escolha", "alivio", "custo_depois", "para_que", "excecao"])
+      .forEach((p) => passos.push(passoDaVolta(p, G.ultima)));
+
+    passos.push({
+      id: "previsao_acertou",
+      grupo: G.regra,
+      type: "choice",
+      prompt: (a) => preencher(VOLTA.previsao_acertou.prompt_previsao, { previsao: kit.semPontoFinal(baseDe(a).previsao) }),
+      help: bib.retornos.comum.seguranca,
+      showIf: temBase("previsao"),
+      options: [
+        { value: "acertou", label: VOLTA.previsao_acertou.opcoes.acertou },
+        { value: "em_parte", label: VOLTA.previsao_acertou.opcoes.em_parte },
+        { value: "errou", label: VOLTA.previsao_acertou.opcoes.errou },
+      ],
+      followUp: { type: "scale", id: "crenca_agora", prompt: VOLTA.previsao_acertou.crenca.prompt, min: 0, max: 100, step: 10, format: "%", ends: VOLTA.previsao_acertou.crenca.ends },
+    });
+    passos.push({
+      id: "regra_decisao",
+      grupo: G.regra,
+      type: "choice",
+      prompt: VOLTA.regra_decisao.prompt,
+      help: (a) => preencher(VOLTA.regra_decisao.ajuda, { regra: kit.semPontoFinal(baseDe(a).regraTrabalho) }),
+      showIf: temBase("regraTrabalho"),
+      options: [{ value: "manter", label: VOLTA.regra_decisao.opcoes.manter }, { value: "reescrever", label: VOLTA.regra_decisao.opcoes.reescrever }],
+    });
+    ate(ato2, ["previsao"]).forEach((p) => passos.push(passoDaVolta(p, G.regra, reescrever)));
+    ate(ato2, ["regra_trabalho"]).forEach((p) => {
+      const novo = passoDaVolta(p, G.regra, reescrever);
+      novo.value = (a) => baseDe(a).regraTrabalho;
+      passos.push(novo);
+    });
+
+    // Toda revisão começa por "o plano travou?": se sim, os 90 segundos e o passo pela metade.
+    RET.dia7.perguntas.filter((d) => d.id === "travou" || d.so_se === "travou").forEach((d) => {
+      const passo = passoDaPergunta("dia7", d);
+      passo.grupo = G.plano;
+      if (d.id === "deslize_metade") passo.help = (a) => [degrau0De(a) ? preencher(d.ajuda, { degrau0: degrau0De(a) }) : "", bib.retornos.comum.seguranca].filter(Boolean).join(" ");
+      else if (d.id === "deslize_fato") passo.help = RET.comum.deslize_intro + " " + RET.comum.seguranca;
+      passos.push(passo);
+    });
+    ate(ato2, ["desconforto", "experimento", "se_entao", "confianca", "proximas_24h"]).forEach((p) => passos.push(passoDaVolta(p, G.plano)));
+    return passos;
+  }
+
   // ---- o protocolo -----------------------------------------------------------------------------
 
   const passos = passosDoCuidado().concat(passosDoMapa(), passosDoAto2());
+
+  // A revisão da semana só guarda a data: nenhuma resposta dela fica no estado.
+  function gravarSemana(ctx) {
+    const antiga = ctx.estado.volta;
+    const volta = antiga ? JSON.parse(JSON.stringify(antiga)) : { n: 1, dia0: null, registro: null, retornos: {} };
+    volta.retornos = volta.retornos || {};
+    volta.retornos.semana = { em: ctx.hoje, r: {} };
+    return { volta, historico: ctx.estado.historico || [] };
+  }
+
+  // A volta curta guarda uma volta nova: as respostas mescladas, o registro novo e o histórico.
+  function gravarVolta(ctx) {
+    const fecho = R.fecharVolta(ctx.estado, ctx.answers, ctx.hoje, bib);
+    if (!fecho) return null;
+    return { volta: fecho.volta, historico: fecho.historico, respostas: fecho.respostas, caminho: caminhoDoArquivo(passos, fecho.respostas).ids };
+  }
+
+  function retornosDoProtocolo() {
+    const marco = (chave, extra) => Object.assign({
+      titulo: RET[chave].titulo,
+      codigo: true,
+      steps: passosDoRetorno(chave),
+      result: (ctx) => R.resultadoDoRetorno(chave, comPagina(ctx), bib),
+    }, extra);
+    const volta = (chave, extra) => Object.assign({
+      titulo: RET[chave].titulo,
+      codigo: true,
+      steps: passosDaVolta(chave),
+      progresso: "grupos",
+      intro: (est) => { const d = R.baseDoEstado(est, bib).dia0; return d ? ["A última volta foi em " + dataBR(d) + "."] : []; },
+      result: (ctx) => R.resultadoDaVolta(comPagina(ctx), bib),
+      gravar: gravarVolta,
+    }, extra);
+    return {
+      continuar: { titulo: RET.continuar.titulo },
+      dia3: marco("dia3", { dias: 3 }),
+      dia7: marco("dia7", { dias: 7 }),
+      dia30: marco("dia30", { dias: 30 }),
+      dia90: volta("dia90", { dias: 90 }),
+      sinais: volta("sinais"),
+      semana: marco("semana", { recorrente: true, gravar: gravarSemana }),
+    };
+  }
 
   return {
     id: "protocolo-teto-financeiro",
@@ -651,16 +961,18 @@ const PROTOCOL = (function montarProtocolo() {
       bib: bib.versao,
       rotulo: "um Teto guardado",
       migracoes: {},
+      // O humor nunca é guardado; fica só o que ele decidiu (um degrau abaixo).
+      derivados: ["degrau_abaixo"],
+      derivar: (a) => ({ degrau_abaixo: R.avaliarCuidado(a, bib).degrauAbaixo }),
     },
 
     steps: passos,
 
-    retornos: {
-      continuar: { titulo: bib.retornos.continuar.titulo },
-    },
+    retornos: retornosDoProtocolo(),
 
     importar: {
       md: (texto) => lerMdDoTeto(texto, passos),
+      registro: (codigo) => R.importarRegistro(codigo, bib),
     },
 
     result(a, ctx) {
