@@ -1836,7 +1836,8 @@
         },
         {
           "dia": 3,
-          "rotulo": "Experimento 1",
+          "rotulo": "Experimento",
+          "por_degrau": "dia3",
           "texto": "{dia3}. Antes, escreva o que a regra antiga prevê; depois, o que aconteceu."
         },
         {
@@ -1846,7 +1847,8 @@
         },
         {
           "dia": 5,
-          "rotulo": "Experimento 2",
+          "rotulo": "Experimento",
+          "por_degrau": "dia5",
           "texto": "{dia5}. Antes, a previsão; depois, o que aconteceu."
         },
         {
@@ -1860,6 +1862,11 @@
           "texto": "O plano travou em algum ponto? A regra antiga acertou? Quanto você acredita nela agora, de 0 a 100? Reescreva a regra de trabalho se a evidência pedir e escolha o foco dos 90 dias."
         }
       ],
+      "rotulo_por_degrau": {
+        "0": "Passo pequeno",
+        "1": "Experimento 1",
+        "2": "Experimento 2"
+      },
       "noventa": {
         "foco": "Um foco só nos 90 dias: {noventa}.",
         "etapas": [
@@ -1951,6 +1958,11 @@
             "texto": "Faça o \"se, então\" ou o menor passo."
           }
         ]
+      },
+      "trava_campo": {
+        "id": "alvo",
+        "label": "Escreva agora o preço-alvo ou a menor ação (opcional)",
+        "opcional": true
       },
       "sinais_gerais": [
         "a frase antiga voltou a soar verdadeira",

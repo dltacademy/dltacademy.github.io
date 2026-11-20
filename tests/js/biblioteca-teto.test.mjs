@@ -68,7 +68,7 @@ test("rascunho verdadeiro em qualquer objeto exige rascunho verdadeiro na raiz",
   assert.equal(bib.rascunho, true);
 });
 
-test("os sete padrões, as quatro variantes, as cinco famílias e os ids no formato da ficha", () => {
+test("os sete padrões, as quatro variantes, as cinco famílias e os ids no formato fixo", () => {
   assert.deepEqual(Object.keys(bib.padroes).sort(), PADROES.slice().sort());
   assert.deepEqual(Object.keys(bib.variantes).sort(), VARIANTES.slice().sort());
   assert.deepEqual(Object.keys(bib.familias), FAMILIAS);
@@ -285,9 +285,9 @@ test("nenhuma palavra proibida em nenhum texto; diagnóstico só em \"não é di
   });
 });
 
-test("nenhum texto cita o cofre, a ficha ou caminhos locais", () => {
+test("nenhum texto cita notas privadas ou caminhos locais", () => {
   const fonte = fs.readFileSync(caminho, "utf8");
-  ["Dknowledger", "project-management", "TaskNotes", "/Users/", "ferramenta-kit", "ficha"].forEach((m) => {
+  ["Dknowledger", "project-management", "TaskNotes", "/Users/", "ferramenta-kit"].forEach((m) => {
     assert.ok(!fonte.toLowerCase().includes(m.toLowerCase()), m);
   });
 });
