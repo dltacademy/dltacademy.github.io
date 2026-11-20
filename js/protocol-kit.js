@@ -1363,6 +1363,7 @@
     codificarRegistro: codificarRegistro,
     decodificarRegistro: decodificarRegistro,
     validarEsquema: validarEsquema,
+    neutralizar: neutralizar,
     escreverBlocos: escreverBlocos,
     lerBlocos: lerBlocos,
     montarIcs: montarIcs,

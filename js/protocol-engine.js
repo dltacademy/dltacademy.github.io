@@ -843,6 +843,7 @@ function runProtocol(protocol, mountId) {
       card.appendChild(el("p", "protocol-privacy privacy-line",
         "Salvar guarda as suas respostas só neste navegador, por até " + retentionDays + " dias, e só se você tocar no botão. Você apaga quando quiser."));
     }
+    card.appendChild(buildDelivery(result, card, { partial: true }));
     card.appendChild(buildBack());
     mount.appendChild(card);
     if (moveFocus) verdictHeading.focus({ preventScroll: true });
@@ -864,6 +865,7 @@ function runProtocol(protocol, mountId) {
           "Suas respostas ficam só neste navegador, até " + shortDate(estado.expira) + ". Para continuar, volte a esta página neste mesmo navegador: ela abre no ponto em que você parou.",
           "Nada foi enviado a lugar nenhum.",
         ],
+        extra: (card) => card.appendChild(buildDelivery(result, card, { partial: true, skip: { pdf: true, copy: true } })),
         actions: [
           { label: "Continuar agora", primary: true, onClick: goOn },
           { label: "Apagar o que guardei", onClick: eraseAndTell },
@@ -876,8 +878,9 @@ function runProtocol(protocol, mountId) {
           saved === "grande"
             ? "O que você escreveu passou do limite do que este navegador guarda aqui."
             : "Neste navegador não foi possível guardar (isso acontece em janela privada ou com o armazenamento bloqueado).",
-          "Você pode continuar agora. Se quiser levar o que já fez, baixe o seu arquivo na próxima tela de resultado.",
+          "Você pode continuar agora. Se quiser levar o que já fez para continuar depois, baixe o seu arquivo abaixo.",
         ],
+        extra: (card) => card.appendChild(buildDelivery(result, card, { partial: true, skip: { pdf: true, copy: true } })),
         actions: [{ label: "Continuar agora", primary: true, onClick: goOn }],
       });
     }
@@ -986,6 +989,217 @@ function runProtocol(protocol, mountId) {
     return { button, status, note };
   }
 
+  // Lembretes (.ics): montados aqui, no aparelho. O arquivo só leva o lembrete e o link do
+  // marco; o aviso diz isso, porque o calendário costuma sincronizar com serviços de terceiros.
+  function buildIcsControl(result) {
+    if (!result.ics || !Array.isArray(result.ics.eventos) || !result.ics.eventos.length || !kit) return null;
+    const label = result.ics.rotulo || "Baixar lembretes (.ics)";
+    const button = el("button", "btn btn-secondary protocol-ics", label);
+    button.type = "button";
+    button.addEventListener("click", () => {
+      try {
+        const text = kit.montarIcs({ eventos: result.ics.eventos, prodid: result.ics.prodid, agora: new Date() });
+        downloadTextFile(fileNameFor(result, "ics", protocol.slug + ".ics"), text, "text/calendar;charset=utf-8");
+        button.textContent = "Lembretes baixados";
+      } catch (error) {
+        console.error("Não foi possível montar os lembretes.", error);
+        button.textContent = "Não foi possível baixar os lembretes";
+      }
+      window.setTimeout(() => { if (button.isConnected) button.textContent = label; }, 1800);
+    });
+    const note = el("p", "protocol-privacy privacy-line",
+      "O arquivo de lembretes vai para o seu calendário, e o calendário pode sincronizar com serviços de terceiros. Por isso ele leva só o lembrete e o link do retorno, nada do que você respondeu.");
+    return { button, note };
+  }
+
+  // O registro em código: o resumo, o código para copiar e, se a página sabe lê-lo de volta,
+  // o link que o carrega. O link só existe quando ela toca no botão; a barra de endereço nunca o recebe.
+  function buildRegistroSection(registro) {
+    const section = el("section", "protocol-record protocol-registro");
+    section.setAttribute("aria-labelledby", "protocol-registro-title");
+    const title = el("h3", null, registro.titulo || "Seu registro");
+    title.id = "protocol-registro-title";
+    section.appendChild(title);
+    (registro.resumo || []).forEach((linha) => {
+      if (typeof linha === "string") {
+        section.appendChild(el("p", "protocol-body", linha));
+        return;
+      }
+      if (!linha || !linha.value) return;
+      const item = el("div", "protocol-record-item");
+      item.appendChild(el("span", "protocol-record-q", linha.q));
+      item.appendChild(el("span", "protocol-record-a", linha.value));
+      section.appendChild(item);
+    });
+    if (!/^[A-Za-z0-9_-]{1,2048}$/.test(registro.codigo)) return section;
+    const details = el("details", "protocol-registro-details");
+    details.appendChild(el("summary", null, "Ver o código do registro"));
+    const field = el("textarea", "protocol-write protocol-registro-code");
+    field.rows = 4;
+    field.setAttribute("readonly", "");
+    field.setAttribute("aria-label", "Código do registro");
+    field.value = registro.codigo;
+    details.appendChild(field);
+    section.appendChild(details);
+    const row = el("div", "protocol-actions");
+    const copy = (button, text, doneLabel, label) => {
+      button.type = "button";
+      button.addEventListener("click", () => {
+        const done = () => {
+          button.textContent = doneLabel;
+          window.setTimeout(() => { if (button.isConnected) button.textContent = label; }, 1800);
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(text()).then(done, done);
+        else done();
+      });
+      row.appendChild(button);
+    };
+    copy(el("button", "btn btn-secondary", "Copiar o código do registro"), () => registro.codigo, "Código copiado", "Copiar o código do registro");
+    if (importar && typeof importar.registro === "function") {
+      copy(
+        el("button", "btn btn-secondary", "Copiar o link do meu registro"),
+        () => window.location.origin + window.location.pathname + "#c=" + registro.codigo,
+        "Link copiado",
+        "Copiar o link do meu registro"
+      );
+    }
+    section.appendChild(row);
+    section.appendChild(el("p", "protocol-privacy privacy-line",
+      "O código é o seu registro em texto: guarde-o junto com o PDF. O link leva esse mesmo registro, então quem tiver o link consegue ler o que está nele. Compartilhe só com quem você quiser."));
+    return section;
+  }
+
+  // "Leve este resultado com você": PDF, .md, copiar, os lembretes (.ics) e, no resultado
+  // final, guardar, refazer e apagar. `opts.partial`: o resultado parcial do checkpoint, só
+  // com o que se leva; `opts.skip`: botões a deixar de fora ({ pdf, md, copy }).
+  function buildDelivery(result, card, opts) {
+    const partial = Boolean(opts && opts.partial);
+    const skip = (opts && opts.skip) || {};
+    const delivery = el("section", "protocol-delivery result-actions");
+    delivery.appendChild(el("h3", "protocol-delivery-title result-actions-title", "Leve este resultado com você"));
+    delivery.appendChild(el("p", "protocol-delivery-text",
+      "Os arquivos são montados localmente no seu navegador e não incluem recomendações ou ofertas exibidas depois do resultado."));
+
+    const actions = el("div", "protocol-actions result-actions-row");
+    const pdf = el("button", "btn btn-outline", "Preparando o PDF…");
+    pdf.type = "button";
+    pdf.disabled = true;
+    pdf.setAttribute("aria-busy", "true");
+
+    const enablePdf = () => {
+      if (!pdf.isConnected) return;
+      if (protocolPdfBrand.asset && window.jspdf && window.jspdf.jsPDF) {
+        pdf.disabled = false;
+        pdf.removeAttribute("aria-busy");
+        pdf.textContent = "Baixar meu resultado em PDF";
+        return;
+      }
+      if (protocolPdfBrand.error || !window.jspdf || !window.jspdf.jsPDF) {
+        pdf.disabled = false;
+        pdf.removeAttribute("aria-busy");
+        pdf.textContent = "Tentar baixar meu resultado em PDF";
+      }
+    };
+
+    enablePdf();
+    if (protocolPdfBrand.promise) {
+      protocolPdfBrand.promise.then(enablePdf).catch(enablePdf);
+    }
+
+    pdf.addEventListener("click", () => {
+      const previousLabel = pdf.textContent;
+      pdf.disabled = true;
+      pdf.textContent = "Gerando PDF…";
+      try {
+        if (!protocolPdfBrand.asset) {
+          throw new Error("O logo da DLT Academy ainda não foi carregado.");
+        }
+        downloadProtocolPdf(protocol, result, protocolPdfBrand.asset);
+        pdf.textContent = "PDF baixado";
+      } catch (error) {
+        console.error("Não foi possível gerar o PDF do protocolo.", error);
+        pdf.textContent = "Não foi possível baixar — tentar novamente";
+      } finally {
+        window.setTimeout(() => {
+          if (!pdf.isConnected) return;
+          pdf.disabled = false;
+          pdf.textContent = previousLabel || "Baixar meu resultado em PDF";
+        }, 1800);
+      }
+    });
+
+    const md = el("button", "btn btn-secondary", "Baixar como texto (.md)");
+    md.type = "button";
+    md.addEventListener("click", () => downloadTextFile(
+      fileNameFor(result, "md", protocol.slug + ".md"),
+      buildMarkdown(protocol, result, state.answers)
+    ));
+
+    const copyResult = el("button", "btn btn-secondary", "Copiar resultado");
+    copyResult.type = "button";
+    copyResult.addEventListener("click", () => {
+      const text = buildMarkdown(protocol, result, state.answers);
+      const done = () => {
+        copyResult.textContent = "Resultado copiado";
+        window.setTimeout(() => { if (copyResult.isConnected) copyResult.textContent = "Copiar resultado"; }, 1800);
+      };
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, done);
+      else done();
+    });
+
+    const restart = el("button", "btn btn-secondary", "Refazer o protocolo");
+    restart.type = "button";
+    restart.addEventListener("click", () => {
+      clearPlanState();
+      state.answers = flow.seed ? flow.seed() : {};
+      state.path = [];
+      if (flow === mainFlow) meta = freshMeta();
+      render(startIndex(), true);
+      window.scrollTo({ top: mount.offsetTop - 20, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+    });
+
+    const save = partial ? null : buildSaveControl(result);
+
+    // Apagar: remove o que o protocolo gravou neste navegador e desmarca o
+    // plano na tela. A confirmação é texto na página, sem diálogo.
+    const eraseStatus = el("p", "protocol-erase-status");
+    eraseStatus.setAttribute("role", "status");
+    eraseStatus.setAttribute("aria-live", "polite");
+    const erase = el("button", "btn btn-secondary protocol-erase", "Apagar minhas respostas");
+    erase.type = "button";
+    erase.addEventListener("click", () => {
+      clearPlanState();
+      if (cycleEnabled) clearStoredState();
+      card.querySelectorAll("[data-plan-key]").forEach((check) => {
+        check.checked = false;
+        const item = check.closest(".protocol-plan-item");
+        if (item) item.classList.remove("is-done");
+      });
+      eraseStatus.textContent = "Respostas apagadas deste navegador.";
+    });
+
+    const ics = buildIcsControl(result);
+
+    if (!skip.pdf) actions.appendChild(pdf);
+    if (!skip.md) actions.appendChild(md);
+    if (!skip.copy) actions.appendChild(copyResult);
+    if (ics) actions.appendChild(ics.button);
+    if (save) actions.appendChild(save.button);
+    if (!partial) actions.appendChild(restart);
+    if (!partial) actions.appendChild(erase);
+    delivery.appendChild(actions);
+    if (ics) delivery.appendChild(ics.note);
+    if (!partial) delivery.appendChild(eraseStatus);
+    if (save) {
+      delivery.appendChild(save.status);
+      delivery.appendChild(save.note);
+    }
+    if (opts.returnSave) delivery.appendChild(opts.returnSave);
+    delivery.appendChild(el("p", "protocol-privacy privacy-line",
+      "Tudo isto rodou no seu navegador. Nenhuma resposta foi enviada a lugar nenhum — os arquivos são gerados no seu dispositivo."));
+    return delivery;
+  }
+
   function renderResult(moveFocus) {
     // Resposta de um ramo abandonado (a pessoa voltou e trocou de caminho) não chega ao resultado.
     if (usesKit) state.answers = kit.limparForaDoCaminho(flow.steps, state.path, state.answers);
@@ -1056,127 +1270,11 @@ function runProtocol(protocol, mountId) {
       card.appendChild(plan);
     }
 
+    if (result.registro && typeof result.registro.codigo === "string") card.appendChild(buildRegistroSection(result.registro));
+
     if (result.safety) card.appendChild(el("p", "protocol-safety", result.safety));
 
-    const delivery = el("section", "protocol-delivery result-actions");
-    delivery.appendChild(el("h3", "protocol-delivery-title result-actions-title", "Leve este resultado com você"));
-    delivery.appendChild(el("p", "protocol-delivery-text",
-      "Os arquivos são montados localmente no seu navegador e não incluem recomendações ou ofertas exibidas depois do resultado."));
-
-    const actions = el("div", "protocol-actions result-actions-row");
-    const pdf = el("button", "btn btn-outline", "Preparando o PDF…");
-    pdf.type = "button";
-    pdf.disabled = true;
-    pdf.setAttribute("aria-busy", "true");
-
-    const enablePdf = () => {
-      if (!pdf.isConnected) return;
-      if (protocolPdfBrand.asset && window.jspdf && window.jspdf.jsPDF) {
-        pdf.disabled = false;
-        pdf.removeAttribute("aria-busy");
-        pdf.textContent = "Baixar meu resultado em PDF";
-        return;
-      }
-      if (protocolPdfBrand.error || !window.jspdf || !window.jspdf.jsPDF) {
-        pdf.disabled = false;
-        pdf.removeAttribute("aria-busy");
-        pdf.textContent = "Tentar baixar meu resultado em PDF";
-      }
-    };
-
-    enablePdf();
-    if (protocolPdfBrand.promise) {
-      protocolPdfBrand.promise.then(enablePdf).catch(enablePdf);
-    }
-
-    pdf.addEventListener("click", () => {
-      const previousLabel = pdf.textContent;
-      pdf.disabled = true;
-      pdf.textContent = "Gerando PDF…";
-      try {
-        if (!protocolPdfBrand.asset) {
-          throw new Error("O logo da DLT Academy ainda não foi carregado.");
-        }
-        downloadProtocolPdf(protocol, result, protocolPdfBrand.asset);
-        pdf.textContent = "PDF baixado";
-      } catch (error) {
-        console.error("Não foi possível gerar o PDF do protocolo.", error);
-        pdf.textContent = "Não foi possível baixar — tentar novamente";
-      } finally {
-        window.setTimeout(() => {
-          if (!pdf.isConnected) return;
-          pdf.disabled = false;
-          pdf.textContent = previousLabel || "Baixar meu resultado em PDF";
-        }, 1800);
-      }
-    });
-
-    const md = el("button", "btn btn-secondary", "Baixar como texto (.md)");
-    md.type = "button";
-    md.addEventListener("click", () => downloadTextFile(
-      protocol.slug + ".md",
-      buildMarkdown(protocol, result, state.answers)
-    ));
-
-    const copyResult = el("button", "btn btn-secondary", "Copiar resultado");
-    copyResult.type = "button";
-    copyResult.addEventListener("click", () => {
-      const text = buildMarkdown(protocol, result, state.answers);
-      const done = () => {
-        copyResult.textContent = "Resultado copiado";
-        window.setTimeout(() => { if (copyResult.isConnected) copyResult.textContent = "Copiar resultado"; }, 1800);
-      };
-      if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, done);
-      else done();
-    });
-
-    const restart = el("button", "btn btn-secondary", "Refazer o protocolo");
-    restart.type = "button";
-    restart.addEventListener("click", () => {
-      clearPlanState();
-      state.answers = flow.seed ? flow.seed() : {};
-      state.path = [];
-      if (flow === mainFlow) meta = freshMeta();
-      render(startIndex(), true);
-      window.scrollTo({ top: mount.offsetTop - 20, behavior: prefersReducedMotion() ? "auto" : "smooth" });
-    });
-
-    const save = buildSaveControl(result);
-
-    // Apagar: remove o que o protocolo gravou neste navegador e desmarca o
-    // plano na tela. A confirmação é texto na página, sem diálogo.
-    const eraseStatus = el("p", "protocol-erase-status");
-    eraseStatus.setAttribute("role", "status");
-    eraseStatus.setAttribute("aria-live", "polite");
-    const erase = el("button", "btn btn-secondary protocol-erase", "Apagar minhas respostas");
-    erase.type = "button";
-    erase.addEventListener("click", () => {
-      clearPlanState();
-      if (cycleEnabled) clearStoredState();
-      card.querySelectorAll("[data-plan-key]").forEach((check) => {
-        check.checked = false;
-        const item = check.closest(".protocol-plan-item");
-        if (item) item.classList.remove("is-done");
-      });
-      eraseStatus.textContent = "Respostas apagadas deste navegador.";
-    });
-
-    actions.appendChild(pdf);
-    actions.appendChild(md);
-    actions.appendChild(copyResult);
-    if (save) actions.appendChild(save.button);
-    actions.appendChild(restart);
-    actions.appendChild(erase);
-    delivery.appendChild(actions);
-    delivery.appendChild(eraseStatus);
-    if (save) {
-      delivery.appendChild(save.status);
-      delivery.appendChild(save.note);
-    }
-    if (returnSave) delivery.appendChild(returnSave);
-    delivery.appendChild(el("p", "protocol-privacy privacy-line",
-      "Tudo isto rodou no seu navegador. Nenhuma resposta foi enviada a lugar nenhum — os arquivos são gerados no seu dispositivo."));
-    card.appendChild(delivery);
+    card.appendChild(buildDelivery(result, card, { returnSave }));
 
     const share = el("section", "share-row protocol-share");
     share.setAttribute("aria-label", "Compartilhar o protocolo");
@@ -1491,6 +1589,8 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
   const muted = [82, 94, 116];
   const border = [221, 226, 235];
   let y = 16;
+  // Protocolo com os recursos novos limpa o texto pela regra do kit (emoji e símbolos que a fonte não tem).
+  const pdfText = protocolNeedsKit(protocol) && typeof DLTProtocolKit !== "undefined" ? DLTProtocolKit.textoSeguroPdf : safePdfText;
 
   doc.setProperties({
     title: protocol.title,
@@ -1515,7 +1615,7 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
     const x = options.x || margin;
     const color = options.color || ink;
     const fontStyle = options.fontStyle || "normal";
-    const lines = doc.splitTextToSize(safePdfText(text), width);
+    const lines = doc.splitTextToSize(pdfText(text), width);
 
     doc.setFont("helvetica", fontStyle);
     doc.setFontSize(fontSize);
@@ -1526,6 +1626,18 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
       y += lineHeight;
     });
     return lines.length;
+  };
+
+  const pen = {
+    doc,
+    margin,
+    pageWidth,
+    contentWidth,
+    colors: { blue, ink, muted, border },
+    writeLines,
+    ensureSpace,
+    get y() { return y; },
+    set y(value) { y = value; },
   };
 
   const logoHeight = 15;
@@ -1573,11 +1685,11 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
       doc.setFont("helvetica", "bold");
       doc.setFontSize(12);
       doc.setTextColor(...blue);
-      doc.text(safePdfText(stat.value), x + 4, y + 4);
+      doc.text(pdfText(stat.value), x + 4, y + 4);
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7.2);
       doc.setTextColor(...muted);
-      doc.text(safePdfText(stat.label), x + 4, y + 10);
+      doc.text(pdfText(stat.label), x + 4, y + 10);
     });
     y += 22;
   }
@@ -1586,6 +1698,8 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
     writeLines(paragraph, { fontSize: 10.5, lineHeight: 5.2, color: ink });
     y += 3.2;
   });
+
+  (result.sections || []).forEach((section) => writeSection(pen, section));
 
   const records = (result.record || []).filter((item) => item.value);
   if (records.length) {
@@ -1674,9 +1788,14 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
     });
   }
 
+  if (result.registro && typeof result.registro.codigo === "string") writeRegistro(pen, result.registro);
+
   const totalPages = doc.getNumberOfPages();
   const pageUrl = "dlt.academy" + String(protocol.path || "/").replace(/\/$/, "");
-  const disclaimer = "Conteúdo educacional · Reflexão estruturada — não é terapia nem recomendação de investimento";
+  const customDisclaimer = typeof protocol.disclaimer === "string" && protocol.disclaimer ? pdfText(protocol.disclaimer) : "";
+  const disclaimerLines = customDisclaimer
+    ? doc.splitTextToSize(customDisclaimer, contentWidth - 14).slice(0, 2)
+    : ["Conteúdo educacional · Reflexão estruturada — não é terapia nem recomendação de investimento"];
 
   for (let page = 1; page <= totalPages; page += 1) {
     doc.setPage(page);
@@ -1687,11 +1806,11 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
     doc.setFontSize(7.2);
     doc.setTextColor(...muted);
     doc.text(pageUrl, margin, pageHeight - 12.5);
-    doc.text(disclaimer, margin, pageHeight - 8.5);
+    disclaimerLines.forEach((line, i) => doc.text(line, margin, pageHeight - 8.5 + i * 3.3));
     doc.text(`${page}/${totalPages}`, pageWidth - margin, pageHeight - 8.5, { align: "right" });
   }
 
-  doc.save(protocol.slug + "-resultado.pdf");
+  doc.save(fileNameFor(result, "pdf", protocol.slug + "-resultado.pdf"));
 }
 
 function safePdfText(value) {
@@ -1717,6 +1836,9 @@ function buildMarkdown(protocol, result, answers) {
     linhas.push("");
   }
   (result.body || []).forEach((p) => { linhas.push(p); linhas.push(""); });
+  // Com blocos marcados, são eles que levam as seções; sem blocos, as seções saem como texto.
+  const marked = Array.isArray(result.blocks) && result.blocks.length > 0 && typeof DLTProtocolKit !== "undefined";
+  if (!marked) (result.sections || []).forEach((section) => markdownSection(section).forEach((l) => linhas.push(l)));
   if (result.record && result.record.length) {
     linhas.push("## O que você registrou");
     linhas.push("");
@@ -1736,15 +1858,25 @@ function buildMarkdown(protocol, result, answers) {
     });
     linhas.push("");
   }
+  if (marked) {
+    // O texto dela fora dos blocos também perde o que pareceria um marcador de máquina.
+    const human = DLTProtocolKit.neutralizar(linhas.join("\n")).split("\n");
+    linhas.length = 0;
+    human.forEach((l) => linhas.push(l));
+    linhas.push(DLTProtocolKit.escreverBlocos(result.blocks));
+    linhas.push("");
+  }
   linhas.push("---");
-  linhas.push("Reflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.");
+  linhas.push(typeof protocol.disclaimer === "string" && protocol.disclaimer
+    ? protocol.disclaimer
+    : "Reflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.");
   linhas.push("dlt.academy" + (protocol.path || ""));
   return linhas.join("\n");
 }
 
-// Download de arquivo de texto client-side. Nada é transmitido.
-function downloadTextFile(filename, content) {
-  const blob = new Blob([content], { type: "text/markdown;charset=utf-8" });
+// Download de arquivo de texto client-side. Nada é transmitido. O tipo padrão é Markdown.
+function downloadTextFile(filename, content, type) {
+  const blob = new Blob([content], { type: type || "text/markdown;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -1756,13 +1888,99 @@ function downloadTextFile(filename, content) {
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
+// Nome do arquivo que o resultado pede (`result.arquivos.pdf|md|ics`), se vier num formato
+// seguro; senão o padrão.
+function fileNameFor(result, kind, fallback) {
+  const name = result && result.arquivos && result.arquivos[kind];
+  return typeof name === "string" && /^[A-Za-z0-9._-]{1,80}$/.test(name) ? name : fallback;
+}
+
+// Uma seção do resultado em Markdown (título, parágrafos e itens).
+function markdownSection(section) {
+  const linhas = ["## " + section.title, ""];
+  (section.paragraphs || []).forEach((p) => { linhas.push(p); linhas.push(""); });
+  (section.items || []).forEach((item) => {
+    if (item && typeof item === "object") linhas.push("- **" + item.title + "**" + (item.text ? " — " + item.text : ""));
+    else linhas.push("- " + item);
+  });
+  if (section.items && section.items.length) linhas.push("");
+  return linhas;
+}
+
+// Uma seção no PDF. `pen` é o que downloadProtocolPdf expõe: o documento, a posição
+// vertical (`y`), as cores e os métodos de escrever e de abrir página.
+function writeSection(pen, section) {
+  if (!section || !section.title) return;
+  pen.ensureSpace(18);
+  pen.y += 2;
+  pen.doc.setDrawColor(...pen.colors.border);
+  pen.doc.setLineWidth(0.4);
+  pen.doc.line(pen.margin, pen.y, pen.pageWidth - pen.margin, pen.y);
+  pen.y += 9;
+  pen.writeLines(section.title, { fontSize: 14, lineHeight: 6.5, fontStyle: "bold", color: pen.colors.ink });
+  pen.y += 2;
+  (section.paragraphs || []).forEach((paragraph) => {
+    pen.writeLines(paragraph, { fontSize: 10.5, lineHeight: 5.2, color: pen.colors.ink });
+    pen.y += 3.2;
+  });
+  (section.items || []).forEach((item) => {
+    pen.ensureSpace(12);
+    if (item && typeof item === "object") {
+      pen.writeLines(item.title, { fontSize: 9.8, lineHeight: 4.9, fontStyle: "bold", color: pen.colors.blue });
+      if (item.text) pen.writeLines(item.text, { fontSize: 9.8, lineHeight: 4.9, color: pen.colors.ink });
+    } else {
+      pen.writeLines("- " + item, { fontSize: 9.8, lineHeight: 4.9, color: pen.colors.ink });
+    }
+    pen.y += 2.2;
+  });
+}
+
+// O registro no PDF: o resumo legível e o código em courier pequeno, quebrado em linhas
+// sem espaço (quem lê junta as linhas).
+function writeRegistro(pen, registro) {
+  pen.ensureSpace(30);
+  pen.y += 2;
+  pen.doc.setDrawColor(...pen.colors.border);
+  pen.doc.setLineWidth(0.4);
+  pen.doc.line(pen.margin, pen.y, pen.pageWidth - pen.margin, pen.y);
+  pen.y += 9;
+  pen.writeLines(registro.titulo || "Seu registro", { fontSize: 14, lineHeight: 6.5, fontStyle: "bold", color: pen.colors.ink });
+  pen.y += 2;
+  (registro.resumo || []).forEach((linha) => {
+    if (typeof linha === "string") {
+      pen.writeLines(linha, { fontSize: 10, lineHeight: 5, color: pen.colors.ink });
+    } else if (linha && linha.value) {
+      pen.writeLines(linha.q, { fontSize: 8.6, lineHeight: 4.3, fontStyle: "bold", color: pen.colors.blue });
+      pen.writeLines(linha.value, { fontSize: 10, lineHeight: 5, color: pen.colors.ink });
+    }
+    pen.y += 2;
+  });
+  if (!/^[A-Za-z0-9_-]{1,2048}$/.test(registro.codigo || "")) return;
+  pen.y += 1;
+  pen.writeLines("Código do registro (copie sem as quebras de linha para recuperar este resultado):", {
+    fontSize: 8.6,
+    lineHeight: 4.3,
+    color: pen.colors.muted,
+  });
+  pen.y += 1.5;
+  pen.doc.setFont("courier", "normal");
+  pen.doc.setFontSize(8);
+  pen.doc.setTextColor(...pen.colors.ink);
+  for (let i = 0; i < registro.codigo.length; i += 96) {
+    pen.ensureSpace(4.2);
+    pen.doc.text(registro.codigo.slice(i, i + 96), pen.margin, pen.y);
+    pen.y += 3.7;
+  }
+  pen.y += 2;
+}
+
 // Cabeça do resultado (e do checkpoint): a chamada, o veredito, os números e o texto.
 // Devolve o título do veredito, que recebe o foco.
 function appendResultHead(card, result, grade, el) {
   card.appendChild(el("p", "protocol-eyebrow section-eyebrow", result.eyebrow || "Seu resultado"));
 
   const verdictPanel = el("div", "protocol-verdict-panel");
-  verdictPanel.appendChild(buildVerdictPill(grade, el));
+  if (result.pill !== false) verdictPanel.appendChild(buildVerdictPill(grade, el));
   const verdictHeading = el("h2", "protocol-verdict", result.verdict);
   verdictHeading.tabIndex = -1;
   verdictPanel.appendChild(verdictHeading);
@@ -1784,7 +2002,37 @@ function appendResultHead(card, result, grade, el) {
   const copy = el("div", "protocol-result-copy");
   (result.body || []).forEach((p) => copy.appendChild(el("p", "protocol-body", p)));
   card.appendChild(copy);
+  (result.sections || []).forEach((section, i) => card.appendChild(buildSection(section, i, el)));
   return verdictHeading;
+}
+
+// Seção do resultado: título, parágrafos e itens (texto, ou { title, text }). `kind` só
+// marca o tipo na classe, para o estilo.
+function buildSection(section, index, el) {
+  const kind = typeof section.kind === "string" && /^[a-z0-9-]{1,24}$/.test(section.kind) ? section.kind : "";
+  const box = el("section", "protocol-section" + (kind ? " is-" + kind : ""));
+  if (kind) box.dataset.kind = kind;
+  const titleId = "protocol-section-" + (safeDomId(section.id == null ? index : section.id) || index);
+  box.setAttribute("aria-labelledby", titleId);
+  const title = el("h3", "protocol-section-title", section.title);
+  title.id = titleId;
+  box.appendChild(title);
+  (section.paragraphs || []).forEach((p) => box.appendChild(el("p", "protocol-body", p)));
+  if (section.items && section.items.length) {
+    const list = el("ul", "protocol-section-items");
+    section.items.forEach((item) => {
+      const li = el("li");
+      if (item && typeof item === "object") {
+        li.appendChild(el("strong", "protocol-section-item-title", item.title));
+        if (item.text) li.appendChild(el("span", "protocol-section-item-text", item.text));
+      } else {
+        li.textContent = String(item);
+      }
+      list.appendChild(li);
+    });
+    box.appendChild(list);
+  }
+  return box;
 }
 
 // ---- recursos novos (usam o kit): tipos de passo, progresso e complemento ----
@@ -1797,7 +2045,7 @@ const PROTOCOL_KIT_STEP_TYPES = ["multi", "scale", "grade", "triad"];
 // O protocolo declara algo que só o kit sabe tratar?
 function protocolNeedsKit(protocol) {
   if (protocol.progresso === "grupos" || protocol.persist || protocol.retornos || protocol.importar) return true;
-  return protocol.steps.some((step) =>
+  return (protocol.steps || []).some((step) =>
     PROTOCOL_KIT_STEP_TYPES.indexOf(step.type) !== -1 ||
     step.type === "checkpoint" ||
     typeof step.showIf === "function" ||
@@ -2114,6 +2362,9 @@ if (typeof module !== "undefined" && module.exports) {
     safePdfText,
     buildMarkdown,
     downloadTextFile,
+    downloadProtocolPdf,
+    buildSection,
+    fileNameFor,
     protocolNeedsKit,
     stepUsesControls,
   };
