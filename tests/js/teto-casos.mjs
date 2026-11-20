@@ -1,11 +1,15 @@
-// Os casos A a F do Protocolo do Teto como respostas por id de passo, e um piloto que
-// responde a página do Ato 1 tocando nos botões, como uma pessoa faria. Serve aos testes
-// em Node (DOM falso) e, importado no console, à página aberta no navegador:
+// Os casos A a F do Protocolo do Teto como respostas por id de passo (o Ato 1 em CASOS e o
+// Ato 2 de A, B e C em ATO2), e um piloto que responde a página tocando nos botões, como uma
+// pessoa faria. Serve aos testes em Node (DOM falso) e, importado no console, à página aberta
+// no navegador:
 //
 //   const m = await import("/tests/js/teto-casos.mjs");
-//   await m.tocarCaso("A");        // percorre até o checkpoint (ou o fim, nos casos D, E e F)
+//   await m.tocarCaso("A");                        // os dois atos, até o resultado final
+//   await m.tocarCaso("A", { ate: "fim_ato1" });   // só o Ato 1, até o checkpoint
+//   await m.tocarCaso("A", { ate: "se_entao" });   // até uma tela do Ato 2, sem responder
 //
-// Não é teste: o nome não termina em .test.mjs.
+// Nos casos D, E e F o fluxo termina antes (cuidado ou "nenhum"). Não é teste: o nome não
+// termina em .test.mjs.
 
 const NAO = ["nao_acontece"];
 
@@ -85,6 +89,96 @@ export const CASOS = {
   }),
 };
 
+// O Ato 2 dos casos A, B e C. Ids de complemento (clima_texto, sinais_outro...) em branco valem
+// como em branco; `se_entao` ausente deixa o rascunho que a tela já traz.
+export const ATO2 = {
+  // A. A designer: nada pesa o dia, a confiança é boa: o plano começa nos degraus de sempre.
+  A: {
+    clima_casa: "segredo",
+    cena: "Em março mandei o orçamento de R$ 8 mil para um cliente grande, no mesmo mês em que fechei um contrato bom.",
+    terreno: ["cansaco", "mes_apertado"],
+    sinais: ["aperto_peito", "medo_caro"],
+    frase: "vão achar caro",
+    ponto_escolha: "adiei e mandei com desconto",
+    alivio: "medo_nao",
+    custo_depois: "perdi a margem do projeto",
+    para_que: "ser_testado",
+    excecao: "cobrei o valor cheio de um cliente que me indicou",
+    desgrudar: "menos_forca",
+    regra_antiga: "frase",
+    previsao: "se eu cobrar cheio, ele some",
+    crenca_previsao: 80,
+    dia_um_ano: "acordo sem a pressa do fim do mês e almoço com a minha filha",
+    importancia: 8,
+    motivos: "quero parar de adiar o que importa",
+    regra_trabalho: "cobrar o justo é o que me deixa atender bem",
+    desconforto: "sim",
+    experimento: "preco_em_voz_alta",
+    se_entao: "quando sentir o aperto, mando o valor cheio antes de reler",
+    confianca: 7,
+    sobe_um_ponto: "combinar com alguém que pergunte como foi",
+    proximas_24h: "amanhã, às 9h, escrevo o preço e mando a mensagem",
+  },
+  // B. O bônus que some: confiança 5, então o dia 3 começa no passo pequeno; escreve o "outro" do clima.
+  B: {
+    clima_casa: "outro",
+    clima_texto: "dinheiro era assunto de adulto e ninguém explicava",
+    cena: "Caiu a PLR de R$ 12 mil e, em duas semanas, quase tudo já tinha ido.",
+    terreno: ["comparacao"],
+    sinais: ["euforia", "outro"],
+    sinais_outro: "calor no rosto",
+    frase: "agora eu posso",
+    ponto_escolha: "abri o app de compras no mesmo dia",
+    alivio: "culpa",
+    custo_depois: "faltou para a viagem com a minha filha",
+    para_que: "afastar",
+    para_que_texto: "ser a única da família com dinheiro sobrando",
+    excecao: "guardei o extra daquele ano para a viagem",
+    desgrudar: "igual",
+    regra_antiga: "outra",
+    regra_antiga_texto: "se eu guardar, vão achar que mudei",
+    regra_origem: "ouvia isso em casa",
+    previsao: "se eu guardar, vão me achar metida",
+    crenca_previsao: 60,
+    dia_um_ano: "tenho uma reserva e viajo sem culpa",
+    importancia: 9,
+    motivos: "quero que o dinheiro vá para onde eu decido",
+    regra_trabalho: "dinheiro vai para onde eu decido antes",
+    desconforto: "em_parte",
+    experimento: "destino_antes",
+    confianca: 5,
+    sobe_um_ponto: "um alarme no dia do pagamento",
+    proximas_24h: "hoje à noite escrevo o destino do próximo extra",
+  },
+  // C. A planejadora: estresse e mês apertado juntos, então o dia 3 também começa menor; escolhe o item mais alto.
+  C: {
+    clima_casa: "faltava",
+    clima_texto: "",
+    cena: "No terceiro curso do ano, achei que ainda não sabia o suficiente para vender.",
+    terreno: ["estresse", "mes_apertado"],
+    sinais: ["frio_barriga", "pesquisar_mais"],
+    frase: "ainda não estou pronta",
+    ponto_escolha: "abri outro curso em vez de mandar a proposta",
+    alivio: "ansiedade",
+    custo_depois: "mais um mês sem vender",
+    para_que: "ser_testado",
+    excecao: "vendi um serviço sem estar pronta e deu certo",
+    desgrudar: "menos_forca",
+    regra_antiga: "item",
+    previsao: "se eu fizer sem estar pronta, vou passar vergonha",
+    crenca_previsao: 70,
+    dia_um_ano: "vendo toda semana e não abro mais cursos às cegas",
+    importancia: 7,
+    motivos: "quero parar de estudar sem fazer",
+    regra_trabalho: "eu fico pronta fazendo pequeno",
+    desconforto: "sim",
+    experimento: "menor_acao",
+    se_entao: "antes de abrir mais uma pesquisa, faço a próxima ação de 5 minutos",
+    confianca: 8,
+    proximas_24h: "amanhã às 10h mando uma mensagem a um possível cliente",
+  },
+};
+
 // ---- o piloto ------------------------------------------------------------------------------
 
 const lista = (nodes) => Array.from(nodes);
@@ -99,12 +193,26 @@ async function responderPasso({ mount, passo, respostas, kit, esperar }) {
   const botao = (texto) => lista(mount.querySelectorAll("button")).find((b) => b.textContent.trim() === texto);
   const linhaPor = (texto) => lista(mount.querySelectorAll(".choice-row")).find((r) => r.textContent.trim() === texto);
   const continuar = () => clicar(botao(passo.cta || "Continuar"), "o botão Continuar");
+  const noComplemento = (el) => Boolean(el.closest && el.closest(".protocol-followup"));
+  const campoDe = (rotulo) => lista(mount.querySelectorAll("textarea")).find((t) => t.getAttribute("aria-labelledby") === rotulo);
+  const escrever = (campo, texto) => {
+    campo.value = texto;
+    dispara(campo, "input");
+  };
+  const marcarEscala = async (cfg, valor, dentroDoComplemento) => {
+    const rotulo = String(valor) + (cfg.format || "");
+    const alvo = lista(mount.querySelectorAll(".protocol-scale-btn")).find((b) => b.textContent === rotulo && noComplemento(b) === dentroDoComplemento);
+    await clicar(alvo, `o ${rotulo} da régua`);
+  };
 
   const esperado = typeof passo.prompt === "function" ? passo.prompt(respostas) : passo.prompt;
   const naTela = mount.querySelector("#protocol-question");
   if (!naTela || naTela.textContent !== esperado) {
     throw new Error(`Passo ${passo.id}: a tela mostra "${naTela && naTela.textContent}" e o fluxo esperava "${esperado}"`);
   }
+
+  // Só o texto de um passo que espera "Continuar" (com complemento, régua ou campo limitado) ou o clique de um classic.
+  const comControles = Boolean(passo.followUp) || ["multi", "scale", "grade", "triad"].includes(passo.type) || (passo.type === "write" && (typeof passo.value === "function" || typeof passo.maxLength === "number"));
 
   if (passo.type === "grade") {
     if (respostas[passo.id] === undefined) {
@@ -123,14 +231,12 @@ async function responderPasso({ mount, passo, respostas, kit, esperar }) {
       const alvo = linha && lista(linha.querySelectorAll(".protocol-grade-btn")).find((b) => b.textContent === opcao.label);
       await clicar(alvo, `a opção "${opcao && opcao.label}" de "${item.label}"`);
     }
-    await continuar();
   } else if (passo.type === "multi") {
     const opcoes = kit.opcoesDoPasso(passo, respostas);
     for (const valor of respostas[passo.id]) {
       const opcao = opcoes.find((o) => o.value === valor);
       await clicar(linhaPor(opcao.label), `a opção "${opcao.label}"`);
     }
-    await continuar();
   } else if (passo.type === "choice") {
     const opcao = kit.opcoesDoPasso(passo, respostas).find((o) => o.value === respostas[passo.id]);
     await clicar(linhaPor(opcao.label), `a opção "${opcao.label}"`);
@@ -141,40 +247,77 @@ async function responderPasso({ mount, passo, respostas, kit, esperar }) {
       const alvo = lista(mount.querySelectorAll(".protocol-triad-btn")).find((b) => b.getAttribute("aria-label") === `${labels[tipo]}: ${item.label}`);
       await clicar(alvo, `"${labels[tipo]}" de "${item.label}"`);
     }
-    await continuar();
+  } else if (passo.type === "scale") {
+    await marcarEscala(passo, respostas[passo.id], false);
   } else if (passo.type === "write") {
-    const campo = mount.querySelector("textarea");
-    campo.value = respostas[passo.id] || "";
-    dispara(campo, "input");
-    await continuar();
+    const campo = campoDe("protocol-question") || mount.querySelector("textarea");
+    // Sem resposta nos casos, fica o que a tela já traz (o rascunho do "se, então", por exemplo).
+    if (respostas[passo.id] !== undefined) escrever(campo, respostas[passo.id]);
+    else respostas[passo.id] = campo.value;
   } else {
     throw new Error("Tipo de passo sem piloto: " + passo.type);
   }
+
+  if (passo.followUp) {
+    const f = passo.followUp;
+    if (f.type === "scale") {
+      await marcarEscala(f, respostas[f.id], true);
+    } else {
+      const campo = campoDe("protocol-followup-" + f.id);
+      const texto = respostas[f.id] === undefined ? "" : respostas[f.id];
+      respostas[f.id] = texto;
+      if (campo && texto !== "") escrever(campo, texto);
+    }
+  }
+  if (comControles || passo.type === "write") await continuar();
 }
 
-// Responde os passos do fluxo, na ordem em que a página os mostra, até o checkpoint, o passo
-// `ate` (sem responder) ou o fim. Devolve o id em que parou (null: o fim do fluxo).
-export async function percorrer({ mount, passos, kit, respostas, ate, esperar }) {
+// Responde os passos do fluxo, na ordem em que a página os mostra, até o checkpoint (a menos que
+// `seguir`), o passo `ate` (sem responder) ou o fim. Com `seguir`, toca em "Continuar agora" no
+// checkpoint e segue para o Ato 2. Devolve o id em que parou (null: o fim do fluxo).
+export async function percorrer({ mount, passos, kit, respostas, ate, seguir = false, esperar }) {
   let i = kit.proximoIndice(passos, -1, respostas);
   while (i < passos.length) {
     const passo = passos[i];
-    if (passo.id === ate || passo.type === "checkpoint") return passo.id;
-    await responderPasso({ mount, passo, respostas, kit, esperar });
+    if (passo.id === ate) return passo.id;
+    if (passo.type === "checkpoint") {
+      if (!seguir) return passo.id;
+      const ir = lista(mount.querySelectorAll("button")).find((b) => b.textContent.trim() === (passo.actions && passo.actions.continuar) || b.textContent.trim() === "Continuar");
+      if (!ir) throw new Error("Não achei o botão do checkpoint: " + mount.textContent.slice(0, 200));
+      ir.click();
+      await esperar();
+    } else {
+      await responderPasso({ mount, passo, respostas, kit, esperar });
+    }
     i = kit.proximoIndice(passos, i, respostas);
   }
   return null;
 }
 
-// No console da página aberta: responde o caso `letra` (A a F) e para no checkpoint.
+// Espera a página montar o protocolo: o script do protocolo declara PROTOCOL, e o motor só mostra a
+// primeira pergunta depois. Sem isso, chamar cedo demais dá "PROTOCOL is not defined".
+async function esperarProtocolo(espera, tentativas = 40) {
+  for (let i = 0; i < tentativas; i += 1) {
+    const pronto = typeof PROTOCOL !== "undefined" && typeof DLTProtocolKit !== "undefined" && document.getElementById("protocol-mount") && document.getElementById("protocol-mount").children.length > 0;
+    if (pronto) return PROTOCOL;
+    await new Promise((resolve) => setTimeout(resolve, espera));
+  }
+  throw new Error("A página ainda não montou o protocolo (PROTOCOL e #protocol-mount): recarregue e tente de novo.");
+}
+
+// No console da página aberta: responde o caso `letra` (A a F) pelos dois atos, até o resultado final
+// (ou até `ate`; { ate: "fim_ato1" } para no checkpoint do Ato 1).
 export async function tocarCaso(letra, { ate, espera = 220 } = {}) {
   if (!CASOS[letra]) throw new Error("Caso desconhecido: " + letra);
-  const respostas = JSON.parse(JSON.stringify(CASOS[letra]));
+  const protocolo = await esperarProtocolo(espera);
+  const respostas = JSON.parse(JSON.stringify(Object.assign({}, CASOS[letra], ATO2[letra] || {})));
   return percorrer({
     mount: document.getElementById("protocol-mount"),
-    passos: PROTOCOL.steps,
+    passos: protocolo.steps,
     kit: DLTProtocolKit,
     respostas,
     ate,
+    seguir: ate !== "fim_ato1",
     esperar: () => new Promise((resolve) => setTimeout(resolve, espera)),
   });
 }
