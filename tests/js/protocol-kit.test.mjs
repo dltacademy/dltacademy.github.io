@@ -190,3 +190,295 @@ test("cortarTexto tira as pontas e respeita o limite", () => {
   assert.equal(kit.cortarTexto("abcdef", 0), "abcdef");
   assert.equal(kit.cortarTexto("abcdef"), "abcdef");
 });
+
+
+// ---- F2: estado guardado, marcos e datas ------------------------------------
+
+const normal = (x) => JSON.parse(JSON.stringify(x));
+const ESQUEMA = { protocolo: "protocolo-x", versao: 2, migracoes: {} };
+function estadoBase(extra = {}) {
+  return {
+    esquema: "dlt.protocolo.estado",
+    v: 2,
+    protocolo: "protocolo-x",
+    bib: "2026.11-1",
+    ciclo: "k3f9x2qa",
+    criado: "2026-11-20",
+    atualizado: "2026-11-20T21:03:00.000Z",
+    expira: "2027-03-20",
+    fluxo: "principal",
+    etapa: "pausa",
+    passo: "c",
+    caminho: ["a", "b"],
+    respostas: { a: "x", b: ["p"] },
+    volta: null,
+    historico: [],
+    lembrete: "20:00",
+    ...extra,
+  };
+}
+
+test("somarDias e datasDoCiclo: data civil, na virada de mês, de ano e no bissexto", () => {
+  assert.equal(kit.somarDias("2026-11-20", 120), "2027-03-20");
+  assert.equal(kit.somarDias("2026-11-28", 3), "2026-12-01");
+  assert.equal(kit.somarDias("2026-12-31", 1), "2027-01-01");
+  assert.equal(kit.somarDias("2028-02-28", 1), "2028-02-29");
+  assert.equal(kit.somarDias("2027-02-28", 1), "2027-03-01");
+  assert.equal(kit.somarDias("2026-03-01", -1), "2026-02-28");
+  assert.equal(kit.somarDias("2026-02-30", 1), null, "data que não existe");
+  assert.equal(kit.somarDias("20/11/2026", 1), null);
+  assert.equal(kit.somarDias("2026-11-20", 1.5), null);
+  assert.deepEqual(kit.datasDoCiclo("2026-11-20", [7, 30, 60, 90]), {
+    d0: "2026-11-20", d7: "2026-11-27", d30: "2026-12-20", d60: "2027-01-19", d90: "2027-02-18",
+  });
+  assert.equal(kit.datasDoCiclo("nada", [7]), null);
+  assert.equal(kit.diasEntre("2026-11-20", "2026-12-01"), 11);
+  assert.equal(kit.diasEntre("2026-12-01", "2026-11-20"), -11);
+  assert.equal(kit.diasEntre("x", "2026-11-20"), null);
+  assert.equal(kit.dataISO(new Date(2026, 0, 5, 23, 59)), "2026-01-05", "dia local, não UTC");
+});
+
+test("lerEstado: aceita o estado válido e devolve só os campos conhecidos", () => {
+  const texto = JSON.stringify(estadoBase({ intruso: "x", respostas: { a: "x", "__proto__": { polui: 1 }, "id com espaço": 1, ok_1: [1, 2] } }));
+  const r = kit.lerEstado(texto, ESQUEMA, "2026-12-01");
+  assert.ok(r.estado, JSON.stringify(r));
+  assert.equal(r.estado.intruso, undefined);
+  assert.deepEqual(Object.keys(r.estado.respostas).sort(), ["a", "ok_1"]);
+  assert.equal(({}).polui, undefined, "o protótipo não foi poluído");
+  assert.equal(Object.getPrototypeOf(r.estado.respostas), null, "mapa sem protótipo");
+  assert.deepEqual(normal(r.estado).caminho, ["a", "b"]);
+  assert.equal(r.estado.volta, null);
+  assert.deepEqual(r.estado.historico, []);
+  assert.equal(r.estado.lembrete, "20:00");
+});
+
+test("lerEstado: recusa JSON inválido, outro protocolo, campo fora do formato e texto grande demais", () => {
+  const l = (obj) => kit.lerEstado(typeof obj === "string" ? obj : JSON.stringify(obj), ESQUEMA, "2026-12-01");
+  assert.equal(l("{não é json").erro, "invalido");
+  assert.equal(l("").erro, "invalido");
+  assert.equal(l("[1,2]").erro, "invalido");
+  assert.equal(l("null").erro, "invalido");
+  assert.equal(kit.lerEstado(null, ESQUEMA, "2026-12-01").erro, "invalido");
+  assert.equal(l(estadoBase({ protocolo: "outro" })).erro, "invalido");
+  assert.equal(l(estadoBase({ esquema: "outro" })).erro, "invalido");
+  assert.equal(l(estadoBase({ etapa: "fim" })).erro, "invalido");
+  assert.equal(l(estadoBase({ ciclo: "curto" })).erro, "invalido");
+  assert.equal(l(estadoBase({ atualizado: "ontem" })).erro, "invalido");
+  assert.equal(l(estadoBase({ expira: "2027-02-31" })).erro, "invalido");
+  assert.equal(l(estadoBase({ fluxo: "retorno:DIA7" })).erro, "invalido");
+  assert.equal(l(estadoBase({ lembrete: "25:99" })).erro, "invalido");
+  assert.equal(l(estadoBase({ caminho: ["a", 3] })).erro, "invalido");
+  assert.equal(l(estadoBase({ caminho: "a" })).erro, "invalido");
+  assert.equal(l(estadoBase({ respostas: [] })).erro, "invalido");
+  assert.equal(l(estadoBase({ historico: new Array(25).fill({}) })).erro, "invalido", "no máximo 24 voltas");
+  assert.equal(l(estadoBase({ volta: { n: 0 } })).erro, "invalido");
+  assert.equal(l(estadoBase({ volta: { n: 1, retornos: { DIA3: { em: "2026-11-23" } } } })).erro, "invalido");
+  assert.equal(l(estadoBase({ respostas: { a: "x".repeat(200 * 1024) } })).erro, "invalido", "acima de 100 KB");
+});
+
+test("lerEstado: expirado só depois do dia de validade, e versão maior é recusada", () => {
+  const texto = JSON.stringify(estadoBase());
+  assert.ok(kit.lerEstado(texto, ESQUEMA, "2027-03-20").estado, "no último dia ainda vale");
+  assert.equal(kit.lerEstado(texto, ESQUEMA, "2027-03-21").erro, "expirado");
+  assert.equal(kit.lerEstado(JSON.stringify(estadoBase({ v: 3 })), ESQUEMA, "2026-12-01").erro, "versao");
+  assert.equal(kit.lerEstado(JSON.stringify(estadoBase({ v: 0 })), ESQUEMA, "2026-12-01").erro, "invalido");
+  assert.equal(kit.lerEstado(JSON.stringify(estadoBase({ v: 1.5 })), ESQUEMA, "2026-12-01").erro, "invalido");
+});
+
+test("lerEstado: guarda o ciclo de voltas só com o formato certo", () => {
+  const volta = {
+    n: 2, dia0: "2026-11-20", registro: { v: 1, padrao: "x", "__proto__": { p: 1 } },
+    retornos: { dia3: { em: "2026-11-23", r: { fez: "sim", crenca: 60 } } },
+  };
+  const r = kit.lerEstado(JSON.stringify(estadoBase({ volta, historico: [{ volta: 1 }] })), ESQUEMA, "2026-12-01");
+  assert.ok(r.estado, JSON.stringify(r));
+  assert.deepEqual(normal(r.estado.volta.retornos), { dia3: { em: "2026-11-23", r: { fez: "sim", crenca: 60 } } });
+  assert.deepEqual(Object.keys(r.estado.volta.registro).sort(), ["padrao", "v"]);
+  assert.equal(r.estado.volta.n, 2);
+  assert.deepEqual(normal(r.estado.historico), [{ volta: 1 }]);
+});
+
+test("migrarEstado leva de versão em versão e para onde não há caminho", () => {
+  const migracoes = {
+    1: (e) => ({ ...e, respostas: { ...e.respostas, novo: "um" } }),
+    2: (e) => ({ ...e, bib: "2027.01-1" }),
+  };
+  const m = kit.migrarEstado(estadoBase({ v: 1 }), migracoes, 3);
+  assert.equal(m.estado.v, 3);
+  assert.equal(m.estado.respostas.novo, "um");
+  assert.equal(m.estado.bib, "2027.01-1");
+  assert.equal(kit.migrarEstado(estadoBase({ v: 1 }), { 1: migracoes[1] }, 3).erro, "versao", "falta o degrau 2");
+  assert.equal(kit.migrarEstado(estadoBase({ v: 1 }), { 1: () => { throw new Error("x"); } }, 2).erro, "versao");
+  assert.equal(kit.migrarEstado(estadoBase({ v: 1 }), { 1: () => "texto" }, 2).erro, "versao");
+  assert.equal(kit.migrarEstado(estadoBase({ v: 3 }), migracoes, 3).estado.v, 3, "já na versão atual");
+  assert.equal(kit.migrarEstado(estadoBase({ v: 1 }), migracoes).estado.v, 3, "sem versão atual, segue enquanto houver migração");
+  const original = estadoBase({ v: 1 });
+  kit.migrarEstado(original, migracoes, 3);
+  assert.equal(original.v, 1, "não altera o original");
+});
+
+test("lerEstado migra a versão antiga antes de validar", () => {
+  const esquema = { protocolo: "protocolo-x", versao: 2, migracoes: { 1: (e) => ({ ...e, etapa: e.etapa === "meio" ? "ato1" : e.etapa }) } };
+  const antigo = estadoBase({ v: 1, etapa: "meio" });
+  const r = kit.lerEstado(JSON.stringify(antigo), esquema, "2026-12-01");
+  assert.equal(r.estado.v, 2);
+  assert.equal(r.estado.etapa, "ato1");
+  assert.equal(kit.lerEstado(JSON.stringify(antigo), { ...esquema, migracoes: {} }, "2026-12-01").erro, "versao");
+});
+
+test("prepararParaGuardar tira os passos que nunca são guardados e os rótulos", () => {
+  const steps = [
+    { id: "chao", type: "grade" },
+    { id: "risco", type: "multi" },
+    { id: "a", type: "choice", followUp: { id: "a_peso", type: "scale" } },
+  ];
+  const estado = estadoBase({
+    caminho: ["chao", "risco", "a"],
+    respostas: { chao: { x: 1 }, risco: ["p"], risco__labels: ["P"], a: "x", a__label: "X", a_peso: 3 },
+  });
+  const copia = JSON.stringify(estado);
+  const limpo = kit.prepararParaGuardar(estado, ["chao", "risco"], steps);
+  assert.deepEqual(limpo.respostas, { a: "x", a_peso: 3 });
+  assert.deepEqual(limpo.caminho, ["a"]);
+  assert.equal(JSON.stringify(estado), copia, "não altera o original");
+  assert.deepEqual(kit.prepararParaGuardar(estado, undefined).respostas, { chao: { x: 1 }, risco: ["p"], a: "x", a_peso: 3 }, "sem lista só tira os rótulos");
+});
+
+// Fluxo de teste: bloco de cuidado (nunca guardado), duas perguntas, checkpoint e uma pergunta.
+const FLUXO = [
+  { id: "chao", type: "choice", options: [{ value: "ok", label: "Ok" }, { value: "dificil", label: "Difícil" }] },
+  { id: "risco", type: "multi", exclusive: "nada", options: [{ value: "a", label: "A" }, { value: "nada", label: "Nada" }] },
+  { id: "p1", type: "choice", options: [{ value: "x", label: "X" }, { value: "y", label: "Y" }] },
+  { id: "p2", type: "scale", min: 0, max: 10, followUp: { id: "p2_nota", type: "write", optional: true } },
+  { id: "fim1", type: "checkpoint" },
+  { id: "p3", type: "choice", showIf: (r) => r.p1 === "x", options: [{ value: "s", label: "S" }] },
+  { id: "p4", type: "write" },
+];
+const NAO_GUARDAR = ["chao", "risco"];
+
+test("restaurarProgresso: pula o bloco que nunca é guardado e para no primeiro passo sem resposta", () => {
+  const estado = estadoBase({
+    caminho: ["p1", "p2", "fim1"],
+    respostas: { p1: "x", p2: 7, p2_nota: "ok", intruso: 1 },
+  });
+  const r = kit.restaurarProgresso(FLUXO, estado, NAO_GUARDAR);
+  assert.equal(FLUXO[r.indice].id, "p3");
+  assert.deepEqual(r.caminho.map((i) => FLUXO[i].id), ["p1", "p2", "fim1"]);
+  assert.deepEqual(r.respostas, { p1: "x", p1__label: "X", p2: 7, p2_nota: "ok" });
+  assert.equal(r.descartou, false);
+});
+
+test("restaurarProgresso: tudo respondido leva ao resultado; ramo oculto não conta", () => {
+  const completo = estadoBase({
+    caminho: ["p1", "p2", "fim1", "p4"],
+    respostas: { p1: "y", p2: 3, p2_nota: "", p4: "fim" },
+  });
+  const r = kit.restaurarProgresso(FLUXO, completo, NAO_GUARDAR);
+  assert.equal(r.indice, FLUXO.length);
+  assert.deepEqual(r.caminho.map((i) => FLUXO[i].id), ["p1", "p2", "fim1", "p4"]);
+});
+
+test("restaurarProgresso: resposta que já não vale derruba o resto e volta a esse passo", () => {
+  const estado = estadoBase({
+    caminho: ["p1", "p2", "fim1"],
+    respostas: { p1: "z", p2: 7, p2_nota: "" },
+  });
+  const r = kit.restaurarProgresso(FLUXO, estado, NAO_GUARDAR);
+  assert.equal(FLUXO[r.indice].id, "p1");
+  assert.deepEqual(r.respostas, {});
+  assert.equal(r.descartou, true);
+  const semComplemento = kit.restaurarProgresso(FLUXO, estadoBase({ caminho: ["p1", "p2"], respostas: { p1: "x", p2: 7 } }), NAO_GUARDAR);
+  assert.equal(FLUXO[semComplemento.indice].id, "p2", "o complemento é parte do passo");
+  assert.equal(semComplemento.respostas.p2, undefined);
+});
+
+test("restaurarProgresso: caminho que o fluxo não mostraria é recusado", () => {
+  const forjado = estadoBase({ caminho: ["p2", "p1"], respostas: { p1: "x", p2: 7 } });
+  const r = kit.restaurarProgresso(FLUXO, forjado, NAO_GUARDAR);
+  assert.equal(FLUXO[r.indice].id, "p1");
+  assert.deepEqual(r.respostas, {});
+});
+
+test("restaurarProgresso: quem parou dentro do bloco que não se guarda recomeça no começo dele", () => {
+  const dentro = estadoBase({ etapa: "ato1", passo: "risco", caminho: [], respostas: {} });
+  assert.equal(FLUXO[kit.restaurarProgresso(FLUXO, dentro, NAO_GUARDAR).indice].id, "chao");
+  const antes = [{ id: "intro", type: "choice", options: [{ value: "a", label: "A" }] }, ...FLUXO];
+  const r = kit.restaurarProgresso(antes, estadoBase({ caminho: ["intro"], respostas: { intro: "a" }, passo: "risco" }), NAO_GUARDAR);
+  assert.equal(antes[r.indice].id, "chao");
+  assert.deepEqual(r.caminho.map((i) => antes[i].id), ["intro"]);
+  const sem = kit.restaurarProgresso(FLUXO, estadoBase({ caminho: [], respostas: {} }), []);
+  assert.equal(FLUXO[sem.indice].id, "chao", "sem bloco declarado, é o primeiro passo");
+});
+
+test("restaurarProgresso: rótulos voltam a ser calculados, inclusive os de vários", () => {
+  const passos = [
+    { id: "m", type: "multi", options: [{ value: "a", label: "Alfa" }, { value: "b", label: "Beta" }] },
+    { id: "d", type: "choice", options: (r) => r.m.map((v) => ({ value: v, label: "Opção " + v })) },
+  ];
+  const r = kit.restaurarProgresso(passos, estadoBase({ caminho: ["m", "d"], respostas: { m: ["a", "b"], d: "b" } }), []);
+  assert.deepEqual(r.respostas, { m: ["a", "b"], m__labels: ["Alfa", "Beta"], d: "b", d__label: "Opção b" });
+  assert.equal(r.indice, 2);
+});
+
+test("situacaoDoMarco: cedo, no dia, atrasado e feito", () => {
+  const volta = { n: 1, dia0: "2026-11-20", retornos: { dia3: { em: "2026-11-23", r: {} } } };
+  assert.deepEqual(kit.situacaoDoMarco(volta, "dia7", 7, "2026-11-26"), { situacao: "cedo", data: "2026-11-27", feitoEm: null });
+  assert.equal(kit.situacaoDoMarco(volta, "dia7", 7, "2026-11-27").situacao, "no_dia");
+  assert.equal(kit.situacaoDoMarco(volta, "dia7", 7, "2026-12-15").situacao, "atrasado");
+  assert.deepEqual(kit.situacaoDoMarco(volta, "dia3", 3, "2026-11-30"), { situacao: "feito", data: "2026-11-23", feitoEm: "2026-11-23" });
+  assert.equal(kit.situacaoDoMarco(volta, "semana", undefined, "2026-11-30").situacao, "no_dia", "sem data vale sempre");
+  assert.equal(kit.situacaoDoMarco(null, "dia7", 7, "2026-11-30").situacao, "no_dia", "sem volta não há data");
+});
+
+test("lerMarco: só marcos da lista, e #c= dentro do limite", () => {
+  const permitidos = ["dia3", "dia7", "continuar"];
+  assert.deepEqual(kit.lerMarco("#volta=dia7", permitidos), { marco: "dia7" });
+  assert.deepEqual(kit.lerMarco("volta=continuar", permitidos), { marco: "continuar" });
+  assert.equal(kit.lerMarco("#volta=dia8", permitidos), null, "marco fora da lista");
+  assert.equal(kit.lerMarco("#volta=constructor", permitidos), null);
+  assert.equal(kit.lerMarco("#volta=dia7&x=1", permitidos), null, "só o fragmento inteiro");
+  assert.equal(kit.lerMarco("#volta=", permitidos), null);
+  assert.equal(kit.lerMarco("#volta=dia7", undefined), null);
+  assert.equal(kit.lerMarco("#volta=DIA7", ["DIA7"]), null);
+  assert.equal(kit.lerMarco("", permitidos), null);
+  assert.equal(kit.lerMarco("#", permitidos), null);
+  assert.equal(kit.lerMarco("#outra-coisa", permitidos), null);
+  assert.equal(kit.lerMarco(undefined, permitidos), null);
+  assert.deepEqual(kit.lerMarco("#c=abcDEF012_-", permitidos), { codigo: "abcDEF012_-" });
+  assert.deepEqual(kit.lerMarco("#c=" + "a".repeat(2048), permitidos), { codigo: "a".repeat(2048) });
+  assert.deepEqual(kit.lerMarco("#c=" + "a".repeat(2049), permitidos), { recusado: "codigo" }, "grande demais");
+  assert.deepEqual(kit.lerMarco("#c=abc+def", permitidos), { recusado: "codigo" });
+  assert.deepEqual(kit.lerMarco("#c=", permitidos), { recusado: "codigo" });
+});
+
+test("gerarCiclo faz 8 caracteres [a-z0-9]", () => {
+  assert.match(kit.gerarCiclo([255, 0, 1, 35, 36, 200, 7, 99]), /^[a-z0-9]{8}$/);
+  assert.match(kit.gerarCiclo(), /^[a-z0-9]{8}$/);
+  assert.notEqual(kit.gerarCiclo([1, 2, 3, 4, 5, 6, 7, 8]), kit.gerarCiclo([8, 7, 6, 5, 4, 3, 2, 1]));
+});
+
+test("o checkpoint não entra na contagem de passos", () => {
+  assert.deepEqual(kit.passosVisiveis(FLUXO, {}).includes("fim1"), false);
+  assert.equal(kit.passosVisiveis(FLUXO, { p1: "x" }).length, FLUXO.length - 1);
+});
+
+test("resumoDasRespostas escreve rótulos, não valores", () => {
+  const passos = [
+    { id: "a", type: "choice", prompt: "Pergunta A?", options: [{ value: "x", label: "X" }] },
+    { id: "b", type: "multi", prompt: (r) => "B com " + r.a, options: [] },
+    { id: "c", type: "scale", prompt: "C?", format: "%" },
+    { id: "d", type: "grade", prompt: "D?", items: [{ id: "i", label: "Item" }], options: [{ value: 1, label: "Às vezes" }] },
+    { id: "e", type: "write", prompt: "E?", followUp: { id: "e_n", type: "scale" } },
+    { id: "f", type: "checkpoint" },
+  ];
+  const r = kit.resumoDasRespostas(passos, {
+    a: "x", a__label: "X", b: ["p"], b__labels: ["P1", "P2"], c: 40, d: { i: 1 }, e: "texto", e_n: 3,
+  });
+  assert.deepEqual(r, [
+    { q: "Pergunta A?", value: "X" },
+    { q: "B com x", value: "P1, P2" },
+    { q: "C?", value: "40%" },
+    { q: "D?", value: "Item: Às vezes" },
+    { q: "E?", value: "texto — 3" },
+  ]);
+});
