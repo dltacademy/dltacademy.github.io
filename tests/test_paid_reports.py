@@ -554,6 +554,36 @@ console.log(link.href);
         self.assertIn("safety: safetyNote", self.protocol)
         self.assertIn('pdfSubject:', self.protocol)
 
+    def test_oferta_propaga_utms_para_checkout_e_pagina(self):
+        engine_js = str(self.root / "js/protocol-engine.js")
+        script = f"""
+const fs = require("node:fs");
+const codigo = fs.readFileSync({json.dumps(engine_js)}, "utf8");
+const trecho = codigo.slice(codigo.indexOf("function appendPaidOfferUtms"), codigo.indexOf("function prepareProtocolPdfBrand"));
+const stub = `
+function paidReportCheckoutUrl(v) {{
+  const u = new URL(v);
+  return /^\\\\?utm_[a-z0-9_]+=[a-z0-9_-]+(?:&utm_[a-z0-9_]+=[a-z0-9_-]+)*$/.test(u.search) ? u.href : null;
+}}
+global.window = {{ location: {{ search: "?utm_source=Meta&utm_medium=pago&utm_campaign=teto&utm_content=TF-HIST&foo=ignored" }} }};
+`;
+eval(stub + trecho);
+console.log(JSON.stringify({{
+  checkout: appendPaidOfferUtms("https://relatorio.dlt.academy/comprar/teto-avancado?utm_source=portal&utm_content=oferta", true),
+  pagina: appendPaidOfferUtms("/produtos/mapa-do-seu-teto/", false),
+}}));
+"""
+        proc = subprocess.run(["node", "-e", script], capture_output=True, text=True, check=True)
+        out = json.loads(proc.stdout)
+        self.assertEqual(
+            "https://relatorio.dlt.academy/comprar/teto-avancado?utm_source=meta&utm_medium=pago&utm_campaign=teto&utm_content=tf-hist&utm_term=oferta",
+            out["checkout"],
+        )
+        self.assertEqual(
+            "/produtos/mapa-do-seu-teto/?utm_source=meta&utm_medium=pago&utm_campaign=teto&utm_content=tf-hist",
+            out["pagina"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

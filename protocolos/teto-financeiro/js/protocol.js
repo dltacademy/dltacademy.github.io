@@ -993,7 +993,7 @@ const PROTOCOL = (function montarProtocolo() {
     },
 
     eventos: {
-      ativo: false,
+      ativo: true,
       permitidos: R.EVENTOS,
       nomes: {
         inicio: "teto_inicio",
@@ -1006,6 +1006,12 @@ const PROTOCOL = (function montarProtocolo() {
         retorno: (marco) => "teto_volta_" + marco,
         recuperacao_md: "teto_recuperacao_md",
         oferta: (produto) => "clique_oferta_" + produto + "_principal",
+      },
+      // Emissao local na aba (CustomEvent "dlt:evento") compativel com CSP 'self', sem rede nem dado pessoal.
+      enviar(nome) {
+        if (typeof window !== "undefined" && typeof window.dispatchEvent === "function" && typeof CustomEvent === "function") {
+          window.dispatchEvent(new CustomEvent("dlt:evento", { detail: nome }));
+        }
       },
     },
   };
