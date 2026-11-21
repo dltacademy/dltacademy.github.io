@@ -126,7 +126,7 @@ test("a volta curta e o cuidado na volta não oferecem nada", async () => {
 
 // ---- os eventos --------------------------------------------------------------------------------------------------------
 
-test("a lista de eventos é fixa, sem padrão, família, variante nem cuidado no nome, e o envio está desligado", () => {
+test("a lista de eventos é fixa, sem padrão, família, variante nem cuidado no nome, com despacho local seguro", () => {
   assert.equal(R.EVENTOS.length, 15);
   R.EVENTOS.forEach((nome) => assert.match(nome, /^(teto|clique_oferta)_[a-z0-9_-]+$/, nome));
   const proibidos = [...Object.keys(bib.padroes), ...Object.keys(bib.familias), ...Object.keys(bib.variantes), "cuidado", "chao", "humor", "ajuda"];
@@ -134,8 +134,9 @@ test("a lista de eventos é fixa, sem padrão, família, variante nem cuidado no
   assert.ok(R.EVENTOS.includes("teto_volta_semana"));
   assert.ok(R.EVENTOS.includes("clique_oferta_teto-avancado_principal"));
   const { PROTOCOL } = abrir();
-  assert.equal(PROTOCOL.eventos.ativo, false);
-  assert.equal(PROTOCOL.eventos.enviar, undefined, "nenhum envio escrito");
+  // Medicao local da D7 habilitada com eventos de lista fixa sem chamadas externas nem dados pessoais.
+  assert.equal(PROTOCOL.eventos.ativo, true);
+  assert.equal(typeof PROTOCOL.eventos.enviar, "function", "emissao local via dlt:evento ativa");
   assert.deepEqual(Array.from(PROTOCOL.eventos.permitidos), Array.from(R.EVENTOS));
   const nomes = PROTOCOL.eventos.nomes;
   const resolvidos = [];

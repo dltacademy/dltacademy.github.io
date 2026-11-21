@@ -9,7 +9,7 @@
 
   var BIBLIOTECA = {
     "versao": "2026.11-1",
-    "rascunho": true,
+    "rascunho": false,
     "regras": {
       "PESO_CUSTO": 1,
       "LIMIAR_TETO": 0.34,
@@ -88,7 +88,7 @@
           "base": "Quando entra dinheiro a mais, ele costuma sair antes de ter um destino. O padrão protege o lugar em que você se sente em casa com o dinheiro, e a culpa de ter mais do que você costuma ter."
         },
         "regra_trabalho_exemplo": "dinheiro vai para onde eu decido antes de ele chegar",
-        "rascunho": true
+        "rascunho": false
       },
       "freio-na-cobranca": {
         "nome": "O freio na hora de cobrar",
@@ -148,7 +148,7 @@
           "base": "Na hora de dizer o preço, algo freia: o desconto sai antes do pedido, a conversa é adiada. O padrão protege você da rejeição e da imagem de pessoa boa, e por isso faz sentido, mesmo custando caro."
         },
         "regra_trabalho_exemplo": "cobrar o justo é o que me deixa atender bem",
-        "rascunho": true
+        "rascunho": false
       },
       "passo-que-nao-sai": {
         "nome": "O passo que não sai",
@@ -229,7 +229,7 @@
           }
         },
         "regra_trabalho_exemplo": "eu me preparo fazendo pequeno",
-        "rascunho": true
+        "rascunho": false
       },
       "decisao-no-calor": {
         "nome": "A decisão no calor",
@@ -310,7 +310,7 @@
           }
         },
         "regra_trabalho_exemplo": "decisão boa aguenta uma noite de espera",
-        "rascunho": true
+        "rascunho": false
       },
       "progresso-sem-trilho": {
         "nome": "O progresso sem trilho",
@@ -373,7 +373,7 @@
           "base": "Você começa, e algumas semanas depois a rotina perde força. O padrão protege você da monotonia e de se comprometer por muito tempo."
         },
         "regra_trabalho_exemplo": "pular uma vez não cancela; a próxima vez é a que conta",
-        "rascunho": true
+        "rascunho": false
       },
       "dinheiro-nao-combina": {
         "nome": "O dinheiro que \"não combina comigo\"",
@@ -433,7 +433,7 @@
           "base": "Ganhar mais que o seu círculo traz desconforto, como se o dinheiro não combinasse com você. O padrão protege o pertencimento e a lealdade a onde você veio."
         },
         "regra_trabalho_exemplo": "posso crescer e continuar perto de quem importa para mim",
-        "rascunho": true
+        "rascunho": false
       },
       "caixa-da-familia": {
         "nome": "O caixa da família",
@@ -491,7 +491,7 @@
           "base": "Quando alguém próximo pede, o sim sai antes da conta. O padrão protege o seu lugar na família e o sentimento de ser necessária."
         },
         "regra_trabalho_exemplo": "posso ajudar dentro do que cabe, e pensar até amanhã",
-        "rascunho": true
+        "rascunho": false
       }
     },
     "variantes": {
@@ -521,7 +521,7 @@
           "evitar_3"
         ],
         "leitura": "Para quem pesa Evitar, o dinheiro tende a ser um assunto que se afasta: olhar, pedir e ter ficam desconfortáveis.",
-        "rascunho": true
+        "rascunho": false
       },
       "idolatrar": {
         "nome": "Idolatrar",
@@ -531,7 +531,7 @@
           "idolatrar_3"
         ],
         "leitura": "Para quem pesa Idolatrar, o dinheiro tende a ser a resposta para quase tudo, e a espera por uma virada grande pode ocupar o lugar dos passos pequenos.",
-        "rascunho": true
+        "rascunho": false
       },
       "status": {
         "nome": "Status",
@@ -541,7 +541,7 @@
           "status_3"
         ],
         "leitura": "Para quem pesa Status, o dinheiro tende a medir valor e a ser visto pelos outros.",
-        "rascunho": true
+        "rascunho": false
       },
       "vigilancia": {
         "nome": "Vigilância",
@@ -551,7 +551,7 @@
           "vigilancia_3"
         ],
         "leitura": "Para quem pesa Vigilância, o dinheiro tende a ser algo para proteger e esconder, e nunca parece bastar.",
-        "rascunho": true
+        "rascunho": false
       },
       "lealdade": {
         "nome": "Lealdade",
@@ -561,7 +561,7 @@
           "lealdade_3"
         ],
         "leitura": "Para quem pesa Lealdade, o dinheiro tende a vir com a pergunta de quem se carrega junto e de onde se veio.",
-        "rascunho": true
+        "rascunho": false
       }
     },
     "itens": {
@@ -1326,7 +1326,7 @@
           ]
         },
         "aviso_humor": "Você marcou que as últimas semanas foram pesadas. Pode seguir, em um ritmo menor, e vale conversar com alguém de confiança. O CVV atende pelo 188, a qualquer hora, e o CAPS pode ser procurado pelo posto de saúde mais perto de você.",
-        "rascunho": true
+        "rascunho": false
       }
     },
     "telas": {
@@ -1748,7 +1748,7 @@
         "registrado": "O que você registrou",
         "daqui": "Daqui para a frente",
         "rotulo_arquivo": "teto-financeiro",
-        "rascunho": true
+        "rascunho": false
       },
       "dia3": {
         "titulo": "Retorno do dia 3",
@@ -1810,7 +1810,7 @@
             "caiu": "A crença caiu."
           }
         },
-        "rascunho": true
+        "rascunho": false
       },
       "dia7": {
         "titulo": "Retorno do dia 7",
@@ -1939,7 +1939,7 @@
             "caiu": "A crença caiu."
           }
         },
-        "rascunho": true
+        "rascunho": false
       },
       "dia30": {
         "titulo": "Retorno do dia 30",
@@ -2032,17 +2032,17 @@
             "nao": "O vazamento não apareceu nestes 30 dias."
           }
         },
-        "rascunho": true
+        "rascunho": false
       },
       "dia90": {
         "titulo": "Volta dos 90 dias",
         "perguntas": [],
-        "rascunho": true
+        "rascunho": false
       },
       "sinais": {
         "titulo": "Volta nos sinais",
         "perguntas": [],
-        "rascunho": true
+        "rascunho": false
       },
       "semana": {
         "titulo": "Revisão da semana",
@@ -2130,12 +2130,12 @@
           "privacidade": "Esta revisão só guarda a data. Nenhuma das respostas acima fica guardada.",
           "sinais_voltaram": "Se o padrão venceu de novo, ou apareceram dois sinais na mesma semana, vale fazer a volta curta."
         },
-        "rascunho": true
+        "rascunho": false
       },
       "continuar": {
         "titulo": "Continuar de onde parou",
         "perguntas": [],
-        "rascunho": true
+        "rascunho": false
       },
       "volta": {
         "motivo": {
@@ -2263,7 +2263,7 @@
           "plano_ajustado": "O plano continua, com o passo ajustado pelo que aconteceu.",
           "cuidado_eyebrow": "A sua volta"
         },
-        "rascunho": true
+        "rascunho": false
       }
     },
     "planos": {
@@ -2378,7 +2378,7 @@
         ],
         "noventa": "Nos 90 dias: organize o essencial, uma dívida de cada vez, e mantenha dinheiro de risco fora das contas do mês."
       },
-      "rascunho": true
+      "rascunho": false
     },
     "textos": {
       "abertura": {
@@ -2518,7 +2518,7 @@
         ]
       },
       "disclaimer": "Reflexão sobre hábitos com dinheiro. Não é diagnóstico, avaliação psicológica nem recomendação de investimento.",
-      "rascunho": true,
+      "rascunho": false,
       "se_entao": {
         "segmentos": [
           "Quando eu notar {sinal:sp,min},",

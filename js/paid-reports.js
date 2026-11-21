@@ -69,9 +69,11 @@ const PAID_REPORTS = {
     preco: "R$ 97",
     formato: "leitura no dia 0 + ajuste no dia 7 + PDF",
     botao: "Quero o Mapa do meu Teto →",
+    paginaUrl: "/produtos/mapa-do-seu-teto/",
+    botaoPagina: "Ver exemplo da leitura",
     plataforma: "Stripe",
     checkoutUrl: "",
-    aviso: "Pagamento único por ciclo via Pix (confirma na hora) ou cartão pelo Stripe. Nada do que você escreveu aqui vai no link: depois de pagar, você escolhe se carrega o seu arquivo (.md). Suas respostas passam por um serviço de geração de texto contratado por nós apenas para produzir a leitura. É material educacional sobre hábitos com dinheiro, não é diagnóstico nem recomendação de investimento. Você tem 7 dias para pedir reembolso.",
+    aviso: "Pagamento único por ciclo via Pix (confirma na hora) ou cartão pelo Stripe. Nada do que você escreveu aqui vai no link: depois de pagar, você escolhe se carrega o seu arquivo (.md). Suas respostas passam por um serviço de geração de texto contratado por nós apenas para produzir a leitura e ficam acessíveis no seu link por 10 dias para permitir o ajuste no dia 7 (ou você apaga na hora pelo botão da página; os lembretes quinzenais até o dia 90 são opcionais, neutros e com saída em 1 clique). É material educacional sobre hábitos com dinheiro, não é diagnóstico nem recomendação de investimento. Você tem 7 dias para pedir reembolso.",
     perfis: {
       "ganho-que-escorre": {
         capitulo: "O ganho que escorre",
