@@ -213,6 +213,25 @@ class PaginaDoTetoTests(unittest.TestCase):
         self.assertEqual({"https://dlt.academy/protocolos/teto-financeiro/"}, set(enderecos))
 
 
+class RegrasDoTetoTests(unittest.TestCase):
+    """As regras montam o resultado, os arquivos, os lembretes e os cartões: dados, sem DOM e sem rede."""
+
+    def test_as_regras_nao_tocam_no_dom_nem_na_rede_nem_montam_html(self) -> None:
+        codigo = re.sub(r"/\*.*?\*/", "", texto("teto-regras.js"), flags=re.DOTALL)
+        codigo = re.sub(r"(?m)^\s*//.*$", "", codigo)
+        codigo = codigo.replace("root.TetoRegras", "")
+        for trecho in ("document", "window", "innerHTML", "eval(", "new Function", "confirm(", "fetch(", "XMLHttpRequest", "sendBeacon", "localStorage", "sessionStorage", "Math.random", "Date.now", "new Date"):
+            with self.subTest(trecho=trecho):
+                self.assertNotIn(trecho, codigo)
+
+    def test_as_regras_nao_escrevem_endereco_nem_oferta(self) -> None:
+        codigo = texto("teto-regras.js")
+        self.assertEqual([], re.findall(r"https?://[^\s\"'`]+", codigo), "o endereço da página chega pelo contexto")
+        for trecho in ("relatorio", "PAID_REPORTS", "buildPaidReportOffer", "checkout", "#c=", "encodeURIComponent"):
+            with self.subTest(trecho=trecho):
+                self.assertNotIn(trecho, codigo)
+
+
 class PublicacaoDoTetoTests(unittest.TestCase):
     """Com rascunho na biblioteca, a página anda no ar para o piloto, mas não aparece em lugar nenhum."""
 

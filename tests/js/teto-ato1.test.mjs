@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { createRequire } from "node:module";
 import { criarAmbiente, piloto } from "./fake-dom.mjs";
-import { CASOS, percorrer } from "./teto-casos.mjs";
+import { ATO2, CASOS, percorrer } from "./teto-casos.mjs";
 
 const require = createRequire(import.meta.url);
 const kit = require("../../js/protocol-kit.js");
@@ -45,15 +45,18 @@ function abrir({ hash = "", local = {}, sessao = {}, userAgent, ajuste, comAviso
   return { env, p: piloto(env), aviso, PROTOCOL: env.rodar("PROTOCOL") };
 }
 
-// Percorre o caso até o checkpoint (ou o fim) e devolve onde parou.
-async function jogar(pagina, letra, extra = {}) {
+// Percorre o caso até o checkpoint (ou o fim) e devolve onde parou. Com `ato2`, segue pelo
+// Ato 2 até o resultado final.
+async function jogar(pagina, letra, extra = {}, { ato2 = false } = {}) {
   const respostas = clone(CASOS[letra]);
+  if (ato2) Object.assign(respostas, clone(ATO2[letra]));
   Object.assign(respostas, extra);
   const parou = await percorrer({
     mount: pagina.env.mount,
     passos: pagina.PROTOCOL.steps,
     kit,
     respostas,
+    seguir: ato2,
     esperar: async () => pagina.env.rodarTimers(),
   });
   return { parou, respostas };
@@ -105,7 +108,7 @@ test("caso A: o mapa do freio na hora de cobrar, com o campo da trava e sem rend
   const ids = Array.from(PROTOCOL.steps, (s) => s.id);
   assert.deepEqual(ids.slice(0, 4), ["chao", "humor", "sinais_risco", "fatos"]);
   assert.deepEqual(ids.filter((i) => /^triade_/.test(i)), ["triade_1", "triade_2", "triade_3", "triade_4", "triade_5"]);
-  assert.deepEqual(ids.slice(-6), ["frases_nivel", "espelho", "variante", "renda", "alvo", "fim_ato1"]);
+  assert.deepEqual(ids.slice(0, ids.indexOf("fim_ato1") + 1).slice(-6), ["frases_nivel", "espelho", "variante", "renda", "alvo", "fim_ato1"]);
   assert.equal(env.janela.location.hash, "");
 });
 
@@ -300,8 +303,10 @@ test("salvar e continuar depois guarda o Ato 1 sem o cuidado, por 120 dias, e re
   assert.match(b.p.pergunta(), /Você tem um Teto guardado de 20\/11\/2026/);
   assert.ok(!b.p.mount.textContent.includes("freio"), "nenhuma resposta antes da escolha");
   clicar(b.p, "Continuar de onde parei");
+  assert.equal(b.p.pergunta(), bib.telas.clima_casa.prompt, "retoma no Ato 2, logo depois do checkpoint");
+  assert.match(b.p.rotulo(), /^Ato 2 · 1 de \d+$/);
+  clicar(b.p, "← Voltar");
   assert.equal(veredito(b.p), "Seu teto hoje: O freio na hora de cobrar");
-  assert.match(b.p.mount.textContent, /A parte 2 deste protocolo/);
 });
 
 test("o link do lembrete #volta=continuar abre o ponto em que parou, com ou sem o estado guardado", async () => {
@@ -310,22 +315,20 @@ test("o link do lembrete #volta=continuar abre o ponto em que parou, com ou sem 
   clicar(a.p, "Salvar e continuar depois");
   const guardado = a.env.armazenamento[CHAVE];
   const com = abrir({ hash: "#volta=continuar", local: { [CHAVE]: guardado } });
-  assert.equal(veredito(com.p), "Seu teto hoje: O ganho que escorre", "com o estado, retoma direto");
+  assert.equal(com.p.pergunta(), bib.telas.clima_casa.prompt, "com o estado, retoma direto no Ato 2");
   const sem = abrir({ hash: "#volta=continuar" });
   assert.match(sem.p.mount.textContent, /Não encontramos neste navegador/);
   assert.ok(sem.p.porClasse("protocol-file-input").length > 0, "oferece carregar o .md");
   assert.equal(sem.p.textarea(), null, "ainda não há código do registro para colar");
 });
 
-test("o resultado depois do checkpoint avisa da parte 2 e oferece guardar para os retornos", async () => {
+test("o resultado do fim do Ato 2 oferece guardar para os retornos, com o registro à mão", async () => {
   const a = abrir();
-  await jogar(a, "C");
-  clicar(a.p, "Continuar agora");
+  await jogar(a, "C", {}, { ato2: true });
   assert.ok(a.p.noResultado());
-  assert.match(a.p.mount.textContent, /chega na próxima versão/);
   assert.ok(a.p.botaoPor("Guardar neste aparelho para os retornos"));
-  assert.ok(a.p.porClasse("protocol-registro").length === 1, "o registro do Ato 1 fica à mão");
-  assert.equal(a.p.porClasse("protocol-paid-report").length, 0, "sem oferta no Ato 1");
+  assert.ok(a.p.porClasse("protocol-registro").length === 1, "o registro fica à mão");
+  assert.equal(a.p.porClasse("protocol-paid-report").length, 0, "sem oferta");
   assert.equal(a.env.armazenamento[CHAVE], undefined, "só guarda quando ela toca");
   clicar(a.p, "Guardar neste aparelho para os retornos");
   const salvo = lerLocal(a.env);
@@ -333,6 +336,7 @@ test("o resultado depois do checkpoint avisa da parte 2 e oferece guardar para o
   assert.equal(salvo.volta.n, 1);
   assert.equal(salvo.volta.dia0, "2026-11-20");
   assert.equal(salvo.volta.registro.padrao, "passo-que-nao-sai");
+  assert.equal(salvo.volta.registro.ato, 2);
 });
 
 // ---- os arquivos ------------------------------------------------------------------------------------
@@ -386,8 +390,7 @@ test("o .md do Ato 1 vem em blocos marcados, com os ids da ficha, o registro por
 
 test("nenhuma resposta vai para endereço, link de compartilhar ou de compra", async () => {
   const a = abrir();
-  await jogar(a, "B");
-  clicar(a.p, "Continuar agora");
+  await jogar(a, "B", {}, { ato2: true });
   const links = a.p.todos().filter((e) => e.tagName === "A").map((e) => e.getAttribute("href") || "");
   assert.ok(links.length > 0);
   links.forEach((href) => {
@@ -421,13 +424,15 @@ for (const letra of ["A", "B", "C"]) {
     assert.match(b.p.pergunta(), /Encontramos o que você trouxe, de 20\/11\/2026/);
     assert.ok(b.p.mount.textContent.includes("O seu Teto de 20/11/2026: " + bib.padroes[CASOS[letra].espelho].nome));
     clicar(b.p, "Continuar");
-    assert.ok(b.p.noResultado(), "retomou depois do checkpoint: " + b.p.mount.textContent.slice(0, 160));
+    assert.equal(b.p.pergunta(), bib.telas.clima_casa.prompt, "retomou depois do checkpoint: " + b.p.mount.textContent.slice(0, 160));
+    clicar(b.p, "← Voltar");
+    assert.ok(b.p.noResultado());
     assert.equal(veredito(b.p), verdito);
     assert.deepEqual(b.p.porClasse("protocol-section").map((s) => s.textContent), antes, "as mesmas seções, com as mesmas frases dela");
     assert.equal(b.env.armazenamento[CHAVE], undefined, "veio de fora: não guardou sozinho");
 
     // Guardado, o estado leva as respostas do Ato 1 e nada do cuidado.
-    clicar(b.p, "Guardar neste aparelho para os retornos");
+    clicar(b.p, "Salvar e continuar depois");
     const salvo = lerLocal(b.env);
     assert.equal(salvo.volta.registro.padrao, CASOS[letra].espelho);
     assert.ok(salvo.caminho.includes("fim_ato1"));
@@ -443,7 +448,8 @@ test("o .md de um mapa com o estado pausado em outro aparelho refaz o caminho pa
   const b = abrir({ hash: "#volta=continuar" });
   await carregarArquivo(b, md);
   clicar(b.p, "Continuar");
-  clicar(b.p, "Guardar neste aparelho para os retornos");
+  clicar(b.p, "← Voltar");
+  clicar(b.p, "Salvar e continuar depois");
   const salvo = lerLocal(b.env);
   const original = lerLocalDe(await pausar("B"));
   assert.deepEqual(salvo.caminho, original.caminho, "o mesmo caminho que quem pausou no mesmo aparelho");
@@ -539,6 +545,7 @@ test("o que ela escreve na trava não forja marcador no .md, e volta igual (neut
   const b = abrir({ hash: "#volta=continuar" });
   await carregarArquivo(b, md);
   clicar(b.p, "Continuar");
+  clicar(b.p, "← Voltar");
   assert.equal(veredito(b.p), "Seu teto hoje: O freio na hora de cobrar");
   const trava = b.p.porClasse("protocol-section").find((s) => s.dataset.kind === "trava").textContent;
   assert.ok(trava.includes("preço cheio -- >"), "o marcador perdeu a forma");

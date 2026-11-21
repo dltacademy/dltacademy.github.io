@@ -1,11 +1,11 @@
-// Protocolo do Teto Financeiro: o Ato 1 (o mapa).
+// Protocolo do Teto Financeiro: o Ato 1 (o mapa) e o Ato 2 (o fio e a semana).
 //
 // Monta o PROTOCOL a partir da biblioteca (js/biblioteca-teto.js) e das regras
-// (teto-regras.js). Aqui ficam a ordem das telas, o que cada uma mostra e as saídas
-// (checkpoint, ramo de cuidado, resultado "nenhum", .md, .ics); as contas estão nas
-// regras e os textos dos padrões, na biblioteca. Os textos que são só da página
-// (títulos de seção, ajudas) estão em TEXTOS e valem como provisórios enquanto a
-// biblioteca for rascunho.
+// (teto-regras.js). Aqui ficam a ordem das telas, o que cada uma mostra e a leitura do .md
+// que a pessoa baixou; as contas e a montagem do resultado, dos arquivos e dos lembretes estão
+// nas regras e os textos dos padrões e das telas, na biblioteca. Os textos que são só da
+// página (títulos de parte, ajudas do Ato 1) estão em TEXTOS e valem como provisórios
+// enquanto a biblioteca for rascunho.
 //
 // Telas do Ato 1, na ordem:
 //   chao, humor, sinais_risco      cuidado (nunca guardados; o ramo de cuidado encerra aqui)
@@ -17,6 +17,15 @@
 //   espelho, variante, renda, alvo o teto, e o que a trava precisa
 //   fim_ato1                       checkpoint: o mapa, a trava e as saídas
 // "Nenhum padrão domina" também encerra: resultado honesto, sem plano de teto.
+//
+// Telas do Ato 2, na ordem:
+//   clima_casa                     o clima do dinheiro na casa em que cresceu
+//   cena, terreno, sinais, frase, ponto_escolha, alivio, custo_depois, para_que, excecao
+//                                  a última vez
+//   desgrudar, regra_antiga, regra_origem, previsao, dia_um_ano, importancia, regra_trabalho
+//                                  ressignificar
+//   desconforto, experimento, se_entao, confianca, proximas_24h
+//                                  o plano
 
 // Aviso calmo para quem abriu a página dentro de um aplicativo (Instagram, TikTok,
 // Facebook): lá o armazenamento é separado do navegador e baixar arquivo costuma falhar.
@@ -34,10 +43,10 @@ const PROTOCOL = (function montarProtocolo() {
   const R = TetoRegras;
   const kit = DLTProtocolKit;
 
-  const GRUPO = "Ato 1";
+  const GRUPO_ATO1 = "Ato 1";
+  const GRUPO_ATO2 = "Ato 2";
   const PAGINA = "https://dlt.academy/protocolos/teto-financeiro/";
   const CUIDADO = ["chao", "humor", "sinais_risco"];
-  const HORA_PADRAO = "20:00";
 
   const TEXTOS = {
     cuidado: {
@@ -70,34 +79,11 @@ const PROTOCOL = (function montarProtocolo() {
       placeholder: "Ex.: o preço que quero cobrar e o dia em que vou dizê-lo.",
       seguranca: "Se isto pesar, pare por aqui: o CVV atende pelo 188, a qualquer hora.",
     },
-    resultado: {
-      eyebrow: "Fim do Ato 1 · o seu mapa",
-      verdict: "Seu teto hoje: ",
-      trilha: {
-        ganho: "É um teto de ganho: o limite está em quanto você cobra, pede ou arrisca para ganhar.",
-        retencao: "É um teto de retenção: o dinheiro chega, mas não fica, ou sai antes de cumprir o que você planejou.",
-      },
-      perto: "Os dois lados, ganho e retenção, pontuaram perto um do outro. Vale observar o outro também.",
-      frasesMarcadas: "As frases que você marcou:",
-      semFamilia: "Nenhuma crença se destacou das outras: as suas respostas ficaram equilibradas.",
-      familia: "A crença que mais pesa: ",
-      vazamentoTitulo: "O vazamento em observação",
-      vazamento: "Você também marcou sinais de “{nome}”, do outro lado. Será que você destrava num lado e devolve no outro?",
-      vazamentoNota: "Não é a meta de agora: fica em observação e é o alvo da próxima volta.",
-      sessentaRegra: " Por enquanto, use esta: “{exemplo}”. Na parte 2 você escreve a sua.",
-      travaTitulo: "A sua trava de hoje",
-      travaAlvo: "O que você escreveu: ",
-      sinaisEmpurrao: "O que costuma empurrar você: {empurrao}.",
-      parte2: "A parte 2 deste protocolo (a escrita sobre a última vez, a regra de trabalho e o plano da semana) chega na próxima versão. Por enquanto o seu mapa está completo: baixe os arquivos abaixo e guarde.",
-      seguranca: "Isto é uma reflexão sobre hábitos com dinheiro, e não substitui conversar com alguém. Se o peso for grande, o CVV atende pelo 188, a qualquer hora.",
-      arquivo: "teto-financeiro-mapa",
-    },
-    nenhum: { eyebrow: "O seu resultado", voltar: "Quando voltar aqui" },
-    cuidadoResultado: { eyebrow: "Primeiro, o cuidado", noventa: "O plano de 90 dias" },
-    registro: { titulo: "O registro do seu teto", teto: "O teto", trilha: "O tipo de teto", familia: "A crença que mais pesa", data: "Feito em" },
-    app: {
-      semana: { resumo: "Teto Financeiro: revisão semanal", descricao: "Dez minutos para olhar a semana: o sinal apareceu? Abra o link." },
-      continuar: { resumo: "Teto Financeiro: continuar de onde parou", descricao: "Retome o seu Teto. Se não houver nada guardado neste navegador, carregue o seu arquivo (.md). Se você já terminou, ignore este lembrete." },
+    partes: {
+      raiox: "O Raio-X",
+      ultima: "A última vez",
+      ressignificar: "Ressignificar",
+      plano: "O plano",
     },
   };
 
@@ -106,8 +92,6 @@ const PROTOCOL = (function montarProtocolo() {
   const lista = (v) => (Array.isArray(v) ? v : []);
   const dataBR = (iso) => (typeof iso === "string" && iso.length >= 10 ? iso.slice(8, 10) + "/" + iso.slice(5, 7) + "/" + iso.slice(0, 4) : "");
   const aspas = (texto) => "“" + kit.semPontoFinal(texto) + "”";
-  const capitalizar = (t) => (t ? t.charAt(0).toUpperCase() + t.slice(1) : t);
-  const unico = (arr) => arr.filter((v, i) => arr.indexOf(v) === i);
 
   function preencher(texto, valores) {
     return String(texto || "").replace(/\{([a-z0-9_]+)\}/g, (m, chave) => (
@@ -115,46 +99,8 @@ const PROTOCOL = (function montarProtocolo() {
     ));
   }
 
-  // O nome do padrão ("O ganho que escorre", "A decisão no calor") traz o artigo. No começo
-  // de uma frase ele fica como está; no meio, vai para minúscula; e o "o" que o modelo põe
-  // antes de {nome} ("lá vem o {nome}") cede lugar ao artigo do próprio nome.
-  function comNome(texto, nome) {
-    return String(texto || "")
-      .replace(/(^|[^\p{L}\p{N}])o \{nome\}/gu, (m, antes) => antes + primeiraMinuscula(nome))
-      .replace(/(^|[.!?]\s+)?\{nome\}/g, (m, inicio) => (inicio === undefined ? primeiraMinuscula(nome) : inicio + nome));
-  }
-  const primeiraMinuscula = (t) => kit.primeiraMinuscula(t);
-
-  // As marcas de sinal de todas as cenas, na ordem das cenas.
-  function sinaisMarcados(a) {
-    const saida = [];
-    bib.cenas.forEach((cena) => {
-      const marcadas = lista(a[cena.id]);
-      cena.opcoes.forEach((o) => {
-        if (o.tipo === "sinal" && marcadas.indexOf(o.value) !== -1) saida.push({ value: o.value, label: o.label });
-      });
-    });
-    return saida;
-  }
-
-  // Os dois itens "mais verdadeiros" das tríades, da família mais forte para a mais fraca.
-  function itensDasFrases(a) {
-    const familias = R.pontuarFamilias(a, bib);
-    if (familias.modo !== "triade") return [];
-    const mais = [];
-    bib.triades.forEach((t) => {
-      const r = a[t.id];
-      if (r && typeof r === "object" && t.itens.indexOf(r.mais) !== -1 && t.itens.indexOf(r.menos) !== -1 && r.mais !== r.menos) mais.push(r.mais);
-    });
-    return mais
-      .map((id, i) => {
-        const nota = familias.norm[bib.itens[id].familia];
-        return { id, i, nota: typeof nota === "number" ? nota : -2 };
-      })
-      .sort((x, y) => (y.nota - x.nota) || (x.i - y.i))
-      .slice(0, 2)
-      .map((x) => ({ id: x.id, label: bib.itens[x.id].texto }));
-  }
+  // O resultado e o checkpoint também precisam do endereço da página, para o link dos lembretes.
+  const comPagina = (ctx) => Object.assign({ pagina: PAGINA }, ctx);
 
   // Os candidatos do espelho, cada um com as frases que a pessoa marcou, e a saída "nenhum".
   function opcoesDoEspelho(a) {
@@ -174,13 +120,13 @@ const PROTOCOL = (function montarProtocolo() {
     return padrao ? R.travaImediata(padrao, null, a.renda, bib) : null;
   };
 
-  // ---- os passos -------------------------------------------------------------------------
+  // ---- os passos do Ato 1 ---------------------------------------------------------------------
 
   function passosDoCuidado() {
     const passos = [];
     passos.push({
       id: "chao",
-      grupo: GRUPO,
+      grupo: GRUPO_ATO1,
       type: "grade",
       eyebrow: TEXTOS.cuidado.eyebrow,
       prompt: bib.cuidado.chao.prompt,
@@ -190,7 +136,7 @@ const PROTOCOL = (function montarProtocolo() {
     if (bib.cuidado.humor.ativo === true) {
       passos.push({
         id: "humor",
-        grupo: GRUPO,
+        grupo: GRUPO_ATO1,
         type: "grade",
         eyebrow: TEXTOS.cuidado.eyebrow,
         prompt: bib.cuidado.humor.prompt,
@@ -201,7 +147,7 @@ const PROTOCOL = (function montarProtocolo() {
     }
     passos.push({
       id: "sinais_risco",
-      grupo: GRUPO,
+      grupo: GRUPO_ATO1,
       type: "multi",
       exclusive: bib.cuidado.sinais_risco.exclusiva,
       eyebrow: TEXTOS.cuidado.eyebrow,
@@ -218,7 +164,7 @@ const PROTOCOL = (function montarProtocolo() {
     const passos = [];
     passos.push({
       id: "fatos",
-      grupo: GRUPO,
+      grupo: GRUPO_ATO1,
       type: "grade",
       eyebrow: TEXTOS.fatos.eyebrow,
       prompt: bib.telas.fatos.prompt,
@@ -228,7 +174,7 @@ const PROTOCOL = (function montarProtocolo() {
     bib.cenas.forEach((cena, i) => {
       passos.push({
         id: cena.id,
-        grupo: GRUPO,
+        grupo: GRUPO_ATO1,
         type: "multi",
         exclusive: cena.nao_acontece.value,
         eyebrow: "Cena " + (i + 1) + " de " + bib.cenas.length,
@@ -239,18 +185,18 @@ const PROTOCOL = (function montarProtocolo() {
     });
     passos.push({
       id: "custo",
-      grupo: GRUPO,
+      grupo: GRUPO_ATO1,
       type: "choice",
       eyebrow: TEXTOS.custo.eyebrow,
       prompt: bib.telas.custo.prompt,
       help: TEXTOS.custo.ajuda,
-      showIf: (a) => sinaisMarcados(a).length > 0,
-      options: (a) => sinaisMarcados(a).concat([bib.telas.custo.nenhuma]),
+      showIf: (a) => R.sinaisMarcados(a, bib).length > 0,
+      options: (a) => R.sinaisMarcados(a, bib).concat([bib.telas.custo.nenhuma]),
     });
     bib.triades.forEach((t, i) => {
       passos.push({
         id: t.id,
-        grupo: GRUPO,
+        grupo: GRUPO_ATO1,
         type: "triad",
         eyebrow: "As frases · " + (i + 1) + " de " + bib.triades.length,
         prompt: bib.telas.triade.prompt,
@@ -261,17 +207,17 @@ const PROTOCOL = (function montarProtocolo() {
     });
     passos.push({
       id: "frases_nivel",
-      grupo: GRUPO,
+      grupo: GRUPO_ATO1,
       type: "grade",
       eyebrow: TEXTOS.frases.eyebrow,
       prompt: bib.telas.frases_grade.prompt,
       help: TEXTOS.frases.ajuda,
       options: bib.telas.frases_grade.opcoes,
-      items: itensDasFrases,
+      items: (a) => R.itensDasFrases(a, bib),
     });
     passos.push({
       id: "espelho",
-      grupo: GRUPO,
+      grupo: GRUPO_ATO1,
       type: "choice",
       eyebrow: TEXTOS.espelho.eyebrow,
       prompt: (a) => (R.calcular(a, bib).sugestao.candidatos.length ? bib.telas.espelho.prompt : bib.telas.espelho.nenhum_domina),
@@ -281,7 +227,7 @@ const PROTOCOL = (function montarProtocolo() {
     });
     passos.push({
       id: "variante",
-      grupo: GRUPO,
+      grupo: GRUPO_ATO1,
       type: "choice",
       eyebrow: TEXTOS.variante,
       showIf: (a) => { const p = padraoEscolhido(a); return Boolean(p && lista(bib.padroes[p].variantes).length); },
@@ -290,7 +236,7 @@ const PROTOCOL = (function montarProtocolo() {
     });
     passos.push({
       id: "renda",
-      grupo: GRUPO,
+      grupo: GRUPO_ATO1,
       type: "choice",
       eyebrow: TEXTOS.renda.eyebrow,
       prompt: bib.telas.renda.prompt,
@@ -301,7 +247,7 @@ const PROTOCOL = (function montarProtocolo() {
     // Nos padrões de ganho a trava pede um preço-alvo ou a menor ação, escritos agora (opcional).
     passos.push({
       id: "alvo",
-      grupo: GRUPO,
+      grupo: GRUPO_ATO1,
       type: "write",
       maxLength: 200,
       eyebrow: TEXTOS.alvo.eyebrow,
@@ -313,302 +259,188 @@ const PROTOCOL = (function montarProtocolo() {
     });
     passos.push({
       id: "fim_ato1",
-      grupo: GRUPO,
+      grupo: GRUPO_ATO1,
       type: "checkpoint",
       actions: { continuar: "Continuar agora", pausar: "Salvar e continuar depois" },
-      render: (a, ctx) => resultadoDoAto1(a, ctx, false),
+      render: (a, ctx) => R.montarParcial(a, comPagina(ctx), bib),
     });
     return passos;
   }
 
-  // ---- o resultado do Ato 1 ---------------------------------------------------------------
+  // ---- os passos do Ato 2 ---------------------------------------------------------------------
 
-  // As seções do mapa, na ordem do resultado: onde o teto pega, a crença que mais pesa, o
-  // vazamento, o que o resultado não indica, os 60 segundos, a trava e os sinais.
-  function secoesDoAto1(a, calc, trava) {
-    const padrao = bib.padroes[calc.padrao];
-    const frases = R.marcasDoPadrao(a, calc.padrao, bib).map((m) => aspas(m.label));
-    const R1 = TEXTOS.resultado;
-    const secoes = [];
+  // As telas que pedem texto levam a linha de segurança visível.
+  const comSeguranca = (...partes) => partes.filter(Boolean).concat([bib.telas.seguranca_escrita]).join(" ");
 
-    const sobreOTeto = [R1.trilha[calc.trilha]];
-    if (calc.trilhasPerto) sobreOTeto.push(R1.perto);
-    if (frases.length) sobreOTeto.push(R1.frasesMarcadas);
-    secoes.push({ id: "teto", title: "Onde o seu teto pega", kind: "teto", paragraphs: sobreOTeto, items: frases });
+  function complemento(tela, id, extra) {
+    const c = tela.complemento;
+    return Object.assign({ type: "write", id, prompt: c.prompt, placeholder: c.placeholder, maxLength: c.max, optional: true }, extra);
+  }
 
-    if (calc.familia) {
-      secoes.push({
-        id: "familia",
-        title: R1.familia + bib.familias[calc.familia].nome,
-        kind: "familia",
-        paragraphs: [bib.familias[calc.familia].leitura],
-      });
-    } else {
-      secoes.push({ id: "familia", title: "A crença que mais pesa", kind: "familia", paragraphs: [R1.semFamilia] });
-    }
+  function passosDoAto2() {
+    const T = bib.telas;
+    const passos = [];
+    const parte = (chave) => ({ grupo: GRUPO_ATO2, eyebrow: TEXTOS.partes[chave] });
+    const padraoDe = (a) => bib.padroes[a.espelho] || {};
+    const escrita = (id, chave, tela, extra) => passos.push(Object.assign({
+      id,
+      type: "write",
+      prompt: tela.prompt,
+      help: comSeguranca(tela.ajuda),
+      placeholder: tela.placeholder,
+      maxLength: tela.max,
+    }, parte(chave), extra));
 
-    if (calc.vazamento) {
-      const outro = bib.padroes[calc.vazamento];
-      secoes.push({
-        id: "vazamento",
-        title: R1.vazamentoTitulo,
-        kind: "vazamento",
-        paragraphs: [comNome(R1.vazamento, outro.nome), R1.vazamentoNota],
-        items: R.marcasDoPadrao(a, calc.vazamento, bib).map((m) => aspas(m.label)),
-      });
-    }
+    // O Raio-X
+    passos.push(Object.assign({
+      id: "clima_casa",
+      type: "choice",
+      prompt: T.clima_casa.prompt,
+      help: comSeguranca(T.clima_casa.ajuda),
+      options: T.clima_casa.opcoes,
+      followUp: complemento(T.clima_casa, "clima_texto"),
+    }, parte("raiox")));
 
-    const nao = R.naoIndica(calc.notas, a, calc.familias, bib);
-    const modelos = bib.textos.nao_indica;
-    const descartes = [];
-    nao.padroes.forEach((d) => {
-      const nome = bib.padroes[d.padrao].nome;
-      descartes.push(d.evidencia === "contra"
-        ? comNome(preencher(modelos.por_contra, { resposta: kit.semPontoFinal(d.resposta) }), nome)
-        : comNome(preencher(modelos.por_nao_acontece, { cena: d.empurrao || "" }), nome));
-    });
-    nao.familias.forEach((d) => {
-      descartes.push(comNome(preencher(modelos.por_familia, { resposta: kit.semPontoFinal(d.resposta) }), bib.familias[d.familia].nome));
-    });
-    if (descartes.length) secoes.push({ id: "nao_indica", title: modelos.titulo, kind: "nao-indica", items: descartes });
-
-    const sessenta = bib.textos.sessenta_segundos;
-    secoes.push({
-      id: "sessenta",
-      title: sessenta.titulo,
-      kind: "sessenta",
-      items: sessenta.passos.map((p) => {
-        const texto = comNome(p.texto, padrao.nome);
-        return p.id === "regra" && padrao.regra_trabalho_exemplo
-          ? texto + preencher(R1.sessentaRegra, { exemplo: kit.semPontoFinal(padrao.regra_trabalho_exemplo) })
-          : texto;
-      }),
-    });
-
-    const paragrafosTrava = [trava.texto];
-    if (typeof a.alvo === "string" && a.alvo.trim()) paragrafosTrava.push(R1.travaAlvo + aspas(a.alvo));
-    secoes.push({ id: "trava", title: R1.travaTitulo, kind: "trava", paragraphs: paragrafosTrava });
-
-    const sinais = R.montarSinais(calc.padrao, a, bib);
-    const paragrafosSinais = [];
-    if (sinais.dela.empurrao) paragrafosSinais.push(preencher(R1.sinaisEmpurrao, { empurrao: kit.semPontoFinal(sinais.dela.empurrao) }));
-    paragrafosSinais.push(sinais.regras.na_hora, sinais.regras.quando_voltar);
-    secoes.push({
+    // A última vez
+    escrita("cena", "ultima", T.cena);
+    passos.push(Object.assign({
+      id: "terreno",
+      type: "multi",
+      exclusive: T.terreno.exclusiva,
+      prompt: T.terreno.prompt,
+      help: T.terreno.ajuda,
+      options: T.terreno.opcoes,
+    }, parte("ultima")));
+    passos.push(Object.assign({
       id: "sinais",
-      title: sinais.titulo,
-      kind: "sinais",
-      paragraphs: paragrafosSinais.filter(Boolean),
-      items: unico(lista(sinais.gerais)),
-    });
-    return secoes;
-  }
+      type: "multi",
+      prompt: T.sinais.prompt,
+      help: comSeguranca(T.sinais.ajuda),
+      options: (a) => lista(padraoDe(a).sinais_opcoes).concat([T.sinais.outro]),
+      followUp: complemento(T.sinais, "sinais_outro"),
+    }, parte("ultima")));
+    escrita("frase", "ultima", T.frase);
+    escrita("ponto_escolha", "ultima", T.ponto_escolha);
+    passos.push(Object.assign({
+      id: "alivio",
+      type: "choice",
+      prompt: T.alivio.prompt,
+      help: comSeguranca(T.alivio.ajuda),
+      options: T.alivio.opcoes,
+      followUp: complemento(T.alivio, "alivio_texto"),
+    }, parte("ultima")));
+    escrita("custo_depois", "ultima", T.custo_depois);
+    passos.push(Object.assign({
+      id: "para_que",
+      type: "choice",
+      prompt: T.para_que.prompt,
+      help: comSeguranca(T.para_que.ajuda),
+      options: T.para_que.opcoes,
+      followUp: complemento(T.para_que, "para_que_texto"),
+    }, parte("ultima")));
+    escrita("excecao", "ultima", T.excecao);
 
-  // O .md em blocos marcados: a leitura para uma pessoa, as respostas por id (o que o
-  // importar lê para retomar em outro aparelho) e, por último, o registro.
-  function blocosDoAto1(a, calc, secoes, reg) {
-    const padrao = bib.padroes[calc.padrao];
-    const trava = R.travaImediata(calc.padrao, calc.variante, a.renda, bib);
-    const frases = R.marcasDoPadrao(a, calc.padrao, bib);
-    const blocos = [];
-
-    const leitura = [];
-    secoes.forEach((s) => {
-      leitura.push("**" + s.title + "**");
-      lista(s.paragraphs).forEach((p) => leitura.push(p));
-      lista(s.items).forEach((i) => leitura.push("- " + i));
-    });
-    blocos.push({ id: "teto.mapa", v: 1, titulo: "O seu mapa", leitura: true, linhas: leitura });
-
-    const rotuloDe = (opcoes, valor) => { const o = lista(opcoes).find((x) => x.value === valor); return o ? o.label : ""; };
-    blocos.push({
-      id: "teto.padrao", v: 1, titulo: "O seu teto",
-      campos: [
-        { id: "padrao", rotulo: "O teto", valor: calc.padrao, texto: padrao.nome },
-        { id: "variante", rotulo: "O detalhe", valor: calc.variante || "", texto: calc.variante ? bib.variantes[calc.variante].nome : "" },
-        { id: "trilha", rotulo: "O tipo de teto", valor: calc.trilha, texto: calc.trilha === "ganho" ? "ganho" : "retenção" },
-        { id: "vazamento", rotulo: "O vazamento em observação", valor: calc.vazamento || "", texto: calc.vazamento ? bib.padroes[calc.vazamento].nome : "" },
-        { id: "espelho", rotulo: "As frases que você marcou", texto: frases.map((f) => "- " + f.label).join("\n") },
-        { id: "trava", rotulo: "A trava de hoje", texto: trava.texto },
-        { id: "renda", rotulo: "Como o dinheiro entra", valor: a.renda || "", texto: rotuloDe(bib.telas.renda.opcoes, a.renda) },
-        { id: "alvo", rotulo: "O que você escreveu para a trava", texto: typeof a.alvo === "string" ? a.alvo : "" },
-      ],
-    });
-
-    blocos.push({
-      id: "teto.fatos", v: 1, titulo: "Os últimos 30 dias",
-      campos: bib.fatos.map((f) => {
-        const valor = a.fatos ? a.fatos[f.id] : undefined;
-        const opcao = f.opcoes.concat([f.na]).find((o) => o.value === valor);
-        return { id: f.id, rotulo: f.label, valor: valor === undefined ? "" : String(valor), texto: opcao ? opcao.label : "" };
-      }),
-    });
-
-    const nivel = calc.familias.nivel || {};
-    const ordemItens = Object.keys(bib.itens).filter((id) => Object.prototype.hasOwnProperty.call(nivel, id));
-    blocos.push({
-      id: "teto.raiox", v: 1, titulo: "A relação com o dinheiro",
-      campos: [
-        { id: "familia", rotulo: "A crença que mais pesa", valor: calc.familia || "", texto: calc.familia ? bib.familias[calc.familia].nome : "" },
-        { id: "itens", rotulo: "Os itens e o nível de cada um", texto: ordemItens.map((id) => id + ": " + nivel[id]).join("\n") },
-        { id: "areas", rotulo: "As áreas", valor: Object.keys(calc.areas).map((k) => k + "." + calc.areas[k]).join(","), texto: Object.keys(calc.areas).map((k) => k + ": " + calc.areas[k]).join("\n") },
-      ],
-    });
-
-    const camposCenas = bib.cenas.map((cena) => {
-      const marcadas = lista(a[cena.id]);
-      const rotulos = cena.opcoes.concat([cena.nao_acontece]).filter((o) => marcadas.indexOf(o.value) !== -1).map((o) => "- " + o.label);
-      return { id: cena.id, rotulo: cena.empurrao, valor: marcadas.join(","), texto: rotulos.join("\n") };
-    });
-    const custo = sinaisMarcados(a).concat([bib.telas.custo.nenhuma]).find((o) => o.value === a.custo);
-    camposCenas.push({ id: "custo", rotulo: "O que custou mais", valor: a.custo || "", texto: custo ? custo.label : "" });
-    blocos.push({ id: "teto.cenas", v: 1, titulo: "As cenas", campos: camposCenas });
-
-    const camposFrases = bib.triades.map((t) => {
-      const r = a[t.id];
-      const ok = r && typeof r === "object";
-      return {
-        id: t.id,
-        rotulo: "As frases " + t.id.replace("triade_", ""),
-        valor: ok ? [r.mais, r.menos].join(",") : "",
-        texto: ok ? "Mais: " + bib.itens[r.mais].texto + "\nMenos: " + bib.itens[r.menos].texto : "",
-      };
-    });
-    const niveis = a.frases_nivel && typeof a.frases_nivel === "object" ? a.frases_nivel : {};
-    camposFrases.push({
-      id: "frases_nivel",
-      rotulo: "O quanto as duas mais verdadeiras soam",
-      valor: Object.keys(niveis).map((id) => id + "." + niveis[id]).join(","),
-      texto: Object.keys(niveis).map((id) => bib.itens[id].texto + ": " + niveis[id]).join("\n"),
-    });
-    blocos.push({ id: "teto.frases", v: 1, titulo: "As frases", campos: camposFrases });
-
-    if (reg && reg.ok) blocos.push({ id: "teto.registro", v: 1, titulo: "O registro do teto", json: reg.objeto, codigo: reg.codigo });
-    return blocos;
-  }
-
-  function eventosDoAto1(ctx) {
-    const hora = typeof ctx.lembrete === "string" && /^\d\d:\d\d$/.test(ctx.lembrete) ? ctx.lembrete : HORA_PADRAO;
-    return {
-      prodid: "-//DLT Academy//Teto Financeiro//PT-BR",
-      rotulo: "Baixar os lembretes (.ics)",
-      eventos: [
-        {
-          uid: "teto-semana-" + ctx.ciclo + "@dlt.academy",
-          inicio: kit.somarDias(ctx.hoje, 7),
-          hora,
-          duracaoMin: 10,
-          resumo: TEXTOS.app.semana.resumo,
-          descricao: TEXTOS.app.semana.descricao,
-          url: PAGINA + "#volta=semana",
-          repetir: { semanal: true, vezes: 13 },
-        },
-        {
-          uid: "teto-continuar-" + ctx.ciclo + "@dlt.academy",
-          inicio: kit.somarDias(ctx.hoje, 1),
-          hora,
-          duracaoMin: 15,
-          resumo: TEXTOS.app.continuar.resumo,
-          descricao: TEXTOS.app.continuar.descricao,
-          url: PAGINA + "#volta=continuar",
-        },
-      ],
-    };
-  }
-
-  function resultadoDoAto1(a, ctx, final) {
-    const calc = R.calcular(a, bib);
-    const padrao = bib.padroes[calc.padrao];
-    const trava = R.travaImediata(calc.padrao, calc.variante, a.renda, bib);
-    const secoes = secoesDoAto1(a, calc, trava);
-    const reg = R.montarRegistro(a, calc, ctx.hoje, 1, bib);
-    const leitura = [padrao.leitura.base];
-    if (calc.variante && padrao.leitura.por_variante && padrao.leitura.por_variante[calc.variante]) leitura.push(padrao.leitura.por_variante[calc.variante]);
-    const R1 = TEXTOS.resultado;
-    const aviso = R.avaliarCuidado(a, bib).avisoHumor ? bib.cuidado.textos.aviso_humor : R1.seguranca;
-    const resultado = {
-      id: 10,
-      grade: 1,
-      tone: "good",
-      pill: false,
-      eyebrow: R1.eyebrow,
-      verdict: R1.verdict + padrao.nome,
-      body: final ? [R1.parte2].concat(leitura) : leitura,
-      sections: secoes,
-      safety: aviso,
-      blocks: blocosDoAto1(a, calc, secoes, reg),
-      ics: eventosDoAto1(ctx),
-      arquivos: {
-        md: R1.arquivo + "-" + ctx.hoje + ".md",
-        pdf: R1.arquivo + "-" + ctx.hoje + ".pdf",
-        ics: "teto-financeiro-lembretes.ics",
+    // Ressignificar
+    passos.push(Object.assign({
+      id: "desgrudar",
+      type: "choice",
+      showIf: (a) => typeof a.frase === "string" && a.frase.trim() !== "",
+      prompt: (a) => preencher(T.desgrudar.modelo, { frase: kit.semPontoFinal(a.frase) }) + " " + T.desgrudar.prompt,
+      help: T.desgrudar.ajuda,
+      options: T.desgrudar.opcoes,
+    }, parte("ressignificar")));
+    passos.push(Object.assign({
+      id: "regra_antiga",
+      type: "choice",
+      prompt: T.regra_antiga.prompt,
+      help: comSeguranca(T.regra_antiga.ajuda),
+      options: (a) => R.opcoesDaRegraAntiga(a, bib),
+      followUp: complemento(T.regra_antiga, "regra_antiga_texto"),
+    }, parte("ressignificar")));
+    escrita("regra_origem", "ressignificar", T.regra_origem);
+    escrita("previsao", "ressignificar", T.previsao, {
+      followUp: {
+        type: "scale",
+        id: "crenca_previsao",
+        prompt: T.previsao.complemento.prompt,
+        min: 0,
+        max: 100,
+        step: 10,
+        format: "%",
+        ends: T.previsao.complemento.ends,
       },
-    };
-    if (reg.ok) {
-      resultado.registro = {
-        titulo: TEXTOS.registro.titulo,
-        resumo: [
-          { q: TEXTOS.registro.teto, value: padrao.nome },
-          { q: TEXTOS.registro.trilha, value: calc.trilha === "ganho" ? "ganho" : "retenção" },
-          { q: TEXTOS.registro.familia, value: calc.familia ? bib.familias[calc.familia].nome : "" },
-          { q: TEXTOS.registro.data, value: dataBR(ctx.hoje) },
-        ],
-        objeto: reg.objeto,
-        codigo: reg.codigo,
-      };
-    }
-    if (final) {
-      resultado.guardar = true;
-      resultado.volta = { n: 1, dia0: ctx.hoje };
-    }
-    return resultado;
-  }
-
-  // ---- os resultados que não têm teto ---------------------------------------------------------
-
-  // Sem plano de romper nada, sem registro, sem guardar, sem lembrete e sem oferta.
-  function resultadoDeCuidado(cuidado) {
-    const textos = bib.cuidado.textos;
-    const base = { grade: 3, tone: "mixed", pill: false, eyebrow: TEXTOS.cuidadoResultado.eyebrow };
-    if (cuidado.ramo === "ajuda") {
-      return Object.assign({ id: 901, verdict: textos.ajuda.titulo, body: textos.ajuda.paragrafos.slice() }, base);
-    }
-    const chao = bib.planos.chao_primeiro;
-    const plano = chao.arco7.map((linha, i) => {
-      const m = /^(Dia \d+):\s*(.+)$/.exec(linha);
-      return m ? { id: "d" + (i + 1), title: m[1], text: capitalizar(m[2]) } : { id: "d" + (i + 1), title: "Passo " + (i + 1), text: linha };
     });
-    const resultado = Object.assign({
-      id: 902,
-      verdict: textos.chao_primeiro.titulo,
-      body: textos.chao_primeiro.paragrafos.slice(),
-      plan: plano,
-      sections: [{ id: "noventa", title: TEXTOS.cuidadoResultado.noventa, paragraphs: [capitalizar(String(chao.noventa || "").replace(/^Nos 90 dias:\s*/, ""))] }],
-    }, base);
-    if (cuidado.avisoHumor) resultado.safety = textos.aviso_humor;
-    return resultado;
+    escrita("dia_um_ano", "ressignificar", T.dia_um_ano);
+    passos.push(Object.assign({
+      id: "importancia",
+      type: "scale",
+      prompt: T.importancia.prompt,
+      help: comSeguranca(),
+      min: 0,
+      max: 10,
+      step: 1,
+      ends: T.importancia.ends,
+      followUp: complemento(T.importancia, "motivos"),
+    }, parte("ressignificar")));
+    escrita("regra_trabalho", "ressignificar", T.regra_trabalho, {
+      help: (a) => comSeguranca(
+        T.regra_trabalho.ajuda,
+        padraoDe(a).regra_trabalho_exemplo ? preencher(T.regra_trabalho.exemplo, { exemplo: kit.semPontoFinal(padraoDe(a).regra_trabalho_exemplo) }) : ""
+      ),
+    });
+
+    // O plano
+    passos.push(Object.assign({
+      id: "desconforto",
+      type: "choice",
+      prompt: (a) => {
+        const o = a.alivio && a.alivio !== "nada" ? T.alivio.opcoes.find((x) => x.value === a.alivio) : null;
+        return o ? preencher(T.desconforto.modelo_alivio, { alivio: kit.primeiraMinuscula(o.label) }) : T.desconforto.prompt;
+      },
+      options: T.desconforto.opcoes,
+    }, parte("plano")));
+    passos.push(Object.assign({
+      id: "experimento",
+      type: "choice",
+      prompt: T.experimento.prompt,
+      help: (a) => {
+        const calc = R.calcular(a, bib);
+        const degraus = calc.padrao ? R.escolherDegraus(calc.padrao, calc.variante, a, calc.cuidado, bib) : null;
+        const previsao = typeof a.previsao === "string" && a.previsao.trim() ? preencher(T.experimento.ajuda, { previsao: kit.semPontoFinal(a.previsao) }) : "";
+        const menor = degraus && degraus.menor ? preencher(T.experimento.ajuda_menor, { degrau0: kit.semPontoFinal(degraus.dia3.texto) }) : "";
+        return comSeguranca(previsao, menor);
+      },
+      options: (a) => {
+        const calc = R.calcular(a, bib);
+        const escada = calc.padrao ? R.escadaDoPadrao(calc.padrao, calc.variante, bib) : null;
+        return lista(escada && escada.degrau1).concat([T.experimento.outro]);
+      },
+      followUp: complemento(T.experimento, "experimento_texto"),
+    }, parte("plano")));
+    escrita("se_entao", "plano", T.se_entao, {
+      value: (a) => R.rascunhoSeEntao(a, bib),
+      help: (a) => {
+        const calc = R.calcular(a, bib);
+        const escada = calc.padrao ? R.escadaDoPadrao(calc.padrao, calc.variante, bib) : null;
+        return comSeguranca(T.se_entao.ajuda, escada && escada.se_entao_exemplo ? preencher(T.se_entao.exemplo, { exemplo: kit.semPontoFinal(escada.se_entao_exemplo) }) : "");
+      },
+    });
+    passos.push(Object.assign({
+      id: "confianca",
+      type: "scale",
+      prompt: T.confianca.prompt,
+      help: comSeguranca(),
+      min: 0,
+      max: 10,
+      step: 1,
+      ends: T.confianca.ends,
+      followUp: complemento(T.confianca, "sobe_um_ponto"),
+    }, parte("plano")));
+    escrita("proximas_24h", "plano", T.proximas_24h);
+    return passos;
   }
 
-  // "Nenhum padrão domina": um resultado honesto, sem inventar um teto, sem oferta.
-  function resultadoNenhum() {
-    const nenhum = bib.textos.nenhum;
-    const curto = bib.planos.gerais_nenhum;
-    return {
-      id: 903,
-      grade: 2,
-      tone: "mixed",
-      pill: false,
-      eyebrow: TEXTOS.nenhum.eyebrow,
-      verdict: nenhum.titulo,
-      body: nenhum.paragrafos.slice(),
-      sections: [
-        { id: "plano_curto", title: curto.titulo, kind: "plano", items: curto.passos.slice() },
-        { id: "voltar", title: TEXTOS.nenhum.voltar, kind: "sinais", items: lista(bib.textos.sinais_gerais).slice() },
-      ],
-      safety: TEXTOS.resultado.seguranca,
-    };
-  }
-
-  // ---- retomar em outro aparelho: o .md do Ato 1 --------------------------------------------
+  // ---- retomar em outro aparelho: o .md ------------------------------------------------------------
 
   const CAMPOS_CENAS = {};
   bib.cenas.forEach((cena) => { CAMPOS_CENAS[cena.id] = 1500; });
@@ -621,16 +453,37 @@ const PROTOCOL = (function montarProtocolo() {
     "teto.registro": { v: 1 },
     "teto.padrao": { v: 1, campos: { padrao: 200, variante: 200, trilha: 200, vazamento: 200, espelho: 2000, trava: 1000, renda: 200, alvo: 200 } },
     "teto.fatos": { v: 1, campos: CAMPOS_FATOS },
-    "teto.raiox": { v: 1, campos: { familia: 200, itens: 800, areas: 400 } },
+    "teto.raiox": { v: 1, campos: { familia: 200, itens: 800, areas: 400, clima: 200, clima_texto: 400 } },
     "teto.cenas": { v: 1, campos: CAMPOS_CENAS },
     "teto.frases": { v: 1, campos: CAMPOS_FRASES },
+    "teto.ultima_vez": {
+      v: 1,
+      campos: {
+        cena: 800, terreno: 200, sinais: 600, sinais_outro: 400, frase: 400, ponto_escolha: 600,
+        alivio: 200, alivio_texto: 400, custo_depois: 600, para_que: 200, para_que_texto: 400, excecao: 600,
+      },
+    },
+    "teto.ressignificar": {
+      v: 1,
+      campos: {
+        desgrudar: 200, regra_antiga: 600, regra_antiga_texto: 400, regra_origem: 600, previsao: 600,
+        crenca_previsao: 50, dia_um_ano: 800, importancia: 50, motivos: 600, regra_trabalho: 400,
+      },
+    },
+    "teto.plano": {
+      v: 1,
+      campos: {
+        desconforto: 200, experimento: 600, experimento_texto: 400, se_entao: 600,
+        confianca: 50, sobe_um_ponto: 600, proximas_24h: 600,
+      },
+    },
   };
 
   const valores = (campo) => (campo && typeof campo.valor === "string" && campo.valor ? campo.valor.split(",").filter(Boolean) : []);
+  const textoDe = (campo) => (campo && typeof campo.texto === "string" ? campo.texto : "");
+  const numeroDe = (campo) => (campo && /^\d{1,3}$/.test(String(campo.valor)) ? Number(campo.valor) : undefined);
 
-  // As respostas do Ato 1 que o arquivo traz, por id de passo. Cada uma ainda passa pela
-  // validação do passo quando a pessoa retoma; aqui só se lê o formato.
-  function respostasDoArquivo(blocos) {
+  function respostasDoAto1(blocos) {
     const resp = {};
     const padrao = blocos["teto.padrao"] ? blocos["teto.padrao"].campos : {};
     const fatos = blocos["teto.fatos"] ? blocos["teto.fatos"].campos : {};
@@ -665,15 +518,79 @@ const PROTOCOL = (function montarProtocolo() {
     if (padrao.padrao && padrao.padrao.valor) resp.espelho = padrao.padrao.valor;
     if (padrao.variante && padrao.variante.valor) resp.variante = padrao.variante.valor;
     if (padrao.renda && padrao.renda.valor) resp.renda = padrao.renda.valor;
-    if (padrao.alvo) resp.alvo = padrao.alvo.texto;
+    // O que ela escreveu para a trava só existe nos padrões de ganho; nos outros a tela nem aparece.
+    const trava = resp.espelho && bib.padroes[resp.espelho] ? R.travaImediata(resp.espelho, null, resp.renda, bib) : null;
+    if (padrao.alvo && trava && trava.campo) resp.alvo = padrao.alvo.texto;
     return resp;
   }
 
+  // As respostas do Ato 2, quando o arquivo as traz. Textos e complementos voltam como texto
+  // (em branco quando ela não escreveu), que é como o motor os guarda.
+  function respostasDoAto2(blocos, resp) {
+    if (!blocos["teto.ultima_vez"]) return;
+    const raiox = blocos["teto.raiox"] ? blocos["teto.raiox"].campos : {};
+    const uv = blocos["teto.ultima_vez"].campos;
+    const rs = blocos["teto.ressignificar"] ? blocos["teto.ressignificar"].campos : {};
+    const pl = blocos["teto.plano"] ? blocos["teto.plano"].campos : {};
+    const escolha = (campo) => (campo && typeof campo.valor === "string" && campo.valor ? campo.valor : undefined);
+    const poe = (id, valor) => { if (valor !== undefined) resp[id] = valor; };
+
+    poe("clima_casa", escolha(raiox.clima));
+    resp.clima_texto = textoDe(raiox.clima_texto);
+    resp.cena = textoDe(uv.cena);
+    const terreno = valores(uv.terreno);
+    if (terreno.length) resp.terreno = terreno;
+    const sinais = valores(uv.sinais);
+    if (sinais.length) resp.sinais = sinais;
+    resp.sinais_outro = textoDe(uv.sinais_outro);
+    resp.frase = textoDe(uv.frase);
+    resp.ponto_escolha = textoDe(uv.ponto_escolha);
+    poe("alivio", escolha(uv.alivio));
+    resp.alivio_texto = textoDe(uv.alivio_texto);
+    resp.custo_depois = textoDe(uv.custo_depois);
+    poe("para_que", escolha(uv.para_que));
+    resp.para_que_texto = textoDe(uv.para_que_texto);
+    resp.excecao = textoDe(uv.excecao);
+
+    poe("desgrudar", escolha(rs.desgrudar));
+    poe("regra_antiga", escolha(rs.regra_antiga));
+    resp.regra_antiga_texto = textoDe(rs.regra_antiga_texto);
+    resp.regra_origem = textoDe(rs.regra_origem);
+    resp.previsao = textoDe(rs.previsao);
+    poe("crenca_previsao", numeroDe(rs.crenca_previsao));
+    resp.dia_um_ano = textoDe(rs.dia_um_ano);
+    poe("importancia", numeroDe(rs.importancia));
+    resp.motivos = textoDe(rs.motivos);
+    resp.regra_trabalho = textoDe(rs.regra_trabalho);
+
+    poe("desconforto", escolha(pl.desconforto));
+    poe("experimento", escolha(pl.experimento));
+    resp.experimento_texto = textoDe(pl.experimento_texto);
+    resp.se_entao = textoDe(pl.se_entao);
+    poe("confianca", numeroDe(pl.confianca));
+    resp.sobe_um_ponto = textoDe(pl.sobe_um_ponto);
+    resp.proximas_24h = textoDe(pl.proximas_24h);
+  }
+
+  function respostasDoArquivo(blocos) {
+    const resp = respostasDoAto1(blocos);
+    respostasDoAto2(blocos, resp);
+    return resp;
+  }
+
+  // A resposta do passo (e o complemento dele) ainda vale para esta biblioteca?
+  function respostaValida(passo, resp) {
+    if (!kit.validarResposta(passo, resp[passo.id], resp).ok) return false;
+    return !passo.followUp || kit.validarComplemento(passo.followUp, resp[passo.followUp.id]).ok;
+  }
+
   // Os ids dos passos que a pessoa já percorreu, refazendo o caminho do fluxo com as
-  // respostas do arquivo. `chegou` diz se o checkpoint do Ato 1 foi alcançado.
+  // respostas do arquivo. `chegou` diz se o checkpoint do Ato 1 foi alcançado e `completo`,
+  // se todos os passos até o resultado têm resposta que vale.
   function caminhoDoArquivo(passos, resp) {
     const ids = [];
     let chegou = false;
+    let completo = true;
     let indice = kit.proximoIndice(passos, -1, resp);
     while (indice < passos.length) {
       const passo = passos[indice];
@@ -681,15 +598,16 @@ const PROTOCOL = (function montarProtocolo() {
         if (passo.type === "checkpoint") {
           ids.push(passo.id);
           chegou = true;
-        } else if (kit.validarResposta(passo, resp[passo.id], resp).ok) {
+        } else if (respostaValida(passo, resp)) {
           ids.push(passo.id);
         } else {
+          completo = false;
           break;
         }
       }
       indice = kit.proximoIndice(passos, indice, resp);
     }
-    return { ids, chegou };
+    return { ids, chegou, completo };
   }
 
   function lerMdDoTeto(texto, passos) {
@@ -703,7 +621,7 @@ const PROTOCOL = (function montarProtocolo() {
     return {
       estado: {
         criado: registro.json.data,
-        etapa: caminho.chegou ? "pausa" : "ato1",
+        etapa: caminho.completo && caminho.chegou ? "concluido" : caminho.chegou ? "pausa" : "ato1",
         passo: null,
         caminho: caminho.ids,
         respostas: resp,
@@ -715,7 +633,7 @@ const PROTOCOL = (function montarProtocolo() {
 
   // ---- o protocolo -----------------------------------------------------------------------------
 
-  const passos = passosDoCuidado().concat(passosDoMapa());
+  const passos = passosDoCuidado().concat(passosDoMapa(), passosDoAto2());
 
   return {
     id: "protocolo-teto-financeiro",
@@ -746,10 +664,7 @@ const PROTOCOL = (function montarProtocolo() {
     },
 
     result(a, ctx) {
-      const calc = R.calcular(a, bib);
-      if (calc.cuidado.ramo) return resultadoDeCuidado(calc.cuidado);
-      if (!calc.padrao) return resultadoNenhum();
-      return resultadoDoAto1(a, ctx, true);
+      return R.montarResultado(a, comPagina(ctx), bib, ctx && ctx.hoje);
     },
   };
 })();

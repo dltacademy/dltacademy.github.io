@@ -1187,11 +1187,13 @@ function runProtocol(protocol, mountId) {
     });
 
     const ics = buildIcsControl(result);
+    const cardButtons = partial ? [] : buildCardButtons(result);
 
     if (!skip.pdf) actions.appendChild(pdf);
     if (!skip.md) actions.appendChild(md);
     if (!skip.copy) actions.appendChild(copyResult);
     if (ics) actions.appendChild(ics.button);
+    cardButtons.forEach((button) => actions.appendChild(button));
     if (save) actions.appendChild(save.button);
     if (!partial) actions.appendChild(restart);
     if (!partial) actions.appendChild(erase);
@@ -1277,6 +1279,11 @@ function runProtocol(protocol, mountId) {
       plan.appendChild(list);
       card.appendChild(plan);
     }
+
+    // Seções que só vêm depois do plano (por exemplo, o plano de 90 dias, depois do de 7).
+    (result.sections || []).forEach((section, i) => {
+      if (section.depoisDoPlano) card.appendChild(buildSection(section, i, el));
+    });
 
     if (result.registro && typeof result.registro.codigo === "string") card.appendChild(buildRegistroSection(result.registro));
 
@@ -1707,7 +1714,9 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
     y += 3.2;
   });
 
-  (result.sections || []).forEach((section) => writeSection(pen, section));
+  (result.sections || []).forEach((section) => {
+    if (!section.depoisDoPlano) writeSection(pen, section);
+  });
 
   const records = (result.record || []).filter((item) => item.value);
   if (records.length) {
@@ -1771,6 +1780,10 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
       y += 2.5;
     });
   }
+
+  (result.sections || []).forEach((section) => {
+    if (section.depoisDoPlano) writeSection(pen, section);
+  });
 
   if (result.safety) {
     ensureSpace(20);
@@ -1846,7 +1859,9 @@ function buildMarkdown(protocol, result, answers) {
   (result.body || []).forEach((p) => { linhas.push(p); linhas.push(""); });
   // Com blocos marcados, são eles que levam as seções; sem blocos, as seções saem como texto.
   const marked = Array.isArray(result.blocks) && result.blocks.length > 0 && typeof DLTProtocolKit !== "undefined";
-  if (!marked) (result.sections || []).forEach((section) => markdownSection(section).forEach((l) => linhas.push(l)));
+  if (!marked) (result.sections || []).forEach((section) => {
+    if (!section.depoisDoPlano) markdownSection(section).forEach((l) => linhas.push(l));
+  });
   if (result.record && result.record.length) {
     linhas.push("## O que você registrou");
     linhas.push("");
@@ -1866,6 +1881,9 @@ function buildMarkdown(protocol, result, answers) {
     });
     linhas.push("");
   }
+  if (!marked) (result.sections || []).forEach((section) => {
+    if (section.depoisDoPlano) markdownSection(section).forEach((l) => linhas.push(l));
+  });
   if (marked) {
     // O texto dela fora dos blocos também perde o que pareceria um marcador de máquina.
     const human = DLTProtocolKit.neutralizar(linhas.join("\n")).split("\n");
@@ -1894,6 +1912,127 @@ function downloadTextFile(filename, content, type) {
   a.click();
   a.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+// ---- cartões em PNG (`result.cartoes`) --------------------------------------------------------------
+// Cada cartão: { id, rotulo, arquivo, formato, eyebrow, titulo, linhas, secoes: [{ titulo, itens }], rodape }.
+// O desenho usa generateCard e downloadCanvasAsPng (blog/js/canvas-cards.js); sem eles, não há botão.
+// Baixar é ação da pessoa e o cartão sai do aparelho dela, nada é enviado.
+
+// Quebra o texto em linhas que cabem em `largura`, com a função de medida `medir(texto)`.
+function wrapCardText(texto, largura, medir) {
+  const linhas = [];
+  let atual = "";
+  String(texto).split(" ").forEach((palavra) => {
+    const teste = atual ? atual + " " + palavra : palavra;
+    if (atual && medir(teste) > largura) {
+      linhas.push(atual);
+      atual = palavra;
+    } else {
+      atual = teste;
+    }
+  });
+  if (atual) linhas.push(atual);
+  return linhas;
+}
+
+// Onde cada linha das seções do cartão cai, do topo à base, no maior tamanho de letra que
+// cabe (e, no menor, só as linhas que cabem). `medir(texto, tamanho, peso)` mede o texto.
+// Devolve [{ tipo: "titulo" | "item", texto, x, y, tamanho, peso }].
+function layoutCartao(spec, largura, altura, medir) {
+  const margem = Math.round(largura * 0.08);
+  const larguraUtil = largura - margem * 2;
+  const topo = Math.round(altura * 0.37);
+  const base = Math.round(altura * 0.86);
+  const secoes = Array.isArray(spec.secoes) ? spec.secoes : [];
+  const maior = Math.round(largura * 0.04);
+  const menor = Math.round(largura * 0.022);
+
+  const montar = (tamanho) => {
+    const linhas = [];
+    let y = topo;
+    secoes.forEach((secao) => {
+      if (secao.titulo) {
+        y += Math.round(tamanho * 0.5);
+        linhas.push({ tipo: "titulo", texto: String(secao.titulo), x: margem, y, tamanho: Math.round(tamanho * 0.78), peso: 700 });
+        y += Math.round(tamanho * 1.15);
+      }
+      (secao.itens || []).forEach((item) => {
+        const comMarca = (secao.itens || []).length > 1;
+        const texto = (comMarca ? "\u2022 " : "") + String(item);
+        wrapCardText(texto, larguraUtil, (t) => medir(t, tamanho, 500)).forEach((linha, i) => {
+          linhas.push({ tipo: "item", texto: i > 0 && comMarca ? "  " + linha : linha, x: margem, y, tamanho, peso: 500 });
+          y += Math.round(tamanho * 1.35);
+        });
+        y += Math.round(tamanho * 0.25);
+      });
+    });
+    return { linhas, fim: y };
+  };
+
+  let tamanho = maior;
+  let montado = montar(tamanho);
+  while (montado.fim > base && tamanho > menor) {
+    tamanho -= 2;
+    montado = montar(tamanho);
+  }
+  return montado.linhas.filter((linha) => linha.y <= base);
+}
+
+function buildCardCanvas(spec) {
+  const format = spec.formato === "square" ? "square" : "story";
+  return generateCard({
+    format,
+    eyebrow: spec.eyebrow,
+    headline: spec.titulo,
+    headlineColor: "#E8EDF7",
+    lines: spec.linhas || [],
+    showFooter: false,
+    customDraw: (ctx, width, height) => {
+      const medir = (texto, tamanho, peso) => {
+        ctx.font = peso + " " + tamanho + "px system-ui, sans-serif";
+        return ctx.measureText(texto).width;
+      };
+      ctx.textAlign = "left";
+      layoutCartao(spec, width, height, medir).forEach((linha) => {
+        ctx.font = linha.peso + " " + linha.tamanho + "px system-ui, sans-serif";
+        ctx.fillStyle = linha.tipo === "titulo" ? "#4A8DF8" : "#E8EDF7";
+        ctx.fillText(linha.texto, linha.x, linha.y);
+      });
+      ctx.textAlign = "center";
+      ctx.font = "500 " + Math.round(width * 0.026) + "px system-ui, sans-serif";
+      ctx.fillStyle = "#9AA7C2";
+      (spec.rodape || []).forEach((linha, i) => ctx.fillText(String(linha), width / 2, height * (0.9 + i * 0.035)));
+    },
+  });
+}
+
+// Os botões de baixar cartão, um por `result.cartoes`, só se o desenho estiver na página.
+function buildCardButtons(result) {
+  const cards = Array.isArray(result.cartoes) ? result.cartoes : [];
+  if (!cards.length || typeof generateCard !== "function" || typeof downloadCanvasAsPng !== "function") return [];
+  return cards
+    .filter((spec) => spec && typeof spec.rotulo === "string" && spec.rotulo && typeof spec.titulo === "string")
+    .map((spec) => {
+      const label = spec.rotulo;
+      const button = document.createElement("button");
+      button.className = "btn btn-secondary protocol-card-png";
+      button.type = "button";
+      button.dataset.card = String(spec.id || "");
+      button.textContent = label;
+      button.addEventListener("click", () => {
+        try {
+          const name = typeof spec.arquivo === "string" && /^[A-Za-z0-9._-]{1,80}$/.test(spec.arquivo) ? spec.arquivo : "cartao.png";
+          downloadCanvasAsPng(buildCardCanvas(spec), name);
+          button.textContent = "Cartão baixado";
+        } catch (error) {
+          console.error("Não foi possível montar o cartão.", error);
+          button.textContent = "Não foi possível baixar o cartão";
+        }
+        window.setTimeout(() => { if (button.isConnected) button.textContent = label; }, 1800);
+      });
+      return button;
+    });
 }
 
 // Nome do arquivo que o resultado pede (`result.arquivos.pdf|md|ics`), se vier num formato
@@ -2010,7 +2149,9 @@ function appendResultHead(card, result, grade, el) {
   const copy = el("div", "protocol-result-copy");
   (result.body || []).forEach((p) => copy.appendChild(el("p", "protocol-body", p)));
   card.appendChild(copy);
-  (result.sections || []).forEach((section, i) => card.appendChild(buildSection(section, i, el)));
+  (result.sections || []).forEach((section, i) => {
+    if (!section.depoisDoPlano) card.appendChild(buildSection(section, i, el));
+  });
   return verdictHeading;
 }
 
@@ -2370,6 +2511,8 @@ if (typeof module !== "undefined" && module.exports) {
     safePdfText,
     buildMarkdown,
     downloadTextFile,
+    layoutCartao,
+    buildCardButtons,
     downloadProtocolPdf,
     buildSection,
     fileNameFor,
