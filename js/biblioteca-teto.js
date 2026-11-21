@@ -2625,7 +2625,13 @@
             "prefixo": "Teto Financeiro: ",
             "abrir": "Abra o link para responder em 2 a 3 minutos."
           },
-          "rotulo": "Baixar os lembretes (.ics)"
+          "rotulo": "Baixar os lembretes (.ics)",
+          "hora": {
+            "rotulo": "Hora dos lembretes",
+            "manha": "Manhã (08:00)",
+            "almoco": "Almoço (12:30)",
+            "noite": "Noite (20:00)"
+          }
         },
         "cartoes": {
           "sinais": {

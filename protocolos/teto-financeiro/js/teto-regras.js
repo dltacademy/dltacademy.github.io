@@ -1085,6 +1085,26 @@
     return typeof objeto(estado).lembrete === "string" && /^\d\d:\d\d$/.test(estado.lembrete) ? estado.lembrete : HORA_PADRAO;
   }
 
+  // A escolha da hora ao lado do botão do .ics: manhã, almoço ou noite. Sem escolha, 20:00.
+  function escolhaDeHora(bib) {
+    var t = objeto(objeto(textosDaBib(bib).resultado.app).hora);
+    if (!t.rotulo || !t.manha || !t.almoco || !t.noite) return undefined;
+    return {
+      rotulo: t.rotulo,
+      opcoes: [
+        { rotulo: t.manha, hora: "08:00" },
+        { rotulo: t.almoco, hora: "12:30" },
+        { rotulo: t.noite, hora: "20:00" },
+      ],
+    };
+  }
+
+  function comEscolhaDeHora(ics, bib) {
+    var escolha = escolhaDeHora(bib);
+    if (escolha) ics.escolhaHora = escolha;
+    return ics;
+  }
+
   function eventoSemanal(estado, dia0, bib) {
     var t = textosDaBib(bib).resultado.app.semana;
     return {
@@ -1104,7 +1124,7 @@
     var ctx = objeto(estado);
     if (!ctx.pagina || !ctx.ciclo || !kit.dataValida(ctx.hoje)) return null;
     var app = textosDaBib(bib).resultado.app;
-    return {
+    return comEscolhaDeHora({
       prodid: PRODID,
       rotulo: app.rotulo,
       eventos: [
@@ -1119,7 +1139,7 @@
           url: ctx.pagina + "#volta=continuar",
         },
       ],
-    };
+    }, bib);
   }
 
   function perguntasDoMarco(marco, bib) {
@@ -1150,7 +1170,7 @@
       };
     });
     eventos.push(eventoSemanal(ctx, dia0, bib));
-    return { prodid: PRODID, rotulo: app.rotulo, eventos: eventos };
+    return comEscolhaDeHora({ prodid: PRODID, rotulo: app.rotulo, eventos: eventos }, bib);
   }
 
   // ---- os cartões em PNG --------------------------------------------------------------------------

@@ -143,7 +143,7 @@ function runProtocol(protocol, mountId) {
   // De onde veio o estado em uso: "novo", "sessao", "local" (o que ela guardou),
   // "arquivo" ou "codigo" (trazidos por ela). `base` é o estado lido, para gravar
   // um retorno de volta sem perder o resto.
-  const freshMeta = () => ({ ciclo: null, criado: null, volta: null, historico: [], lembrete: null, origem: "novo", base: null, patch: null });
+  const freshMeta = () => ({ ciclo: null, criado: null, volta: null, historico: [], lembrete: null, hora: null, origem: "novo", base: null, patch: null });
   let meta = freshMeta();
 
   const shortDate = (iso) => (typeof iso === "string" && iso.length >= 10 ? iso.slice(8, 10) + "/" + iso.slice(5, 7) + "/" + iso.slice(0, 4) : "");
@@ -269,7 +269,13 @@ function runProtocol(protocol, mountId) {
   };
 
   // "ok", "grande" (passa de 100 KB) ou "erro" (o navegador não deixou gravar).
-  function saveLocal(estado) {
+  function saveLocal(entrada) {
+    // A hora dos lembretes que ela escolheu só entra no que fica guardado por este gesto.
+    let estado = entrada;
+    if (meta.hora) {
+      meta.lembrete = meta.hora;
+      estado = Object.assign({}, entrada, { lembrete: meta.hora });
+    }
     const text = stateText(estado);
     if (text === null) return "grande";
     if (!writeArea("localStorage", stateKey, text)) return "erro";
@@ -357,6 +363,7 @@ function runProtocol(protocol, mountId) {
       volta: estado.volta,
       historico: estado.historico,
       lembrete: estado.lembrete,
+      hora: null,
       origem,
       base: estado,
       patch: null,
@@ -1129,14 +1136,48 @@ function runProtocol(protocol, mountId) {
 
   // Lembretes (.ics): montados aqui, no aparelho. O arquivo só leva o lembrete e o link do
   // marco; o aviso diz isso, porque o calendário costuma sincronizar com serviços de terceiros.
+  // `result.ics.escolhaHora`: { rotulo, opcoes: [{ rotulo, hora: "HH:MM" }] }, opcional. A hora
+  // escolhida troca o horário de todos os eventos ao baixar e fica só em `meta.hora`; ela só
+  // vai para o estado guardado quando a pessoa guarda (saveLocal). Nunca vai para endereço.
+  function buildIcsHourChoice(result) {
+    const escolha = result.ics.escolhaHora;
+    const options = icsHourOptions(escolha);
+    if (options.length < 2) return null;
+    const group = el("div", "protocol-ics-hora");
+    group.setAttribute("role", "group");
+    group.setAttribute("aria-label", typeof escolha.rotulo === "string" && escolha.rotulo ? escolha.rotulo : "Hora dos lembretes");
+    if (typeof escolha.rotulo === "string" && escolha.rotulo) group.appendChild(el("p", "protocol-ics-hora-label", escolha.rotulo));
+    const row = el("div", "protocol-ics-hora-options");
+    const current = () => {
+      const wanted = meta.hora || result.ics.eventos[0].hora;
+      return options.some((opt) => opt.hora === wanted) ? wanted : null;
+    };
+    const buttons = options.map((opt) => {
+      const b = el("button", "btn btn-outline protocol-ics-hora-opt", opt.rotulo);
+      b.type = "button";
+      b.setAttribute("aria-pressed", String(current() === opt.hora));
+      b.addEventListener("click", () => {
+        meta.hora = opt.hora;
+        buttons.forEach((other) => other.node.setAttribute("aria-pressed", String(other.hora === opt.hora)));
+      });
+      row.appendChild(b);
+      return { node: b, hora: opt.hora };
+    });
+    group.appendChild(row);
+    return group;
+  }
+
   function buildIcsControl(result) {
     if (!result.ics || !Array.isArray(result.ics.eventos) || !result.ics.eventos.length || !kit) return null;
     const label = result.ics.rotulo || "Baixar lembretes (.ics)";
     const button = el("button", "btn btn-secondary protocol-ics", label);
     button.type = "button";
+    const choice = buildIcsHourChoice(result);
     button.addEventListener("click", () => {
       try {
-        const text = kit.montarIcs({ eventos: result.ics.eventos, prodid: result.ics.prodid, agora: new Date() });
+        const chosen = choice && meta.hora && icsHourOptions(result.ics.escolhaHora).some((opt) => opt.hora === meta.hora) ? meta.hora : null;
+        const eventos = chosen ? result.ics.eventos.map((e) => Object.assign({}, e, { hora: chosen })) : result.ics.eventos;
+        const text = kit.montarIcs({ eventos, prodid: result.ics.prodid, agora: new Date() });
         downloadTextFile(fileNameFor(result, "ics", protocol.slug + ".ics"), text, "text/calendar;charset=utf-8");
         emit("ics");
         button.textContent = "Lembretes baixados";
@@ -1148,7 +1189,7 @@ function runProtocol(protocol, mountId) {
     });
     const note = el("p", "protocol-privacy privacy-line",
       "O arquivo de lembretes vai para o seu calendário, e o calendário pode sincronizar com serviços de terceiros. Por isso ele leva só o lembrete e o link do retorno, nada do que você respondeu.");
-    return { button, note };
+    return { button, note, choice };
   }
 
   // O registro em código: o resumo, o código para copiar e, se a página sabe lê-lo de volta,
@@ -1330,6 +1371,7 @@ function runProtocol(protocol, mountId) {
     if (!partial) actions.appendChild(restart);
     if (!partial) actions.appendChild(erase);
     delivery.appendChild(actions);
+    if (ics && ics.choice) delivery.appendChild(ics.choice);
     if (ics) delivery.appendChild(ics.note);
     if (!partial) delivery.appendChild(eraseStatus);
     if (save) {
@@ -2057,6 +2099,19 @@ function downloadTextFile(filename, content, type) {
   a.click();
   a.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+// As horas que `result.ics.escolhaHora.opcoes` oferece: { rotulo, hora: "HH:MM" } válidas,
+// sem hora repetida, no máximo seis. Qualquer protocolo com `ics` pode usar.
+function icsHourOptions(escolha) {
+  if (!escolha || typeof escolha !== "object" || !Array.isArray(escolha.opcoes)) return [];
+  const seen = {};
+  return escolha.opcoes.filter((opt) => {
+    const ok = opt && typeof opt.rotulo === "string" && opt.rotulo && typeof opt.hora === "string"
+      && /^(?:[01]\d|2[0-3]):[0-5]\d$/.test(opt.hora) && !seen[opt.hora];
+    if (ok) seen[opt.hora] = true;
+    return ok;
+  }).slice(0, 6);
 }
 
 // ---- cartões em PNG (`result.cartoes`) --------------------------------------------------------------
