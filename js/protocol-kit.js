@@ -1344,8 +1344,16 @@
     return saida.join("\r\n") + "\r\n";
   }
 
+  // O nome de um evento de uso, se estiver na lista fixa do protocolo; senão null. Nenhum nome
+  // se monta a partir de resposta: só os da lista passam.
+  function nomeDeEvento(nome, permitidos) {
+    if (typeof nome !== "string" || !/^[a-z0-9_-]{1,64}$/.test(nome)) return null;
+    return Array.isArray(permitidos) && permitidos.indexOf(nome) !== -1 ? nome : null;
+  }
+
   var api = {
     TIPOS_NOVOS: TIPOS_NOVOS,
+    nomeDeEvento: nomeDeEvento,
     passoVisivel: passoVisivel,
     proximoIndice: proximoIndice,
     passosVisiveis: passosVisiveis,

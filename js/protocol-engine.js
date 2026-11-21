@@ -114,6 +114,30 @@ function runProtocol(protocol, mountId) {
     ? { protocolo: protocol.id, versao: (persist && persist.versao) || 1, migracoes: (persist && persist.migracoes) || {} }
     : null;
   const savedLabel = (persist && persist.rotulo) || "uma sessão guardada";
+
+  // Eventos de uso: nomes fixos, que o protocolo declara (`protocol.eventos`), nunca montados de
+  // resposta. Com `ativo` diferente de verdadeiro, ou sem `enviar`, nada é emitido: a camada existe e
+  // fica desligada até a contagem ser decidida.
+  const eventConfig = protocol.eventos || null;
+  const emittedOnce = {};
+  function emit(key, arg) {
+    if (!eventConfig || eventConfig.ativo !== true || typeof eventConfig.enviar !== "function" || !kit) return;
+    let name = eventConfig.nomes ? eventConfig.nomes[key] : null;
+    if (typeof name === "function") name = name(arg);
+    const allowed = kit.nomeDeEvento(name, eventConfig.permitidos);
+    if (!allowed) return;
+    try {
+      eventConfig.enviar(allowed);
+    } catch (error) {
+      // Contar nunca atrapalha a pessoa.
+    }
+  }
+  function emitOnce(key, arg) {
+    const id = key + ":" + String(arg || "");
+    if (emittedOnce[id]) return;
+    emittedOnce[id] = true;
+    emit(key, arg);
+  }
   const MAX_IMPORT_BYTES = 256 * 1024;
 
   // De onde veio o estado em uso: "novo", "sessao", "local" (o que ela guardou),
@@ -625,7 +649,9 @@ function runProtocol(protocol, mountId) {
   function showRecovery(config) {
     const ret = config.marco && retornos ? retornos[config.marco] : null;
     const canFile = Boolean(importar && typeof importar.md === "function");
-    const canCode = Boolean(importar && typeof importar.registro === "function");
+    // O código do registro só restaura o que um retorno usa (o registro não leva as respostas): para
+    // retomar o protocolo de onde parou, o caminho é o arquivo.
+    const canCode = Boolean(importar && typeof importar.registro === "function") && (!ret || ret.codigo === true);
     const afterImport = (estado, origem, resumo) => {
       showScreen({
         title: "Encontramos o que você trouxe, de " + shortDate(estado.criado),
@@ -666,7 +692,10 @@ function runProtocol(protocol, mountId) {
             }
             readFileText(file).then((text) => {
               const read = importState("md", text);
-              if (read.estado) afterImport(read.estado, "arquivo", read.resumo);
+              if (read.estado) {
+                emit("recuperacao_md");
+                afterImport(read.estado, "arquivo", read.resumo);
+              }
               else fail(read.erro || "Não conseguimos ler este arquivo. Escolha o arquivo (.md) que você baixou deste protocolo.");
             }, () => fail("Não conseguimos abrir este arquivo."));
           });
@@ -806,6 +835,7 @@ function runProtocol(protocol, mountId) {
     mount.replaceChildren();
     if (index >= flow.steps.length) return renderResult(moveFocus);
     syncSession(index);
+    if (flow === mainFlow && state.path.length === 0 && index === startIndex()) emitOnce("inicio");
 
     const step = currentStep(index);
     if (step.type === "checkpoint") return renderCheckpoint(step, index, moveFocus);
@@ -925,6 +955,7 @@ function runProtocol(protocol, mountId) {
     const card = el("div", "protocol-card protocol-result protocol-checkpoint " + toneClass);
     card.dataset.grade = String(grade);
     const verdictHeading = appendResultHead(card, result, grade, el);
+    emitOnce("ato1_fim");
     if (result.safety) card.appendChild(el("p", "protocol-safety", result.safety));
 
     const labels = Object.assign({ continuar: "Continuar", pausar: "Salvar e continuar depois" }, step.actions);
@@ -956,6 +987,7 @@ function runProtocol(protocol, mountId) {
 
   // "Salvar e continuar depois": guarda o estado no aparelho, por ação dela, e despede.
   function pauseAt(step, index, result) {
+    emit("pausa");
     state.path.push(index);
     const next = nextIndex(index);
     const estado = buildState(next, "pausa");
@@ -1106,6 +1138,7 @@ function runProtocol(protocol, mountId) {
       try {
         const text = kit.montarIcs({ eventos: result.ics.eventos, prodid: result.ics.prodid, agora: new Date() });
         downloadTextFile(fileNameFor(result, "ics", protocol.slug + ".ics"), text, "text/calendar;charset=utf-8");
+        emit("ics");
         button.textContent = "Lembretes baixados";
       } catch (error) {
         console.error("Não foi possível montar os lembretes.", error);
@@ -1221,6 +1254,7 @@ function runProtocol(protocol, mountId) {
           throw new Error("O logo da DLT Academy ainda não foi carregado.");
         }
         downloadProtocolPdf(protocol, result, protocolPdfBrand.asset);
+        emit("pdf");
         pdf.textContent = "PDF baixado";
       } catch (error) {
         console.error("Não foi possível gerar o PDF do protocolo.", error);
@@ -1236,10 +1270,10 @@ function runProtocol(protocol, mountId) {
 
     const md = el("button", "btn btn-secondary", "Baixar como texto (.md)");
     md.type = "button";
-    md.addEventListener("click", () => downloadTextFile(
-      fileNameFor(result, "md", protocol.slug + ".md"),
-      buildMarkdown(protocol, result, state.answers)
-    ));
+    md.addEventListener("click", () => {
+      downloadTextFile(fileNameFor(result, "md", protocol.slug + ".md"), buildMarkdown(protocol, result, state.answers));
+      emit("md");
+    });
 
     const copyResult = el("button", "btn btn-secondary", "Copiar resultado");
     copyResult.type = "button";
@@ -1314,6 +1348,11 @@ function runProtocol(protocol, mountId) {
     const result = flow.result(state.answers);
     const grade = resultGrade(result);
     const returnSave = settleStorageAtResult(result);
+    if (flow === mainFlow) {
+      if (result.guardar === true) emitOnce("fim");
+    } else {
+      emitOnce("retorno", flow.marco);
+    }
     const toneClass = result.tone === "good" ? "is-good" : result.tone === "bad" ? "is-bad" : "is-mixed";
     // Uma superfície só: o cartão do resultado. Dentro dele, grupos separados
     // por espaço e fio. A cor de acento (data-grade) vem do grau, não do azul.
@@ -1442,8 +1481,16 @@ function runProtocol(protocol, mountId) {
     // O resultado gratuito já está completo acima; o relatório é
     // aprofundamento opcional. Sem produto configurado, nada aparece.
     // Um produto, ou uma lista (degraus: método e relatório do caso).
-    const refs = Array.isArray(result.relatorio) ? result.relatorio : result.relatorio ? [result.relatorio] : [];
-    const cards = refs.map((ref) => buildPaidReportOffer(ref, el)).filter(Boolean);
+    // `result.oferta` é o mesmo que `result.relatorio`: um protocolo que não pode escrever a segunda
+    // palavra (a oferta entra depois, por uma função à parte) declara a primeira.
+    const offered = result.relatorio || result.oferta;
+    const refs = Array.isArray(offered) ? offered : offered ? [offered] : [];
+    const cards = refs.map((ref) => {
+      const offerCard = buildPaidReportOffer(ref, el);
+      const buy = offerCard && offerCard.querySelector(".protocol-paid-actions a");
+      if (buy) buy.addEventListener("click", () => emit("oferta", ref.produto));
+      return offerCard;
+    }).filter(Boolean);
     // Um botão cheio por tela: com oferta paga, o primário é o dela (o da
     // primeira, se houver mais de uma), exceto em alerta (grau 4, NÃO):
     // contenção antes de conversão, então a oferta vira contorno e o

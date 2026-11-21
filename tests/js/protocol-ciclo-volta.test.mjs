@@ -298,3 +298,91 @@ test("a recuperação só oferece colar o código quando o retorno sabe usar só
   const geral = abrir({ local: { [CHAVE]: "{ não é json" } });
   assert.ok(geral.p.textarea(), "a recuperação sem marco oferece o código");
 });
+
+// ---- a oferta declarada como `oferta` -----------------------------------------------------------------------
+
+test("o resultado pode declarar a oferta como `oferta`, igual a `relatorio`, e some quando o catálogo não tem endereço", () => {
+  const catalogo = (url) => `var PAID_REPORT_HOSTS = ["relatorio.dlt.academy"]; var PAID_REPORTS = { teste: { titulo: "Produto de teste", preco: "R$ 1", botao: "Quero", plataforma: "Stripe", checkoutUrl: "${url}", perfis: {} } };`;
+  const comResultado = "PROTOCOL.result = (a) => ({ id: 1, grade: 1, verdict: 'Fim.', guardar: false, body: [], oferta: { produto: 'teste', perfil: 'x' } });";
+  const com = abrir({ ajuste: comResultado, antes: (env) => env.rodar(catalogo("https://relatorio.dlt.academy/comprar/teste?utm_source=portal")) });
+  com.p.opcoes().find((r) => r.textContent.trim() === "Nenhum destes").click();
+  clicar(com.p, "Continuar");
+  com.p.opcoes()[0].click();
+  com.env.rodarTimers();
+  com.p.escrever("x");
+  clicar(com.p, "Continuar a parte 2");
+  com.p.escrever("regra");
+  com.p.escolher(0);
+  assert.equal(com.p.porClasse("protocol-paid-report").length, 1);
+  const vazio = abrir({ ajuste: comResultado, antes: (env) => env.rodar(catalogo("")) });
+  vazio.p.opcoes().find((r) => r.textContent.trim() === "Nenhum destes").click();
+  clicar(vazio.p, "Continuar");
+  vazio.p.opcoes()[0].click();
+  vazio.env.rodarTimers();
+  vazio.p.escrever("x");
+  clicar(vazio.p, "Continuar a parte 2");
+  vazio.p.escrever("regra");
+  vazio.p.escolher(0);
+  assert.equal(vazio.p.porClasse("protocol-paid-report").length, 0, "invisível enquanto vazio");
+});
+
+// ---- eventos de uso ------------------------------------------------------------------------------------------------
+
+const EVENTOS = (ativo) => `
+globalThis.__ev = [];
+PROTOCOL.eventos = {
+  ativo: ${ativo},
+  permitidos: ['x_inicio', 'x_ato1_fim', 'x_pausa', 'x_fim', 'x_retorno_dia3', 'x_md', 'x_recuperacao'],
+  nomes: { inicio: 'x_inicio', ato1_fim: 'x_ato1_fim', pausa: 'x_pausa', fim: 'x_fim', retorno: (m) => 'x_retorno_' + m, md: 'x_md', recuperacao_md: 'x_recuperacao', pdf: 'fora_da_lista', ics: 'x\\nico' },
+  enviar: (nome) => globalThis.__ev.push(nome),
+};`;
+
+test("eventos desligados não emitem nada, mesmo com a lista e a função declaradas", () => {
+  const { env, p } = abrir({ ajuste: EVENTOS(false) });
+  p.opcoes().find((r) => r.textContent.trim() === "Nenhum destes").click();
+  clicar(p, "Continuar");
+  p.opcoes()[0].click();
+  env.rodarTimers();
+  p.escrever("uma frase");
+  clicar(p, "Salvar e continuar depois");
+  assert.deepEqual(Array.from(env.contexto.__ev), []);
+});
+
+test("eventos ligados emitem só nomes da lista, uma vez cada, e nunca levam resposta", () => {
+  const { env, p } = abrir({ ajuste: EVENTOS(true) });
+  assert.deepEqual(Array.from(env.contexto.__ev), ["x_inicio"]);
+  p.opcoes().find((r) => r.textContent.trim() === "Nenhum destes").click();
+  clicar(p, "Continuar");
+  p.opcoes()[0].click();
+  env.rodarTimers();
+  p.escrever("segredo de texto");
+  assert.deepEqual(Array.from(env.contexto.__ev), ["x_inicio", "x_ato1_fim"]);
+  clicar(p, "Salvar e continuar depois");
+  clicar(p, "Continuar agora");
+  p.escrever("regra");
+  p.escolher(0);
+  assert.deepEqual(Array.from(env.contexto.__ev), ["x_inicio", "x_ato1_fim", "x_pausa", "x_fim"]);
+  assert.ok(!JSON.stringify(Array.from(env.contexto.__ev)).includes("segredo"));
+  clicar(p, "Baixar como texto (.md)");
+  assert.ok(env.contexto.__ev.includes("x_md"));
+});
+
+test("nome fora da lista ou malformado é descartado e um erro no envio não atrapalha", () => {
+  const { env, p } = abrir({ ajuste: EVENTOS(true) + " PROTOCOL.eventos.enviar = (n) => { globalThis.__ev.push(n); throw new Error('rede'); };" });
+  assert.deepEqual(Array.from(env.contexto.__ev), ["x_inicio"], "o erro no envio não derruba a tela");
+  assert.ok(p.pergunta().length > 0);
+});
+
+test("o retorno e a recuperação pelo arquivo emitem o nome do marco e o da recuperação", async () => {
+  const local = { [CHAVE]: JSON.stringify(estadoSalvo()) };
+  const { env, p } = abrir({ hash: "#volta=dia3", local, ajuste: EVENTOS(true) });
+  fazerDia3(p);
+  assert.ok(env.contexto.__ev.includes("x_retorno_dia3"));
+  const outra = abrir({ hash: "#volta=dia3", ajuste: EVENTOS(true) });
+  const arquivo = { size: 40, text: () => Promise.resolve(JSON.stringify({ ok: true, regra: "a regra do arquivo", dia0: "2026-11-10" })) };
+  const input = outra.p.todos().find((e) => e.tagName === "INPUT" && e.getAttribute("type") === "file");
+  input.files = [arquivo];
+  input.dispararEvento("change");
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.ok(outra.env.contexto.__ev.includes("x_recuperacao"));
+});
