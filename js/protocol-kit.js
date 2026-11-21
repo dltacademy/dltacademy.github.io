@@ -597,7 +597,7 @@
   // de `naoGuardar` nunca estão no estado: são pulados, e quem parou dentro do
   // bloco deles (o `passo` do estado está nele) recomeça no primeiro. Devolve { respostas, caminho (índices),
   // indice (steps.length = tudo respondido), descartou }.
-  function restaurarProgresso(steps, estado, naoGuardar) {
+  function restaurarProgresso(steps, estado, naoGuardar, derivados) {
     var nao = Array.isArray(naoGuardar) ? naoGuardar : [];
     var respostas = {};
     var caminho = [];
@@ -628,6 +628,11 @@
         caminho = caminho.filter(function (i) { return i < primeiro; });
       }
     }
+    // Valores derivados que o protocolo guarda no lugar da resposta que nunca se guarda (um
+    // verdadeiro ou falso): voltam como estavam, só se forem verdadeiros.
+    (Array.isArray(derivados) ? derivados : []).forEach(function (chave) {
+      if (typeof chave === "string" && RE_ID.test(chave) && guardadas[chave] === true) respostas[chave] = true;
+    });
     return { respostas: respostas, caminho: caminho, indice: indice, descartou: pos < ids.length };
   }
 
@@ -1339,8 +1344,16 @@
     return saida.join("\r\n") + "\r\n";
   }
 
+  // O nome de um evento de uso, se estiver na lista fixa do protocolo; senão null. Nenhum nome
+  // se monta a partir de resposta: só os da lista passam.
+  function nomeDeEvento(nome, permitidos) {
+    if (typeof nome !== "string" || !/^[a-z0-9_-]{1,64}$/.test(nome)) return null;
+    return Array.isArray(permitidos) && permitidos.indexOf(nome) !== -1 ? nome : null;
+  }
+
   var api = {
     TIPOS_NOVOS: TIPOS_NOVOS,
+    nomeDeEvento: nomeDeEvento,
     passoVisivel: passoVisivel,
     proximoIndice: proximoIndice,
     passosVisiveis: passosVisiveis,

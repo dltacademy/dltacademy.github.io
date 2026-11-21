@@ -134,7 +134,10 @@
     var humorAtivo = objeto(cuidado.humor).ativo === true;
     var soma = (typeof humor.interesse === "number" ? humor.interesse : 0) + (typeof humor.animo === "number" ? humor.animo : 0);
     var avisoHumor = humorAtivo && soma >= regra(bib, "HUMOR_AVISO", 3);
-    return { ramo: ajuda ? "ajuda" : chao ? "chao" : null, avisoHumor: avisoHumor, degrauAbaixo: avisoHumor };
+    // O humor nunca é guardado, só o que ele decidiu: `degrau_abaixo` (verdadeiro) vale quando
+    // as respostas de humor não estão mais aqui (ao retomar, no retorno, na volta curta).
+    var degrauGuardado = !resp.humor && resp.degrau_abaixo === true;
+    return { ramo: ajuda ? "ajuda" : chao ? "chao" : null, avisoHumor: avisoHumor, degrauAbaixo: avisoHumor || degrauGuardado };
   }
 
   // ---- notas dos padrões ------------------------------------------------------------------
@@ -475,6 +478,7 @@
     if (tem(resp.terreno, "estresse") && tem(resp.terreno, "mes_apertado")) motivos.push("terreno");
     if (resp.desconforto === "nao") motivos.push("desconforto");
     if (cuidado && cuidado.degrauAbaixo) motivos.push("humor");
+    if (resp.travou === "sim") motivos.push("deslize");
     var menor = motivos.length > 0;
     var experimento = textoDoExperimento(escada, resp);
     if (menor) {
@@ -1081,6 +1085,26 @@
     return typeof objeto(estado).lembrete === "string" && /^\d\d:\d\d$/.test(estado.lembrete) ? estado.lembrete : HORA_PADRAO;
   }
 
+  // A escolha da hora ao lado do botão do .ics: manhã, almoço ou noite. Sem escolha, 20:00.
+  function escolhaDeHora(bib) {
+    var t = objeto(objeto(textosDaBib(bib).resultado.app).hora);
+    if (!t.rotulo || !t.manha || !t.almoco || !t.noite) return undefined;
+    return {
+      rotulo: t.rotulo,
+      opcoes: [
+        { rotulo: t.manha, hora: "08:00" },
+        { rotulo: t.almoco, hora: "12:30" },
+        { rotulo: t.noite, hora: "20:00" },
+      ],
+    };
+  }
+
+  function comEscolhaDeHora(ics, bib) {
+    var escolha = escolhaDeHora(bib);
+    if (escolha) ics.escolhaHora = escolha;
+    return ics;
+  }
+
   function eventoSemanal(estado, dia0, bib) {
     var t = textosDaBib(bib).resultado.app.semana;
     return {
@@ -1100,7 +1124,7 @@
     var ctx = objeto(estado);
     if (!ctx.pagina || !ctx.ciclo || !kit.dataValida(ctx.hoje)) return null;
     var app = textosDaBib(bib).resultado.app;
-    return {
+    return comEscolhaDeHora({
       prodid: PRODID,
       rotulo: app.rotulo,
       eventos: [
@@ -1115,7 +1139,7 @@
           url: ctx.pagina + "#volta=continuar",
         },
       ],
-    };
+    }, bib);
   }
 
   function perguntasDoMarco(marco, bib) {
@@ -1146,7 +1170,7 @@
       };
     });
     eventos.push(eventoSemanal(ctx, dia0, bib));
-    return { prodid: PRODID, rotulo: app.rotulo, eventos: eventos };
+    return comEscolhaDeHora({ prodid: PRODID, rotulo: app.rotulo, eventos: eventos }, bib);
   }
 
   // ---- os cartões em PNG --------------------------------------------------------------------------
@@ -1249,6 +1273,7 @@
         { id: "trava", rotulo: "A trava de hoje", texto: trava.texto },
         campoEscolha("renda", "Como o dinheiro entra", resp.renda, objeto(bib.telas.renda).opcoes),
         campoTexto("alvo", "O que você escreveu para a trava", resp.alvo),
+        { id: "degrau_abaixo", rotulo: "O plano começa um degrau abaixo", valor: calc.cuidado && calc.cuidado.degrauAbaixo ? "1" : "", texto: calc.cuidado && calc.cuidado.degrauAbaixo ? "sim" : "" },
       ],
     };
   }
@@ -1426,6 +1451,10 @@
     blocos.push(blocoDosFatos(resp, bib));
     blocos.push(blocoDasCenas(resp, bib));
     blocos.push(blocoDasFrases(resp, bib));
+    var blocoRetornos = blocoDosRetornos(ctx.retornos, bib);
+    if (blocoRetornos) blocos.push(blocoRetornos);
+    var blocoHistorico = blocoDoHistorico(ctx.historico, bib);
+    if (blocoHistorico) blocos.push(blocoHistorico);
     if (reg && reg.ok) blocos.push({ id: "teto.registro", v: 1, titulo: "O registro do teto", json: reg.objeto, codigo: reg.codigo });
     return blocos;
   }
@@ -1534,10 +1563,36 @@
     return resultado;
   }
 
-  // Onde a oferta do aprofundamento entra no resultado: nenhuma por enquanto.
+  // Onde a oferta do aprofundamento entra no resultado de `montarResultado`: nenhuma. Quem decide
+  // se há oferta é `ofertaDoResultado` (fim do Ato 2) e `ofertaDoRetorno` (dia 7), abaixo.
   function ofertaDoAprofundamento() {
     return null;
   }
+
+  var PRODUTO_DO_APROFUNDAMENTO = "teto-avancado";
+
+  // A oferta do fim do Ato 2: só para quem escolheu um padrão e não caiu no ramo de cuidado.
+  // Leva só o produto e o padrão (o nome dele aparece no texto da oferta); nada das respostas.
+  // null no cuidado, no "nenhum" e sem escolha.
+  function ofertaDoResultado(r, bib) {
+    var c = calcular(r, bib);
+    if (c.cuidado.ramo || !c.padrao) return null;
+    return { produto: PRODUTO_DO_APROFUNDAMENTO, perfil: c.padrao };
+  }
+
+  // A oferta do retorno do dia 7: quem tem um padrão no que está guardado (o cuidado nunca é guardado).
+  function ofertaDoRetorno(estado, bib) {
+    var b = baseDoEstado(estado, bib);
+    return b.padrao ? { produto: PRODUTO_DO_APROFUNDAMENTO, perfil: b.padrao } : null;
+  }
+
+  // Os nomes dos eventos de uso: lista fixa, sem padrão, família, variante nem cuidado no nome.
+  // O envio fica desligado até a contagem ser decidida.
+  var EVENTOS = [
+    "teto_inicio", "teto_ato1_fim", "teto_pausa", "teto_ato2_fim", "teto_pdf_baixado", "teto_md_baixado",
+    "teto_ics_baixado", "teto_volta_dia3", "teto_volta_dia7", "teto_volta_dia30", "teto_volta_dia90",
+    "teto_volta_sinais", "teto_volta_semana", "teto_recuperacao_md", "clique_oferta_teto-avancado_principal",
+  ];
 
   // O resultado do fim do Ato 2, na ordem: o teto, o fio, o Raio-X, o que não indica, a
   // leitura, os 60 segundos, os sinais, o plano de 7 dias, o de 90, e o que se leva.
@@ -1546,7 +1601,7 @@
   function montarResultado(r, estado, bib, hoje) {
     var resp = objeto(r);
     var ctx = objeto(estado);
-    var calc = calcular(resp, bib);
+    var calc = completarComRegistro(calcular(resp, bib), resp, ctx.registroBase, bib);
     if (calc.cuidado.ramo) return resultadoDeCuidado(calc.cuidado, bib);
     if (!calc.padrao) return resultadoNenhum(bib);
 
@@ -1596,12 +1651,724 @@
     if (planos) resultado.plan = itensDoPlano7(planos);
     if (reg.ok) {
       resultado.registro = resumoDoRegistro(reg, calc, resp, dia0, bib);
-      resultado.blocks = montarBlocos(resp, calc, { dia0: dia0, hoje: agora, volta: n }, bib, { fio: fio, sinais: sinais, degraus: degraus, planos: planos, registro: reg });
+      resultado.blocks = montarBlocos(resp, calc, { dia0: dia0, hoje: agora, volta: n, retornos: ctx.retornos, historico: ctx.historico }, bib, { fio: fio, sinais: sinais, degraus: degraus, planos: planos, registro: reg });
     }
     var ics = eventosDosRetornos(ctx, dia0, bib);
     if (ics) resultado.ics = ics;
     var oferta = ofertaDoAprofundamento(calc.padrao, ctx);
     if (oferta) resultado.oferta = oferta;
+    return resultado;
+  }
+
+  // ---- o ciclo de volta ---------------------------------------------------------------------------
+  // Os retornos dos dias 3, 7 e 30, a revisão da semana e a volta curta. Cada função recebe o que
+  // está guardado (o `estado` do ciclo: respostas, volta, histórico) e devolve dados.
+
+  var MARCOS_GUARDADOS = ["dia3", "dia7", "dia30", "semana"];
+  var MARCOS_DO_HISTORICO = ["dia3", "dia7", "dia30"];
+  var MAX_HISTORICO = 24;
+  // As respostas da última vez e do plano: a volta curta as refaz, então não herda as antigas.
+  var CHAVES_DA_VOLTA = [
+    "cena", "terreno", "sinais", "sinais_outro", "frase", "ponto_escolha", "alivio", "alivio_texto",
+    "custo_depois", "para_que", "para_que_texto", "excecao", "desconforto", "experimento",
+    "experimento_texto", "se_entao", "confianca", "sobe_um_ponto", "proximas_24h",
+  ];
+
+  function copia(valor) {
+    return JSON.parse(JSON.stringify(valor));
+  }
+
+  function inteiroEm(v, min, max) {
+    return typeof v === "number" && Number.isInteger(v) && v >= min && v <= max ? v : null;
+  }
+
+  // As cinco contagens dos últimos 30 dias: número de 0 a 4, ou null (sem resposta ou "não se aplica").
+  function fatosDe(r, bib) {
+    var fatos = objeto(objeto(r).fatos);
+    var saida = {};
+    lista(bib.fatos).forEach(function (f) { saida[f.id] = inteiroEm(fatos[f.id], 0, 4); });
+    return saida;
+  }
+
+  function rotuloDoFato(bib, id, valor) {
+    var f = lista(bib.fatos).filter(function (x) { return x.id === id; })[0];
+    var o = f ? lista(f.opcoes).filter(function (x) { return x.value === valor; })[0] : null;
+    return o ? o.label : "";
+  }
+
+  // As medidas da crença na previsão, em ordem: a do dia 0, a do dia 3 e a do dia 7.
+  function serieDeCrenca(estado) {
+    var e = objeto(estado);
+    var ret = objeto(objeto(e.volta).retornos);
+    var serie = [];
+    [objeto(e.respostas).crenca_previsao, objeto(objeto(ret.dia3).r).crenca, objeto(objeto(ret.dia7).r).crenca].forEach(function (v) {
+      var n = inteiroEm(v, 0, 100);
+      if (n !== null) serie.push(n);
+    });
+    return serie;
+  }
+
+  // O que o ciclo guardado sabe, mesmo quando só há o registro (sem respostas): padrão, variante,
+  // regra de trabalho, "se, então", previsão, o dia 0 e o número da volta.
+  function baseDoEstado(estado, bib) {
+    var e = objeto(estado);
+    var resp = objeto(e.respostas);
+    var volta = objeto(e.volta);
+    var reg = objeto(volta.registro);
+    var padroes = objeto(bib.padroes);
+    var padrao = padroes[resp.espelho] ? resp.espelho : padroes[reg.padrao] ? reg.padrao : null;
+    var variante = objeto(bib.variantes)[resp.variante] ? resp.variante : objeto(bib.variantes)[reg.variante] ? reg.variante : null;
+    var dia0 = kit.dataValida(volta.dia0) ? volta.dia0 : kit.dataValida(reg.data) ? reg.data : kit.dataValida(e.criado) ? e.criado : null;
+    return {
+      padrao: padrao,
+      variante: variante,
+      dia0: dia0,
+      n: Number.isInteger(volta.n) && volta.n >= 1 ? volta.n : 1,
+      regraTrabalho: aparar(resp.regra_trabalho) || aparar(reg.regra_trabalho),
+      seEntao: aparar(resp.se_entao) || aparar(reg.se_entao),
+      previsao: aparar(resp.previsao) || aparar(reg.previsao),
+      vazamento: padroes[reg.vazamento] ? reg.vazamento : null,
+      temRespostas: Object.keys(resp).length > 0,
+    };
+  }
+
+  // As respostas guardadas como contexto da volta curta: sem a última vez e o plano antigos (a volta
+  // os refaz) e com o padrão e a variante do registro quando as respostas não os trazem.
+  function respostasBaseDaVolta(estado, bib) {
+    var e = objeto(estado);
+    var base = copia(objeto(e.respostas));
+    CHAVES_DA_VOLTA.forEach(function (k) { delete base[k]; });
+    ["travou", "deslize_fato", "deslize_gentileza", "deslize_bem", "deslize_metade", "degrau_abaixo"].forEach(function (k) { delete base[k]; });
+    var b = baseDoEstado(e, bib);
+    if (!objeto(bib.padroes)[base.espelho] && b.padrao) base.espelho = b.padrao;
+    if (base.variante === undefined && b.variante) base.variante = b.variante;
+    if (base.regra_trabalho === undefined && b.regraTrabalho) base.regra_trabalho = b.regraTrabalho;
+    if (base.se_entao === undefined && b.seEntao) base.se_entao = b.seEntao;
+    if (base.previsao === undefined && b.previsao) base.previsao = b.previsao;
+    return base;
+  }
+
+  function sinaisMarcadosDela(r) {
+    var resp = objeto(r);
+    var n = lista(resp.sinais).filter(function (v) { return v !== "outro"; }).length;
+    return n + (tem(resp.sinais, "outro") && aparar(resp.sinais_outro) ? 1 : 0);
+  }
+
+  function itensDoTopoDoRegistro(reg) {
+    var itens = objeto(reg.itens);
+    return Object.keys(itens)
+      .filter(function (id) { return typeof itens[id] === "number" && itens[id] >= 1; })
+      .sort(function (a, b) { return (itens[b] - itens[a]) || (a < b ? -1 : a > b ? 1 : 0); })
+      .slice(0, 2);
+  }
+
+  // Uma entrada do histórico (2.4): o resumo de uma volta. `extra` traz o que só a volta seguinte
+  // sabe: se a previsão acertou desde então (`previsao_acertou`) e a crença de hoje nela (`crenca`).
+  // null se não houver padrão nem data para registrar.
+  function resumoDaVolta(estado, bib, extra) {
+    var e = objeto(estado);
+    var resp = objeto(e.respostas);
+    var volta = objeto(e.volta);
+    var reg = objeto(volta.registro);
+    var ex = objeto(extra);
+    var b = baseDoEstado(e, bib);
+    if (!b.padrao || !b.dia0) return null;
+    var calc = resp.espelho ? calcular(resp, bib) : null;
+    var itens = resp.espelho ? itensDasFrases(resp, bib).map(function (i) { return i.id; }) : [];
+    if (!itens.length) itens = itensDoTopoDoRegistro(reg);
+    var niveis = {};
+    itens.forEach(function (id) {
+      var n = inteiroEm(objeto(resp.frases_nivel)[id], 0, 3);
+      if (n !== null) niveis[id] = n;
+    });
+    var serie = serieDeCrenca(e);
+    var nova = inteiroEm(ex.crenca, 0, 100);
+    if (nova !== null) serie.push(nova);
+    var ret = objeto(volta.retornos);
+    var acertou = tem(["acertou", "em_parte", "errou"], ex.previsao_acertou) ? ex.previsao_acertou
+      : tem(["acertou", "em_parte", "errou"], objeto(objeto(ret.dia7).r).acertou) ? ret.dia7.r.acertou : null;
+    var escada = escadaDoPadrao(b.padrao, b.variante, bib);
+    var experimento = kit.cortarTexto(textoDoExperimento(escada, resp), 160);
+    var entrada = {
+      volta: b.n,
+      data: b.dia0,
+      padrao: b.padrao,
+      variante: b.variante,
+      familia: (calc && calc.familia) || (FAMILIAS.indexOf(reg.familia) !== -1 ? reg.familia : null),
+      vazamento: (calc && calc.vazamento) || b.vazamento,
+      fatos: fatosDe(resp, bib),
+      itens_topo: itens,
+      niveis: niveis,
+      crenca_previsao: serie.slice(-24),
+      previsao_acertou: acertou,
+      sinais_marcados: Math.min(sinaisMarcadosDela(resp), 40),
+      retornos: MARCOS_DO_HISTORICO.filter(function (m) { return Object.prototype.hasOwnProperty.call(ret, m); }),
+    };
+    if (experimento) entrada.experimento = experimento;
+    if (b.regraTrabalho) entrada.regra_trabalho = kit.cortarTexto(b.regraTrabalho, 160);
+    if (b.seEntao) entrada.se_entao = kit.cortarTexto(b.seEntao, 200);
+    return entrada;
+  }
+
+  var esquemaDaEntrada = {
+    tipo: "objeto",
+    campos: {
+      volta: { tipo: "inteiro", min: 1, max: 99 },
+      data: DATA_REGRA,
+      padrao: { tipo: "texto", enum: PADROES },
+      variante: { tipo: "texto", enum: VARIANTES, nulo: true },
+      familia: { tipo: "texto", enum: FAMILIAS, nulo: true },
+      vazamento: { tipo: "texto", enum: PADROES, nulo: true },
+      fatos: {
+        tipo: "objeto",
+        campos: {
+          olhou: { tipo: "inteiro", min: 0, max: 4, nulo: true },
+          preco_cheio: { tipo: "inteiro", min: 0, max: 4, nulo: true },
+          extra: { tipo: "inteiro", min: 0, max: 4, nulo: true },
+          pedido_amanha: { tipo: "inteiro", min: 0, max: 4, nulo: true },
+          sobrou: { tipo: "inteiro", min: 0, max: 4, nulo: true },
+        },
+      },
+      itens_topo: { tipo: "lista", max: 2, item: { tipo: "texto", padrao: "^(evitar|idolatrar|status|vigilancia|lealdade)_[1-9]$" } },
+      niveis: { tipo: "mapa", padraoChave: "^(evitar|idolatrar|status|vigilancia|lealdade)_[1-9]$", max: 4, valor: { tipo: "inteiro", min: 0, max: 3 } },
+      crenca_previsao: { tipo: "lista", max: 24, item: { tipo: "inteiro", min: 0, max: 100 } },
+      previsao_acertou: { tipo: "texto", enum: ["acertou", "em_parte", "errou"], nulo: true },
+      experimento: { tipo: "texto", max: 160, opcional: true },
+      regra_trabalho: { tipo: "texto", max: 160, opcional: true },
+      se_entao: { tipo: "texto", max: 200, opcional: true },
+      sinais_marcados: { tipo: "inteiro", min: 0, max: 40 },
+      retornos: { tipo: "lista", max: 3, item: { tipo: "texto", enum: MARCOS_DO_HISTORICO } },
+    },
+  };
+
+  // O histórico lido de um arquivo ou do estado: só as entradas que valem no esquema, as 24 mais recentes.
+  function lerHistorico(lido) {
+    var saida = [];
+    lista(lido).forEach(function (entrada) {
+      if (kit.validarEsquema(entrada, esquemaDaEntrada).ok) saida.push(copia(entrada));
+    });
+    return saida.slice(-MAX_HISTORICO);
+  }
+
+  // O histórico com a entrada nova no fim, no máximo 24 (a mais antiga sai).
+  function acrescentarAoHistorico(historico, entrada) {
+    var novo = lista(historico).slice();
+    if (entrada) novo.push(entrada);
+    return novo.slice(-MAX_HISTORICO);
+  }
+
+  // A comparação entre duas voltas (3.2). `antes`: a entrada do histórico (ou null, sem histórico);
+  // `agora`: o resumo da volta de agora, com `retro` (como ela via o dia 0, olhando de hoje) quando
+  // houver. Cada leitura diz "melhor", "pior" ou "igual" pela direção do fato na biblioteca; sem
+  // número dos dois lados, "sem base" (e "não se aplica" nunca vira zero).
+  function compararVoltas(antes, agora, bib) {
+    var a = objeto(antes);
+    var g = objeto(agora);
+    var fatosA = objeto(a.fatos);
+    var fatosG = objeto(g.fatos);
+    var retro = g.retro ? objeto(g.retro) : null;
+    var fatos = lista(bib.fatos).map(function (f) {
+      var x = inteiroEm(fatosA[f.id], 0, 4);
+      var y = inteiroEm(fatosG[f.id], 0, 4);
+      var v = retro ? inteiroEm(retro[f.id], 0, 4) : null;
+      var item = { id: f.id, antes: x, agora: y, retro: v, leitura: "sem base", leituraRetro: null, mudouARegua: false };
+      if (x === null || y === null) return item;
+      var d = (y - x) * (typeof f.direcao === "number" ? f.direcao : 1);
+      item.leitura = d > 0 ? "melhor" : d < 0 ? "pior" : "igual";
+      if (v !== null) {
+        var dv = (y - v) * (typeof f.direcao === "number" ? f.direcao : 1);
+        item.leituraRetro = dv > 0 ? "melhor" : dv < 0 ? "pior" : "igual";
+        item.mudouARegua = v !== x;
+      }
+      return item;
+    });
+    var niveisA = objeto(a.niveis);
+    var niveisG = objeto(g.niveis);
+    var frases = lista(a.itens_topo).map(function (id) {
+      var y = inteiroEm(niveisG[id], 0, 3);
+      var x = inteiroEm(niveisA[id], 0, 3);
+      if (y === null) return { id: id, antes: x, agora: null, leitura: "sem base" };
+      if (x === null) return { id: id, antes: null, agora: y, leitura: "qualitativa" };
+      return { id: id, antes: x, agora: y, leitura: y < x ? "menos" : y > x ? "mais" : "igual" };
+    });
+    var voltas = Number.isInteger(g.volta) && g.volta >= 1 ? g.volta : Number.isInteger(a.volta) ? a.volta + 1 : 1;
+    return {
+      padrao: { antes: a.padrao || null, agora: g.padrao || null, mesmo: Boolean(a.padrao) && a.padrao === g.padrao },
+      fatos: fatos,
+      frases: frases,
+      familia: { antes: a.familia || null, agora: g.familia || null },
+      sinais: { antes: Number.isInteger(a.sinais_marcados) ? a.sinais_marcados : null, agora: Number.isInteger(g.sinais_marcados) ? g.sinais_marcados : null },
+      crenca: lista(a.crenca_previsao).concat(lista(g.crenca_previsao)),
+      voltas: voltas,
+    };
+  }
+
+  // ---- retornos: as perguntas, o .md e o que se lê de volta ---------------------------------------
+
+  // As perguntas de um retorno, como a biblioteca as declara (campos fixos, na ordem).
+  function perguntasDoRetorno(marco, bib) {
+    return lista(objeto(objeto(bib.retornos)[marco]).perguntas);
+  }
+
+  function opcoesDoFato(bib, id) {
+    var f = lista(bib.fatos).filter(function (x) { return x.id === id; })[0];
+    return f ? lista(f.opcoes).concat([f.na]) : [];
+  }
+
+  // A resposta de uma pergunta, no formato certo ou undefined (resposta de fora que não vale não entra).
+  function respostaDoRetorno(def, valor, bib) {
+    if (def.tipo === "choice") return lista(def.opcoes).some(function (o) { return o.value === valor; }) ? valor : undefined;
+    if (def.tipo === "write") return typeof valor === "string" ? kit.cortarTexto(valor.trim(), def.max || 400) : undefined;
+    if (def.tipo === "scale") {
+      var n = inteiroEm(valor, def.min, def.max);
+      return n !== null && (n - def.min) % (def.step || 1) === 0 ? n : undefined;
+    }
+    if (def.tipo === "grade") {
+      var obj = objeto(valor);
+      var saida = {};
+      lista(bib.fatos).forEach(function (f) {
+        var v = obj[f.id];
+        if (opcoesDoFato(bib, f.id).some(function (o) { return o.value === v; })) saida[f.id] = v;
+      });
+      return Object.keys(saida).length ? saida : undefined;
+    }
+    return undefined;
+  }
+
+  // O que o retorno guardou (`r`), só com as perguntas conhecidas e os valores que valem.
+  function limparRetorno(marco, r, bib) {
+    var resp = objeto(r);
+    var saida = {};
+    if (marco === "semana") return saida;
+    perguntasDoRetorno(marco, bib).forEach(function (def) {
+      var v = respostaDoRetorno(def, resp[def.id], bib);
+      if (v !== undefined) saida[def.id] = v;
+    });
+    return saida;
+  }
+
+  // O bloco `teto.retornos`: um campo por resposta, `<marco>.<pergunta>`, e a data de cada retorno.
+  function blocoDosRetornos(retornos, bib) {
+    var ret = objeto(retornos);
+    var campos = [];
+    MARCOS_GUARDADOS.forEach(function (marco) {
+      if (!ret[marco] || !kit.dataValida(ret[marco].em)) return;
+      var titulo = objeto(objeto(bib.retornos)[marco]).titulo || marco;
+      var r = limparRetorno(marco, ret[marco].r, bib);
+      campos.push({ id: marco + ".em", rotulo: titulo + ": feito em", valor: ret[marco].em, texto: dataBR(ret[marco].em) });
+      perguntasDoRetorno(marco, bib).forEach(function (def) {
+        var v = r[def.id];
+        if (v === undefined) return;
+        var id = marco + "." + def.id;
+        if (def.tipo === "choice") campos.push(campoEscolha(id, def.prompt, v, def.opcoes));
+        else if (def.tipo === "write") campos.push(campoTexto(id, def.prompt, v));
+        else if (def.tipo === "scale") campos.push(campoNumero(id, def.prompt, v, "%"));
+        else if (def.tipo === "grade") {
+          lista(bib.fatos).forEach(function (f) {
+            if (v[f.id] === undefined) return;
+            campos.push(campoEscolha(marco + ".fatos_" + f.id, f.label, String(v[f.id]), opcoesDoFato(bib, f.id).map(function (o) { return { value: String(o.value), label: o.label }; })));
+          });
+        }
+      });
+    });
+    return campos.length ? { id: "teto.retornos", v: 1, titulo: "Os retornos", campos: campos } : null;
+  }
+
+  // O que `blocoDosRetornos` escreveu, de volta: { <marco>: { em, r } }. Marco sem data válida fica fora.
+  function lerRetornosDosBlocos(campos, bib) {
+    var lidos = objeto(campos);
+    var saida = {};
+    MARCOS_GUARDADOS.forEach(function (marco) {
+      var em = lidos[marco + ".em"];
+      if (!em || !kit.dataValida(em.valor)) return;
+      var r = {};
+      perguntasDoRetorno(marco, bib).forEach(function (def) {
+        var id = marco + "." + def.id;
+        var v;
+        if (def.tipo === "grade") {
+          var obj = {};
+          lista(bib.fatos).forEach(function (f) {
+            var c = lidos[marco + ".fatos_" + f.id];
+            if (c && typeof c.valor === "string") obj[f.id] = /^\d$/.test(c.valor) ? Number(c.valor) : c.valor;
+          });
+          v = respostaDoRetorno(def, obj, bib);
+        } else if (def.tipo === "choice") v = lidos[id] ? respostaDoRetorno(def, lidos[id].valor, bib) : undefined;
+        else if (def.tipo === "write") v = lidos[id] ? respostaDoRetorno(def, aparar(lidos[id].texto), bib) : undefined;
+        else if (def.tipo === "scale") v = lidos[id] && /^\d{1,3}$/.test(String(lidos[id].valor)) ? respostaDoRetorno(def, Number(lidos[id].valor), bib) : undefined;
+        if (v !== undefined && !(def.tipo === "write" && v === "")) r[def.id] = v;
+      });
+      saida[marco] = { em: em.valor, r: r };
+    });
+    return saida;
+  }
+
+  // O bloco `teto.historico`: o JSON das entradas e uma tabela para ler.
+  function blocoDoHistorico(historico, bib) {
+    var entradas = lerHistorico(historico);
+    if (!entradas.length) return null;
+    var linhas = ["| Volta | Data | O teto | A crença que mais pesa |", "| --- | --- | --- | --- |"];
+    entradas.forEach(function (e) {
+      var padrao = objeto(bib.padroes)[e.padrao];
+      var fam = e.familia ? objeto(bib.familias)[e.familia] : null;
+      linhas.push("| " + e.volta + " | " + dataBR(e.data) + " | " + (padrao ? padrao.nome : "") + " | " + (fam ? fam.nome : "") + " |");
+    });
+    return { id: "teto.historico", v: 1, titulo: "O histórico de voltas", json: entradas, linhas: linhas };
+  }
+
+  // Um registro lido de um código (ou do arquivo) vira o estado mínimo para os retornos: sem
+  // respostas, só o registro, o dia 0 e o número da volta.
+  function estadoDoRegistro(reg, bib) {
+    return {
+      criado: reg.data,
+      etapa: "concluido",
+      passo: null,
+      caminho: [],
+      respostas: {},
+      volta: { n: reg.volta, dia0: reg.data, registro: reg, retornos: {} },
+    };
+  }
+
+  // Lê o código do registro (o do PDF, do `.md` ou do link). { estado, resumo } ou { erro: null }.
+  function importarRegistro(codigo, bib) {
+    var dec = kit.decodificarRegistro(codigo, 2048);
+    if (!dec.ok) return { erro: null };
+    if (!kit.validarEsquema(dec.objeto, esquemaDoRegistro).ok) return { erro: null };
+    var padrao = objeto(bib.padroes)[dec.objeto.padrao];
+    if (!padrao) return { erro: null };
+    return { estado: estadoDoRegistro(dec.objeto, bib), resumo: "O seu Teto de " + dataBR(dec.objeto.data) + ": " + padrao.nome + "." };
+  }
+
+  // ---- as vistas: o que cada retorno devolve na tela e no arquivo -----------------------------------
+
+  // Os blocos do `.md` atualizado: o que o ciclo sabe, com os retornos e o histórico. Com respostas
+  // guardadas, é o `.md` completo de sempre; só com o registro, são os blocos do ciclo e o registro.
+  function blocosDoCiclo(estado, retornos, historico, bib, hoje) {
+    var e = objeto(estado);
+    var resp = objeto(e.respostas);
+    var volta = objeto(e.volta);
+    var b = baseDoEstado(e, bib);
+    var reg = volta.registro && kit.validarEsquema(volta.registro, esquemaDoRegistro).ok ? volta.registro : null;
+    var cod = reg ? kit.codificarRegistro(reg, 2048) : null;
+    var registro = cod && cod.ok ? { ok: true, objeto: cod.objeto, codigo: cod.codigo } : null;
+    var calc = resp.espelho && objeto(bib.padroes)[resp.espelho] ? calcular(resp, bib) : null;
+    if (calc && calc.padrao && !calc.cuidado.ramo) {
+      return montarBlocos(resp, calc, { dia0: b.dia0, hoje: hoje, volta: b.n, retornos: retornos, historico: historico }, bib, registro ? { registro: registro } : undefined);
+    }
+    var blocos = [];
+    var bR = blocoDosRetornos(retornos, bib);
+    if (bR) blocos.push(bR);
+    var bH = blocoDoHistorico(historico, bib);
+    if (bH) blocos.push(bH);
+    if (registro) blocos.push({ id: "teto.registro", v: 1, titulo: "O registro do teto", json: registro.objeto, codigo: registro.codigo });
+    return blocos;
+  }
+
+  function proximoMarco(marco, dia0, bib) {
+    var comum = objeto(objeto(bib.retornos).comum);
+    var seguinte = { dia3: { chave: "dia7", dias: 7 }, dia7: { chave: "dia30", dias: 30 } }[marco];
+    if (seguinte && kit.dataValida(dia0)) {
+      var nome = (objeto(objeto(bib.retornos)[seguinte.chave]).titulo || seguinte.chave);
+      return preencher(comum.proximo, { retorno: kit.primeiraMinuscula(nome), data: dataBR(kit.somarDias(dia0, seguinte.dias)) });
+    }
+    if (marco === "dia30" && kit.dataValida(dia0)) return preencher(comum.proximo_volta, { data: dataBR(kit.somarDias(dia0, 90)) });
+    return comum.sem_data || "";
+  }
+
+  // A crença de agora na previsão, contra a última medida (se houver).
+  function linhasDaCrenca(estado, agora, tr) {
+    var n = inteiroEm(agora, 0, 100);
+    if (n === null) return [];
+    var serie = serieDeCrenca(estado);
+    if (!serie.length) return [preencher(tr.crenca_agora, { agora: n })];
+    var antes = serie[serie.length - 1];
+    return [preencher(tr.crenca_antes, { antes: antes, agora: n }), n > antes ? tr.crenca.subiu : n < antes ? tr.crenca.caiu : tr.crenca.igual];
+  }
+
+  function secaoDoDeslize(r, bib) {
+    var comum = objeto(objeto(bib.retornos).comum);
+    var resp = objeto(r);
+    var itens = [];
+    ["deslize_fato", "deslize_gentileza", "deslize_bem", "deslize_metade"].forEach(function (id) {
+      var def = perguntasDoRetorno("dia7", bib).filter(function (d) { return d.id === id; })[0];
+      var texto = aparar(resp[id]);
+      if (def && texto) itens.push({ title: def.prompt, text: texto });
+    });
+    var paragrafos = [comum.deslize_intro];
+    if (aparar(resp.deslize_metade)) paragrafos.push(preencher(comum.deslize_fecho, { metade: kit.semPontoFinal(aparar(resp.deslize_metade)) }));
+    return { id: "deslize", title: objeto(bib.planos.deslize).titulo || "Se o plano travou", kind: "deslize", paragraphs: paragrafos, items: itens };
+  }
+
+  function linhaDoFato(c, bib) {
+    var t = objeto(objeto(bib.retornos).volta.resultado);
+    var f = lista(bib.fatos).filter(function (x) { return x.id === c.id; })[0];
+    var rotulo = f ? f.label : c.id;
+    var rot = function (v) { return rotuloDoFato(bib, c.id, v); };
+    if (c.leitura === "sem base") {
+      return preencher(t.fato_sem_base, { rotulo: rotulo, agora: c.agora === null ? "não se aplica" : rot(c.agora) });
+    }
+    if (c.mudouARegua) {
+      return preencher(t.fato_retro, { rotulo: rotulo, antes: rot(c.antes), retro: rot(c.retro), agora: rot(c.agora) });
+    }
+    return preencher(t.fato, { rotulo: rotulo, antes: rot(c.antes), agora: rot(c.agora), leitura: t.leitura[c.leitura] });
+  }
+
+  function secaoDosFatos(comp, bib, titulo) {
+    return { id: "fatos", title: titulo, kind: "fatos", items: comp.fatos.map(function (c) { return linhaDoFato(c, bib); }) };
+  }
+
+  // Dia 3, dia 7, dia 30 e a revisão da semana: o resultado curto, o `.md` atualizado e o próximo marco.
+  // `ctx`: { answers, estado, hoje, marco } (o que o motor entrega ao retorno).
+  function resultadoDoRetorno(marco, ctx, bib) {
+    var c = objeto(ctx);
+    var estado = objeto(c.estado);
+    var resp = objeto(c.answers);
+    var hoje = c.hoje;
+    var b = baseDoEstado(estado, bib);
+    var def = objeto(objeto(bib.retornos)[marco]);
+    var tr = objeto(def.resultado);
+    var comum = objeto(objeto(bib.retornos).comum);
+    var r = limparRetorno(marco, resp, bib);
+    var corpo = [];
+    var secoes = [];
+
+    if (marco === "dia3") {
+      if (tr.fez[r.fez]) corpo.push(tr.fez[r.fez]);
+      if (b.previsao) corpo.push(preencher(tr.previsao, { previsao: kit.semPontoFinal(b.previsao) }));
+      linhasDaCrenca(estado, r.crenca, tr).forEach(function (l) { corpo.push(l); });
+      if (aparar(r.aconteceu)) secoes.push({ id: "registrado", title: comum.registrado, items: [aparar(r.aconteceu)] });
+    } else if (marco === "dia7") {
+      corpo.push(tr.travou[r.travou] || "");
+      if (r.travou === "sim") secoes.push(secaoDoDeslize(r, bib));
+      if (tr.acertou[r.acertou]) corpo.push(tr.acertou[r.acertou]);
+      linhasDaCrenca(estado, r.crenca, tr).forEach(function (l) { corpo.push(l); });
+      if (tr.passo[r.passo]) corpo.push(tr.passo[r.passo]);
+    } else if (marco === "dia30") {
+      corpo.push(tr.travou[r.travou] || "");
+      if (r.travou === "sim") secoes.push(secaoDoDeslize(r, bib));
+      if (tr.vazamento[r.vazamento]) corpo.push(tr.vazamento[r.vazamento]);
+      var anterior = resumoDaVolta(estado, bib);
+      var atual = { fatos: fatosDe({ fatos: r.fatos }, bib) };
+      var comp = compararVoltas(anterior, atual, bib);
+      secoes.push(secaoDosFatos(comp, bib, tr.fatos_titulo));
+    } else if (marco === "semana") {
+      [["sinal", tr.sinal], ["cedo", tr.cedo], ["se_entao", tr.se_entao]].forEach(function (par) {
+        var texto = par[1] && par[1][resp[par[0]]];
+        if (texto) corpo.push(texto);
+      });
+      if (aparar(resp.previu)) secoes.push({ id: "previu", title: "O que a regra previu e o que aconteceu", items: [aparar(resp.previu)] });
+      corpo.push(tr.nota);
+      corpo.push(tr.sinais_voltaram);
+      corpo.push(tr.privacidade);
+    }
+    corpo = corpo.filter(function (x) { return typeof x === "string" && x !== ""; });
+    var proximo = marco === "semana" ? "" : proximoMarco(marco, b.dia0, bib);
+    if (proximo) secoes.push({ id: "daqui", title: comum.daqui, items: [proximo] });
+
+    var retornos = copia(objeto(objeto(estado.volta).retornos));
+    retornos[marco] = { em: hoje, r: r };
+    var blocos = blocosDoCiclo(estado, retornos, lerHistorico(estado.historico), bib, hoje);
+    var nome = comum.rotulo_arquivo;
+    var resultado = {
+      id: 100 + MARCOS_GUARDADOS.indexOf(marco),
+      grade: 1,
+      tone: "good",
+      pill: false,
+      eyebrow: def.titulo,
+      verdict: tr.verdict,
+      body: corpo,
+      sections: secoes,
+      safety: textosDaBib(bib).resultado.mapa.seguranca,
+      arquivos: { md: nome + "-" + (b.dia0 || hoje) + ".md", pdf: nome + "-" + marco + "-" + hoje + ".pdf" },
+    };
+    if (blocos.length) resultado.blocks = blocos;
+    return resultado;
+  }
+
+  // ---- a volta curta (sinais e dia 90) ----------------------------------------------------------------
+
+  // As respostas da volta curta somadas ao que estava guardado: o que ela refez entra no lugar e
+  // o resto continua.
+  function mesclarVolta(estado, fluxo, bib) {
+    var f = objeto(fluxo);
+    var merged = respostasBaseDaVolta(estado, bib);
+    if (f.fatos !== undefined) merged.fatos = copia(f.fatos);
+    if (f.mesmo_teto === "outro") {
+      lista(bib.cenas).forEach(function (cena) {
+        delete merged[cena.id];
+        if (f[cena.id] !== undefined) merged[cena.id] = copia(f[cena.id]);
+      });
+      ["custo", "variante", "renda", "alvo"].forEach(function (k) {
+        delete merged[k];
+        if (f[k] !== undefined) merged[k] = f[k];
+      });
+      if (typeof f.espelho === "string") merged.espelho = f.espelho;
+    }
+    if (f.refazer === "sim") {
+      lista(bib.triades).forEach(function (t) {
+        delete merged[t.id];
+        if (f[t.id] !== undefined) merged[t.id] = copia(f[t.id]);
+      });
+      if (f.frases_nivel !== undefined) merged.frases_nivel = copia(f.frases_nivel);
+      else delete merged.frases_nivel;
+    } else if (f.frases_agora !== undefined) {
+      merged.frases_nivel = copia(f.frases_agora);
+    }
+    if (f.regra_decisao === "reescrever") {
+      if (typeof f.regra_trabalho === "string") merged.regra_trabalho = f.regra_trabalho;
+      if (typeof f.previsao === "string") merged.previsao = f.previsao;
+      var cp = inteiroEm(f.crenca_previsao, 0, 100);
+      if (cp !== null) merged.crenca_previsao = cp;
+      else delete merged.crenca_previsao;
+    } else {
+      var ca = inteiroEm(f.crenca_agora, 0, 100);
+      if (ca !== null) merged.crenca_previsao = ca;
+    }
+    CHAVES_DA_VOLTA.forEach(function (k) { if (f[k] !== undefined) merged[k] = copia(f[k]); });
+    if (avaliarCuidado(f, bib).degrauAbaixo) merged.degrau_abaixo = true;
+    return merged;
+  }
+
+  // Quando só há o registro (as cenas e as tríades não estão aqui), o que a volta não refaz vem
+  // do registro anterior: as notas, as áreas, a trilha e o vazamento (das cenas) e as famílias de
+  // crença (das tríades). `calc` é o que `calcular` devolveu para as respostas.
+  function completarComRegistro(calc, resp, registro, bib) {
+    var reg = registro && kit.validarEsquema(registro, esquemaDoRegistro).ok ? registro : null;
+    if (!reg || !calc.padrao) return calc;
+    var semCenas = !lista(bib.cenas).some(function (c) { return lista(resp[c.id]).length > 0; });
+    var semTriades = !lista(bib.triades).some(function (t) { return Boolean(resp[t.id]); });
+    var saida = Object.assign({}, calc);
+    if (semCenas) {
+      saida.notas = reg.notas;
+      saida.areas = reg.areas;
+      saida.trilha = reg.trilha;
+      saida.trilhasPerto = reg.trilhas_perto;
+      saida.vazamento = reg.vazamento;
+    }
+    if (semTriades) {
+      saida.familias = { norm: reg.familias, nivel: reg.itens, modo: reg.modo_crenca };
+      saida.familia = reg.familia;
+    }
+    return saida;
+  }
+
+  function volteiaNenhum(f) {
+    return f.mesmo_teto === "nenhum" || (f.mesmo_teto === "outro" && f.espelho === "nenhum");
+  }
+
+  // Fecha a volta curta: as respostas mescladas, a volta nova (contada a partir de hoje, com o
+  // registro novo) e o histórico com a volta que ficou para trás. null no ramo de cuidado e no
+  // "nenhum teto agora": nesses casos nada é gravado.
+  function fecharVolta(estado, fluxo, hoje, bib) {
+    var f = objeto(fluxo);
+    var e = objeto(estado);
+    if (avaliarCuidado(f, bib).ramo || volteiaNenhum(f) || !kit.dataValida(hoje)) return null;
+    var merged = mesclarVolta(e, f, bib);
+    var calc = completarComRegistro(calcular(merged, bib), merged, objeto(e.volta).registro, bib);
+    if (!calc.padrao) return null;
+    var b = baseDoEstado(e, bib);
+    var n = b.n + 1;
+    var reg = montarRegistro(merged, Object.assign({}, calc, { ato: 2 }), hoje, n, bib);
+    if (!reg.ok) return null;
+    var entrada = resumoDaVolta(e, bib, { previsao_acertou: f.previsao_acertou, crenca: inteiroEm(f.crenca_agora, 0, 100) });
+    return {
+      respostas: merged,
+      volta: { n: n, dia0: hoje, registro: reg.objeto, retornos: {} },
+      historico: acrescentarAoHistorico(lerHistorico(e.historico), entrada),
+      entrada: entrada,
+      calc: calc,
+    };
+  }
+
+  function nomeDoPadrao(bib, id) {
+    var p = id ? objeto(bib.padroes)[id] : null;
+    return p ? p.nome : "";
+  }
+
+  // As seções do antes e do depois: o teto, os fatos, as frases, a crença e as voltas.
+  function secoesDaComparacao(comp, bib, extra) {
+    var t = objeto(objeto(objeto(bib.retornos).volta).resultado);
+    var itens = [];
+    itens.push(comp.voltas > 1 ? preencher(t.voltas, { n: comp.voltas }) : t.voltas_primeira);
+    if (comp.padrao.mesmo) itens.push(comNome(t.padrao_mesmo, nomeDoPadrao(bib, comp.padrao.agora)));
+    else if (comp.padrao.antes && comp.padrao.agora) itens.push(preencher(t.padrao_outro, { antes: nomeDoPadrao(bib, comp.padrao.antes), agora: nomeDoPadrao(bib, comp.padrao.agora) }));
+    else if (comp.padrao.antes) itens.push(preencher(t.padrao_nenhum, { antes: nomeDoPadrao(bib, comp.padrao.antes) }));
+    if (comp.familia.antes || comp.familia.agora) {
+      var fam = function (id) { return id ? bib.familias[id].nome : t.familia_nenhuma; };
+      itens.push(t.familia_titulo + ". " + preencher(t.familia, { antes: fam(comp.familia.antes), agora: fam(comp.familia.agora) }));
+    }
+    if (comp.sinais.antes !== null && comp.sinais.agora !== null) itens.push(preencher(t.sinais, { antes: comp.sinais.antes, agora: comp.sinais.agora }));
+    if (comp.crenca.length > 1) itens.push(t.crenca_titulo + ". " + preencher(t.crenca, { serie: comp.crenca.map(function (n) { return n + "%"; }).join(", ") }));
+    if (extra && t.previsao_acertou[extra.previsao_acertou]) itens.push(t.previsao_acertou[extra.previsao_acertou]);
+    var secoes = [{ id: "antes_depois", title: t.antes_depois, kind: "antes-depois", items: itens }];
+    secoes.push(secaoDosFatos(comp, bib, t.fatos_titulo));
+    var niveis = lista(objeto(bib.telas.frases_grade).opcoes);
+    var rotuloNivel = function (n) { var o = niveis.filter(function (x) { return x.value === n; })[0]; return o ? kit.primeiraMinuscula(o.label) : ""; };
+    var frases = comp.frases.map(function (fr) {
+      var item = objeto(bib.itens)[fr.id];
+      var texto = item ? item.texto : fr.id;
+      if (fr.leitura === "sem base") return preencher(t.frase_sem_base, { texto: kit.semPontoFinal(texto) });
+      if (fr.leitura === "qualitativa") return preencher(t.frase_qualitativa, { texto: kit.semPontoFinal(texto), agora: rotuloNivel(fr.agora) });
+      return preencher(t.frase_nivel, { texto: kit.semPontoFinal(texto), antes: rotuloNivel(fr.antes), agora: rotuloNivel(fr.agora), leitura: t.leitura_frase[fr.leitura] });
+    });
+    if (frases.length) secoes.push({ id: "frases", title: t.frases_titulo, kind: "frases", items: frases });
+    return secoes;
+  }
+
+  // O resultado da volta curta, com o antes e o depois. `ctx`: { answers, estado, hoje, pagina }.
+  // No ramo de cuidado e no "nenhum teto agora", sem registro, sem plano e sem guardar.
+  function resultadoDaVolta(ctx, bib) {
+    var c = objeto(ctx);
+    var estado = objeto(c.estado);
+    var f = objeto(c.answers);
+    var hoje = c.hoje;
+    var cuidado = avaliarCuidado(f, bib);
+    if (cuidado.ramo) return Object.assign(resultadoDeCuidado(cuidado, bib), { guardar: false });
+    var tr = objeto(objeto(objeto(bib.retornos).volta).resultado);
+    var retro = f.fatos_retro !== undefined ? fatosDe({ fatos: f.fatos_retro }, bib) : null;
+    var extra = { previsao_acertou: f.previsao_acertou, crenca: inteiroEm(f.crenca_agora, 0, 100) };
+    var fecho = fecharVolta(estado, f, hoje, bib);
+
+    if (!fecho) {
+      var anterior = resumoDaVolta(estado, bib, extra);
+      var sem = compararVoltas(anterior, { fatos: fatosDe(f, bib), retro: retro, padrao: null, volta: baseDoEstado(estado, bib).n + 1 }, bib);
+      return {
+        id: 904,
+        grade: 2,
+        tone: "mixed",
+        pill: false,
+        eyebrow: tr.eyebrow,
+        verdict: tr.verdict_nenhum,
+        body: [tr.corpo_nenhum],
+        sections: secoesDaComparacao(sem, bib, extra),
+        safety: textosDaBib(bib).resultado.mapa.seguranca,
+        guardar: false,
+      };
+    }
+
+    var respComTravou = Object.assign({}, fecho.respostas, { travou: f.travou });
+    var novoEstado = {
+      ciclo: estado.ciclo,
+      pagina: c.pagina,
+      hoje: hoje,
+      lembrete: estado.lembrete,
+      volta: { n: fecho.volta.n, dia0: hoje, registro: { ato: 2 } },
+      historico: fecho.historico,
+      retornos: {},
+      registroBase: objeto(estado.volta).registro,
+    };
+    var resultado = montarResultado(respComTravou, novoEstado, bib, hoje);
+    var agora = resumoDaVolta({ respostas: fecho.respostas, volta: fecho.volta, criado: estado.criado }, bib);
+    agora.retro = retro;
+    // A medida de hoje na previsão antiga já está na entrada de antes; só uma previsão nova entra como medida nova.
+    var cp = f.regra_decisao === "reescrever" ? inteiroEm(f.crenca_previsao, 0, 100) : null;
+    agora.crenca_previsao = cp === null ? [] : [cp];
+    var comp = compararVoltas(fecho.entrada, agora, bib);
+    var secoes = secoesDaComparacao(comp, bib, extra);
+    if (f.travou === "sim") secoes.push(secaoDoDeslize(f, bib));
+    resultado.sections = secoes.concat(resultado.sections);
+    resultado.eyebrow = tr.eyebrow;
+    resultado.verdict = preencher(tr.verdict, { n: fecho.volta.n });
+    resultado.body = [tr.plano_ajustado];
     return resultado;
   }
 
@@ -1643,6 +2410,32 @@
     cartaoParaCompartilhar: cartaoParaCompartilhar,
     eventosDoMapa: eventosDoMapa,
     eventosDosRetornos: eventosDosRetornos,
+    MARCOS_GUARDADOS: MARCOS_GUARDADOS,
+    MAX_HISTORICO: MAX_HISTORICO,
+    esquemaDaEntrada: esquemaDaEntrada,
+    fatosDe: fatosDe,
+    serieDeCrenca: serieDeCrenca,
+    baseDoEstado: baseDoEstado,
+    respostasBaseDaVolta: respostasBaseDaVolta,
+    resumoDaVolta: resumoDaVolta,
+    lerHistorico: lerHistorico,
+    acrescentarAoHistorico: acrescentarAoHistorico,
+    compararVoltas: compararVoltas,
+    perguntasDoRetorno: perguntasDoRetorno,
+    respostaDoRetorno: respostaDoRetorno,
+    limparRetorno: limparRetorno,
+    blocoDosRetornos: blocoDosRetornos,
+    lerRetornosDosBlocos: lerRetornosDosBlocos,
+    blocoDoHistorico: blocoDoHistorico,
+    importarRegistro: importarRegistro,
+    blocosDoCiclo: blocosDoCiclo,
+    resultadoDoRetorno: resultadoDoRetorno,
+    mesclarVolta: mesclarVolta,
+    fecharVolta: fecharVolta,
+    resultadoDaVolta: resultadoDaVolta,
+    ofertaDoResultado: ofertaDoResultado,
+    ofertaDoRetorno: ofertaDoRetorno,
+    EVENTOS: EVENTOS,
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.TetoRegras = api;

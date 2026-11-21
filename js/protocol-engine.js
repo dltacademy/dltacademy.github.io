@@ -114,12 +114,36 @@ function runProtocol(protocol, mountId) {
     ? { protocolo: protocol.id, versao: (persist && persist.versao) || 1, migracoes: (persist && persist.migracoes) || {} }
     : null;
   const savedLabel = (persist && persist.rotulo) || "uma sessão guardada";
+
+  // Eventos de uso: nomes fixos, que o protocolo declara (`protocol.eventos`), nunca montados de
+  // resposta. Com `ativo` diferente de verdadeiro, ou sem `enviar`, nada é emitido: a camada existe e
+  // fica desligada até a contagem ser decidida.
+  const eventConfig = protocol.eventos || null;
+  const emittedOnce = {};
+  function emit(key, arg) {
+    if (!eventConfig || eventConfig.ativo !== true || typeof eventConfig.enviar !== "function" || !kit) return;
+    let name = eventConfig.nomes ? eventConfig.nomes[key] : null;
+    if (typeof name === "function") name = name(arg);
+    const allowed = kit.nomeDeEvento(name, eventConfig.permitidos);
+    if (!allowed) return;
+    try {
+      eventConfig.enviar(allowed);
+    } catch (error) {
+      // Contar nunca atrapalha a pessoa.
+    }
+  }
+  function emitOnce(key, arg) {
+    const id = key + ":" + String(arg || "");
+    if (emittedOnce[id]) return;
+    emittedOnce[id] = true;
+    emit(key, arg);
+  }
   const MAX_IMPORT_BYTES = 256 * 1024;
 
   // De onde veio o estado em uso: "novo", "sessao", "local" (o que ela guardou),
   // "arquivo" ou "codigo" (trazidos por ela). `base` é o estado lido, para gravar
   // um retorno de volta sem perder o resto.
-  const freshMeta = () => ({ ciclo: null, criado: null, volta: null, historico: [], lembrete: null, origem: "novo", base: null });
+  const freshMeta = () => ({ ciclo: null, criado: null, volta: null, historico: [], lembrete: null, hora: null, origem: "novo", base: null, patch: null });
   let meta = freshMeta();
 
   const shortDate = (iso) => (typeof iso === "string" && iso.length >= 10 ? iso.slice(8, 10) + "/" + iso.slice(5, 7) + "/" + iso.slice(0, 4) : "");
@@ -189,6 +213,22 @@ function runProtocol(protocol, mountId) {
     return out;
   }
 
+  // Valores que o protocolo guarda no lugar de uma resposta que nunca se guarda: só verdadeiro
+  // ou falso, calculados das respostas na hora de gravar (`persist.derivar`) e restaurados como estavam.
+  const derivedKeys = () => (persist && Array.isArray(persist.derivados) ? persist.derivados : []);
+  function deriveValues(answers) {
+    if (!derivedKeys().length || typeof persist.derivar !== "function") return {};
+    let out = {};
+    try {
+      out = persist.derivar(answers) || {};
+    } catch (error) {
+      out = {};
+    }
+    const safe = {};
+    derivedKeys().forEach((key) => { if (out[key] === true) safe[key] = true; });
+    return safe;
+  }
+
   const stageFor = () => (state.path.some((i) => protocol.steps[i].type === "checkpoint") ? "ato2" : "ato1");
 
   // O estado do fluxo principal, como vai para o armazenamento. `stepIndex` é o
@@ -199,6 +239,9 @@ function runProtocol(protocol, mountId) {
     if (!meta.ciclo) meta.ciclo = kit.gerarCiclo(randomBytes());
     if (!meta.criado) meta.criado = hoje;
     const answers = kit.limparForaDoCaminho(protocol.steps, state.path, cleanAnswers());
+    const derived = deriveValues(answers);
+    derivedKeys().forEach((key) => { delete answers[key]; });
+    Object.assign(answers, derived);
     const estado = {
       esquema: kit.ESQUEMA_ESTADO,
       v: stateSchema.versao,
@@ -226,10 +269,31 @@ function runProtocol(protocol, mountId) {
   };
 
   // "ok", "grande" (passa de 100 KB) ou "erro" (o navegador não deixou gravar).
-  function saveLocal(estado) {
+  function saveLocal(entrada) {
+    // A hora dos lembretes que ela escolheu só entra no que fica guardado por este gesto.
+    let estado = entrada;
+    if (meta.hora) {
+      meta.lembrete = meta.hora;
+      estado = Object.assign({}, entrada, { lembrete: meta.hora });
+    }
     const text = stateText(estado);
     if (text === null) return "grande";
-    return writeArea("localStorage", stateKey, text) ? "ok" : "erro";
+    if (!writeArea("localStorage", stateKey, text)) return "erro";
+    requestPersistentStorage();
+    return "ok";
+  }
+
+  // Pede ao navegador que não apague o que ela guardou (o Safari limpa o que um script
+  // escreve depois de 7 dias sem uso). É um pedido: o navegador pode negar, e nada depende da resposta.
+  function requestPersistentStorage() {
+    try {
+      if (typeof navigator !== "undefined" && navigator.storage && typeof navigator.storage.persist === "function") {
+        const asked = navigator.storage.persist();
+        if (asked && typeof asked.catch === "function") asked.catch(() => {});
+      }
+    } catch (error) {
+      // Sem a API, o arquivo (.md) continua sendo a reserva.
+    }
   }
 
   // Durante o protocolo as respostas ficam só na aba (sessionStorage): sobrevivem a
@@ -255,6 +319,16 @@ function runProtocol(protocol, mountId) {
       return { erro: read.erro };
     }
     return { estado: read.estado };
+  }
+
+  // Abrir a página com o que ela guardou conta como uso: o prazo volta a valer a partir de hoje
+  // (retenção "desde o último uso"). Não mostra nem muda nenhuma resposta.
+  function renewLocalState(estado) {
+    const novo = kit.somarDias(todayISO(), retentionDays);
+    if (estado.expira >= novo) return estado;
+    const renovado = Object.assign({}, estado, { expira: novo });
+    if (stateText(renovado) !== null) writeArea("localStorage", stateKey, JSON.stringify(renovado));
+    return renovado;
   }
 
   // Dá ao estado lido (do arquivo, do código) os campos que ele não traz e o passa pela mesma leitura estrita.
@@ -289,8 +363,10 @@ function runProtocol(protocol, mountId) {
       volta: estado.volta,
       historico: estado.historico,
       lembrete: estado.lembrete,
+      hora: null,
       origem,
       base: estado,
+      patch: null,
     };
   }
 
@@ -299,7 +375,7 @@ function runProtocol(protocol, mountId) {
     flow = mainFlow;
     let restored = null;
     try {
-      restored = kit.restaurarProgresso(protocol.steps, estado, persist ? persist.naoGuardar : []);
+      restored = kit.restaurarProgresso(protocol.steps, estado, persist ? persist.naoGuardar : [], derivedKeys());
     } catch (error) {
       restored = null;
     }
@@ -371,11 +447,15 @@ function runProtocol(protocol, mountId) {
   function savedPromptActions(estado, origem) {
     const actions = [];
     const concluded = estado.etapa === "concluido";
-    actions.push({
-      label: concluded ? "Ver o meu resultado" : "Continuar de onde parei",
-      primary: true,
-      onClick: () => resumeFrom(estado, origem),
-    });
+    // Um registro trazido sem respostas (só o código) não tem resultado para ver: só os retornos.
+    const hasAnswers = Boolean(estado.respostas) && Object.keys(estado.respostas).length > 0;
+    if (hasAnswers || !concluded) {
+      actions.push({
+        label: concluded ? "Ver o meu resultado" : "Continuar de onde parei",
+        primary: true,
+        onClick: () => resumeFrom(estado, origem),
+      });
+    }
     if (concluded && retornos) {
       Object.keys(retornos).forEach((marco) => {
         if (Array.isArray(retornos[marco].steps)) {
@@ -385,6 +465,7 @@ function runProtocol(protocol, mountId) {
     }
     actions.push({ label: "Começar de novo", onClick: startFresh });
     if (origem === "local") actions.push({ label: "Apagar o que está guardado", onClick: eraseAndTell });
+    if (!actions.some((action) => action.primary)) actions[0].primary = true;
     return actions;
   }
 
@@ -416,13 +497,27 @@ function runProtocol(protocol, mountId) {
       resumeFrom(estado, origem);
       return;
     }
-    const sit = kit.situacaoDoMarco(estado.volta, marco, ret.dias, todayISO());
+    let sit = kit.situacaoDoMarco(estado.volta, marco, ret.dias, todayISO());
+    // Retorno que se repete (a revisão da semana) nunca está "feito": mostra só quando foi a última.
+    const lastDone = sit.feitoEm;
+    if (ret.recorrente === true && sit.situacao === "feito") sit = { situacao: "no_dia", data: null, feitoEm: lastDone };
     const start = () => startReturn(marco, estado, origem, sit);
     const done = sit.situacao === "feito";
+    const intro = [returnIntroText(sit, ret)];
+    if (ret.recorrente === true && lastDone) intro.push("A última foi em " + shortDate(lastDone) + ".");
+    if (typeof ret.intro === "function") {
+      let extra = [];
+      try {
+        extra = ret.intro(returnContext(estado, marco));
+      } catch (error) {
+        extra = [];
+      }
+      (Array.isArray(extra) ? extra : []).forEach((text) => { if (typeof text === "string" && text) intro.push(text); });
+    }
     showScreen({
       eyebrow: ret.titulo ? "Retorno" : undefined,
       title: ret.titulo || "Retorno",
-      paragraphs: [returnIntroText(sit, ret)],
+      paragraphs: intro,
       extra: done ? (card) => {
         const feito = estado.volta.retornos[marco];
         const list = el("div", "protocol-record");
@@ -465,21 +560,46 @@ function runProtocol(protocol, mountId) {
       progresso: ret.progresso,
       seed,
       result: () => ret.result({ answers: cleanAnswers(), estado: context, hoje: todayISO(), marco, situacao: sit.situacao }),
+      recordContext: () => ({ answers: cleanAnswers(), estado: JSON.parse(JSON.stringify(context)), hoje: todayISO(), marco, situacao: sit.situacao }),
     };
     state.answers = seed();
     state.path = [];
     render(startIndex(), true);
   }
 
+  // As respostas do retorno que podem ir para o ciclo guardado: sem as dos passos que nunca se guardam.
+  function storableReturnAnswers() {
+    const never = persist && Array.isArray(persist.naoGuardar) ? persist.naoGuardar : [];
+    const keep = flow.steps.filter((step) => never.indexOf(step.id) === -1).map((step) => step.id);
+    return kit.limparForaDoCaminho(flow.steps, keep, cleanAnswers());
+  }
+
   // O retorno terminado entra no ciclo guardado. Se ela guardou no aparelho, grava;
-  // se trouxe de fora, só grava quando ela escolher guardar.
+  // se trouxe de fora, só grava quando ela escolher guardar. O retorno que declara
+  // `gravar(ctx)` decide sozinho o que muda (uma volta nova, por exemplo): devolve
+  // { volta, historico, respostas?, caminho? } ou null para não mudar nada.
   function recordReturn() {
+    const ret = retornos[flow.marco] || {};
+    if (typeof ret.gravar === "function") {
+      let out = null;
+      try {
+        out = ret.gravar(flow.recordContext());
+      } catch (error) {
+        out = null;
+      }
+      if (!out || typeof out !== "object") return false;
+      if (out.volta) meta.volta = out.volta;
+      if (Array.isArray(out.historico)) meta.historico = out.historico;
+      meta.patch = out.respostas ? { respostas: out.respostas, caminho: Array.isArray(out.caminho) ? out.caminho : [] } : null;
+      return true;
+    }
     const volta = meta.volta
       ? JSON.parse(JSON.stringify(meta.volta))
       : { n: 1, dia0: null, registro: null, retornos: {} };
     volta.retornos = volta.retornos || {};
-    volta.retornos[flow.marco] = { em: todayISO(), r: cleanAnswers() };
+    volta.retornos[flow.marco] = { em: todayISO(), r: storableReturnAnswers() };
     meta.volta = volta;
+    return true;
   }
 
   function stateWithReturn() {
@@ -488,6 +608,13 @@ function runProtocol(protocol, mountId) {
     const base = meta.base ? JSON.parse(JSON.stringify(meta.base)) : null;
     if (!base) return null;
     base.volta = meta.volta;
+    base.historico = meta.historico;
+    if (meta.patch) {
+      base.respostas = JSON.parse(JSON.stringify(meta.patch.respostas));
+      base.caminho = meta.patch.caminho.slice();
+      base.etapa = "concluido";
+      base.passo = null;
+    }
     base.atualizado = now.toISOString();
     base.expira = kit.somarDias(hoje, retentionDays);
     return base;
@@ -529,7 +656,9 @@ function runProtocol(protocol, mountId) {
   function showRecovery(config) {
     const ret = config.marco && retornos ? retornos[config.marco] : null;
     const canFile = Boolean(importar && typeof importar.md === "function");
-    const canCode = Boolean(importar && typeof importar.registro === "function");
+    // O código do registro só restaura o que um retorno usa (o registro não leva as respostas): para
+    // retomar o protocolo de onde parou, o caminho é o arquivo.
+    const canCode = Boolean(importar && typeof importar.registro === "function") && (!ret || ret.codigo === true);
     const afterImport = (estado, origem, resumo) => {
       showScreen({
         title: "Encontramos o que você trouxe, de " + shortDate(estado.criado),
@@ -570,7 +699,10 @@ function runProtocol(protocol, mountId) {
             }
             readFileText(file).then((text) => {
               const read = importState("md", text);
-              if (read.estado) afterImport(read.estado, "arquivo", read.resumo);
+              if (read.estado) {
+                emit("recuperacao_md");
+                afterImport(read.estado, "arquivo", read.resumo);
+              }
               else fail(read.erro || "Não conseguimos ler este arquivo. Escolha o arquivo (.md) que você baixou deste protocolo.");
             }, () => fail("Não conseguimos abrir este arquivo."));
           });
@@ -642,6 +774,7 @@ function runProtocol(protocol, mountId) {
     // Só o que é nosso é limpo da barra: marco que não existe, código ou o #c= recusado.
     if (/^#?(?:volta|c)=/.test(hash) && !(found && found.marco)) cleanHash();
     const local = readStored("localStorage");
+    if (local && local.estado) local.estado = renewLocalState(local.estado);
 
     if (found && found.marco) {
       if (local && local.estado) showReturnIntro(found.marco, local.estado, "local");
@@ -709,6 +842,7 @@ function runProtocol(protocol, mountId) {
     mount.replaceChildren();
     if (index >= flow.steps.length) return renderResult(moveFocus);
     syncSession(index);
+    if (flow === mainFlow && state.path.length === 0 && index === startIndex()) emitOnce("inicio");
 
     const step = currentStep(index);
     if (step.type === "checkpoint") return renderCheckpoint(step, index, moveFocus);
@@ -828,6 +962,7 @@ function runProtocol(protocol, mountId) {
     const card = el("div", "protocol-card protocol-result protocol-checkpoint " + toneClass);
     card.dataset.grade = String(grade);
     const verdictHeading = appendResultHead(card, result, grade, el);
+    emitOnce("ato1_fim");
     if (result.safety) card.appendChild(el("p", "protocol-safety", result.safety));
 
     const labels = Object.assign({ continuar: "Continuar", pausar: "Salvar e continuar depois" }, step.actions);
@@ -859,6 +994,7 @@ function runProtocol(protocol, mountId) {
 
   // "Salvar e continuar depois": guarda o estado no aparelho, por ação dela, e despede.
   function pauseAt(step, index, result) {
+    emit("pausa");
     state.path.push(index);
     const next = nextIndex(index);
     const estado = buildState(next, "pausa");
@@ -937,7 +1073,8 @@ function runProtocol(protocol, mountId) {
       }
       return null;
     }
-    recordReturn();
+    if (result.guardar === false) return null;
+    if (!recordReturn()) return null;
     if (meta.origem !== "local") return null;
     const estado = stateWithReturn();
     const saved = estado ? saveLocal(estado) : "erro";
@@ -965,7 +1102,7 @@ function runProtocol(protocol, mountId) {
   // grava por ação dela e diz o que fez em texto. Retorno que veio de fora também pode ser guardado.
   function buildSaveControl(result) {
     if (!persist) return null;
-    const offer = flow === mainFlow ? result.guardar === true : meta.origem !== "local";
+    const offer = flow === mainFlow ? result.guardar === true : meta.origem !== "local" && result.guardar !== false;
     if (!offer) return null;
     const button = el("button", "btn btn-secondary protocol-save", "Guardar neste aparelho para os retornos");
     button.type = "button";
@@ -999,15 +1136,50 @@ function runProtocol(protocol, mountId) {
 
   // Lembretes (.ics): montados aqui, no aparelho. O arquivo só leva o lembrete e o link do
   // marco; o aviso diz isso, porque o calendário costuma sincronizar com serviços de terceiros.
+  // `result.ics.escolhaHora`: { rotulo, opcoes: [{ rotulo, hora: "HH:MM" }] }, opcional. A hora
+  // escolhida troca o horário de todos os eventos ao baixar e fica só em `meta.hora`; ela só
+  // vai para o estado guardado quando a pessoa guarda (saveLocal). Nunca vai para endereço.
+  function buildIcsHourChoice(result) {
+    const escolha = result.ics.escolhaHora;
+    const options = icsHourOptions(escolha);
+    if (options.length < 2) return null;
+    const group = el("div", "protocol-ics-hora");
+    group.setAttribute("role", "group");
+    group.setAttribute("aria-label", typeof escolha.rotulo === "string" && escolha.rotulo ? escolha.rotulo : "Hora dos lembretes");
+    if (typeof escolha.rotulo === "string" && escolha.rotulo) group.appendChild(el("p", "protocol-ics-hora-label", escolha.rotulo));
+    const row = el("div", "protocol-ics-hora-options");
+    const current = () => {
+      const wanted = meta.hora || result.ics.eventos[0].hora;
+      return options.some((opt) => opt.hora === wanted) ? wanted : null;
+    };
+    const buttons = options.map((opt) => {
+      const b = el("button", "btn btn-outline protocol-ics-hora-opt", opt.rotulo);
+      b.type = "button";
+      b.setAttribute("aria-pressed", String(current() === opt.hora));
+      b.addEventListener("click", () => {
+        meta.hora = opt.hora;
+        buttons.forEach((other) => other.node.setAttribute("aria-pressed", String(other.hora === opt.hora)));
+      });
+      row.appendChild(b);
+      return { node: b, hora: opt.hora };
+    });
+    group.appendChild(row);
+    return group;
+  }
+
   function buildIcsControl(result) {
     if (!result.ics || !Array.isArray(result.ics.eventos) || !result.ics.eventos.length || !kit) return null;
     const label = result.ics.rotulo || "Baixar lembretes (.ics)";
     const button = el("button", "btn btn-secondary protocol-ics", label);
     button.type = "button";
+    const choice = buildIcsHourChoice(result);
     button.addEventListener("click", () => {
       try {
-        const text = kit.montarIcs({ eventos: result.ics.eventos, prodid: result.ics.prodid, agora: new Date() });
+        const chosen = choice && meta.hora && icsHourOptions(result.ics.escolhaHora).some((opt) => opt.hora === meta.hora) ? meta.hora : null;
+        const eventos = chosen ? result.ics.eventos.map((e) => Object.assign({}, e, { hora: chosen })) : result.ics.eventos;
+        const text = kit.montarIcs({ eventos, prodid: result.ics.prodid, agora: new Date() });
         downloadTextFile(fileNameFor(result, "ics", protocol.slug + ".ics"), text, "text/calendar;charset=utf-8");
+        emit("ics");
         button.textContent = "Lembretes baixados";
       } catch (error) {
         console.error("Não foi possível montar os lembretes.", error);
@@ -1017,7 +1189,7 @@ function runProtocol(protocol, mountId) {
     });
     const note = el("p", "protocol-privacy privacy-line",
       "O arquivo de lembretes vai para o seu calendário, e o calendário pode sincronizar com serviços de terceiros. Por isso ele leva só o lembrete e o link do retorno, nada do que você respondeu.");
-    return { button, note };
+    return { button, note, choice };
   }
 
   // O registro em código: o resumo, o código para copiar e, se a página sabe lê-lo de volta,
@@ -1123,6 +1295,7 @@ function runProtocol(protocol, mountId) {
           throw new Error("O logo da DLT Academy ainda não foi carregado.");
         }
         downloadProtocolPdf(protocol, result, protocolPdfBrand.asset);
+        emit("pdf");
         pdf.textContent = "PDF baixado";
       } catch (error) {
         console.error("Não foi possível gerar o PDF do protocolo.", error);
@@ -1138,10 +1311,10 @@ function runProtocol(protocol, mountId) {
 
     const md = el("button", "btn btn-secondary", "Baixar como texto (.md)");
     md.type = "button";
-    md.addEventListener("click", () => downloadTextFile(
-      fileNameFor(result, "md", protocol.slug + ".md"),
-      buildMarkdown(protocol, result, state.answers)
-    ));
+    md.addEventListener("click", () => {
+      downloadTextFile(fileNameFor(result, "md", protocol.slug + ".md"), buildMarkdown(protocol, result, state.answers));
+      emit("md");
+    });
 
     const copyResult = el("button", "btn btn-secondary", "Copiar resultado");
     copyResult.type = "button";
@@ -1198,6 +1371,7 @@ function runProtocol(protocol, mountId) {
     if (!partial) actions.appendChild(restart);
     if (!partial) actions.appendChild(erase);
     delivery.appendChild(actions);
+    if (ics && ics.choice) delivery.appendChild(ics.choice);
     if (ics) delivery.appendChild(ics.note);
     if (!partial) delivery.appendChild(eraseStatus);
     if (save) {
@@ -1216,6 +1390,11 @@ function runProtocol(protocol, mountId) {
     const result = flow.result(state.answers);
     const grade = resultGrade(result);
     const returnSave = settleStorageAtResult(result);
+    if (flow === mainFlow) {
+      if (result.guardar === true) emitOnce("fim");
+    } else {
+      emitOnce("retorno", flow.marco);
+    }
     const toneClass = result.tone === "good" ? "is-good" : result.tone === "bad" ? "is-bad" : "is-mixed";
     // Uma superfície só: o cartão do resultado. Dentro dele, grupos separados
     // por espaço e fio. A cor de acento (data-grade) vem do grau, não do azul.
@@ -1344,8 +1523,16 @@ function runProtocol(protocol, mountId) {
     // O resultado gratuito já está completo acima; o relatório é
     // aprofundamento opcional. Sem produto configurado, nada aparece.
     // Um produto, ou uma lista (degraus: método e relatório do caso).
-    const refs = Array.isArray(result.relatorio) ? result.relatorio : result.relatorio ? [result.relatorio] : [];
-    const cards = refs.map((ref) => buildPaidReportOffer(ref, el)).filter(Boolean);
+    // `result.oferta` é o mesmo que `result.relatorio`: um protocolo que não pode escrever a segunda
+    // palavra (a oferta entra depois, por uma função à parte) declara a primeira.
+    const offered = result.relatorio || result.oferta;
+    const refs = Array.isArray(offered) ? offered : offered ? [offered] : [];
+    const cards = refs.map((ref) => {
+      const offerCard = buildPaidReportOffer(ref, el);
+      const buy = offerCard && offerCard.querySelector(".protocol-paid-actions a");
+      if (buy) buy.addEventListener("click", () => emit("oferta", ref.produto));
+      return offerCard;
+    }).filter(Boolean);
     // Um botão cheio por tela: com oferta paga, o primário é o dela (o da
     // primeira, se houver mais de uma), exceto em alerta (grau 4, NÃO):
     // contenção antes de conversão, então a oferta vira contorno e o
@@ -1912,6 +2099,19 @@ function downloadTextFile(filename, content, type) {
   a.click();
   a.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
+}
+
+// As horas que `result.ics.escolhaHora.opcoes` oferece: { rotulo, hora: "HH:MM" } válidas,
+// sem hora repetida, no máximo seis. Qualquer protocolo com `ics` pode usar.
+function icsHourOptions(escolha) {
+  if (!escolha || typeof escolha !== "object" || !Array.isArray(escolha.opcoes)) return [];
+  const seen = {};
+  return escolha.opcoes.filter((opt) => {
+    const ok = opt && typeof opt.rotulo === "string" && opt.rotulo && typeof opt.hora === "string"
+      && /^(?:[01]\d|2[0-3]):[0-5]\d$/.test(opt.hora) && !seen[opt.hora];
+    if (ok) seen[opt.hora] = true;
+    return ok;
+  }).slice(0, 6);
 }
 
 // ---- cartões em PNG (`result.cartoes`) --------------------------------------------------------------

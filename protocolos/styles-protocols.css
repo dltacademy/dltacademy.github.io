@@ -292,6 +292,24 @@
   cursor: wait;
   opacity: .68;
 }
+/* Hora dos lembretes (.ics): três botões de marcar, ao lado do botão que baixa. */
+.protocol-ics-hora { margin: 0 0 10px; }
+.protocol-ics-hora-label {
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0 0 6px;
+}
+.protocol-ics-hora-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.protocol-ics-hora-opt { min-height: 44px; }
+.protocol-ics-hora-opt[aria-pressed="true"] {
+  border-color: var(--green);
+  box-shadow: inset 0 0 0 1px var(--green);
+  font-weight: 700;
+}
 /* Confirmação do "Apagar minhas respostas": texto na página, sem diálogo. */
 .protocol-delivery .protocol-erase-status {
   color: var(--green);
@@ -374,6 +392,8 @@
   .protocol-result { padding: 22px 17px; }
   .protocol-verdict { font-size: 24px; }
   .protocol-actions { flex-direction: column; }
+  .protocol-ics-hora-options { flex-direction: column; }
+  .protocol-ics-hora-opt { width: 100%; justify-content: center; }
   .protocol-actions .btn,
   .protocol-cta .btn,
   .protocol-nav .btn {
