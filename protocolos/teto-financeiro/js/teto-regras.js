@@ -1543,10 +1543,36 @@
     return resultado;
   }
 
-  // Onde a oferta do aprofundamento entra no resultado: nenhuma por enquanto.
+  // Onde a oferta do aprofundamento entra no resultado de `montarResultado`: nenhuma. Quem decide
+  // se há oferta é `ofertaDoResultado` (fim do Ato 2) e `ofertaDoRetorno` (dia 7), abaixo.
   function ofertaDoAprofundamento() {
     return null;
   }
+
+  var PRODUTO_DO_APROFUNDAMENTO = "teto-avancado";
+
+  // A oferta do fim do Ato 2: só para quem escolheu um padrão e não caiu no ramo de cuidado.
+  // Leva só o produto e o padrão (o nome dele aparece no texto da oferta); nada das respostas.
+  // null no cuidado, no "nenhum" e sem escolha.
+  function ofertaDoResultado(r, bib) {
+    var c = calcular(r, bib);
+    if (c.cuidado.ramo || !c.padrao) return null;
+    return { produto: PRODUTO_DO_APROFUNDAMENTO, perfil: c.padrao };
+  }
+
+  // A oferta do retorno do dia 7: quem tem um padrão no que está guardado (o cuidado nunca é guardado).
+  function ofertaDoRetorno(estado, bib) {
+    var b = baseDoEstado(estado, bib);
+    return b.padrao ? { produto: PRODUTO_DO_APROFUNDAMENTO, perfil: b.padrao } : null;
+  }
+
+  // Os nomes dos eventos de uso: lista fixa, sem padrão, família, variante nem cuidado no nome.
+  // O envio fica desligado até a contagem ser decidida.
+  var EVENTOS = [
+    "teto_inicio", "teto_ato1_fim", "teto_pausa", "teto_ato2_fim", "teto_pdf_baixado", "teto_md_baixado",
+    "teto_ics_baixado", "teto_volta_dia3", "teto_volta_dia7", "teto_volta_dia30", "teto_volta_dia90",
+    "teto_volta_sinais", "teto_volta_semana", "teto_recuperacao_md", "clique_oferta_teto-avancado_principal",
+  ];
 
   // O resultado do fim do Ato 2, na ordem: o teto, o fio, o Raio-X, o que não indica, a
   // leitura, os 60 segundos, os sinais, o plano de 7 dias, o de 90, e o que se leva.
@@ -2387,6 +2413,9 @@
     mesclarVolta: mesclarVolta,
     fecharVolta: fecharVolta,
     resultadoDaVolta: resultadoDaVolta,
+    ofertaDoResultado: ofertaDoResultado,
+    ofertaDoRetorno: ofertaDoRetorno,
+    EVENTOS: EVENTOS,
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;
   else root.TetoRegras = api;

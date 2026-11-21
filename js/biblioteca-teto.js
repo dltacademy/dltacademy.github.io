@@ -1930,8 +1930,6 @@
             "sobe": "Os próximos 7 dias sobem um degrau.",
             "desce": "Os próximos 7 dias descem um degrau, para o passo caber na semana."
           },
-          "oferta_titulo": "Se quiser aprofundar com o que você viu nesta semana",
-          "oferta": "Você escolheu o padrão {nome}. Agora que o plano passou pela vida real, o Teto avançado reescreve o plano com essa evidência.",
           "crenca_antes": "Você acreditava nela em {antes}% e agora acredita em {agora}%.",
           "crenca_agora": "Hoje você acredita nela em {agora}%.",
           "crenca": {

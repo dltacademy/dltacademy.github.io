@@ -527,7 +527,8 @@ console.log(link.href);
         # uma entrada, e o catálogo não tem outra do mesmo protocolo.
         self.assertEqual(1, self.protocol.count("produto: "))
         self.assertIn('return { produto: "decisao-fria", perfil };', self.protocol)
-        self.assertEqual(["decisao-fria"], re.findall(r'^  "([a-z-]+)": \{', self.catalog, re.M))
+        # O catálogo pode ter outras entradas (de outros protocolos); a Decisão fria tem uma só.
+        self.assertEqual(1, len(re.findall(r'^  "decisao-fria": \{', self.catalog, re.M)))
 
     def test_personalizado_declara_aviso_de_envio_das_respostas(self):
         oferta = self.catalog[self.catalog.index('"decisao-fria"'):]

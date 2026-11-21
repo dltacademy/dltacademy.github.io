@@ -937,7 +937,16 @@ const PROTOCOL = (function montarProtocolo() {
     return {
       continuar: { titulo: RET.continuar.titulo },
       dia3: marco("dia3", { dias: 3 }),
-      dia7: marco("dia7", { dias: 7 }),
+      dia7: marco("dia7", {
+        dias: 7,
+        result: (ctx) => {
+          const resultado = R.resultadoDoRetorno("dia7", comPagina(ctx), bib);
+          // No retorno do dia 7 a oferta volta, para quem tem um padrão guardado.
+          const oferta = R.ofertaDoRetorno(ctx.estado, bib);
+          if (oferta) resultado.oferta = oferta;
+          return resultado;
+        },
+      }),
       dia30: marco("dia30", { dias: 30 }),
       dia90: volta("dia90", { dias: 90 }),
       sinais: volta("sinais"),
@@ -976,7 +985,28 @@ const PROTOCOL = (function montarProtocolo() {
     },
 
     result(a, ctx) {
-      return R.montarResultado(a, comPagina(ctx), bib, ctx && ctx.hoje);
+      const resultado = R.montarResultado(a, comPagina(ctx), bib, ctx && ctx.hoje);
+      // A oferta do aprofundamento: só com um padrão escolhido e fora do cuidado.
+      const oferta = R.ofertaDoResultado(a, bib);
+      if (oferta) resultado.oferta = oferta;
+      return resultado;
+    },
+
+    eventos: {
+      ativo: false,
+      permitidos: R.EVENTOS,
+      nomes: {
+        inicio: "teto_inicio",
+        ato1_fim: "teto_ato1_fim",
+        pausa: "teto_pausa",
+        fim: "teto_ato2_fim",
+        pdf: "teto_pdf_baixado",
+        md: "teto_md_baixado",
+        ics: "teto_ics_baixado",
+        retorno: (marco) => "teto_volta_" + marco,
+        recuperacao_md: "teto_recuperacao_md",
+        oferta: (produto) => "clique_oferta_" + produto + "_principal",
+      },
     },
   };
 })();

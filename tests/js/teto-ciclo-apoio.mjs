@@ -20,13 +20,19 @@ export const SCRIPTS = [
 ];
 export const clone = (v) => JSON.parse(JSON.stringify(v));
 
-export function abrir({ hash = "", local = {}, sessao = {}, dataFixa } = {}) {
+// `catalogo`: carrega o catálogo dos relatórios pagos; com um endereço, põe-no na entrada do Teto
+// avançado (só no teste, nada vai para o arquivo).
+export function abrir({ hash = "", local = {}, sessao = {}, dataFixa, catalogo } = {}) {
   const env = criarAmbiente({ armazenamento: local, dataFixa });
   Object.assign(env.sessao, sessao);
   env.janela.location.hash = hash;
   env.janela.location.pathname = "/protocolos/teto-financeiro/";
   env.chamadasReplaceState = [];
   env.janela.history.replaceState = (...args) => env.chamadasReplaceState.push(args);
+  if (catalogo !== undefined) {
+    env.carregar("js/paid-reports.js");
+    if (catalogo) env.rodar(`PAID_REPORTS["teto-avancado"].checkoutUrl = ${JSON.stringify(catalogo)};`);
+  }
   SCRIPTS.forEach((arquivo) => env.carregar(arquivo));
   env.carregar("protocolos/teto-financeiro/js/protocol.js");
   return { env, p: piloto(env), PROTOCOL: env.rodar("PROTOCOL") };
@@ -73,8 +79,8 @@ export const contextoDoRetorno = (estado, marco) => clone({
 });
 
 // Abre o link do marco com o estado guardado e responde o retorno tocando nos botões.
-export async function fazerRetorno(estado, marco, respostas, { local } = {}) {
-  const pagina = abrir({ hash: "#volta=" + marco, local: local === undefined ? { [CHAVE]: JSON.stringify(estado) } : local });
+export async function fazerRetorno(estado, marco, respostas, { local, catalogo } = {}) {
+  const pagina = abrir({ hash: "#volta=" + marco, local: local === undefined ? { [CHAVE]: JSON.stringify(estado) } : local, catalogo });
   const { p, env, PROTOCOL } = pagina;
   const iniciar = ["Começar", "Adiantar agora", "Refazer este retorno"].map((t) => p.botaoPor(t)).find(Boolean);
   assert.ok(iniciar, "botão de começar: " + p.mount.textContent.slice(0, 200));

@@ -57,4 +57,50 @@ const PAID_REPORTS = {
       },
     },
   },
+  "teto-avancado": {
+    titulo: "Teto Financeiro avançado: o plano reescrito com o que a sua vida mostrou",
+    promessa: "O aprofundamento do Teto Financeiro: você carrega o arquivo (.md) do seu Teto e o plano é reescrito com o que já aconteceu nos seus dias, e não só com o que você previu.",
+    conteudo: [
+      "A leitura do seu padrão com as suas próprias palavras e as evidências dos retornos",
+      "O plano de 7 e de 90 dias refeito a partir do que travou e do que funcionou",
+      "A regra antiga e a regra de trabalho comparadas com o que de fato aconteceu",
+      "Um relatório em PDF para guardar e rever, feito no seu navegador a partir do arquivo que você carregar",
+    ],
+    preco: "R$ 97",
+    formato: "relatório na hora + PDF",
+    botao: "Quero o Teto avançado →",
+    plataforma: "Stripe",
+    checkoutUrl: "",
+    aviso: "Pagamento via Pix (confirma na hora) ou cartão de crédito pelo Stripe. Nada do que você escreveu no Teto vai junto no link: depois de pagar, você escolhe se carrega o seu arquivo (.md) e, se carregar, as respostas são enviadas uma vez a um serviço de geração de texto contratado por nós, para escrever o relatório, e não são guardadas por nós. É material educacional, não recomendação de investimento. Você tem 7 dias para pedir reembolso.",
+    perfis: {
+      "ganho-que-escorre": {
+        capitulo: "O ganho que escorre",
+        porque: "O aprofundamento começa pelo que costuma proteger quem vê o dinheiro de um ganho ir embora: o patamar de casa e a culpa de ter mais.",
+      },
+      "freio-na-cobranca": {
+        capitulo: "O freio na hora de cobrar",
+        porque: "O aprofundamento começa pelo que costuma proteger quem adia ou abaixa o preço: a rejeição e a imagem de pessoa boa.",
+      },
+      "passo-que-nao-sai": {
+        capitulo: "O passo que não sai",
+        porque: "O aprofundamento começa pelo que costuma proteger quem prepara mais e não dá o passo: o medo de errar e de ser testado.",
+      },
+      "decisao-no-calor": {
+        capitulo: "A decisão no calor",
+        porque: "O aprofundamento começa pelo que costuma proteger quem decide com pressa: o alívio imediato e a chance de provar valor rápido.",
+      },
+      "progresso-sem-trilho": {
+        capitulo: "O progresso sem trilho",
+        porque: "O aprofundamento começa pelo que costuma proteger quem não deixa um plano virar rotina: a monotonia e o compromisso.",
+      },
+      "dinheiro-nao-combina": {
+        capitulo: "O dinheiro que \"não combina comigo\"",
+        porque: "O aprofundamento começa pelo que costuma proteger quem sente que dinheiro não é para si: o pertencimento e a lealdade à origem.",
+      },
+      "caixa-da-familia": {
+        capitulo: "O caixa da família",
+        porque: "O aprofundamento começa pelo que costuma proteger quem sustenta os outros: ser necessário e ter lugar na família.",
+      },
+    },
+  },
 };
