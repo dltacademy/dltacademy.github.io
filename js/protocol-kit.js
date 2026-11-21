@@ -124,6 +124,13 @@
     return Array.isArray(lista) ? lista : [];
   }
 
+  // Itens de uma grade: uma lista fixa ou uma função das respostas (a grade das frases,
+  // por exemplo, só sabe quais itens mostrar depois das tríades).
+  function itensDoPasso(step, answers) {
+    var lista = resolverValor(step.items, answers);
+    return Array.isArray(lista) ? lista : [];
+  }
+
   function valoresDe(opcoes) {
     return opcoes.map(function (o) { return o.value; });
   }
@@ -152,7 +159,7 @@
 
   function validarGrade(step, valor, answers) {
     if (!ehObjetoSimples(valor)) return { ok: false, erro: "tipo" };
-    var itens = step.items || [];
+    var itens = itensDoPasso(step, answers);
     var ids = itens.map(function (i) { return i.id; });
     var chaves = Object.keys(valor);
     for (var c = 0; c < chaves.length; c += 1) {
@@ -676,7 +683,7 @@
         texto = (Array.isArray(answers[step.id + "__labels"]) ? answers[step.id + "__labels"] : (Array.isArray(valor) ? valor : []).map(rotuloDe)).join(", ");
       }
       else if (step.type === "grade" && ehObjetoSimples(valor)) {
-        texto = (step.items || []).map(function (item) {
+        texto = itensDoPasso(step, answers).map(function (item) {
           var o = opcoesDoPasso(item.options ? item : step, answers).filter(function (x) { return x.value === valor[item.id]; })[0];
           return item.label + ": " + (o ? o.label : valor[item.id]);
         }).join("; ");
@@ -1271,7 +1278,7 @@
     return String(texto == null ? "" : texto)
       .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "")
       .replace(/\\/g, "\\\\")
-      .replace(/;/g, "\;")
+      .replace(/;/g, "\\;")
       .replace(/,/g, "\\,")
       .replace(/\r\n|\r|\n/g, "\\n");
   }
@@ -1342,6 +1349,7 @@
     chavesDoPasso: chavesDoPasso,
     limparForaDoCaminho: limparForaDoCaminho,
     opcoesDoPasso: opcoesDoPasso,
+    itensDoPasso: itensDoPasso,
     cortarTexto: cortarTexto,
     validarResposta: validarResposta,
     validarComplemento: validarComplemento,

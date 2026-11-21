@@ -251,12 +251,15 @@ class PageContractTests(unittest.TestCase):
                 with self.subTest(page=self.label(path)):
                     self.assertLessEqual(block.count("btn-primary"), 1)
 
-    def test_sitemap_lists_each_public_page_once(self) -> None:
+    def test_sitemap_lists_each_public_page_once_and_never_a_noindex_page(self) -> None:
+        # Página com noindex (um piloto no ar, ainda fora do catálogo) não entra no sitemap e
+        # não pode estar nele: o sitemap só lista o que o buscador pode indexar.
         sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
         locs = re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", sitemap)
         for path in self.real_pages():
-            with self.subTest(page=self.label(path)):
-                self.assertEqual(1, locs.count(PARSED[path].canonical))
+            noindex = "noindex" in PARSED[path].meta.get("robots", "").lower()
+            with self.subTest(page=self.label(path), noindex=noindex):
+                self.assertEqual(0 if noindex else 1, locs.count(PARSED[path].canonical))
 
     def test_redirect_pages_point_somewhere_real(self) -> None:
         for path in PAGES:
