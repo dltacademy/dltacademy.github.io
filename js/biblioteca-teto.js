@@ -2384,9 +2384,8 @@
       "abertura": {
         "titulo": "O que segura o seu dinheiro?",
         "paragrafos": [
-          "Este protocolo ajuda a achar o padrão que mais custa à sua relação com o dinheiro e a testar uma mudança pequena nesta semana.",
-          "Primeiro, uns 8 minutos para achar o seu teto e já sair com uma trava. Depois, se quiser, uns 15 minutos de escrita honesta para entender de onde ele vem e montar a sua semana. Dá para parar entre os dois e voltar.",
-          "Não é diagnóstico, avaliação psicológica nem recomendação de investimento. Tudo fica no seu aparelho."
+          "Ato 1 (8 min): escolhas rápidas para achar o seu padrão, um exercício de 60 segundos e uma trava imediata. Ato 2 (15 min, opcional): escrita curta para mapear a última vez e montar os planos de 7 e 90 dias. Você pode parar entre os dois e voltar.",
+          "Material educacional sobre hábitos com dinheiro. Não é diagnóstico, avaliação psicológica nem recomendação de investimento."
         ]
       },
       "sessenta_segundos": {
