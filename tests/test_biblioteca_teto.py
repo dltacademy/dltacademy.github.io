@@ -60,7 +60,8 @@ class BibliotecaTetoTests(unittest.TestCase):
 
         json.loads(fonte[inicio:fim], parse_constant=sem_constantes)
         self.assertEqual("2026.11-1", self.bib["versao"])
-        self.assertIs(True, self.bib["rascunho"])
+        # Saída do rascunho após preparação da oferta paga e remoção do noindex.
+        self.assertIs(False, self.bib["rascunho"])
         self.assertIn("root.BIBLIOTECA_TETO", fonte)
         self.assertIn("module.exports", fonte)
 

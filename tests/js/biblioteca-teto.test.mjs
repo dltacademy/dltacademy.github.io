@@ -43,9 +43,9 @@ test("o arquivo guarda o objeto em JSON estrito e é o mesmo que o require devol
   assert.deepEqual(lido, bib);
 });
 
-test("a raiz traz a versão, o rascunho e as constantes da regra", () => {
+test("a raiz traz a versão, o rascunho desligado na publicação e as constantes da regra", () => {
   assert.equal(bib.versao, "2026.11-1");
-  assert.equal(bib.rascunho, true);
+  assert.equal(bib.rascunho, false);
   const esperadas = [
     "PESO_CUSTO", "LIMIAR_TETO", "MIN_MARCAS", "LIMIAR_VAZAMENTO", "DELTA_TRILHAS", "LIMIAR_FAMILIA",
     "LIMIAR_FAMILIA_GRADE", "LIMIAR_FRACA", "LIMIAR_FRACA_GRADE", "CONFIANCA_MINIMA", "HUMOR_AVISO",
@@ -56,7 +56,7 @@ test("a raiz traz a versão, o rascunho e as constantes da regra", () => {
   assert.equal(bib.regras.LIMIAR_TETO, 0.34);
 });
 
-test("rascunho verdadeiro em qualquer objeto exige rascunho verdadeiro na raiz", () => {
+test("nenhum objeto mantém rascunho verdadeiro quando a raiz está publicada", () => {
   let achou = false;
   (function andar(v) {
     if (v && typeof v === "object") {
@@ -64,8 +64,8 @@ test("rascunho verdadeiro em qualquer objeto exige rascunho verdadeiro na raiz",
       Object.values(v).forEach(andar);
     }
   })(bib);
-  assert.ok(achou);
-  assert.equal(bib.rascunho, true);
+  assert.equal(achou, false);
+  assert.equal(bib.rascunho, false);
 });
 
 test("os sete padrões, as quatro variantes, as cinco famílias e os ids no formato fixo", () => {
