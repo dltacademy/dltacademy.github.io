@@ -94,19 +94,600 @@ function runProtocol(protocol, mountId) {
     }
   }
 
+  // ---- fluxos: o principal e os retornos ----------------------------------------
+  // Um retorno (`protocol.retornos[marco]`) usa as mesmas telas, com os próprios
+  // passos e o próprio resultado. `flow` aponta para o que está na tela.
+  const mainFlow = {
+    id: "principal",
+    steps: protocol.steps,
+    progresso: protocol.progresso,
+    result: (answers) => protocol.result(answers, cycleContext()),
+  };
+  let flow = mainFlow;
+  const persist = protocol.persist || null;
+  const retornos = protocol.retornos || null;
+  const importar = protocol.importar || null;
+  const cycleEnabled = Boolean(persist || retornos);
+  const stateKey = "dlt-protocol-state:" + protocol.id;
+  const retentionDays = persist && Number.isInteger(persist.diasRetencao) && persist.diasRetencao > 0 ? persist.diasRetencao : 120;
+  const stateSchema = cycleEnabled
+    ? { protocolo: protocol.id, versao: (persist && persist.versao) || 1, migracoes: (persist && persist.migracoes) || {} }
+    : null;
+  const savedLabel = (persist && persist.rotulo) || "uma sessão guardada";
+  const MAX_IMPORT_BYTES = 256 * 1024;
+
+  // De onde veio o estado em uso: "novo", "sessao", "local" (o que ela guardou),
+  // "arquivo" ou "codigo" (trazidos por ela). `base` é o estado lido, para gravar
+  // um retorno de volta sem perder o resto.
+  const freshMeta = () => ({ ciclo: null, criado: null, volta: null, historico: [], lembrete: null, origem: "novo", base: null });
+  let meta = freshMeta();
+
+  const shortDate = (iso) => (typeof iso === "string" && iso.length >= 10 ? iso.slice(8, 10) + "/" + iso.slice(5, 7) + "/" + iso.slice(0, 4) : "");
+  const todayISO = () => kit.dataISO(new Date());
+
+  // O que o resultado (e o checkpoint) recebe além das respostas: o ciclo, o dia de hoje e o
+  // que já está guardado da volta. O ciclo nasce aqui, na primeira vez em que alguém pede.
+  function cycleContext() {
+    if (!cycleEnabled) return undefined;
+    if (!meta.ciclo) meta.ciclo = kit.gerarCiclo(randomBytes());
+    return { ciclo: meta.ciclo, hoje: todayISO(), volta: meta.volta, historico: meta.historico, lembrete: meta.lembrete, origem: meta.origem };
+  }
+
+  // Armazenamento: qualquer acesso pode falhar (janela privada, bloqueio, cota).
+  // Sem ele o protocolo segue em memória.
+  function readArea(area, key) {
+    try {
+      return window[area].getItem(key);
+    } catch (error) {
+      return null;
+    }
+  }
+  function writeArea(area, key, text) {
+    try {
+      window[area].setItem(key, text);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+  function removeArea(area, key) {
+    try {
+      window[area].removeItem(key);
+    } catch (error) {
+      // Sem acesso ao armazenamento não há nada gravado para apagar.
+    }
+  }
+
+  // Tudo o que este protocolo gravou: o estado (local e da aba) e o plano.
+  function clearStoredState() {
+    removeArea("localStorage", stateKey);
+    removeArea("sessionStorage", stateKey);
+    clearPlanState();
+  }
+
+  function randomBytes() {
+    try {
+      if (window.crypto && window.crypto.getRandomValues) {
+        const bytes = new Uint8Array(8);
+        window.crypto.getRandomValues(bytes);
+        return Array.from(bytes);
+      }
+    } catch (error) {
+      // Cai no sorteio simples: o ciclo só distingue um ciclo do outro.
+    }
+    const bytes = [];
+    for (let i = 0; i < 8; i += 1) bytes.push(Math.floor(Math.random() * 256));
+    return bytes;
+  }
+
+  // As respostas do fluxo em andamento, sem o contexto que os retornos recebem.
+  function cleanAnswers() {
+    const out = {};
+    Object.keys(state.answers).forEach((key) => {
+      if (key !== "__estado") out[key] = state.answers[key];
+    });
+    return out;
+  }
+
+  const stageFor = () => (state.path.some((i) => protocol.steps[i].type === "checkpoint") ? "ato2" : "ato1");
+
+  // O estado do fluxo principal, como vai para o armazenamento. `stepIndex` é o
+  // passo que a pessoa vai ver (null: já terminou).
+  function buildState(stepIndex, etapa) {
+    const now = new Date();
+    const hoje = kit.dataISO(now);
+    if (!meta.ciclo) meta.ciclo = kit.gerarCiclo(randomBytes());
+    if (!meta.criado) meta.criado = hoje;
+    const answers = kit.limparForaDoCaminho(protocol.steps, state.path, cleanAnswers());
+    const estado = {
+      esquema: kit.ESQUEMA_ESTADO,
+      v: stateSchema.versao,
+      protocolo: protocol.id,
+      bib: (persist && persist.bib) || null,
+      ciclo: meta.ciclo,
+      criado: meta.criado,
+      atualizado: now.toISOString(),
+      expira: kit.somarDias(hoje, retentionDays),
+      fluxo: "principal",
+      etapa,
+      passo: stepIndex !== null && stepIndex < protocol.steps.length ? protocol.steps[stepIndex].id : null,
+      caminho: state.path.map((i) => protocol.steps[i].id),
+      respostas: answers,
+      volta: meta.volta,
+      historico: meta.historico,
+      lembrete: meta.lembrete,
+    };
+    return kit.prepararParaGuardar(estado, persist.naoGuardar, protocol.steps);
+  }
+
+  const stateText = (estado) => {
+    const text = JSON.stringify(estado);
+    return kit.bytesUtf8(text) > kit.LIMITE_ESTADO ? null : text;
+  };
+
+  // "ok", "grande" (passa de 100 KB) ou "erro" (o navegador não deixou gravar).
+  function saveLocal(estado) {
+    const text = stateText(estado);
+    if (text === null) return "grande";
+    return writeArea("localStorage", stateKey, text) ? "ok" : "erro";
+  }
+
+  // Durante o protocolo as respostas ficam só na aba (sessionStorage): sobrevivem a
+  // recarregar a página e somem ao fechar a aba. Nada vai para o localStorage sem
+  // uma ação da pessoa.
+  function syncSession(index) {
+    if (!persist || flow !== mainFlow) return;
+    if (!state.path.length) {
+      removeArea("sessionStorage", stateKey);
+      return;
+    }
+    const text = stateText(buildState(index, stageFor()));
+    if (text === null) removeArea("sessionStorage", stateKey);
+    else writeArea("sessionStorage", stateKey, text);
+  }
+
+  function readStored(area) {
+    const text = readArea(area, stateKey);
+    if (text === null) return null;
+    const read = kit.lerEstado(text, stateSchema, todayISO());
+    if (read.erro) {
+      removeArea(area, stateKey);
+      return { erro: read.erro };
+    }
+    return { estado: read.estado };
+  }
+
+  // Dá ao estado lido (do arquivo, do código) os campos que ele não traz e o passa pela mesma leitura estrita.
+  function normalizeImported(base) {
+    const now = new Date();
+    const hoje = kit.dataISO(now);
+    const complete = Object.assign({
+      esquema: kit.ESQUEMA_ESTADO,
+      v: stateSchema.versao,
+      protocolo: protocol.id,
+      bib: (persist && persist.bib) || null,
+      ciclo: kit.gerarCiclo(randomBytes()),
+      criado: hoje,
+      atualizado: now.toISOString(),
+      expira: kit.somarDias(hoje, retentionDays),
+      fluxo: "principal",
+      etapa: "concluido",
+      passo: null,
+      caminho: [],
+      respostas: {},
+      volta: null,
+      historico: [],
+      lembrete: null,
+    }, base);
+    return kit.lerEstadoObjeto(complete, stateSchema, hoje);
+  }
+
+  function adoptState(estado, origem) {
+    meta = {
+      ciclo: estado.ciclo,
+      criado: estado.criado,
+      volta: estado.volta,
+      historico: estado.historico,
+      lembrete: estado.lembrete,
+      origem,
+      base: estado,
+    };
+  }
+
+  // Volta ao fluxo principal no ponto em que a pessoa parou.
+  function resumeFrom(estado, origem) {
+    flow = mainFlow;
+    let restored = null;
+    try {
+      restored = kit.restaurarProgresso(protocol.steps, estado, persist ? persist.naoGuardar : []);
+    } catch (error) {
+      restored = null;
+    }
+    adoptState(estado, origem);
+    if (!restored) {
+      state.answers = {};
+      state.path = [];
+      render(startIndex(), true);
+      return;
+    }
+    state.answers = restored.respostas;
+    state.path = restored.caminho;
+    render(restored.indice, true);
+  }
+
+  // ---- telas do ciclo: guardado, retorno, recuperação -----------------------------
+  function showScreen(config) {
+    mount.replaceChildren();
+    const card = el("div", "protocol-card flow-card protocol-cycle");
+    if (config.eyebrow) card.appendChild(el("p", "protocol-eyebrow section-eyebrow", config.eyebrow));
+    const title = el("h2", "protocol-q", config.title);
+    title.id = "protocol-question";
+    title.tabIndex = -1;
+    card.appendChild(title);
+    (config.paragraphs || []).forEach((text) => card.appendChild(el("p", "protocol-help", text)));
+    if (config.extra) config.extra(card);
+    if (config.actions && config.actions.length) {
+      const row = el("div", "protocol-nav protocol-cycle-actions");
+      config.actions.forEach((action) => {
+        const button = el("button", "btn " + (action.primary ? "btn-primary" : "btn-secondary"), action.label);
+        button.type = "button";
+        button.addEventListener("click", action.onClick);
+        row.appendChild(button);
+      });
+      card.appendChild(row);
+    }
+    mount.appendChild(card);
+    title.focus({ preventScroll: true });
+    return card;
+  }
+
+  function statusLine(card) {
+    const status = el("p", "protocol-cycle-status");
+    status.setAttribute("role", "status");
+    status.setAttribute("aria-live", "polite");
+    card.appendChild(status);
+    return status;
+  }
+
+  function startFresh() {
+    flow = mainFlow;
+    meta = freshMeta();
+    state.answers = {};
+    state.path = [];
+    render(startIndex(), true);
+  }
+
+  // Apagar tudo e dizer, em texto na página, que apagou. Sem diálogo.
+  function eraseAndTell() {
+    clearStoredState();
+    meta = freshMeta();
+    showScreen({
+      title: "Apagado",
+      paragraphs: ["O que estava guardado neste navegador foi apagado. Nada ficou guardado."],
+      actions: [{ label: "Começar do início", primary: true, onClick: startFresh }],
+    });
+  }
+
+  function savedPromptActions(estado, origem) {
+    const actions = [];
+    const concluded = estado.etapa === "concluido";
+    actions.push({
+      label: concluded ? "Ver o meu resultado" : "Continuar de onde parei",
+      primary: true,
+      onClick: () => resumeFrom(estado, origem),
+    });
+    if (concluded && retornos) {
+      Object.keys(retornos).forEach((marco) => {
+        if (Array.isArray(retornos[marco].steps)) {
+          actions.push({ label: "Fazer: " + (retornos[marco].titulo || marco), onClick: () => showReturnIntro(marco, estado, origem) });
+        }
+      });
+    }
+    actions.push({ label: "Começar de novo", onClick: startFresh });
+    if (origem === "local") actions.push({ label: "Apagar o que está guardado", onClick: eraseAndTell });
+    return actions;
+  }
+
+  // Antes de mostrar qualquer resposta: o que está guardado, e o que fazer com isso.
+  function showSaved(estado, origem) {
+    showScreen({
+      title: "Você tem " + savedLabel + " de " + shortDate(estado.criado),
+      paragraphs: [
+        origem === "local"
+          ? "Isto foi guardado só neste navegador, por escolha sua, e vale até " + shortDate(estado.expira) + ". Nenhuma resposta foi enviada a lugar nenhum."
+          : "Isto veio do que você trouxe agora. Nada foi enviado a lugar nenhum.",
+        "Nenhuma resposta aparece antes de você escolher.",
+      ],
+      actions: savedPromptActions(estado, origem),
+    });
+  }
+
+  function returnIntroText(sit, ret) {
+    if (sit.situacao === "feito") return "Você fez este retorno em " + shortDate(sit.feitoEm) + ". Pode ver o que respondeu ou refazer.";
+    if (sit.situacao === "cedo") return "Este retorno está previsto para " + shortDate(sit.data) + ". Se quiser, pode adiantar.";
+    if (sit.situacao === "atrasado") return "Este retorno estava previsto para " + shortDate(sit.data) + ". Pode fazer agora; passar do dia não atrapalha.";
+    return sit.data ? "Este retorno é para hoje (" + shortDate(sit.data) + ")." : "Pode começar quando quiser.";
+  }
+
+  function showReturnIntro(marco, estado, origem) {
+    const ret = retornos[marco];
+    if (!ret || !Array.isArray(ret.steps)) {
+      // Marco sem passos próprios (o de continuar): volta ao fluxo principal.
+      resumeFrom(estado, origem);
+      return;
+    }
+    const sit = kit.situacaoDoMarco(estado.volta, marco, ret.dias, todayISO());
+    const start = () => startReturn(marco, estado, origem, sit);
+    const done = sit.situacao === "feito";
+    showScreen({
+      eyebrow: ret.titulo ? "Retorno" : undefined,
+      title: ret.titulo || "Retorno",
+      paragraphs: [returnIntroText(sit, ret)],
+      extra: done ? (card) => {
+        const feito = estado.volta.retornos[marco];
+        const list = el("div", "protocol-record");
+        kit.resumoDasRespostas(ret.steps, Object.assign({ __estado: returnContext(estado, marco) }, feito.r)).forEach((linha) => {
+          const item = el("div", "protocol-record-item");
+          item.appendChild(el("span", "protocol-record-q", linha.q));
+          item.appendChild(el("span", "protocol-record-a", linha.value));
+          list.appendChild(item);
+        });
+        card.appendChild(list);
+      } : undefined,
+      actions: [
+        { label: done ? "Refazer este retorno" : sit.situacao === "cedo" ? "Adiantar agora" : "Começar", primary: true, onClick: start },
+        { label: "Voltar ao início", onClick: () => showSaved(estado, origem) },
+      ],
+    });
+  }
+
+  // O que um retorno enxerga do ciclo guardado (em `answers.__estado` e em `ctx.estado`).
+  function returnContext(estado, marco) {
+    return JSON.parse(JSON.stringify({
+      respostas: estado.respostas,
+      volta: estado.volta,
+      historico: estado.historico,
+      criado: estado.criado,
+      ciclo: estado.ciclo,
+      marco,
+    }));
+  }
+
+  function startReturn(marco, estado, origem, sit) {
+    const ret = retornos[marco];
+    adoptState(estado, origem);
+    const context = returnContext(estado, marco);
+    const seed = () => ({ __estado: JSON.parse(JSON.stringify(context)) });
+    flow = {
+      id: "retorno:" + marco,
+      marco,
+      steps: ret.steps,
+      progresso: ret.progresso,
+      seed,
+      result: () => ret.result({ answers: cleanAnswers(), estado: context, hoje: todayISO(), marco, situacao: sit.situacao }),
+    };
+    state.answers = seed();
+    state.path = [];
+    render(startIndex(), true);
+  }
+
+  // O retorno terminado entra no ciclo guardado. Se ela guardou no aparelho, grava;
+  // se trouxe de fora, só grava quando ela escolher guardar.
+  function recordReturn() {
+    const volta = meta.volta
+      ? JSON.parse(JSON.stringify(meta.volta))
+      : { n: 1, dia0: null, registro: null, retornos: {} };
+    volta.retornos = volta.retornos || {};
+    volta.retornos[flow.marco] = { em: todayISO(), r: cleanAnswers() };
+    meta.volta = volta;
+  }
+
+  function stateWithReturn() {
+    const now = new Date();
+    const hoje = kit.dataISO(now);
+    const base = meta.base ? JSON.parse(JSON.stringify(meta.base)) : null;
+    if (!base) return null;
+    base.volta = meta.volta;
+    base.atualizado = now.toISOString();
+    base.expira = kit.somarDias(hoje, retentionDays);
+    return base;
+  }
+
+  // Dados de um registro trazido de fora: arquivo (md) ou código.
+  function importState(kind, text) {
+    let found = null;
+    try {
+      found = kind === "md" ? importar.md(text) : importar.registro(text);
+    } catch (error) {
+      found = null;
+    }
+    // Qualquer resposta com a chave `erro` é um erro; só vale como mensagem se for texto.
+    if (!found || typeof found !== "object" || "erro" in found) return { erro: typeof (found && found.erro) === "string" ? found.erro : null };
+    const read = normalizeImported(found.estado || found);
+    if (!read.estado) return { erro: null };
+    return { estado: read.estado, resumo: typeof found.resumo === "string" ? found.resumo : "" };
+  }
+
+  function readFileText(file) {
+    if (typeof file.text === "function") return file.text();
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = () => reject(reader.error);
+      reader.readAsText(file);
+    });
+  }
+
+  const RECOVERY_REASONS = {
+    sem_estado: "Não encontramos neste navegador o que você guardou. Isso acontece quando o link é aberto em outro aparelho ou navegador, dentro de um aplicativo, quando os dados do site foram apagados ou quando o prazo passou.",
+    ilegivel: "Não conseguimos ler o que estava guardado neste navegador. Você pode trazer o seu arquivo ou o código do registro.",
+    expirado: "O que estava guardado neste navegador passou do prazo e foi apagado. Você pode trazer o seu arquivo ou o código do registro.",
+    codigo: "Não foi possível ler o código do link. Você pode trazer o seu arquivo ou colar o código do registro.",
+  };
+
+  // Estado que sumiu do navegador: três caminhos, todos por ação dela.
+  function showRecovery(config) {
+    const ret = config.marco && retornos ? retornos[config.marco] : null;
+    const canFile = Boolean(importar && typeof importar.md === "function");
+    const canCode = Boolean(importar && typeof importar.registro === "function");
+    const afterImport = (estado, origem, resumo) => {
+      showScreen({
+        title: "Encontramos o que você trouxe, de " + shortDate(estado.criado),
+        paragraphs: [resumo || "Quer continuar a partir daqui?"],
+        actions: [
+          {
+            label: "Continuar",
+            primary: true,
+            onClick: () => {
+              if (config.marco) showReturnIntro(config.marco, estado, origem);
+              else if (config.codigo) showCodeChoices(estado, origem);
+              else showSaved(estado, origem);
+            },
+          },
+          { label: "Não é este", onClick: () => showRecovery(config) },
+        ],
+      });
+    };
+    showScreen({
+      eyebrow: ret && ret.titulo ? "Retorno" : undefined,
+      title: ret && ret.titulo ? ret.titulo : "Recuperar o que você guardou",
+      paragraphs: [RECOVERY_REASONS[config.motivo] || RECOVERY_REASONS.sem_estado],
+      extra: (card) => {
+        const status = statusLine(card);
+        const fail = (text) => { status.textContent = text; };
+        if (canFile) {
+          const label = el("label", "btn btn-secondary protocol-file");
+          label.appendChild(el("span", null, "Carregar o meu arquivo (.md)"));
+          const input = el("input", "protocol-file-input");
+          input.type = "file";
+          input.setAttribute("accept", ".md,text/markdown,text/plain");
+          input.addEventListener("change", () => {
+            const file = input.files && input.files[0];
+            if (!file) return;
+            if (file.size > MAX_IMPORT_BYTES) {
+              fail("Este arquivo passa de 256 KB. Escolha o arquivo que você baixou deste protocolo.");
+              return;
+            }
+            readFileText(file).then((text) => {
+              const read = importState("md", text);
+              if (read.estado) afterImport(read.estado, "arquivo", read.resumo);
+              else fail(read.erro || "Não conseguimos ler este arquivo. Escolha o arquivo (.md) que você baixou deste protocolo.");
+            }, () => fail("Não conseguimos abrir este arquivo."));
+          });
+          label.appendChild(input);
+          card.appendChild(label);
+        }
+        if (canCode) {
+          const box = el("div", "protocol-recovery-code");
+          const field = el("textarea", "protocol-write");
+          field.rows = 3;
+          field.placeholder = "Cole aqui o código do registro";
+          field.setAttribute("aria-label", "Código do registro");
+          const use = el("button", "btn btn-secondary", "Usar este código");
+          use.type = "button";
+          use.addEventListener("click", () => {
+            const read = importState("registro", field.value.trim());
+            if (read.estado) afterImport(read.estado, "codigo", read.resumo);
+            else fail(read.erro || "Este código não é válido. Confira se ele está completo.");
+          });
+          box.appendChild(field);
+          box.appendChild(use);
+          card.appendChild(box);
+        }
+      },
+      actions: [{ label: "Fazer o protocolo do começo", primary: !canFile && !canCode, onClick: startFresh }],
+    });
+  }
+
+  // Depois de um `#c=`: o que ela quer fazer com o registro que veio no link.
+  function showCodeChoices(estado, origem) {
+    const actions = [];
+    Object.keys(retornos || {}).forEach((marco) => {
+      const ret = retornos[marco];
+      if (ret.codigo === true && Array.isArray(ret.steps)) {
+        actions.push({ label: ret.titulo || marco, primary: actions.length === 0, onClick: () => showReturnIntro(marco, estado, origem) });
+      }
+    });
+    if (!actions.length) {
+      showSaved(estado, origem);
+      return;
+    }
+    actions.push({ label: "Começar de novo", onClick: startFresh });
+    showScreen({ title: "O que você quer fazer agora?", paragraphs: ["Isto usa só o registro que veio no link."], actions });
+  }
+
+  function cleanHash() {
+    try {
+      window.history.replaceState(null, "", window.location.pathname + window.location.search);
+    } catch (error) {
+      // Sem history o endereço fica como está.
+    }
+  }
+
+  function readHash() {
+    try {
+      return String(window.location.hash || "");
+    } catch (error) {
+      return "";
+    }
+  }
+
+  const reasonOf = (erro) => (erro === "expirado" ? "expirado" : "ilegivel");
+
+  // Primeira tela dos protocolos com ciclo: o endereço (#volta=, #c=), o que ficou
+  // guardado e o que sobrou da aba decidem por onde começar.
+  function boot() {
+    const hash = readHash();
+    const found = kit.lerMarco(hash, retornos ? Object.keys(retornos) : []);
+    // Só o que é nosso é limpo da barra: marco que não existe, código ou o #c= recusado.
+    if (/^#?(?:volta|c)=/.test(hash) && !(found && found.marco)) cleanHash();
+    const local = readStored("localStorage");
+
+    if (found && found.marco) {
+      if (local && local.estado) showReturnIntro(found.marco, local.estado, "local");
+      else showRecovery({ marco: found.marco, motivo: local && local.erro ? reasonOf(local.erro) : "sem_estado" });
+      return;
+    }
+    if (found && found.codigo && importar && typeof importar.registro === "function") {
+      const read = importState("registro", found.codigo);
+      if (read.estado) {
+        showScreen({
+          title: "Encontramos o registro que veio no link",
+          paragraphs: [read.resumo || "Quer continuar a partir dele?"],
+          actions: [
+            { label: "Continuar", primary: true, onClick: () => showCodeChoices(read.estado, "codigo") },
+            { label: "Começar do início", onClick: startFresh },
+          ],
+        });
+      } else {
+        showRecovery({ motivo: "codigo", codigo: true });
+      }
+      return;
+    }
+
+    const session = persist ? readStored("sessionStorage") : null;
+    if (session && session.estado) {
+      resumeFrom(session.estado, "sessao");
+      return;
+    }
+    if (local && local.estado) showSaved(local.estado, "local");
+    else if (local && local.erro) showRecovery({ motivo: reasonOf(local.erro) });
+    else render(startIndex());
+  }
+
   function currentStep(index) {
-    return protocol.steps[index];
+    return flow.steps[index];
   }
 
   // Um passo pode declarar um `next(answers)` para ramificar; senão segue em ordem.
   function nextIndex(index) {
-    if (usesKit) return kit.proximoIndice(protocol.steps, index, state.answers);
+    if (usesKit) return kit.proximoIndice(flow.steps, index, state.answers);
     const step = currentStep(index);
     if (typeof step.next === "function") {
       const target = step.next(state.answers);
-      if (target === null) return protocol.steps.length; // fim antecipado
+      if (target === null) return flow.steps.length; // fim antecipado
       if (typeof target === "string") {
-        const i = protocol.steps.findIndex((s) => s.id === target);
+        const i = flow.steps.findIndex((s) => s.id === target);
         return i === -1 ? index + 1 : i;
       }
     }
@@ -115,7 +696,7 @@ function runProtocol(protocol, mountId) {
 
   // O primeiro passo a mostrar: o primeiro visível, quando há showIf.
   function startIndex() {
-    return usesKit ? kit.proximoIndice(protocol.steps, -1, state.answers) : 0;
+    return usesKit ? kit.proximoIndice(flow.steps, -1, state.answers) : 0;
   }
 
   function prefersReducedMotion() {
@@ -126,24 +707,26 @@ function runProtocol(protocol, mountId) {
   // (o teclado não fica solto na tela que sumiu).
   function render(index, moveFocus) {
     mount.replaceChildren();
-    if (index >= protocol.steps.length) return renderResult(moveFocus);
+    if (index >= flow.steps.length) return renderResult(moveFocus);
+    syncSession(index);
 
     const step = currentStep(index);
+    if (step.type === "checkpoint") return renderCheckpoint(step, index, moveFocus);
     const card = el("div", "protocol-card flow-card");
 
     let progress;
     if (usesKit) {
-      progress = buildKitProgress(el, protocol, kit, index, state.answers);
+      progress = buildKitProgress(el, flow, kit, index, state.answers);
     } else {
       progress = el("div", "protocol-progress");
       progress.setAttribute("role", "progressbar");
       progress.setAttribute("aria-valuemin", "1");
-      progress.setAttribute("aria-valuemax", String(protocol.steps.length));
-      progress.setAttribute("aria-valuenow", String(Math.min(index + 1, protocol.steps.length)));
-      const progressLabel = el("span", "protocol-progress-label", "Passo " + Math.min(index + 1, protocol.steps.length) + " de " + protocol.steps.length);
+      progress.setAttribute("aria-valuemax", String(flow.steps.length));
+      progress.setAttribute("aria-valuenow", String(Math.min(index + 1, flow.steps.length)));
+      const progressLabel = el("span", "protocol-progress-label", "Passo " + Math.min(index + 1, flow.steps.length) + " de " + flow.steps.length);
       progress.appendChild(progressLabel);
       const progressDots = el("span", "protocol-progress-dots");
-      protocol.steps.forEach((_, dotIndex) => {
+      flow.steps.forEach((_, dotIndex) => {
         const dot = el("span", "protocol-progress-dot" + (dotIndex < index ? " is-done" : dotIndex === index ? " is-current" : ""));
         dot.setAttribute("aria-hidden", "true");
         progressDots.appendChild(dot);
@@ -217,6 +800,13 @@ function runProtocol(protocol, mountId) {
 
     // Voltar fica visível em todas as telas. No primeiro passo ele não
     // tem histórico, mas a affordance continua previsível para teclado e mobile.
+    card.appendChild(buildBack());
+
+    mount.appendChild(card);
+    if (moveFocus) question.focus({ preventScroll: true });
+  }
+
+  function buildBack() {
     const back = el("button", "protocol-back", "← Voltar");
     back.type = "button";
     back.setAttribute("aria-disabled", String(!state.path.length));
@@ -225,10 +815,83 @@ function runProtocol(protocol, mountId) {
       const prev = state.path.pop();
       render(prev, true);
     });
-    card.appendChild(back);
+    return back;
+  }
 
+  // Checkpoint: um resultado parcial no meio do protocolo, com a escolha de
+  // continuar agora ou guardar e continuar depois.
+  function renderCheckpoint(step, index, moveFocus) {
+    const answers = kit.limparForaDoCaminho(flow.steps, state.path, state.answers);
+    const result = step.render(answers, cycleContext());
+    const grade = resultGrade(result);
+    const toneClass = result.tone === "good" ? "is-good" : result.tone === "bad" ? "is-bad" : "is-mixed";
+    const card = el("div", "protocol-card protocol-result protocol-checkpoint " + toneClass);
+    card.dataset.grade = String(grade);
+    const verdictHeading = appendResultHead(card, result, grade, el);
+    if (result.safety) card.appendChild(el("p", "protocol-safety", result.safety));
+
+    const labels = Object.assign({ continuar: "Continuar", pausar: "Salvar e continuar depois" }, step.actions);
+    const row = el("div", "protocol-actions protocol-checkpoint-actions");
+    const go = el("button", "btn btn-primary", labels.continuar);
+    go.type = "button";
+    go.addEventListener("click", () => {
+      state.path.push(index);
+      render(nextIndex(index), true);
+      window.scrollTo({ top: mount.offsetTop - 20, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+    });
+    row.appendChild(go);
+    if (persist) {
+      const pause = el("button", "btn btn-secondary", labels.pausar);
+      pause.type = "button";
+      pause.addEventListener("click", () => pauseAt(step, index, result));
+      row.appendChild(pause);
+    }
+    card.appendChild(row);
+    if (persist) {
+      card.appendChild(el("p", "protocol-privacy privacy-line",
+        "Salvar guarda as suas respostas só neste navegador, por até " + retentionDays + " dias, e só se você tocar no botão. Você apaga quando quiser."));
+    }
+    card.appendChild(buildDelivery(result, card, { partial: true }));
+    card.appendChild(buildBack());
     mount.appendChild(card);
-    if (moveFocus) question.focus({ preventScroll: true });
+    if (moveFocus) verdictHeading.focus({ preventScroll: true });
+  }
+
+  // "Salvar e continuar depois": guarda o estado no aparelho, por ação dela, e despede.
+  function pauseAt(step, index, result) {
+    state.path.push(index);
+    const next = nextIndex(index);
+    const estado = buildState(next, "pausa");
+    const saved = saveLocal(estado);
+    removeArea("sessionStorage", stateKey);
+    if (saved === "ok") meta.origem = "local";
+    const goOn = () => render(next, true);
+    if (saved === "ok") {
+      showScreen({
+        title: "Guardado neste aparelho",
+        paragraphs: [
+          "Suas respostas ficam só neste navegador, até " + shortDate(estado.expira) + ". Para continuar, volte a esta página neste mesmo navegador: ela abre no ponto em que você parou.",
+          "Nada foi enviado a lugar nenhum.",
+        ],
+        extra: (card) => card.appendChild(buildDelivery(result, card, { partial: true, skip: { pdf: true, copy: true } })),
+        actions: [
+          { label: "Continuar agora", primary: true, onClick: goOn },
+          { label: "Apagar o que guardei", onClick: eraseAndTell },
+        ],
+      });
+    } else {
+      showScreen({
+        title: "Não conseguimos guardar",
+        paragraphs: [
+          saved === "grande"
+            ? "O que você escreveu passou do limite do que este navegador guarda aqui."
+            : "Neste navegador não foi possível guardar (isso acontece em janela privada ou com o armazenamento bloqueado).",
+          "Você pode continuar agora. Se quiser levar o que já fez para continuar depois, baixe o seu arquivo abaixo.",
+        ],
+        extra: (card) => card.appendChild(buildDelivery(result, card, { partial: true, skip: { pdf: true, copy: true } })),
+        actions: [{ label: "Continuar agora", primary: true, onClick: goOn }],
+      });
+    }
   }
 
   // Passo com controle novo (multi, scale, grade, triad), com complemento
@@ -259,42 +922,305 @@ function runProtocol(protocol, mountId) {
     refresh();
   }
 
+  // O que o resultado muda no armazenamento. Fluxo principal: com `result.guardar` a
+  // aba guarda o resultado (sobrevive a recarregar); sem ele, nada fica. Retorno: entra
+  // no ciclo e, se o ciclo foi guardado neste aparelho por ela, grava de volta.
+  // Devolve uma linha de aviso (ou null).
+  function settleStorageAtResult(result) {
+    if (!persist) return null;
+    if (flow === mainFlow) {
+      if (result.guardar === true) {
+        const text = stateText(buildState(null, "concluido"));
+        if (text !== null) writeArea("sessionStorage", stateKey, text);
+      } else {
+        removeArea("sessionStorage", stateKey);
+      }
+      return null;
+    }
+    recordReturn();
+    if (meta.origem !== "local") return null;
+    const estado = stateWithReturn();
+    const saved = estado ? saveLocal(estado) : "erro";
+    const line = el("p", "protocol-save-status");
+    line.setAttribute("role", "status");
+    line.textContent = saved === "ok"
+      ? "Este retorno ficou guardado neste aparelho."
+      : "Neste navegador não conseguimos guardar este retorno. Baixe o seu arquivo para não perder.";
+    return line;
+  }
+
+  function voltaDoResultado(result) {
+    const base = meta.volta || { n: 1, dia0: null, registro: null, retornos: {} };
+    const hint = result.volta || {};
+    const objeto = result.registro && typeof result.registro.objeto === "object" ? result.registro.objeto : null;
+    return {
+      n: Number.isInteger(hint.n) ? hint.n : base.n,
+      dia0: hint.dia0 || base.dia0 || todayISO(),
+      registro: objeto || base.registro,
+      retornos: base.retornos || {},
+    };
+  }
+
+  // Botão "Guardar neste aparelho": só existe quando o protocolo guarda (persist), só
+  // grava por ação dela e diz o que fez em texto. Retorno que veio de fora também pode ser guardado.
+  function buildSaveControl(result) {
+    if (!persist) return null;
+    const offer = flow === mainFlow ? result.guardar === true : meta.origem !== "local";
+    if (!offer) return null;
+    const button = el("button", "btn btn-secondary protocol-save", "Guardar neste aparelho para os retornos");
+    button.type = "button";
+    const status = el("p", "protocol-save-status");
+    status.setAttribute("role", "status");
+    status.setAttribute("aria-live", "polite");
+    const note = el("p", "protocol-privacy privacy-line",
+      "Guardar é opcional: o que você escreveu fica só neste navegador, por até " + retentionDays + " dias, e você apaga quando quiser.");
+    button.addEventListener("click", () => {
+      let estado = null;
+      if (flow === mainFlow) {
+        meta.volta = voltaDoResultado(result);
+        estado = buildState(null, "concluido");
+      } else {
+        estado = stateWithReturn();
+      }
+      const saved = estado ? saveLocal(estado) : "erro";
+      if (saved === "ok") {
+        meta.origem = "local";
+        button.textContent = "Guardado neste aparelho";
+        button.disabled = true;
+        status.textContent = "Guardado só neste navegador, até " + shortDate(estado.expira) + ". Você pode apagar quando quiser.";
+      } else {
+        status.textContent = saved === "grande"
+          ? "O que você escreveu passou do limite do que este navegador guarda aqui. Baixe o seu arquivo para não perder."
+          : "Neste navegador não conseguimos guardar. Baixe o seu arquivo para continuar depois.";
+      }
+    });
+    return { button, status, note };
+  }
+
+  // Lembretes (.ics): montados aqui, no aparelho. O arquivo só leva o lembrete e o link do
+  // marco; o aviso diz isso, porque o calendário costuma sincronizar com serviços de terceiros.
+  function buildIcsControl(result) {
+    if (!result.ics || !Array.isArray(result.ics.eventos) || !result.ics.eventos.length || !kit) return null;
+    const label = result.ics.rotulo || "Baixar lembretes (.ics)";
+    const button = el("button", "btn btn-secondary protocol-ics", label);
+    button.type = "button";
+    button.addEventListener("click", () => {
+      try {
+        const text = kit.montarIcs({ eventos: result.ics.eventos, prodid: result.ics.prodid, agora: new Date() });
+        downloadTextFile(fileNameFor(result, "ics", protocol.slug + ".ics"), text, "text/calendar;charset=utf-8");
+        button.textContent = "Lembretes baixados";
+      } catch (error) {
+        console.error("Não foi possível montar os lembretes.", error);
+        button.textContent = "Não foi possível baixar os lembretes";
+      }
+      window.setTimeout(() => { if (button.isConnected) button.textContent = label; }, 1800);
+    });
+    const note = el("p", "protocol-privacy privacy-line",
+      "O arquivo de lembretes vai para o seu calendário, e o calendário pode sincronizar com serviços de terceiros. Por isso ele leva só o lembrete e o link do retorno, nada do que você respondeu.");
+    return { button, note };
+  }
+
+  // O registro em código: o resumo, o código para copiar e, se a página sabe lê-lo de volta,
+  // o link que o carrega. O link só existe quando ela toca no botão; a barra de endereço nunca o recebe.
+  function buildRegistroSection(registro) {
+    const section = el("section", "protocol-record protocol-registro");
+    section.setAttribute("aria-labelledby", "protocol-registro-title");
+    const title = el("h3", null, registro.titulo || "Seu registro");
+    title.id = "protocol-registro-title";
+    section.appendChild(title);
+    (registro.resumo || []).forEach((linha) => {
+      if (typeof linha === "string") {
+        section.appendChild(el("p", "protocol-body", linha));
+        return;
+      }
+      if (!linha || !linha.value) return;
+      const item = el("div", "protocol-record-item");
+      item.appendChild(el("span", "protocol-record-q", linha.q));
+      item.appendChild(el("span", "protocol-record-a", linha.value));
+      section.appendChild(item);
+    });
+    if (!/^[A-Za-z0-9_-]{1,2048}$/.test(registro.codigo)) return section;
+    const details = el("details", "protocol-registro-details");
+    details.appendChild(el("summary", null, "Ver o código do registro"));
+    const field = el("textarea", "protocol-write protocol-registro-code");
+    field.rows = 4;
+    field.setAttribute("readonly", "");
+    field.setAttribute("aria-label", "Código do registro");
+    field.value = registro.codigo;
+    details.appendChild(field);
+    section.appendChild(details);
+    const row = el("div", "protocol-actions");
+    const copy = (button, text, doneLabel, label) => {
+      button.type = "button";
+      button.addEventListener("click", () => {
+        const done = () => {
+          button.textContent = doneLabel;
+          window.setTimeout(() => { if (button.isConnected) button.textContent = label; }, 1800);
+        };
+        if (navigator.clipboard) navigator.clipboard.writeText(text()).then(done, done);
+        else done();
+      });
+      row.appendChild(button);
+    };
+    copy(el("button", "btn btn-secondary", "Copiar o código do registro"), () => registro.codigo, "Código copiado", "Copiar o código do registro");
+    if (importar && typeof importar.registro === "function") {
+      copy(
+        el("button", "btn btn-secondary", "Copiar o link do meu registro"),
+        () => window.location.origin + window.location.pathname + "#c=" + registro.codigo,
+        "Link copiado",
+        "Copiar o link do meu registro"
+      );
+    }
+    section.appendChild(row);
+    section.appendChild(el("p", "protocol-privacy privacy-line",
+      "O código é o seu registro em texto: guarde-o junto com o PDF. O link leva esse mesmo registro, então quem tiver o link consegue ler o que está nele. Compartilhe só com quem você quiser."));
+    return section;
+  }
+
+  // "Leve este resultado com você": PDF, .md, copiar, os lembretes (.ics) e, no resultado
+  // final, guardar, refazer e apagar. `opts.partial`: o resultado parcial do checkpoint, só
+  // com o que se leva; `opts.skip`: botões a deixar de fora ({ pdf, md, copy }).
+  function buildDelivery(result, card, opts) {
+    const partial = Boolean(opts && opts.partial);
+    const skip = (opts && opts.skip) || {};
+    const delivery = el("section", "protocol-delivery result-actions");
+    delivery.appendChild(el("h3", "protocol-delivery-title result-actions-title", "Leve este resultado com você"));
+    delivery.appendChild(el("p", "protocol-delivery-text",
+      "Os arquivos são montados localmente no seu navegador e não incluem recomendações ou ofertas exibidas depois do resultado."));
+
+    const actions = el("div", "protocol-actions result-actions-row");
+    const pdf = el("button", "btn btn-outline", "Preparando o PDF…");
+    pdf.type = "button";
+    pdf.disabled = true;
+    pdf.setAttribute("aria-busy", "true");
+
+    const enablePdf = () => {
+      if (!pdf.isConnected) return;
+      if (protocolPdfBrand.asset && window.jspdf && window.jspdf.jsPDF) {
+        pdf.disabled = false;
+        pdf.removeAttribute("aria-busy");
+        pdf.textContent = "Baixar meu resultado em PDF";
+        return;
+      }
+      if (protocolPdfBrand.error || !window.jspdf || !window.jspdf.jsPDF) {
+        pdf.disabled = false;
+        pdf.removeAttribute("aria-busy");
+        pdf.textContent = "Tentar baixar meu resultado em PDF";
+      }
+    };
+
+    enablePdf();
+    if (protocolPdfBrand.promise) {
+      protocolPdfBrand.promise.then(enablePdf).catch(enablePdf);
+    }
+
+    pdf.addEventListener("click", () => {
+      const previousLabel = pdf.textContent;
+      pdf.disabled = true;
+      pdf.textContent = "Gerando PDF…";
+      try {
+        if (!protocolPdfBrand.asset) {
+          throw new Error("O logo da DLT Academy ainda não foi carregado.");
+        }
+        downloadProtocolPdf(protocol, result, protocolPdfBrand.asset);
+        pdf.textContent = "PDF baixado";
+      } catch (error) {
+        console.error("Não foi possível gerar o PDF do protocolo.", error);
+        pdf.textContent = "Não foi possível baixar — tentar novamente";
+      } finally {
+        window.setTimeout(() => {
+          if (!pdf.isConnected) return;
+          pdf.disabled = false;
+          pdf.textContent = previousLabel || "Baixar meu resultado em PDF";
+        }, 1800);
+      }
+    });
+
+    const md = el("button", "btn btn-secondary", "Baixar como texto (.md)");
+    md.type = "button";
+    md.addEventListener("click", () => downloadTextFile(
+      fileNameFor(result, "md", protocol.slug + ".md"),
+      buildMarkdown(protocol, result, state.answers)
+    ));
+
+    const copyResult = el("button", "btn btn-secondary", "Copiar resultado");
+    copyResult.type = "button";
+    copyResult.addEventListener("click", () => {
+      const text = buildMarkdown(protocol, result, state.answers);
+      const done = () => {
+        copyResult.textContent = "Resultado copiado";
+        window.setTimeout(() => { if (copyResult.isConnected) copyResult.textContent = "Copiar resultado"; }, 1800);
+      };
+      if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, done);
+      else done();
+    });
+
+    const restart = el("button", "btn btn-secondary", "Refazer o protocolo");
+    restart.type = "button";
+    restart.addEventListener("click", () => {
+      clearPlanState();
+      state.answers = flow.seed ? flow.seed() : {};
+      state.path = [];
+      if (flow === mainFlow) meta = freshMeta();
+      render(startIndex(), true);
+      window.scrollTo({ top: mount.offsetTop - 20, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+    });
+
+    const save = partial ? null : buildSaveControl(result);
+
+    // Apagar: remove o que o protocolo gravou neste navegador e desmarca o
+    // plano na tela. A confirmação é texto na página, sem diálogo.
+    const eraseStatus = el("p", "protocol-erase-status");
+    eraseStatus.setAttribute("role", "status");
+    eraseStatus.setAttribute("aria-live", "polite");
+    const erase = el("button", "btn btn-secondary protocol-erase", "Apagar minhas respostas");
+    erase.type = "button";
+    erase.addEventListener("click", () => {
+      clearPlanState();
+      if (cycleEnabled) clearStoredState();
+      card.querySelectorAll("[data-plan-key]").forEach((check) => {
+        check.checked = false;
+        const item = check.closest(".protocol-plan-item");
+        if (item) item.classList.remove("is-done");
+      });
+      eraseStatus.textContent = "Respostas apagadas deste navegador.";
+    });
+
+    const ics = buildIcsControl(result);
+
+    if (!skip.pdf) actions.appendChild(pdf);
+    if (!skip.md) actions.appendChild(md);
+    if (!skip.copy) actions.appendChild(copyResult);
+    if (ics) actions.appendChild(ics.button);
+    if (save) actions.appendChild(save.button);
+    if (!partial) actions.appendChild(restart);
+    if (!partial) actions.appendChild(erase);
+    delivery.appendChild(actions);
+    if (ics) delivery.appendChild(ics.note);
+    if (!partial) delivery.appendChild(eraseStatus);
+    if (save) {
+      delivery.appendChild(save.status);
+      delivery.appendChild(save.note);
+    }
+    if (opts.returnSave) delivery.appendChild(opts.returnSave);
+    delivery.appendChild(el("p", "protocol-privacy privacy-line",
+      "Tudo isto rodou no seu navegador. Nenhuma resposta foi enviada a lugar nenhum — os arquivos são gerados no seu dispositivo."));
+    return delivery;
+  }
+
   function renderResult(moveFocus) {
     // Resposta de um ramo abandonado (a pessoa voltou e trocou de caminho) não chega ao resultado.
-    if (usesKit) state.answers = kit.limparForaDoCaminho(protocol.steps, state.path, state.answers);
-    const result = protocol.result(state.answers);
+    if (usesKit) state.answers = kit.limparForaDoCaminho(flow.steps, state.path, state.answers);
+    const result = flow.result(state.answers);
     const grade = resultGrade(result);
+    const returnSave = settleStorageAtResult(result);
     const toneClass = result.tone === "good" ? "is-good" : result.tone === "bad" ? "is-bad" : "is-mixed";
     // Uma superfície só: o cartão do resultado. Dentro dele, grupos separados
     // por espaço e fio. A cor de acento (data-grade) vem do grau, não do azul.
     const card = el("div", "protocol-card protocol-result " + toneClass);
     card.dataset.grade = String(grade);
 
-    card.appendChild(el("p", "protocol-eyebrow section-eyebrow", result.eyebrow || "Seu resultado"));
-
-    const verdictPanel = el("div", "protocol-verdict-panel");
-    verdictPanel.appendChild(buildVerdictPill(grade, el));
-    const verdictHeading = el("h2", "protocol-verdict", result.verdict);
-    verdictHeading.tabIndex = -1;
-    verdictPanel.appendChild(verdictHeading);
-    card.appendChild(verdictPanel);
-
-    if (result.stats && result.stats.length) {
-      const stats = el("div", "protocol-result-stats");
-      stats.setAttribute("role", "group");
-      stats.setAttribute("aria-label", "Indicadores do resultado");
-      result.stats.slice(0, 3).forEach((stat) => {
-        const cell = el("div", "protocol-stat");
-        cell.appendChild(el("span", "num-label", stat.label));
-        cell.appendChild(el("strong", "num-value tnum", stat.value));
-        stats.appendChild(cell);
-      });
-      card.appendChild(stats);
-    }
-
-    const copy = el("div", "protocol-result-copy");
-    (result.body || []).forEach((p) => copy.appendChild(el("p", "protocol-body", p)));
-    card.appendChild(copy);
+    const verdictHeading = appendResultHead(card, result, grade, el);
 
     // Registro pessoal do que a pessoa escreveu/escolheu.
     if (result.record && result.record.length) {
@@ -352,117 +1278,11 @@ function runProtocol(protocol, mountId) {
       card.appendChild(plan);
     }
 
+    if (result.registro && typeof result.registro.codigo === "string") card.appendChild(buildRegistroSection(result.registro));
+
     if (result.safety) card.appendChild(el("p", "protocol-safety", result.safety));
 
-    const delivery = el("section", "protocol-delivery result-actions");
-    delivery.appendChild(el("h3", "protocol-delivery-title result-actions-title", "Leve este resultado com você"));
-    delivery.appendChild(el("p", "protocol-delivery-text",
-      "Os arquivos são montados localmente no seu navegador e não incluem recomendações ou ofertas exibidas depois do resultado."));
-
-    const actions = el("div", "protocol-actions result-actions-row");
-    const pdf = el("button", "btn btn-outline", "Preparando o PDF…");
-    pdf.type = "button";
-    pdf.disabled = true;
-    pdf.setAttribute("aria-busy", "true");
-
-    const enablePdf = () => {
-      if (!pdf.isConnected) return;
-      if (protocolPdfBrand.asset && window.jspdf && window.jspdf.jsPDF) {
-        pdf.disabled = false;
-        pdf.removeAttribute("aria-busy");
-        pdf.textContent = "Baixar meu resultado em PDF";
-        return;
-      }
-      if (protocolPdfBrand.error || !window.jspdf || !window.jspdf.jsPDF) {
-        pdf.disabled = false;
-        pdf.removeAttribute("aria-busy");
-        pdf.textContent = "Tentar baixar meu resultado em PDF";
-      }
-    };
-
-    enablePdf();
-    if (protocolPdfBrand.promise) {
-      protocolPdfBrand.promise.then(enablePdf).catch(enablePdf);
-    }
-
-    pdf.addEventListener("click", () => {
-      const previousLabel = pdf.textContent;
-      pdf.disabled = true;
-      pdf.textContent = "Gerando PDF…";
-      try {
-        if (!protocolPdfBrand.asset) {
-          throw new Error("O logo da DLT Academy ainda não foi carregado.");
-        }
-        downloadProtocolPdf(protocol, result, protocolPdfBrand.asset);
-        pdf.textContent = "PDF baixado";
-      } catch (error) {
-        console.error("Não foi possível gerar o PDF do protocolo.", error);
-        pdf.textContent = "Não foi possível baixar — tentar novamente";
-      } finally {
-        window.setTimeout(() => {
-          if (!pdf.isConnected) return;
-          pdf.disabled = false;
-          pdf.textContent = previousLabel || "Baixar meu resultado em PDF";
-        }, 1800);
-      }
-    });
-
-    const md = el("button", "btn btn-secondary", "Baixar como texto (.md)");
-    md.type = "button";
-    md.addEventListener("click", () => downloadTextFile(
-      protocol.slug + ".md",
-      buildMarkdown(protocol, result, state.answers)
-    ));
-
-    const copyResult = el("button", "btn btn-secondary", "Copiar resultado");
-    copyResult.type = "button";
-    copyResult.addEventListener("click", () => {
-      const text = buildMarkdown(protocol, result, state.answers);
-      const done = () => {
-        copyResult.textContent = "Resultado copiado";
-        window.setTimeout(() => { if (copyResult.isConnected) copyResult.textContent = "Copiar resultado"; }, 1800);
-      };
-      if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, done);
-      else done();
-    });
-
-    const restart = el("button", "btn btn-secondary", "Refazer o protocolo");
-    restart.type = "button";
-    restart.addEventListener("click", () => {
-      clearPlanState();
-      state.answers = {};
-      state.path = [];
-      render(startIndex(), true);
-      window.scrollTo({ top: mount.offsetTop - 20, behavior: prefersReducedMotion() ? "auto" : "smooth" });
-    });
-
-    // Apagar: remove o que o protocolo gravou neste navegador e desmarca o
-    // plano na tela. A confirmação é texto na página, sem diálogo.
-    const eraseStatus = el("p", "protocol-erase-status");
-    eraseStatus.setAttribute("role", "status");
-    eraseStatus.setAttribute("aria-live", "polite");
-    const erase = el("button", "btn btn-secondary protocol-erase", "Apagar minhas respostas");
-    erase.type = "button";
-    erase.addEventListener("click", () => {
-      clearPlanState();
-      card.querySelectorAll("[data-plan-key]").forEach((check) => {
-        check.checked = false;
-        const item = check.closest(".protocol-plan-item");
-        if (item) item.classList.remove("is-done");
-      });
-      eraseStatus.textContent = "Respostas apagadas deste navegador.";
-    });
-
-    actions.appendChild(pdf);
-    actions.appendChild(md);
-    actions.appendChild(copyResult);
-    actions.appendChild(restart);
-    actions.appendChild(erase);
-    delivery.appendChild(actions);
-    delivery.appendChild(eraseStatus);
-    delivery.appendChild(el("p", "protocol-privacy privacy-line",
-      "Tudo isto rodou no seu navegador. Nenhuma resposta foi enviada a lugar nenhum — os arquivos são gerados no seu dispositivo."));
-    card.appendChild(delivery);
+    card.appendChild(buildDelivery(result, card, { returnSave }));
 
     const share = el("section", "share-row protocol-share");
     share.setAttribute("aria-label", "Compartilhar o protocolo");
@@ -561,7 +1381,8 @@ function runProtocol(protocol, mountId) {
     if (moveFocus) verdictHeading.focus({ preventScroll: true });
   }
 
-  render(startIndex());
+  if (cycleEnabled) boot();
+  else render(startIndex());
 }
 
 // Grau do veredito (1 a 4): SIGA, AJUSTE, ESPERE, NÃO. O desfecho declara
@@ -776,6 +1597,8 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
   const muted = [82, 94, 116];
   const border = [221, 226, 235];
   let y = 16;
+  // Protocolo com os recursos novos limpa o texto pela regra do kit (emoji e símbolos que a fonte não tem).
+  const pdfText = protocolNeedsKit(protocol) && typeof DLTProtocolKit !== "undefined" ? DLTProtocolKit.textoSeguroPdf : safePdfText;
 
   doc.setProperties({
     title: protocol.title,
@@ -800,7 +1623,7 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
     const x = options.x || margin;
     const color = options.color || ink;
     const fontStyle = options.fontStyle || "normal";
-    const lines = doc.splitTextToSize(safePdfText(text), width);
+    const lines = doc.splitTextToSize(pdfText(text), width);
 
     doc.setFont("helvetica", fontStyle);
     doc.setFontSize(fontSize);
@@ -811,6 +1634,18 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
       y += lineHeight;
     });
     return lines.length;
+  };
+
+  const pen = {
+    doc,
+    margin,
+    pageWidth,
+    contentWidth,
+    colors: { blue, ink, muted, border },
+    writeLines,
+    ensureSpace,
+    get y() { return y; },
+    set y(value) { y = value; },
   };
 
   const logoHeight = 15;
@@ -858,11 +1693,11 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
       doc.setFont("helvetica", "bold");
       doc.setFontSize(12);
       doc.setTextColor(...blue);
-      doc.text(safePdfText(stat.value), x + 4, y + 4);
+      doc.text(pdfText(stat.value), x + 4, y + 4);
       doc.setFont("helvetica", "normal");
       doc.setFontSize(7.2);
       doc.setTextColor(...muted);
-      doc.text(safePdfText(stat.label), x + 4, y + 10);
+      doc.text(pdfText(stat.label), x + 4, y + 10);
     });
     y += 22;
   }
@@ -871,6 +1706,8 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
     writeLines(paragraph, { fontSize: 10.5, lineHeight: 5.2, color: ink });
     y += 3.2;
   });
+
+  (result.sections || []).forEach((section) => writeSection(pen, section));
 
   const records = (result.record || []).filter((item) => item.value);
   if (records.length) {
@@ -959,9 +1796,14 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
     });
   }
 
+  if (result.registro && typeof result.registro.codigo === "string") writeRegistro(pen, result.registro);
+
   const totalPages = doc.getNumberOfPages();
   const pageUrl = "dlt.academy" + String(protocol.path || "/").replace(/\/$/, "");
-  const disclaimer = "Conteúdo educacional · Reflexão estruturada — não é terapia nem recomendação de investimento";
+  const customDisclaimer = typeof protocol.disclaimer === "string" && protocol.disclaimer ? pdfText(protocol.disclaimer) : "";
+  const disclaimerLines = customDisclaimer
+    ? doc.splitTextToSize(customDisclaimer, contentWidth - 14).slice(0, 2)
+    : ["Conteúdo educacional · Reflexão estruturada — não é terapia nem recomendação de investimento"];
 
   for (let page = 1; page <= totalPages; page += 1) {
     doc.setPage(page);
@@ -972,11 +1814,11 @@ function downloadProtocolPdf(protocol, result, brandAsset) {
     doc.setFontSize(7.2);
     doc.setTextColor(...muted);
     doc.text(pageUrl, margin, pageHeight - 12.5);
-    doc.text(disclaimer, margin, pageHeight - 8.5);
+    disclaimerLines.forEach((line, i) => doc.text(line, margin, pageHeight - 8.5 + i * 3.3));
     doc.text(`${page}/${totalPages}`, pageWidth - margin, pageHeight - 8.5, { align: "right" });
   }
 
-  doc.save(protocol.slug + "-resultado.pdf");
+  doc.save(fileNameFor(result, "pdf", protocol.slug + "-resultado.pdf"));
 }
 
 function safePdfText(value) {
@@ -1002,6 +1844,9 @@ function buildMarkdown(protocol, result, answers) {
     linhas.push("");
   }
   (result.body || []).forEach((p) => { linhas.push(p); linhas.push(""); });
+  // Com blocos marcados, são eles que levam as seções; sem blocos, as seções saem como texto.
+  const marked = Array.isArray(result.blocks) && result.blocks.length > 0 && typeof DLTProtocolKit !== "undefined";
+  if (!marked) (result.sections || []).forEach((section) => markdownSection(section).forEach((l) => linhas.push(l)));
   if (result.record && result.record.length) {
     linhas.push("## O que você registrou");
     linhas.push("");
@@ -1021,15 +1866,25 @@ function buildMarkdown(protocol, result, answers) {
     });
     linhas.push("");
   }
+  if (marked) {
+    // O texto dela fora dos blocos também perde o que pareceria um marcador de máquina.
+    const human = DLTProtocolKit.neutralizar(linhas.join("\n")).split("\n");
+    linhas.length = 0;
+    human.forEach((l) => linhas.push(l));
+    linhas.push(DLTProtocolKit.escreverBlocos(result.blocks));
+    linhas.push("");
+  }
   linhas.push("---");
-  linhas.push("Reflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.");
+  linhas.push(typeof protocol.disclaimer === "string" && protocol.disclaimer
+    ? protocol.disclaimer
+    : "Reflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.");
   linhas.push("dlt.academy" + (protocol.path || ""));
   return linhas.join("\n");
 }
 
-// Download de arquivo de texto client-side. Nada é transmitido.
-function downloadTextFile(filename, content) {
-  const blob = new Blob([content], { type: "text/markdown;charset=utf-8" });
+// Download de arquivo de texto client-side. Nada é transmitido. O tipo padrão é Markdown.
+function downloadTextFile(filename, content, type) {
+  const blob = new Blob([content], { type: type || "text/markdown;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -1041,6 +1896,153 @@ function downloadTextFile(filename, content) {
   window.setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
+// Nome do arquivo que o resultado pede (`result.arquivos.pdf|md|ics`), se vier num formato
+// seguro; senão o padrão.
+function fileNameFor(result, kind, fallback) {
+  const name = result && result.arquivos && result.arquivos[kind];
+  return typeof name === "string" && /^[A-Za-z0-9._-]{1,80}$/.test(name) ? name : fallback;
+}
+
+// Uma seção do resultado em Markdown (título, parágrafos e itens).
+function markdownSection(section) {
+  const linhas = ["## " + section.title, ""];
+  (section.paragraphs || []).forEach((p) => { linhas.push(p); linhas.push(""); });
+  (section.items || []).forEach((item) => {
+    if (item && typeof item === "object") linhas.push("- **" + item.title + "**" + (item.text ? " — " + item.text : ""));
+    else linhas.push("- " + item);
+  });
+  if (section.items && section.items.length) linhas.push("");
+  return linhas;
+}
+
+// Uma seção no PDF. `pen` é o que downloadProtocolPdf expõe: o documento, a posição
+// vertical (`y`), as cores e os métodos de escrever e de abrir página.
+function writeSection(pen, section) {
+  if (!section || !section.title) return;
+  pen.ensureSpace(18);
+  pen.y += 2;
+  pen.doc.setDrawColor(...pen.colors.border);
+  pen.doc.setLineWidth(0.4);
+  pen.doc.line(pen.margin, pen.y, pen.pageWidth - pen.margin, pen.y);
+  pen.y += 9;
+  pen.writeLines(section.title, { fontSize: 14, lineHeight: 6.5, fontStyle: "bold", color: pen.colors.ink });
+  pen.y += 2;
+  (section.paragraphs || []).forEach((paragraph) => {
+    pen.writeLines(paragraph, { fontSize: 10.5, lineHeight: 5.2, color: pen.colors.ink });
+    pen.y += 3.2;
+  });
+  (section.items || []).forEach((item) => {
+    pen.ensureSpace(12);
+    if (item && typeof item === "object") {
+      pen.writeLines(item.title, { fontSize: 9.8, lineHeight: 4.9, fontStyle: "bold", color: pen.colors.blue });
+      if (item.text) pen.writeLines(item.text, { fontSize: 9.8, lineHeight: 4.9, color: pen.colors.ink });
+    } else {
+      pen.writeLines("- " + item, { fontSize: 9.8, lineHeight: 4.9, color: pen.colors.ink });
+    }
+    pen.y += 2.2;
+  });
+}
+
+// O registro no PDF: o resumo legível e o código em courier pequeno, quebrado em linhas
+// sem espaço (quem lê junta as linhas).
+function writeRegistro(pen, registro) {
+  pen.ensureSpace(30);
+  pen.y += 2;
+  pen.doc.setDrawColor(...pen.colors.border);
+  pen.doc.setLineWidth(0.4);
+  pen.doc.line(pen.margin, pen.y, pen.pageWidth - pen.margin, pen.y);
+  pen.y += 9;
+  pen.writeLines(registro.titulo || "Seu registro", { fontSize: 14, lineHeight: 6.5, fontStyle: "bold", color: pen.colors.ink });
+  pen.y += 2;
+  (registro.resumo || []).forEach((linha) => {
+    if (typeof linha === "string") {
+      pen.writeLines(linha, { fontSize: 10, lineHeight: 5, color: pen.colors.ink });
+    } else if (linha && linha.value) {
+      pen.writeLines(linha.q, { fontSize: 8.6, lineHeight: 4.3, fontStyle: "bold", color: pen.colors.blue });
+      pen.writeLines(linha.value, { fontSize: 10, lineHeight: 5, color: pen.colors.ink });
+    }
+    pen.y += 2;
+  });
+  if (!/^[A-Za-z0-9_-]{1,2048}$/.test(registro.codigo || "")) return;
+  pen.y += 1;
+  pen.writeLines("Código do registro (copie sem as quebras de linha para recuperar este resultado):", {
+    fontSize: 8.6,
+    lineHeight: 4.3,
+    color: pen.colors.muted,
+  });
+  pen.y += 1.5;
+  pen.doc.setFont("courier", "normal");
+  pen.doc.setFontSize(8);
+  pen.doc.setTextColor(...pen.colors.ink);
+  for (let i = 0; i < registro.codigo.length; i += 96) {
+    pen.ensureSpace(4.2);
+    pen.doc.text(registro.codigo.slice(i, i + 96), pen.margin, pen.y);
+    pen.y += 3.7;
+  }
+  pen.y += 2;
+}
+
+// Cabeça do resultado (e do checkpoint): a chamada, o veredito, os números e o texto.
+// Devolve o título do veredito, que recebe o foco.
+function appendResultHead(card, result, grade, el) {
+  card.appendChild(el("p", "protocol-eyebrow section-eyebrow", result.eyebrow || "Seu resultado"));
+
+  const verdictPanel = el("div", "protocol-verdict-panel");
+  if (result.pill !== false) verdictPanel.appendChild(buildVerdictPill(grade, el));
+  const verdictHeading = el("h2", "protocol-verdict", result.verdict);
+  verdictHeading.tabIndex = -1;
+  verdictPanel.appendChild(verdictHeading);
+  card.appendChild(verdictPanel);
+
+  if (result.stats && result.stats.length) {
+    const stats = el("div", "protocol-result-stats");
+    stats.setAttribute("role", "group");
+    stats.setAttribute("aria-label", "Indicadores do resultado");
+    result.stats.slice(0, 3).forEach((stat) => {
+      const cell = el("div", "protocol-stat");
+      cell.appendChild(el("span", "num-label", stat.label));
+      cell.appendChild(el("strong", "num-value tnum", stat.value));
+      stats.appendChild(cell);
+    });
+    card.appendChild(stats);
+  }
+
+  const copy = el("div", "protocol-result-copy");
+  (result.body || []).forEach((p) => copy.appendChild(el("p", "protocol-body", p)));
+  card.appendChild(copy);
+  (result.sections || []).forEach((section, i) => card.appendChild(buildSection(section, i, el)));
+  return verdictHeading;
+}
+
+// Seção do resultado: título, parágrafos e itens (texto, ou { title, text }). `kind` só
+// marca o tipo na classe, para o estilo.
+function buildSection(section, index, el) {
+  const kind = typeof section.kind === "string" && /^[a-z0-9-]{1,24}$/.test(section.kind) ? section.kind : "";
+  const box = el("section", "protocol-section" + (kind ? " is-" + kind : ""));
+  if (kind) box.dataset.kind = kind;
+  const titleId = "protocol-section-" + (safeDomId(section.id == null ? index : section.id) || index);
+  box.setAttribute("aria-labelledby", titleId);
+  const title = el("h3", "protocol-section-title", section.title);
+  title.id = titleId;
+  box.appendChild(title);
+  (section.paragraphs || []).forEach((p) => box.appendChild(el("p", "protocol-body", p)));
+  if (section.items && section.items.length) {
+    const list = el("ul", "protocol-section-items");
+    section.items.forEach((item) => {
+      const li = el("li");
+      if (item && typeof item === "object") {
+        li.appendChild(el("strong", "protocol-section-item-title", item.title));
+        if (item.text) li.appendChild(el("span", "protocol-section-item-text", item.text));
+      } else {
+        li.textContent = String(item);
+      }
+      list.appendChild(li);
+    });
+    box.appendChild(list);
+  }
+  return box;
+}
+
 // ---- recursos novos (usam o kit): tipos de passo, progresso e complemento ----
 // Cada controle devolve { node, ready(), commit(answers) }: `ready` diz se a
 // resposta dele já é válida e `commit` a grava em `answers`. Só createElement e
@@ -1050,9 +2052,10 @@ const PROTOCOL_KIT_STEP_TYPES = ["multi", "scale", "grade", "triad"];
 
 // O protocolo declara algo que só o kit sabe tratar?
 function protocolNeedsKit(protocol) {
-  if (protocol.progresso === "grupos") return true;
-  return protocol.steps.some((step) =>
+  if (protocol.progresso === "grupos" || protocol.persist || protocol.retornos || protocol.importar) return true;
+  return (protocol.steps || []).some((step) =>
     PROTOCOL_KIT_STEP_TYPES.indexOf(step.type) !== -1 ||
+    step.type === "checkpoint" ||
     typeof step.showIf === "function" ||
     Boolean(step.followUp) ||
     Boolean(step.grupo) ||
@@ -1367,6 +2370,9 @@ if (typeof module !== "undefined" && module.exports) {
     safePdfText,
     buildMarkdown,
     downloadTextFile,
+    downloadProtocolPdf,
+    buildSection,
+    fileNameFor,
     protocolNeedsKit,
     stepUsesControls,
   };

@@ -449,3 +449,77 @@
   .protocol-scale-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); }
   .protocol-grade-btn { flex: 1 1 120px; }
 }
+
+/* ============================================================
+   Ciclo de volta: checkpoint, o que está guardado, retornos e recuperação.
+   ============================================================ */
+.protocol-cycle-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.protocol-cycle .protocol-record { margin-top: 18px; }
+.protocol-cycle-status,
+.protocol-save-status {
+  margin: 12px 0 0;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+.protocol-cycle-status:empty,
+.protocol-save-status:empty { display: none; }
+
+/* Arquivo: o campo de verdade fica escondido sem sair do teclado; o rótulo é o botão. */
+.protocol-file { position: relative; display: inline-flex; align-items: center; margin: 14px 0 0; cursor: pointer; }
+.protocol-file-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.protocol-file:focus-within { outline: 2px solid var(--accent); outline-offset: 2px; }
+.protocol-recovery-code { display: grid; gap: 10px; margin: 16px 0 0; justify-items: start; }
+.protocol-recovery-code .protocol-write { width: 100%; }
+
+.protocol-checkpoint-actions { margin-top: 24px; }
+.protocol-checkpoint .protocol-back { margin-top: 12px; }
+
+@media (max-width: 560px) {
+  .protocol-cycle-actions .btn,
+  .protocol-recovery-code .btn,
+  .protocol-file { width: 100%; justify-content: center; text-align: center; }
+}
+
+/* ============================================================
+   Resultado em seções, registro em código e lembretes.
+   ============================================================ */
+.protocol-section {
+  margin: 28px 0 0;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+}
+.protocol-section-title { font-size: 19px; line-height: 1.3; margin: 0 0 12px; }
+.protocol-section .protocol-body + .protocol-body { margin-top: 12px; }
+.protocol-section-items { list-style: none; margin: 14px 0 0; padding: 0; display: grid; gap: 12px; }
+.protocol-section-items li {
+  display: grid;
+  gap: 3px;
+  padding-left: 14px;
+  border-left: 2px solid var(--border);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text-dim);
+  overflow-wrap: anywhere;
+}
+.protocol-section-item-title { color: var(--text); font-size: 15px; font-weight: 650; }
+.protocol-section-item-text { color: var(--text-dim); }
+
+.protocol-registro .protocol-actions { margin: 16px 0 10px; }
+.protocol-registro-details { margin: 16px 0 0; }
+.protocol-registro-details summary { cursor: pointer; font-size: 15px; min-height: 44px; display: flex; align-items: center; color: var(--text-dim); }
+.protocol-registro-code {
+  width: 100%;
+  margin-top: 8px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
