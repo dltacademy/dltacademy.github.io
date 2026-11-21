@@ -199,8 +199,8 @@ const PROTOCOL = (function montarProtocolo() {
         grupo: GRUPO_ATO1,
         type: "triad",
         eyebrow: "As frases · " + (i + 1) + " de " + bib.triades.length,
-        prompt: bib.telas.triade.prompt,
-        help: TEXTOS.triade,
+        prompt: i === 0 ? bib.telas.triade.prompt : (bib.telas.triade.prompt_seguinte || bib.telas.triade.prompt),
+        help: i === 0 ? TEXTOS.triade : "",
         labels: { mais: bib.telas.triade.mais, menos: bib.telas.triade.menos },
         items: t.itens.map((id) => ({ id, label: bib.itens[id].texto })),
       });

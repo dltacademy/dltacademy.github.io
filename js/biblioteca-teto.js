@@ -71,7 +71,7 @@
               "label": "escrever o destino do próximo dinheiro a mais antes de ele chegar, chamando-o de provisão (não de bônus)"
             }
           ],
-          "degrau2": "espera de 72 horas para gasto não planejado acima de um valor dela",
+          "degrau2": "espera de 72 horas para gasto não planejado acima de um valor que você define",
           "degrau3": "uma porcentagem de cada entrada (15 a 30%) vai no mesmo dia para uma conta separada, sem app no celular principal",
           "se_entao_exemplo": "quando entrar dinheiro a mais, antes de qualquer gasto, sigo o destino escrito",
           "metrica": "quanto do último extra chegou ao destino"
@@ -85,7 +85,7 @@
           }
         },
         "leitura": {
-          "base": "Quando entra dinheiro a mais, ele costuma sair antes de ter um destino. O padrão protege o lugar em que você se sente em casa com o dinheiro, e a culpa de ter mais do que está acostumada a ter."
+          "base": "Quando entra dinheiro a mais, ele costuma sair antes de ter um destino. O padrão protege o lugar em que você se sente em casa com o dinheiro, e a culpa de ter mais do que você costuma ter."
         },
         "regra_trabalho_exemplo": "dinheiro vai para onde eu decido antes de ele chegar",
         "rascunho": true
@@ -222,13 +222,13 @@
           "texto": "Hoje: escreva a menor ação que leva você ao próximo passo e o dia em que vai fazê-la. Se o medo for o que pesa, escreva também o pior caso real."
         },
         "leitura": {
-          "base": "Quando a chance aparece, o passo não sai. O padrão protege você de errar e de ser testada, e o preço é a chance que passa.",
+          "base": "Quando a chance aparece, o passo não sai. O padrão protege você de errar e de passar por uma prova, e o preço é a chance que passa.",
           "por_variante": {
             "medo-de-errar": "No seu caso, o que mais pesa é o medo de errar: o \"e se\" fala mais alto que a chance.",
-            "nao-estou-pronto": "No seu caso, o que mais pesa é a sensação de não estar pronta: sempre falta preparar mais um pouco antes de começar."
+            "nao-estou-pronto": "No seu caso, o que mais pesa é a sensação de que ainda falta preparo: sempre há mais um pouco para preparar antes de começar."
           }
         },
-        "regra_trabalho_exemplo": "eu fico pronta fazendo pequeno",
+        "regra_trabalho_exemplo": "eu me preparo fazendo pequeno",
         "rascunho": true
       },
       "decisao-no-calor": {
@@ -1603,6 +1603,7 @@
       },
       "triade": {
         "prompt": "Das três frases, qual soa mais verdadeira para você e qual soa menos, mesmo que você saiba que não deveria?",
+        "prompt_seguinte": "E nestas três: qual soa mais verdadeira e qual soa menos?",
         "mais": "Soa mais verdadeira",
         "menos": "Soa menos verdadeira"
       },
@@ -2508,7 +2509,7 @@
       "nao_indica": {
         "titulo": "O que o seu resultado não indica",
         "por_contra": "Você marcou: \"{resposta}\". Por isso, {nome} não parece ser o seu teto hoje.",
-        "por_nao_acontece": "Você disse que isso não acontece: {cena}. Por isso, {nome} não parece ser o seu teto hoje.",
+        "por_nao_acontece": "Na cena de {cena}, você marcou que isso não acontece com você. Então {nome} não parece ser o seu teto hoje.",
         "por_familia": "A frase \"{resposta}\" soou menos verdadeira para você, então {nome} pesa pouco."
       },
       "nenhum": {

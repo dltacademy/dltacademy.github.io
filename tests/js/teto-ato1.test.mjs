@@ -131,7 +131,7 @@ test("caso C: passo que não sai, com a variante escolhida e a trava do ganho", 
   assert.equal(parou, "fim_ato1");
   assert.equal(veredito(p), "Seu teto hoje: O passo que não sai");
   assert.equal(respostas.variante, "nao-estou-pronto");
-  assert.match(p.mount.textContent, /não estar pront/i, "a leitura traz a variante");
+  assert.ok(p.mount.textContent.includes(bib.padroes["passo-que-nao-sai"].leitura.por_variante["nao-estou-pronto"]), "a leitura traz a variante");
 });
 
 test("caso D: o chão primeiro, com plano e sem oferta, registro, lembrete nem guardar", async () => {
