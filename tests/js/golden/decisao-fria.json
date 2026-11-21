@@ -1,0 +1,2258 @@
+{
+ "protocolo": "decisao-fria",
+ "texto": {
+  "cheio": {
+   "0.0.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Quase lá. Falta fechar um ponto antes de agir.",
+    "resultado": "2db22b949b50def7",
+    "md": "29a415389fc15063",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.0.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "d38364ae67ac1745",
+    "md": "d5365f06b7385e52",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.0.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "d38de18cf26f9afb",
+    "md": "c69d4278fdc85ca3",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.0.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Quase lá. Falta fechar um ponto antes de agir.",
+    "resultado": "e4506696fb819add",
+    "md": "969c96921d107089",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.0.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "78e61e7c22b44c6f",
+    "md": "e8181bc73e7850c0",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.0.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "696ff6b4fe0c124b",
+    "md": "5b2a4b537ce1b63e",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.0.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Pode seguir, com as travas que você escreveu.",
+    "resultado": "cd13c2eafed4d445",
+    "md": "d1cae07de8d075f4",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.0.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Quase lá. Falta fechar um ponto antes de agir.",
+    "resultado": "dd054afbddc56383",
+    "md": "62037b8ba564c6a3",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.0.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "060362ba9b2372cd",
+    "md": "cfa468f50534236d",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "20ae95cf3292e1c2",
+    "md": "774dcbfe02ea6c64",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "828778072b6f5108",
+    "md": "3ce241b713e3aaf1",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "3d30155e59e654b7",
+    "md": "1fb042062ededf6a",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "01948392ee910ced",
+    "md": "74ea1575a27580a0",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "f469ea4a371142d3",
+    "md": "466d6ab88c0ad83c",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "a13b63f318b957b4",
+    "md": "3f21379519ae18fb",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Quase lá. Falta fechar um ponto antes de agir.",
+    "resultado": "34ea5ae0d95eecbb",
+    "md": "c3d2a909db56680d",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "ec32f577f81b5090",
+    "md": "fcaae5307475b47c",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "72b71a4f6492fa6b",
+    "md": "cf1ec7fd93661363",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "34850108d5f69653",
+    "md": "5e30e24ebd486bf3",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "d7f4881e7e07a3af",
+    "md": "7b8d846e4a926af2",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "53e49083f464b944",
+    "md": "6b70c727254c2ebe",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "f8fafc29cbfac462",
+    "md": "58d27059fbed6e11",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "635537a1450011bd",
+    "md": "774e4de16c55b843",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "4833023c572efc65",
+    "md": "d23659187e1e36d0",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Quase lá. Falta fechar um ponto antes de agir.",
+    "resultado": "ff2517e4af430d56",
+    "md": "beac045ad8a689d6",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "decf75c49d20888f",
+    "md": "2b8a8a19578fd14d",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "29221f3219955ff8",
+    "md": "8a1c9bb7a29bd217",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "b1724cf233e33327",
+    "md": "de6c4e841cae32da",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "3f2471ddf658727c",
+    "md": "9c4d46fb6cc5f7d7",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "790c8a4cc715e915",
+    "md": "cb888f644db1ccbc",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "d9aa7ad3b398f897",
+    "md": "cef70ee57969f94e",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "fdd6df7f7ffefab7",
+    "md": "7b356c7927c16c40",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "0e0e8a5e322bbf3e",
+    "md": "f76b6eb942c872a5",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Quase lá. Falta fechar um ponto antes de agir.",
+    "resultado": "d95e284479163541",
+    "md": "0e9d0f05c81fa344",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "2e1a948885802cd0",
+    "md": "556e5f8f902e076d",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "629eef5f6e901260",
+    "md": "f5c682e8abb23b0f",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "8dec2b4201462873",
+    "md": "fb775fe43578bcbc",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "030d2ea1e1b42216",
+    "md": "114ae1214e36a26b",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "ee10acecaf00d2b4",
+    "md": "fa09f470e17d858b",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "e872bd5cf74edd54",
+    "md": "9116a7fe458197e7",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "678262c2fbee017f",
+    "md": "9b9408fb1341d7e9",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "f4ff6ef43e3965b9",
+    "md": "c38d5a9474b5c3c2",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "a82bddcdecf1f11d",
+    "md": "04851d6fd6989f4c",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "60fcab0195f46f49",
+    "md": "d534a28bedfa9a01",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "ff489e563ae36090",
+    "md": "037bca5b7413e47d",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "af327d30015ab790",
+    "md": "712bbc6ad39468c9",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "8ca860ee6d9797e2",
+    "md": "67b5018de7ecc716",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "634175959ca02817",
+    "md": "da908fd981e0bea7",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "2253b0ee49ab59af",
+    "md": "204a8f498e39d7ab",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "920916f0e94ce1d9",
+    "md": "56685540dd45493d",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "1cf26044d54b39ca",
+    "md": "a3ec7962e30ba8de",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "367e4c412b51eef2",
+    "md": "ccd8ffee3338dec6",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "4bc90a1606007466",
+    "md": "d046ad99e00d6490",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "11ee7950cab773cc",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "f198db25f6421c25",
+    "md": "fedf61503bfad76c",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "73d702035981b63d",
+    "md": "dc5c7fcaac4b75bf",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "d9eec59e80434ba9",
+    "md": "96a4dded519c38ec",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "b44fd44c7007ccb4",
+    "md": "bd7ef5b54fb95874",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "ae3b1011f16767fc",
+    "md": "d62a9bf29df9eb05",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "9c1bcf183f7e9004",
+    "md": "e67bc7c956ea6027",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "ae28e244d0f00cfd",
+    "md": "6ff6ce4d19eff930",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Pode ser proteção, pode ser aposta. Defina qual antes de abrir.",
+    "resultado": "7b046051b9269681",
+    "md": "dcdb550279ebe5ca",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "0df858c0da07f45f",
+    "md": "360245f4ead6432d",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "e951402334d2ce06",
+    "md": "15aadfdaf87ca802",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "e04d3c5b30cde731",
+    "md": "36530c89935a185a",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "ce70a2f9b0a2f4f6",
+    "md": "4e9b2c611eda4623",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "35775889c8cee7c0",
+    "md": "0bd9e754912ab7ec",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "67fc6320e125d0ca",
+    "md": "327ab2009e0e60aa",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "cca81c1767cfa405",
+    "md": "6c289e43f8d968b8",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "071c2e98db2ec92e",
+    "md": "cdfcf126783bdf2a",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "ac04cd1bd3f284bd",
+    "md": "864837cc96779358",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "7df4ea82f210cf7f",
+    "md": "c6c31ef3cf908327",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "e3666d935359669f",
+    "md": "7dbff33e080df907",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "c4862c1d5edce138",
+    "md": "8b876205a3b02aa8",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "eeced49e2808b7bf",
+    "md": "a6ba3d66aadb63a5",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "a22f135818853477",
+    "md": "a520ffd9e101a8cc",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "c7b0eb805de4853d",
+    "md": "45cc0b8b3d8b707a",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "e6c0b4c6eeb68b9a",
+    "md": "dd47d5c5d3f6bee6",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "bda1a751011c15ee",
+    "md": "40e9ad261ee5aca0",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "a556c519b5ff9bb3",
+    "md": "bbd1f2af0110a71e",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "e3ba92ebe220e135",
+    "md": "dda99188217937e3",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "8f8b5654459df823",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "a3fac90d73a2422f",
+    "md": "76e040e0715989db",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "4936154d751bf65b",
+    "md": "ee504abae0dd37fb",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "131914461dd98302",
+    "md": "685788457cded3da",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "9baa5be9e2bff634",
+    "md": "c068687437469762",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "d3b1b4454354c64d",
+    "md": "b0fd44bdc40a70b0",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "c37119a6549eb062",
+    "md": "e1dc25ac93d8d6bc",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "dbc4f9dcca344ab2",
+    "md": "51975d18bcfa7bbd",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "e5d823e8a0e9915d",
+    "md": "2090123398335a16",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "ac118b0927d2320b",
+    "md": "9958e16dca7a0526",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "691a2dbc281b14a3",
+    "md": "87c1b89df89f23cc",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "24cd95a2d09304da",
+    "md": "1dd95f6c81e8855d",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "c7c9b374fc1df7fe",
+    "md": "2b5a1dce4728a2d5",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "ccf70aedc2cc4455",
+    "md": "7f6e8be8fdd6559d",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "d403eda8baff4591",
+    "md": "710ff236fc44e4b8",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "baa980394b54c946",
+    "md": "6f3c996882fe2a88",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "bdf333e1ab1119e3",
+    "md": "04c00d4a0d6e78e4",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "398c0e61df5223dd",
+    "md": "b4fb557c168c5445",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "ceba6f1d407d3d90",
+    "md": "84c16b11d265cecb",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "6249faa48652f777",
+    "md": "8c74b1f0ed8a5479",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "1799769cccd58c0d",
+    "md": "1df4c64ced4daa95",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "9593f3b704f4f493",
+    "md": "80f6da4000b7e3ca",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "11e60d57f2e3b1af",
+    "md": "aa9c6086f0c864f5",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "b7e8769766c3882e",
+    "md": "5545baee289d6977",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "61f6ae9605e8d871",
+    "md": "acbe53efe31d8530",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "b3ceeb13d525221e",
+    "md": "12bd1e610184a057",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "00986f782750bb7a",
+    "md": "fc019ee213936859",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "37d3627336f1a1a0",
+    "md": "9c5aae7389ac1645",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "a420c1e5c985b331",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "8b75eebed86e030b",
+    "md": "d062e187c098e55a",
+    "mdNome": "decisao-fria.md"
+   }
+  },
+  "vazio": {
+   "0.0.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Quase lá. Falta fechar um ponto antes de agir.",
+    "resultado": "5e71920c338c8e24",
+    "md": "c835d44cf7e4fba4",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.0.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "0f21a834a80ce6c7",
+    "md": "0319b90b399949f4",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.0.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "15a7d5a9876419b3",
+    "md": "604631616f96dc14",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.0.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Quase lá. Falta fechar um ponto antes de agir.",
+    "resultado": "d80da617b1e42f50",
+    "md": "40119728353b3412",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.0.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "e59ea8a2ecb7964e",
+    "md": "8135cb82730ec037",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.0.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "a4a939f6c8891daf",
+    "md": "1564a03b88164431",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.0.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Quase lá. Falta fechar um ponto antes de agir.",
+    "resultado": "7f58f01d00c71d57",
+    "md": "0e9e5352d5325a94",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.0.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Quase lá. Falta fechar um ponto antes de agir.",
+    "resultado": "82ee5c4e1da3e169",
+    "md": "d197005821e06666",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.0.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "e6f08b87a9acad68",
+    "md": "84ea642ca2412ee7",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "385399cbb38bc61f",
+    "md": "3e7dfc47e5dc89df",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "d178bf70f8c54344",
+    "md": "90ceffbec5e3a5dc",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "4b0f5f7b30e091c8",
+    "md": "3b6f995388c58441",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "a1e486bf242e6e9a",
+    "md": "a8a18fd47a9c12cf",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "e64b4198e3baec6c",
+    "md": "eca1584cbc664231",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "53c43272648deacb",
+    "md": "697dcb1c83a3d1c4",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Quase lá. Falta fechar um ponto antes de agir.",
+    "resultado": "0239c41b57e1ca1b",
+    "md": "b448d4c97990f8a4",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "be83dabc1414b216",
+    "md": "c2e86c0e1ede97fd",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.1.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "3c9b1fd09b153808",
+    "md": "ae31cd0cfe79fff7",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "3aeeb30749dc0c3a",
+    "md": "ac7992cd970a017c",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "f0a4e56b348071c0",
+    "md": "f39be4200f1a5973",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "e5aab009fa0babb1",
+    "md": "d81d9054dff172c3",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "f789c51e4d8fd88d",
+    "md": "38c8ab4e10610b4e",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "6d614fa0a86ca50c",
+    "md": "0e05751c840b24d0",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "87e71307ae711871",
+    "md": "742ae9a16e6695ea",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Quase lá. Falta fechar um ponto antes de agir.",
+    "resultado": "0bedee4d18beca77",
+    "md": "5cda43a6407e430b",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "e451d818f9ab0e76",
+    "md": "acb6614bd8caa0cb",
+    "mdNome": "decisao-fria.md"
+   },
+   "0.2.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "1235f9729ed66ba9",
+    "md": "09fd262499da0385",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "cff3cad46be15397",
+    "md": "70ffe777df9522cc",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "b1332a0878eef19e",
+    "md": "7029ec8ae09606fb",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "6e7cb00782fa0e36",
+    "md": "6a66734b85ae3460",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "41e1197bd4bb681c",
+    "md": "87580606bf8e7533",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "ca88ba8827d35b9f",
+    "md": "2bbaa2a1d1c72347",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "abb5cf2cc6483dca",
+    "md": "8e5f1eb769e01733",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Quase lá. Falta fechar um ponto antes de agir.",
+    "resultado": "beb10a81918c52ec",
+    "md": "1509627606cec3d2",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "594e752a7c03086a",
+    "md": "a6bcb8168d32a465",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.0.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "d0c80394f8ec562c",
+    "md": "0af17266dc52cf0c",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "82ab3188713069d6",
+    "md": "8a9f64a665275cc2",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "0f93d600cf1250b7",
+    "md": "3c6060fc01b5073d",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "40c8a49071753688",
+    "md": "054dffb71b8b51d5",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "5cfd6de687d9b6f3",
+    "md": "2a8ff0df96ad8fe7",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "b77e3ef0940cb79f",
+    "md": "be00d1c8ca54bb07",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "6a4c8549513b7879",
+    "md": "77288f83695dc4fc",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "b54e8e607d62682e",
+    "md": "e554c2d75bc03d8b",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "c94a1b39a1304be1",
+    "md": "9e59f3152dfa8626",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.1.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "1045c7af0c3612a7",
+    "md": "73769dc34115550c",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "562cf0700b758e06",
+    "md": "cd8a7035155c21f3",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "acbccc8fdaa799a8",
+    "md": "8c70adcd6e15939f",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "10daabc8167c2548",
+    "md": "3b9d04ccf9ec079c",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "a36363be8bc663c3",
+    "md": "76e5200520910746",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "25bed95ddc3157ea",
+    "md": "de5b8404c19024e7",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "00708f75ca709f0e",
+    "md": "865a5a6a3d52ad5c",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "e666cfaed53f21e2",
+    "md": "3cc1143f4cd328ca",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Ainda não é uma decisão. É uma vontade com pressa.",
+    "resultado": "8dea8a70bdaaccd0",
+    "md": "be038225eb0b4967",
+    "mdNome": "decisao-fria.md"
+   },
+   "1.2.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "1af15fc70b3e34fa",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "92e8e2bf76e515f1",
+    "md": "cb1542356ae4934c",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "afd632e43bb72ce8",
+    "md": "7776f2b10bd50a71",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "dd9c165dbe3a9cdc",
+    "md": "2a58a0d563db174e",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "e70923c5ea393c85",
+    "md": "e8ff24b5feab06a8",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "25afaf077c7ba7c2",
+    "md": "9450388938e5d5c2",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "71de74b182013c53",
+    "md": "6f850ff8facc1860",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "2e76411437d12b38",
+    "md": "29a72460324e67c2",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Pode ser proteção, pode ser aposta. Defina qual antes de abrir.",
+    "resultado": "d535aa1c122db5fa",
+    "md": "909431b0f713ab42",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "08a6bb2af4dc5cbd",
+    "md": "70ae41572ed9b7b7",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.0.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "6118577559007d42",
+    "md": "27a4bdc487caeadf",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "2493b9a28be692ed",
+    "md": "cd66072cea733d3f",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "99efb957b50bef24",
+    "md": "9bb720d330e67f6e",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "a41139299eae6017",
+    "md": "837da642b6b8b793",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "a533982e04cb7c19",
+    "md": "6c0019bcf658b27b",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "8b741cc501181cca",
+    "md": "64cb01536577be5f",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "98da05f9c51a1388",
+    "md": "120bab180ad3c48c",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "921c716138946712",
+    "md": "a9581c2ecce83074",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "419fdc651fb062fc",
+    "md": "f863f93d15b207da",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.1.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "44e72ee4d305b677",
+    "md": "33f49370bc61e580",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "9a8837363b94cfff",
+    "md": "9384b1e48e54b34e",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "74e0c89597248615",
+    "md": "46347a1b584a1848",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "15d388fc2a72a5b0",
+    "md": "441845be6d80fbb0",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "2f4bf88e1fa16649",
+    "md": "16e11de8fbdf43fc",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "38e0e57b9aefa719",
+    "md": "ce14f427cdf98c4c",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "7b036cd88e2a2612",
+    "md": "a354d49db1d8be05",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "d040be9f6d845eac",
+    "md": "5a88b6f0cf10aa74",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.",
+    "resultado": "ab99f045b580fdfc",
+    "md": "2372c56a5b1fbbdb",
+    "mdNome": "decisao-fria.md"
+   },
+   "2.2.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "367e5b86a43da4e2",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "ce86b530d3443a15",
+    "md": "dee0ba350c5c16b9",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "0d5a2578f68c0128",
+    "md": "67957a9a5fbb5a4a",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "446cd41c5960015f",
+    "md": "fce089e43dac19c2",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "77415bb70c1736ab",
+    "md": "9893baab8bc741e6",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "21343c7668e682e3",
+    "md": "52298257a448d8cb",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "8da5300169d88733",
+    "md": "158fee1bc5f1730c",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "fe35652415a192a6",
+    "md": "77a34098d3ff3e0e",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "e580fa7fd5443fb4",
+    "md": "81ed34ed6df090d7",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "09cddd32f73eae9b",
+    "md": "4d5dfe7c0abae7d7",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.0.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "11f7c590edc097ed",
+    "md": "d759cc0375d05f40",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "ab6912110c91f754",
+    "md": "e27c39325408fba3",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "e3495632f421fd5d",
+    "md": "a0f2180ce9723611",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "95bad2787594ec1e",
+    "md": "0b4b38ec341be27b",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "c7f132f8e382968d",
+    "md": "3e07bf77f00bc72c",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "a6cfb47a006f0965",
+    "md": "69f24ad30ae69e9c",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "c17402fd318fcdc2",
+    "md": "f0af0e3170676b50",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "15041698e8556c6e",
+    "md": "9234eaa663ad9cb9",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "0aaff09a65993c50",
+    "md": "c742621ecb2a1d53",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.1.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "8f1129bbbf58a854",
+    "md": "24d63b59503dcb03",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.0.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "e660028eb3cf6680",
+    "md": "5346631d8e95879b",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.0.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "756554f80708c103",
+    "md": "8c1e162edd79b940",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.0.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "9b3a67676886e702",
+    "md": "6e4f961830933d97",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.1.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "53789ff8587d505e",
+    "md": "34e60e9b148fe179",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.1.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "7a1676298245d213",
+    "md": "bcc8add4d77963ae",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.1.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "68fcb4ec767b6210",
+    "md": "8b0e6a20a9960ded",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.2.t.t.0.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "f650580eca8412d1",
+    "md": "f1279b8d79f71789",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.2.t.t.1.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Recuperar não é tese. Hoje, não opere.",
+    "resultado": "70eaf9a52e50de06",
+    "md": "4bd8c47977ff7403",
+    "mdNome": "decisao-fria.md"
+   },
+   "3.2.2.t.t.2.t": {
+    "passos": "0,1,2,3,4,5,6",
+    "telas": "e610cb38eb4bef59",
+    "terminou": true,
+    "veredito": "Com esse dinheiro, a resposta é não.",
+    "resultado": "bd30a337cbef1c96",
+    "md": "c8d06cfec3b00b3b",
+    "mdNome": "decisao-fria.md"
+   }
+  }
+ },
+ "roteiros": {
+  "cheio": [
+   [
+    {
+     "rotulo": "Passo 1 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "f88f8f319bb0007b"
+    },
+    {
+     "rotulo": "Passo 2 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "1f93da1d2064eb1a"
+    },
+    {
+     "rotulo": "Passo 3 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "53b619c165581cbf"
+    },
+    {
+     "rotulo": "Passo 4 de 7",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "6b37a50455840e9c"
+    },
+    {
+     "rotulo": "Passo 3 de 7",
+     "marcadas": [
+      "Posso esperar uma semana sem perder nada importante"
+     ],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "5f5e2b39b87626b9"
+    },
+    {
+     "rotulo": "Passo 4 de 7",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "6b37a50455840e9c"
+    },
+    {
+     "rotulo": "Passo 5 de 7",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "387f018d38528516"
+    },
+    {
+     "rotulo": "Passo 6 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "d016b078f8753e03"
+    },
+    {
+     "rotulo": "Passo 5 de 7",
+     "marcadas": [],
+     "texto": "Texto de teste, com “aspas” e ponto final.",
+     "voltarAtivo": "false",
+     "dom": "387f018d38528516"
+    },
+    {
+     "rotulo": "Passo 4 de 7",
+     "marcadas": [],
+     "texto": "Texto de teste, com “aspas” e ponto final.",
+     "voltarAtivo": "false",
+     "dom": "6b37a50455840e9c"
+    },
+    {
+     "rotulo": "Passo 5 de 7",
+     "marcadas": [],
+     "texto": "Texto de teste, com “aspas” e ponto final.",
+     "voltarAtivo": "false",
+     "dom": "387f018d38528516"
+    }
+   ],
+   [
+    {
+     "rotulo": "Passo 1 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "f88f8f319bb0007b"
+    },
+    {
+     "rotulo": "Passo 1 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "f88f8f319bb0007b"
+    },
+    {
+     "rotulo": "Passo 2 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "1f93da1d2064eb1a"
+    },
+    {
+     "rotulo": "Passo 3 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "53b619c165581cbf"
+    },
+    {
+     "rotulo": "Passo 4 de 7",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "76b393d8b8ab7401"
+    },
+    {
+     "rotulo": "Passo 5 de 7",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "387f018d38528516"
+    },
+    {
+     "rotulo": "Passo 6 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "d016b078f8753e03"
+    },
+    {
+     "rotulo": "Passo 7 de 7",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "9e65041221647451"
+    },
+    {
+     "resultado": "bdf333e1ab1119e3"
+    }
+   ]
+  ],
+  "vazio": [
+   [
+    {
+     "rotulo": "Passo 1 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "f88f8f319bb0007b"
+    },
+    {
+     "rotulo": "Passo 2 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "1f93da1d2064eb1a"
+    },
+    {
+     "rotulo": "Passo 3 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "53b619c165581cbf"
+    },
+    {
+     "rotulo": "Passo 4 de 7",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "6b37a50455840e9c"
+    },
+    {
+     "rotulo": "Passo 3 de 7",
+     "marcadas": [
+      "Posso esperar uma semana sem perder nada importante"
+     ],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "5f5e2b39b87626b9"
+    },
+    {
+     "rotulo": "Passo 4 de 7",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "6b37a50455840e9c"
+    },
+    {
+     "rotulo": "Passo 5 de 7",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "7759e07662f9ee70"
+    },
+    {
+     "rotulo": "Passo 6 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "d016b078f8753e03"
+    },
+    {
+     "rotulo": "Passo 5 de 7",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "7759e07662f9ee70"
+    },
+    {
+     "rotulo": "Passo 4 de 7",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "6b37a50455840e9c"
+    },
+    {
+     "rotulo": "Passo 5 de 7",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "7759e07662f9ee70"
+    }
+   ],
+   [
+    {
+     "rotulo": "Passo 1 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "f88f8f319bb0007b"
+    },
+    {
+     "rotulo": "Passo 1 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "f88f8f319bb0007b"
+    },
+    {
+     "rotulo": "Passo 2 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "1f93da1d2064eb1a"
+    },
+    {
+     "rotulo": "Passo 3 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "53b619c165581cbf"
+    },
+    {
+     "rotulo": "Passo 4 de 7",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "76b393d8b8ab7401"
+    },
+    {
+     "rotulo": "Passo 5 de 7",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "7759e07662f9ee70"
+    },
+    {
+     "rotulo": "Passo 6 de 7",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "d016b078f8753e03"
+    },
+    {
+     "rotulo": "Passo 7 de 7",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "9e65041221647451"
+    },
+    {
+     "resultado": "c17402fd318fcdc2"
+    }
+   ]
+  ]
+ },
+ "amostras": {
+  "cheio: Quase lá. Falta fechar um ponto antes de agir.": "# Decisão fria — o protocolo antes de colocar dinheiro em risco\nGerado em 20/11/2026\n\n> Quase lá. Falta fechar um ponto antes de agir.\n\n## Resumo\n\n- **1** — sinal de alerta\n- **ajuste** — veredito\n- **3** — passos no plano\n\nO que ficou aberto: existe pressa de decidir em horas. O resto da decisão está bem montado, e é justamente por isso que vale resolver esse ponto antes, e não depois.\n\nResolver não quer dizer desistir. Quer dizer que, se der errado, vai ter dado errado por um risco que você viu e aceitou, e não por um que ficou de fora da conta.\n\nReleia o argumento contrário que você escreveu. Se ele te incomodou, ótimo: é ali que está o risco que a vontade não mostrava. A decisão fria não ignora esse argumento. Ela decide o que fazer se ele estiver certo.\n\nSuas travas: “Texto de teste, com “aspas” e ponto final”. Estão no registro abaixo. Se o preço andar e você sentir vontade de mudar alguma, releia este registro antes.\n\n## O que você registrou\n\n**A decisão**\nUma compra ou aporte que eu já vinha planejando\n\n**Em que ela se apoia**\nEm números e fatos que eu mesmo conferi\n\n**O relógio**\nSe eu não decidir nas próximas horas, perco a chance\n\n**Minha tese**\nTexto de teste, com “aspas” e ponto final.\n\n**O melhor argumento contra**\nTexto de teste, com “aspas” e ponto final.\n\n**Se o pior acontecesse**\nNada no meu sono nem nas minhas contas. Doeria, mas passa\n\n**Minhas travas: limite, saída e revisão**\nTexto de teste, com “aspas” e ponto final.\n\n## Seu plano\n\n- [ ] Passo 1: Resolva o ponto que ficou aberto\n  Veja abaixo qual sinal apareceu e trate só ele. O resto da decisão está bem montado.\n- [ ] Passo 2: Confirme o tamanho\n  Um valor que você aguente ver cair 70% sem mudar a sua vida.\n- [ ] Passo 3: Marque a data de revisão\n  Coloque no calendário agora, com a tese e o argumento contrário anotados.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/decisao-fria/",
+  "cheio: Ainda não é uma decisão. É uma vontade com pressa.": "# Decisão fria — o protocolo antes de colocar dinheiro em risco\nGerado em 20/11/2026\n\n> Ainda não é uma decisão. É uma vontade com pressa.\n\n## Resumo\n\n- **2** — sinais de alerta\n- **espere** — veredito\n- **3** — passos no plano\n\nApareceram 2 sinais de alerta: existe pressa de decidir em horas; o pior cenário apertaria a sua vida. Nenhum deles prova que a ideia é ruim. Juntos, mostram que quem está decidindo agora não é você com calma.\n\nO teste é o tempo. Uma boa decisão sobrevive a 48 horas e a um número conferido por você. Uma vontade, quase sempre, não sobrevive.\n\nReleia o argumento contrário que você escreveu. Se ele te incomodou, ótimo: é ali que está o risco que a vontade não mostrava. A decisão fria não ignora esse argumento. Ela decide o que fazer se ele estiver certo.\n\nSuas travas: “Texto de teste, com “aspas” e ponto final”. Estão no registro abaixo. Se o preço andar e você sentir vontade de mudar alguma, releia este registro antes.\n\n## O que você registrou\n\n**A decisão**\nUma compra ou aporte que eu já vinha planejando\n\n**Em que ela se apoia**\nEm números e fatos que eu mesmo conferi\n\n**O relógio**\nSe eu não decidir nas próximas horas, perco a chance\n\n**Minha tese**\nTexto de teste, com “aspas” e ponto final.\n\n**O melhor argumento contra**\nTexto de teste, com “aspas” e ponto final.\n\n**Se o pior acontecesse**\nApertaria: eu cortaria gastos e adiaria planos\n\n**Minhas travas: limite, saída e revisão**\nTexto de teste, com “aspas” e ponto final.\n\n## Seu plano\n\n- [ ] Passo 1: Espere 48 horas\n  Se a oportunidade depende de você agir nas próximas horas, ela não precisa ser sua.\n- [ ] Passo 2: Confira um número com as suas mãos\n  Um dado da tese que você mesmo verificou na fonte, e não no vídeo ou no grupo.\n- [ ] Passo 3: Se entrar, metade do valor\n  Entre com metade do que planejou. A outra metade entra só se a tese continuar de pé na revisão.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/decisao-fria/",
+  "cheio: Com esse dinheiro, a resposta é não.": "# Decisão fria — o protocolo antes de colocar dinheiro em risco\nGerado em 20/11/2026\n\n> Com esse dinheiro, a resposta é não.\n\n## Resumo\n\n- **1** — sinal de alerta\n- **não** — veredito\n- **3** — passos no plano\n\nVocê marcou que o pior cenário comprometeria contas, dívidas ou quem depende de você. Nenhuma tese, por melhor que seja, compensa esse risco. Não é uma questão de coragem: esse dinheiro já tem uma função.\n\nIsso não fecha a porta para a ideia, fecha a porta para esse dinheiro. Se a tese for boa, ela continua boa quando você puder testá-la com um valor que não mude a sua vida.\n\nReleia o argumento contrário que você escreveu. Se ele te incomodou, ótimo: é ali que está o risco que a vontade não mostrava. A decisão fria não ignora esse argumento. Ela decide o que fazer se ele estiver certo.\n\n## O que você registrou\n\n**A decisão**\nUma compra ou aporte que eu já vinha planejando\n\n**Em que ela se apoia**\nEm números e fatos que eu mesmo conferi\n\n**O relógio**\nSe eu não decidir nas próximas horas, perco a chance\n\n**Minha tese**\nTexto de teste, com “aspas” e ponto final.\n\n**O melhor argumento contra**\nTexto de teste, com “aspas” e ponto final.\n\n**Se o pior acontecesse**\nComprometeria contas, dívidas ou quem depende de mim\n\n**Minhas travas: limite, saída e revisão**\nTexto de teste, com “aspas” e ponto final.\n\n## Seu plano\n\n- [ ] Passo 1: Não use esse dinheiro\n  Dinheiro que sustenta contas ou pessoas não vira capital de risco, por melhor que a ideia pareça.\n- [ ] Passo 2: Separe um valor que possa perder\n  Se a tese sobreviver, ela pode ser testada depois com um valor que não muda a sua vida.\n- [ ] Passo 3: Releia a tese em 7 dias\n  Uma oportunidade boa continua boa daqui a uma semana. Uma vontade, quase sempre, passa.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/decisao-fria/",
+  "cheio: Pode seguir, com as travas que você escreveu.": "# Decisão fria — o protocolo antes de colocar dinheiro em risco\nGerado em 20/11/2026\n\n> Pode seguir, com as travas que você escreveu.\n\n## Resumo\n\n- **0** — sinais de alerta\n- **siga** — veredito\n- **3** — passos no plano\n\nVocê conferiu os números, não está com pressa, aguenta o pior cenário e escreveu os dois lados. Esse é o formato de uma decisão fria. O protocolo não segura você aqui.\n\nIsso não garante resultado nenhum: decisão boa pode dar errado, e decisão ruim pode dar certo. O que muda é que, se der errado, você sabe exatamente por quê, perde um valor que escolheu, e sai no ponto que decidiu antes.\n\nReleia o argumento contrário que você escreveu. Se ele te incomodou, ótimo: é ali que está o risco que a vontade não mostrava. A decisão fria não ignora esse argumento. Ela decide o que fazer se ele estiver certo.\n\nSuas travas: “Texto de teste, com “aspas” e ponto final”. Estão no registro abaixo. Se o preço andar e você sentir vontade de mudar alguma, releia este registro antes.\n\n## O que você registrou\n\n**A decisão**\nUma compra ou aporte que eu já vinha planejando\n\n**Em que ela se apoia**\nEm números e fatos que eu mesmo conferi\n\n**O relógio**\nPosso esperar uma semana sem perder nada importante\n\n**Minha tese**\nTexto de teste, com “aspas” e ponto final.\n\n**O melhor argumento contra**\nTexto de teste, com “aspas” e ponto final.\n\n**Se o pior acontecesse**\nNada no meu sono nem nas minhas contas. Doeria, mas passa\n\n**Minhas travas: limite, saída e revisão**\nTexto de teste, com “aspas” e ponto final.\n\n## Seu plano\n\n- [ ] Passo 1: Entre no tamanho que você escreveu\n  Nem um real a mais porque o preço subiu enquanto você decidia.\n- [ ] Passo 2: Deixe a saída anotada onde você vê\n  Preço, prazo ou fato: o que vier primeiro encerra ou reduz a posição.\n- [ ] Passo 3: Revise na data marcada\n  Releia a tese e o argumento contrário. Qual dos dois o tempo confirmou?\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/decisao-fria/",
+  "cheio: Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.": "# Decisão fria — o protocolo antes de colocar dinheiro em risco\nGerado em 20/11/2026\n\n> Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.\n\n## Resumo\n\n- **1** — sinal de alerta\n- **espere** — veredito\n- **3** — passos no plano\n\nNa alavancagem, os erros que numa compra comum custam tempo custam a posição inteira. Você marcou pelo menos um sinal de alerta: pressa, uma tese que não é sua ou uma garantia que apertaria a sua vida se sumisse. Qualquer um deles basta para esperar.\n\nA pergunta que separa uso consciente de aposta é simples: você está reduzindo um risco que já tem, ou criando um novo? Proteção pede posição pequena e prazo definido. Aposta pede aceitar que a garantia pode ir a zero.\n\nReleia o argumento contrário que você escreveu. Se ele te incomodou, ótimo: é ali que está o risco que a vontade não mostrava. A decisão fria não ignora esse argumento. Ela decide o que fazer se ele estiver certo.\n\nSuas travas: “Texto de teste, com “aspas” e ponto final”. Estão no registro abaixo. Se o preço andar e você sentir vontade de mudar alguma, releia este registro antes.\n\n## O que você registrou\n\n**A decisão**\nOperar alavancado ou em futuros\n\n**Em que ela se apoia**\nEm números e fatos que eu mesmo conferi\n\n**O relógio**\nSe eu não decidir nas próximas horas, perco a chance\n\n**Minha tese**\nTexto de teste, com “aspas” e ponto final.\n\n**O melhor argumento contra**\nTexto de teste, com “aspas” e ponto final.\n\n**Se o pior acontecesse**\nNada no meu sono nem nas minhas contas. Doeria, mas passa\n\n**Minhas travas: limite, saída e revisão**\nTexto de teste, com “aspas” e ponto final.\n\n## Seu plano\n\n- [ ] Passo 1: Não abra a posição hoje\n  Pressa, tese emprestada ou garantia que você não pode perder: qualquer um desses já é motivo para esperar.\n- [ ] Passo 2: Calcule a distância até a liquidação\n  Antes de qualquer valor, saiba quanto o preço precisa andar contra você para a garantia acabar.\n- [ ] Passo 3: Escreva se é proteção ou aposta\n  Proteção reduz um risco que você já tem. Aposta cria um risco novo. Os dois pedem tamanhos diferentes.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/decisao-fria/",
+  "cheio: Pode ser proteção, pode ser aposta. Defina qual antes de abrir.": "# Decisão fria — o protocolo antes de colocar dinheiro em risco\nGerado em 20/11/2026\n\n> Pode ser proteção, pode ser aposta. Defina qual antes de abrir.\n\n## Resumo\n\n- **0** — sinais de alerta\n- **ajuste** — veredito\n- **3** — passos no plano\n\nVocê decide com calma, com base no que conferiu, e aguenta perder a garantia. Isso é o mínimo para considerar alavancagem, e ainda não responde se ela faz sentido.\n\nA pergunta que separa uso consciente de aposta é simples: você está reduzindo um risco que já tem, ou criando um novo? Proteção pede posição pequena e prazo definido. Aposta pede aceitar que a garantia pode ir a zero.\n\nReleia o argumento contrário que você escreveu. Se ele te incomodou, ótimo: é ali que está o risco que a vontade não mostrava. A decisão fria não ignora esse argumento. Ela decide o que fazer se ele estiver certo.\n\nSuas travas: “Texto de teste, com “aspas” e ponto final”. Estão no registro abaixo. Se o preço andar e você sentir vontade de mudar alguma, releia este registro antes.\n\n## O que você registrou\n\n**A decisão**\nOperar alavancado ou em futuros\n\n**Em que ela se apoia**\nEm números e fatos que eu mesmo conferi\n\n**O relógio**\nPosso esperar uma semana sem perder nada importante\n\n**Minha tese**\nTexto de teste, com “aspas” e ponto final.\n\n**O melhor argumento contra**\nTexto de teste, com “aspas” e ponto final.\n\n**Se o pior acontecesse**\nNada no meu sono nem nas minhas contas. Doeria, mas passa\n\n**Minhas travas: limite, saída e revisão**\nTexto de teste, com “aspas” e ponto final.\n\n## Seu plano\n\n- [ ] Passo 1: Defina se é proteção ou aposta\n  Proteção reduz um risco que você já tem. Aposta cria um risco novo. Escreva qual das duas é esta.\n- [ ] Passo 2: Tamanho pela exposição, não pela margem\n  O valor da posição nasce do que você quer proteger ou arriscar, nunca do limite que a corretora libera.\n- [ ] Passo 3: Saída e prazo antes de abrir\n  Posição sem data de revisão fica aberta por esquecimento. Anote as duas.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/decisao-fria/",
+  "cheio: Recuperar não é tese. Hoje, não opere.": "# Decisão fria — o protocolo antes de colocar dinheiro em risco\nGerado em 20/11/2026\n\n> Recuperar não é tese. Hoje, não opere.\n\n## Resumo\n\n- **1** — sinal de alerta\n- **não** — veredito\n- **3** — passos no plano\n\nQuerer recuperar o que perdeu é uma das vontades mais humanas que existem em dinheiro, e uma das mais caras. A perda dói mais do que um ganho do mesmo tamanho alegra, e essa dor empurra para operações maiores, mais rápidas e com menos critério.\n\nO mercado não sabe quanto você perdeu nem te deve nada. A próxima operação precisa se sustentar sozinha, como se o prejuízo não existisse. Se ela só faz sentido porque você precisa recuperar, ela não faz sentido.\n\nReleia o argumento contrário que você escreveu. Se ele te incomodou, ótimo: é ali que está o risco que a vontade não mostrava. A decisão fria não ignora esse argumento. Ela decide o que fazer se ele estiver certo.\n\nSuas travas: “Texto de teste, com “aspas” e ponto final”. Estão no registro abaixo. Se o preço andar e você sentir vontade de mudar alguma, releia este registro antes.\n\n## O que você registrou\n\n**A decisão**\nRecuperar um prejuízo que tive há pouco\n\n**Em que ela se apoia**\nEm números e fatos que eu mesmo conferi\n\n**O relógio**\nSe eu não decidir nas próximas horas, perco a chance\n\n**Minha tese**\nTexto de teste, com “aspas” e ponto final.\n\n**O melhor argumento contra**\nTexto de teste, com “aspas” e ponto final.\n\n**Se o pior acontecesse**\nNada no meu sono nem nas minhas contas. Doeria, mas passa\n\n**Minhas travas: limite, saída e revisão**\nTexto de teste, com “aspas” e ponto final.\n\n## Seu plano\n\n- [ ] Passo 1: Nenhuma operação hoje\n  A primeira operação depois de uma perda é a mais cara de todas. Deixe passar pelo menos um dia inteiro.\n- [ ] Passo 2: Escreva o que aconteceu na perda\n  O que você fez, o que ignorou, o que faria diferente. Sem se culpar e sem se justificar.\n- [ ] Passo 3: Volte com metade do tamanho\n  Quando voltar, use metade do valor de antes, até ter três decisões seguidas tomadas com as travas escritas.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/decisao-fria/",
+  "vazio: Quase lá. Falta fechar um ponto antes de agir.": "# Decisão fria — o protocolo antes de colocar dinheiro em risco\nGerado em 20/11/2026\n\n> Quase lá. Falta fechar um ponto antes de agir.\n\n## Resumo\n\n- **1** — sinal de alerta\n- **ajuste** — veredito\n- **3** — passos no plano\n\nO que ficou aberto: existe pressa de decidir em horas; a tese não foi escrita; o argumento contrário não foi escrito; as travas não foram escritas. O resto da decisão está bem montado, e é justamente por isso que vale resolver esse ponto antes, e não depois.\n\nResolver não quer dizer desistir. Quer dizer que, se der errado, vai ter dado errado por um risco que você viu e aceitou, e não por um que ficou de fora da conta.\n\nVocê não escreveu o outro lado. De tudo que o protocolo pede, esse é o passo que mais importa: quem não consegue argumentar contra a própria ideia ainda não enxergou o risco dela. Vale voltar e tentar.\n\nVocê não deixou as travas escritas. Sem limite, saída e data de revisão, qualquer decisão vira improviso quando o preço começa a andar.\n\n## O que você registrou\n\n**A decisão**\nUma compra ou aporte que eu já vinha planejando\n\n**Em que ela se apoia**\nEm números e fatos que eu mesmo conferi\n\n**O relógio**\nSe eu não decidir nas próximas horas, perco a chance\n\n**Se o pior acontecesse**\nNada no meu sono nem nas minhas contas. Doeria, mas passa\n\n## Seu plano\n\n- [ ] Passo 1: Resolva o ponto que ficou aberto\n  Veja abaixo qual sinal apareceu e trate só ele. O resto da decisão está bem montado.\n- [ ] Passo 2: Confirme o tamanho\n  Um valor que você aguente ver cair 70% sem mudar a sua vida.\n- [ ] Passo 3: Marque a data de revisão\n  Coloque no calendário agora, com a tese e o argumento contrário anotados.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/decisao-fria/",
+  "vazio: Ainda não é uma decisão. É uma vontade com pressa.": "# Decisão fria — o protocolo antes de colocar dinheiro em risco\nGerado em 20/11/2026\n\n> Ainda não é uma decisão. É uma vontade com pressa.\n\n## Resumo\n\n- **2** — sinais de alerta\n- **espere** — veredito\n- **3** — passos no plano\n\nApareceram 2 sinais de alerta: existe pressa de decidir em horas; o pior cenário apertaria a sua vida. Nenhum deles prova que a ideia é ruim. Juntos, mostram que quem está decidindo agora não é você com calma.\n\nO teste é o tempo. Uma boa decisão sobrevive a 48 horas e a um número conferido por você. Uma vontade, quase sempre, não sobrevive.\n\nVocê não escreveu o outro lado. De tudo que o protocolo pede, esse é o passo que mais importa: quem não consegue argumentar contra a própria ideia ainda não enxergou o risco dela. Vale voltar e tentar.\n\nVocê não deixou as travas escritas. Sem limite, saída e data de revisão, qualquer decisão vira improviso quando o preço começa a andar.\n\n## O que você registrou\n\n**A decisão**\nUma compra ou aporte que eu já vinha planejando\n\n**Em que ela se apoia**\nEm números e fatos que eu mesmo conferi\n\n**O relógio**\nSe eu não decidir nas próximas horas, perco a chance\n\n**Se o pior acontecesse**\nApertaria: eu cortaria gastos e adiaria planos\n\n## Seu plano\n\n- [ ] Passo 1: Espere 48 horas\n  Se a oportunidade depende de você agir nas próximas horas, ela não precisa ser sua.\n- [ ] Passo 2: Confira um número com as suas mãos\n  Um dado da tese que você mesmo verificou na fonte, e não no vídeo ou no grupo.\n- [ ] Passo 3: Se entrar, metade do valor\n  Entre com metade do que planejou. A outra metade entra só se a tese continuar de pé na revisão.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/decisao-fria/",
+  "vazio: Com esse dinheiro, a resposta é não.": "# Decisão fria — o protocolo antes de colocar dinheiro em risco\nGerado em 20/11/2026\n\n> Com esse dinheiro, a resposta é não.\n\n## Resumo\n\n- **1** — sinal de alerta\n- **não** — veredito\n- **3** — passos no plano\n\nVocê marcou que o pior cenário comprometeria contas, dívidas ou quem depende de você. Nenhuma tese, por melhor que seja, compensa esse risco. Não é uma questão de coragem: esse dinheiro já tem uma função.\n\nIsso não fecha a porta para a ideia, fecha a porta para esse dinheiro. Se a tese for boa, ela continua boa quando você puder testá-la com um valor que não mude a sua vida.\n\nVocê não escreveu o outro lado. De tudo que o protocolo pede, esse é o passo que mais importa: quem não consegue argumentar contra a própria ideia ainda não enxergou o risco dela. Vale voltar e tentar.\n\n## O que você registrou\n\n**A decisão**\nUma compra ou aporte que eu já vinha planejando\n\n**Em que ela se apoia**\nEm números e fatos que eu mesmo conferi\n\n**O relógio**\nSe eu não decidir nas próximas horas, perco a chance\n\n**Se o pior acontecesse**\nComprometeria contas, dívidas ou quem depende de mim\n\n## Seu plano\n\n- [ ] Passo 1: Não use esse dinheiro\n  Dinheiro que sustenta contas ou pessoas não vira capital de risco, por melhor que a ideia pareça.\n- [ ] Passo 2: Separe um valor que possa perder\n  Se a tese sobreviver, ela pode ser testada depois com um valor que não muda a sua vida.\n- [ ] Passo 3: Releia a tese em 7 dias\n  Uma oportunidade boa continua boa daqui a uma semana. Uma vontade, quase sempre, passa.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/decisao-fria/",
+  "vazio: Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.": "# Decisão fria — o protocolo antes de colocar dinheiro em risco\nGerado em 20/11/2026\n\n> Alavancagem com pressa, tese emprestada ou garantia que faz falta: ainda não.\n\n## Resumo\n\n- **1** — sinal de alerta\n- **espere** — veredito\n- **3** — passos no plano\n\nNa alavancagem, os erros que numa compra comum custam tempo custam a posição inteira. Você marcou pelo menos um sinal de alerta: pressa, uma tese que não é sua ou uma garantia que apertaria a sua vida se sumisse. Qualquer um deles basta para esperar.\n\nA pergunta que separa uso consciente de aposta é simples: você está reduzindo um risco que já tem, ou criando um novo? Proteção pede posição pequena e prazo definido. Aposta pede aceitar que a garantia pode ir a zero.\n\nVocê não escreveu o outro lado. De tudo que o protocolo pede, esse é o passo que mais importa: quem não consegue argumentar contra a própria ideia ainda não enxergou o risco dela. Vale voltar e tentar.\n\nVocê não deixou as travas escritas. Sem limite, saída e data de revisão, qualquer decisão vira improviso quando o preço começa a andar.\n\n## O que você registrou\n\n**A decisão**\nOperar alavancado ou em futuros\n\n**Em que ela se apoia**\nEm números e fatos que eu mesmo conferi\n\n**O relógio**\nSe eu não decidir nas próximas horas, perco a chance\n\n**Se o pior acontecesse**\nNada no meu sono nem nas minhas contas. Doeria, mas passa\n\n## Seu plano\n\n- [ ] Passo 1: Não abra a posição hoje\n  Pressa, tese emprestada ou garantia que você não pode perder: qualquer um desses já é motivo para esperar.\n- [ ] Passo 2: Calcule a distância até a liquidação\n  Antes de qualquer valor, saiba quanto o preço precisa andar contra você para a garantia acabar.\n- [ ] Passo 3: Escreva se é proteção ou aposta\n  Proteção reduz um risco que você já tem. Aposta cria um risco novo. Os dois pedem tamanhos diferentes.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/decisao-fria/",
+  "vazio: Pode ser proteção, pode ser aposta. Defina qual antes de abrir.": "# Decisão fria — o protocolo antes de colocar dinheiro em risco\nGerado em 20/11/2026\n\n> Pode ser proteção, pode ser aposta. Defina qual antes de abrir.\n\n## Resumo\n\n- **0** — sinais de alerta\n- **ajuste** — veredito\n- **3** — passos no plano\n\nVocê decide com calma, com base no que conferiu, e aguenta perder a garantia. Isso é o mínimo para considerar alavancagem, e ainda não responde se ela faz sentido.\n\nA pergunta que separa uso consciente de aposta é simples: você está reduzindo um risco que já tem, ou criando um novo? Proteção pede posição pequena e prazo definido. Aposta pede aceitar que a garantia pode ir a zero.\n\nVocê não escreveu o outro lado. De tudo que o protocolo pede, esse é o passo que mais importa: quem não consegue argumentar contra a própria ideia ainda não enxergou o risco dela. Vale voltar e tentar.\n\nVocê não deixou as travas escritas. Sem limite, saída e data de revisão, qualquer decisão vira improviso quando o preço começa a andar.\n\n## O que você registrou\n\n**A decisão**\nOperar alavancado ou em futuros\n\n**Em que ela se apoia**\nEm números e fatos que eu mesmo conferi\n\n**O relógio**\nPosso esperar uma semana sem perder nada importante\n\n**Se o pior acontecesse**\nNada no meu sono nem nas minhas contas. Doeria, mas passa\n\n## Seu plano\n\n- [ ] Passo 1: Defina se é proteção ou aposta\n  Proteção reduz um risco que você já tem. Aposta cria um risco novo. Escreva qual das duas é esta.\n- [ ] Passo 2: Tamanho pela exposição, não pela margem\n  O valor da posição nasce do que você quer proteger ou arriscar, nunca do limite que a corretora libera.\n- [ ] Passo 3: Saída e prazo antes de abrir\n  Posição sem data de revisão fica aberta por esquecimento. Anote as duas.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/decisao-fria/",
+  "vazio: Recuperar não é tese. Hoje, não opere.": "# Decisão fria — o protocolo antes de colocar dinheiro em risco\nGerado em 20/11/2026\n\n> Recuperar não é tese. Hoje, não opere.\n\n## Resumo\n\n- **1** — sinal de alerta\n- **não** — veredito\n- **3** — passos no plano\n\nQuerer recuperar o que perdeu é uma das vontades mais humanas que existem em dinheiro, e uma das mais caras. A perda dói mais do que um ganho do mesmo tamanho alegra, e essa dor empurra para operações maiores, mais rápidas e com menos critério.\n\nO mercado não sabe quanto você perdeu nem te deve nada. A próxima operação precisa se sustentar sozinha, como se o prejuízo não existisse. Se ela só faz sentido porque você precisa recuperar, ela não faz sentido.\n\nVocê não escreveu o outro lado. De tudo que o protocolo pede, esse é o passo que mais importa: quem não consegue argumentar contra a própria ideia ainda não enxergou o risco dela. Vale voltar e tentar.\n\nVocê não deixou as travas escritas. Sem limite, saída e data de revisão, qualquer decisão vira improviso quando o preço começa a andar.\n\n## O que você registrou\n\n**A decisão**\nRecuperar um prejuízo que tive há pouco\n\n**Em que ela se apoia**\nEm números e fatos que eu mesmo conferi\n\n**O relógio**\nSe eu não decidir nas próximas horas, perco a chance\n\n**Se o pior acontecesse**\nNada no meu sono nem nas minhas contas. Doeria, mas passa\n\n## Seu plano\n\n- [ ] Passo 1: Nenhuma operação hoje\n  A primeira operação depois de uma perda é a mais cara de todas. Deixe passar pelo menos um dia inteiro.\n- [ ] Passo 2: Escreva o que aconteceu na perda\n  O que você fez, o que ignorou, o que faria diferente. Sem se culpar e sem se justificar.\n- [ ] Passo 3: Volte com metade do tamanho\n  Quando voltar, use metade do valor de antes, até ter três decisões seguidas tomadas com as travas escritas.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/decisao-fria/"
+ }
+}

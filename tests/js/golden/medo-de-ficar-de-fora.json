@@ -1,0 +1,967 @@
+{
+ "protocolo": "medo-de-ficar-de-fora",
+ "texto": {
+  "cheio": {
+   "0.t.0.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "e67f964e028d18ea",
+    "md": "33a9c0a4c0a9e7e7",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "0.t.0.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "46173e56d3e86444",
+    "md": "b81440db1bac8768",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "0.t.0.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "c2d70e326b9d4bb0",
+    "md": "158ee8eeb25e64fd",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "0.t.1.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "671f0606c77cb4ed",
+    "md": "f1f45e32f56ece20",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "0.t.1.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "376bac945f81d615",
+    "md": "ed759e3145326f53",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "0.t.1.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "67e4235bb1eb83f9",
+    "md": "21196fe1bbe56d5f",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "0.t.2.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "1a586105e3297669",
+    "md": "2ddea5a04ac32d5f",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "0.t.2.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "db0db586c4a31546",
+    "md": "dd2aa69bcae895cd",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "0.t.2.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "f85b22b8c47dde67",
+    "md": "d7db594f87e86e1f",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.0.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "50347589813709d8",
+    "md": "66bfef757608db48",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.0.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "f12eed4e63410642",
+    "md": "60eaf78d34ba5586",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.0.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "290131ca3169678f",
+    "md": "191ae9bf1c78c03c",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.1.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "c79c41c43581751e",
+    "md": "7d4657a6215450f1",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.1.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "2ac7ce275d5c786b",
+    "md": "98d8adf5f0c67d38",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.1.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "695b24d57dd5b1d4",
+    "md": "0c29d1c3d768a19f",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.2.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "7fbb68de07db76a7",
+    "md": "8de0bd86bbb3e289",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.2.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "7e527c0d539e8e67",
+    "md": "e76c191fec774988",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.2.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "bde79cd4d527df69",
+    "md": "d71aa162bd445214",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.0.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "697911a18de84094",
+    "md": "68e33f3bd50a84c7",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.0.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "6d115d9d2cbaa6ec",
+    "md": "159e6ebfd9791f93",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.0.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "34e1393c18a26315",
+    "md": "78703d0622069129",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.1.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "07ec20c9f0bc4268",
+    "md": "9e20713bc8ca4c5f",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.1.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "aa0365155bea1f38",
+    "md": "8f6055264a16e907",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.1.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "4d62a8dcf53eb764",
+    "md": "739b80dfdcf7dc1b",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.2.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "1ea8c8ecda31e8fb",
+    "md": "26ad624a00f1b7c4",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.2.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "7fcd1d9607deaf08",
+    "md": "8c43f301d14bbd52",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.2.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "6c49d4c767a7d044",
+    "md": "dfba6efc7a127da1",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.0.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "Decidir com calma, com dinheiro que sobra, é legítimo — inclusive decidir sim.",
+    "resultado": "2517816a214f9dc0",
+    "md": "cf4728babcefb9c2",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.0.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "5c5161e838045c1a",
+    "md": "e931c8c4fd7483c7",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.0.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "0c2361e4045a81be",
+    "md": "46ef3b3c3323a314",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.1.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "Decidir com calma, com dinheiro que sobra, é legítimo — inclusive decidir sim.",
+    "resultado": "392dc07a6477f2a7",
+    "md": "aad84f959cfd5b54",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.1.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "f052f2df754b8fe0",
+    "md": "f7f0265b845d6c17",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.1.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "e4d25c83fd8d1797",
+    "md": "2397399810be5b8a",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.2.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "Decidir com calma, com dinheiro que sobra, é legítimo — inclusive decidir sim.",
+    "resultado": "97c1b556a3bdff4c",
+    "md": "2278254d94c3f67c",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.2.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "1c514a99f69530e6",
+    "md": "b933cf7b37a2312f",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.2.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "6ca09f21489daa3f",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "b2c1611cb1495e50",
+    "md": "212db90bb22170a2",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   }
+  },
+  "vazio": {
+   "0.t.0.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "ba580f34961f2431",
+    "md": "a0258f06ddd45c5b",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "0.t.0.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "e75516eff6504015",
+    "md": "843613475dbb4dde",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "0.t.0.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "854c6a888ba4f5d9",
+    "md": "d3eb6fb17c1c5e63",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "0.t.1.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "e78031cbb00ce37f",
+    "md": "7fa15219940a339d",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "0.t.1.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "d7a7e9eb97c19ee9",
+    "md": "783c417922e379c3",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "0.t.1.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "7401794456f5d3ab",
+    "md": "ade5065d45d45f1a",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "0.t.2.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "3018d29e51336258",
+    "md": "35d1184460730a9f",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "0.t.2.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "1800a9e06f6af83e",
+    "md": "ebea06803f9985a5",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "0.t.2.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "f56a0de5a9175b29",
+    "md": "57792a4d0941e17a",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.0.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "b5d352823f6a6e5d",
+    "md": "07b6c5be9afff200",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.0.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "f31d1c76a2d5bf3f",
+    "md": "dbb59d510a31bb76",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.0.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "81f83faa1bfba044",
+    "md": "292ba30c7266cdf7",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.1.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "0f4318c6688b6e2c",
+    "md": "a266a51f77fde675",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.1.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "7776385b6a1db8a6",
+    "md": "5128d352e53225ca",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.1.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "ca03bfd4945e552a",
+    "md": "31c112a9bb2e54e2",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.2.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "9dfdfad54c5ced22",
+    "md": "26a3f28fb2c3a46f",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.2.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "2780ee9b7ff14740",
+    "md": "87ff58717fb7dbe2",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "1.t.2.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "f81be8829793259d",
+    "md": "871af5586d0f72cb",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.0.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "e0968a6ee7aa43b0",
+    "md": "eb6be6a22a51b5cc",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.0.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "ee81d215808f046d",
+    "md": "bc9f3d6872d92c42",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.0.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "b92bab9bfdb2cbb6",
+    "md": "51653228f6ccb31d",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.1.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "054691ab229db2d8",
+    "md": "b138eee652e7025c",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.1.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "7558c44b95e90562",
+    "md": "98b0f4ef0fd0be98",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.1.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "f0ce85407296794c",
+    "md": "786c566e976d6b77",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.2.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.",
+    "resultado": "d44627b85a55a8fb",
+    "md": "0cbc0fcc33a51e28",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.2.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "b4d1306864320c0c",
+    "md": "c7ac6c0dd10bd374",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "2.t.2.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "785420d46d3a259b",
+    "md": "24c1d6ae5a200133",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.0.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "Decidir com calma, com dinheiro que sobra, é legítimo — inclusive decidir sim.",
+    "resultado": "565123735fad7d24",
+    "md": "31d445626e460a30",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.0.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "32e9566086341332",
+    "md": "40138cee008093ae",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.0.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "66fd22e34a84e615",
+    "md": "926f5252166b6d85",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.1.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "Decidir com calma, com dinheiro que sobra, é legítimo — inclusive decidir sim.",
+    "resultado": "430df2a569da78cf",
+    "md": "1416c5aa69dd402b",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.1.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "ac40b37059d1de22",
+    "md": "1ec7a94294af9c06",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.1.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "fa8e9599568764b2",
+    "md": "71ce4e9b85abb5da",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.2.0.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "Decidir com calma, com dinheiro que sobra, é legítimo — inclusive decidir sim.",
+    "resultado": "82f830f5d3b7f299",
+    "md": "29a099560098728e",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.2.1.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "Antes de tirar de outro lugar, olhe o que você trocaria.",
+    "resultado": "d484cdc899264ce9",
+    "md": "27db8802ff04605d",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   },
+   "3.t.2.2.t.t": {
+    "passos": "0,1,2,3,4,5",
+    "telas": "4e4cd32e90232dcd",
+    "terminou": true,
+    "veredito": "O passo de hoje é não dar o passo.",
+    "resultado": "e18fe9485818e573",
+    "md": "8019ae18eb9f01ac",
+    "mdNome": "medo-de-ficar-de-fora.md"
+   }
+  }
+ },
+ "roteiros": {
+  "cheio": [
+   [
+    {
+     "rotulo": "Passo 1 de 6",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "7abb1509983706e6"
+    },
+    {
+     "rotulo": "Passo 2 de 6",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "703ca3f26740dcda"
+    },
+    {
+     "rotulo": "Passo 1 de 6",
+     "marcadas": [
+      "Incômodo de ver os outros ganhando e eu não"
+     ],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "d72e9ff1350680c7"
+    },
+    {
+     "rotulo": "Passo 2 de 6",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "703ca3f26740dcda"
+    },
+    {
+     "rotulo": "Passo 3 de 6",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "1003fee9ef2250e9"
+    },
+    {
+     "rotulo": "Passo 2 de 6",
+     "marcadas": [],
+     "texto": "Texto de teste, com “aspas” e ponto final.",
+     "voltarAtivo": "false",
+     "dom": "703ca3f26740dcda"
+    },
+    {
+     "rotulo": "Passo 1 de 6",
+     "marcadas": [
+      "Medo de ser o único que fica pra trás"
+     ],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "73dd9d7cb0c8e0a8"
+    },
+    {
+     "rotulo": "Passo 2 de 6",
+     "marcadas": [],
+     "texto": "Texto de teste, com “aspas” e ponto final.",
+     "voltarAtivo": "false",
+     "dom": "703ca3f26740dcda"
+    }
+   ],
+   [
+    {
+     "rotulo": "Passo 1 de 6",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "7abb1509983706e6"
+    },
+    {
+     "rotulo": "Passo 1 de 6",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "7abb1509983706e6"
+    },
+    {
+     "rotulo": "Passo 2 de 6",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "703ca3f26740dcda"
+    },
+    {
+     "rotulo": "Passo 3 de 6",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "1003fee9ef2250e9"
+    },
+    {
+     "rotulo": "Passo 4 de 6",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "2093e1142bdd2efa"
+    },
+    {
+     "rotulo": "Passo 5 de 6",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "f445e26b76cd4612"
+    },
+    {
+     "rotulo": "Passo 6 de 6",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "514e48196741c8f9"
+    },
+    {
+     "rotulo": "Passo 5 de 6",
+     "marcadas": [],
+     "texto": "Texto de teste, com “aspas” e ponto final.",
+     "voltarAtivo": "false",
+     "dom": "f445e26b76cd4612"
+    },
+    {
+     "rotulo": "Passo 4 de 6",
+     "marcadas": [
+      "Já está parado, sobrando — eu escolheria com consciência"
+     ],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "07424a4b34af8e99"
+    },
+    {
+     "rotulo": "Passo 3 de 6",
+     "marcadas": [
+      "Continua parecendo verdade, real, urgente"
+     ],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "1afe6a4e7fa87d5b"
+    },
+    {
+     "rotulo": "Passo 4 de 6",
+     "marcadas": [
+      "Já está parado, sobrando — eu escolheria com consciência"
+     ],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "07424a4b34af8e99"
+    }
+   ]
+  ],
+  "vazio": [
+   [
+    {
+     "rotulo": "Passo 1 de 6",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "7abb1509983706e6"
+    },
+    {
+     "rotulo": "Passo 2 de 6",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "703ca3f26740dcda"
+    },
+    {
+     "rotulo": "Passo 1 de 6",
+     "marcadas": [
+      "Incômodo de ver os outros ganhando e eu não"
+     ],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "d72e9ff1350680c7"
+    },
+    {
+     "rotulo": "Passo 2 de 6",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "703ca3f26740dcda"
+    },
+    {
+     "rotulo": "Passo 3 de 6",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "aa5ecc8a8f03173d"
+    },
+    {
+     "rotulo": "Passo 2 de 6",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "703ca3f26740dcda"
+    },
+    {
+     "rotulo": "Passo 1 de 6",
+     "marcadas": [
+      "Medo de ser o único que fica pra trás"
+     ],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "73dd9d7cb0c8e0a8"
+    },
+    {
+     "rotulo": "Passo 2 de 6",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "703ca3f26740dcda"
+    }
+   ],
+   [
+    {
+     "rotulo": "Passo 1 de 6",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "7abb1509983706e6"
+    },
+    {
+     "rotulo": "Passo 1 de 6",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "7abb1509983706e6"
+    },
+    {
+     "rotulo": "Passo 2 de 6",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "703ca3f26740dcda"
+    },
+    {
+     "rotulo": "Passo 3 de 6",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "aa5ecc8a8f03173d"
+    },
+    {
+     "rotulo": "Passo 4 de 6",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "2093e1142bdd2efa"
+    },
+    {
+     "rotulo": "Passo 5 de 6",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "f445e26b76cd4612"
+    },
+    {
+     "rotulo": "Passo 6 de 6",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "514e48196741c8f9"
+    },
+    {
+     "rotulo": "Passo 5 de 6",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "f445e26b76cd4612"
+    },
+    {
+     "rotulo": "Passo 4 de 6",
+     "marcadas": [
+      "Já está parado, sobrando — eu escolheria com consciência"
+     ],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "07424a4b34af8e99"
+    },
+    {
+     "rotulo": "Passo 3 de 6",
+     "marcadas": [
+      "Continua parecendo verdade, real, urgente"
+     ],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "41ca6ae5ba95c362"
+    },
+    {
+     "rotulo": "Passo 4 de 6",
+     "marcadas": [
+      "Já está parado, sobrando — eu escolheria com consciência"
+     ],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "07424a4b34af8e99"
+    }
+   ]
+  ]
+ },
+ "amostras": {
+  "cheio: É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.": "# Cheguei tarde? — o protocolo do medo de ficar de fora\nGerado em 20/11/2026\n\n> É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.\n\n## Resumo\n\n- **6** — perguntas respondidas\n- **24h** — prazo antes de executar\n- **3** — passos no plano\n\nEssa é a situação mais escorregadia: como o dinheiro sobra, parece seguro entrar. E pode até ser. Mas você marcou que o que está no comando é a pressa, a inveja ou o medo de ficar pra trás — e nenhum desses é um bom analista.\n\nVocê já sentiu o pensamento perder um pouco da força quando o viu como pensamento. Use isso: a decisão não precisa ser dele.\n\nFaça o teste das 24 horas. Se amanhã, sem o aperto, a ideia ainda fizer sentido, entre — mas com um tamanho que você aguente ver cair 50% no dia seguinte sem perder o sono. Se o aperto passar e a vontade sumir junto, você acabou de economizar o preço de uma lição.\n\nReleia o que você escreveu sobre pra que o seu dinheiro serve, ali embaixo. A pergunta que desarma o FOMO é uma só: este movimento te aproxima disso — ou só alivia, por alguns minutos, o aperto de ficar de fora?\n\nVocê se comprometeu com isto: “Texto de teste, com “aspas” e ponto final.”. Ele está no seu registro abaixo — releia amanhã, sem a pressa de hoje.\n\n## O que você registrou\n\n**O que estava mais forte**\nAperto de “agora ou nunca” — se eu não entrar já, perco\n\n**O pensamento que me empurrava**\nTexto de teste, com “aspas” e ponto final.\n\n**Como ele soou quando reli como “um pensamento”**\nPerde um pouco da força quando vejo que é só um pensamento\n\n**De onde sairia o dinheiro**\nJá está parado, sobrando — eu escolheria com consciência\n\n**Pra que o meu dinheiro serve, daqui a dez anos**\nTexto de teste, com “aspas” e ponto final.\n\n**Meu compromisso para as próximas 24 horas**\nTexto de teste, com “aspas” e ponto final.\n\n## Seu plano\n\n- [ ] Passo 1: Espere 24 horas antes de executar\n  Se a tese continuar viva amanhã, ela não dependia do impulso.\n- [ ] Passo 2: Corte o valor pela metade\n  Reduza a exposição até um erro não tirar seu sono.\n- [ ] Passo 3: Escreva o que mudaria sua ideia\n  Preço, prazo ou evento: deixe a saída visível.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/medo-de-ficar-de-fora/",
+  "cheio: Antes de tirar de outro lugar, olhe o que você trocaria.": "# Cheguei tarde? — o protocolo do medo de ficar de fora\nGerado em 20/11/2026\n\n> Antes de tirar de outro lugar, olhe o que você trocaria.\n\n## Resumo\n\n- **6** — perguntas respondidas\n- **24h** — prazo antes de executar\n- **3** — passos no plano\n\nTirar da reserva, das contas ou de uma meta que você já tinha para correr atrás desta é trocar um plano por um impulso. Às vezes vale — mas é uma decisão grande demais para ser tomada no aperto.\n\nO teste é simples: se amanhã, sem a pressa de hoje, você ainda achar que faz sentido mover esse dinheiro, ele continua disponível. O que o FOMO não suporta é esperar 24 horas — porque ele sabe que não sobrevive à calma.\n\nReleia o que você escreveu sobre pra que o seu dinheiro serve, ali embaixo. A pergunta que desarma o FOMO é uma só: este movimento te aproxima disso — ou só alivia, por alguns minutos, o aperto de ficar de fora?\n\nVocê se comprometeu com isto: “Texto de teste, com “aspas” e ponto final.”. Ele está no seu registro abaixo — releia amanhã, sem a pressa de hoje.\n\n## O que você registrou\n\n**O que estava mais forte**\nAperto de “agora ou nunca” — se eu não entrar já, perco\n\n**O pensamento que me empurrava**\nTexto de teste, com “aspas” e ponto final.\n\n**Como ele soou quando reli como “um pensamento”**\nPerde um pouco da força quando vejo que é só um pensamento\n\n**De onde sairia o dinheiro**\nEu teria que tirar de algo: reserva, contas, outra meta\n\n**Pra que o meu dinheiro serve, daqui a dez anos**\nTexto de teste, com “aspas” e ponto final.\n\n**Meu compromisso para as próximas 24 horas**\nTexto de teste, com “aspas” e ponto final.\n\n## Seu plano\n\n- [ ] Passo 1: Espere 24 horas\n  A ideia precisa continuar de pé sem a urgência de agora.\n- [ ] Passo 2: Proteja a reserva e a meta\n  Só mova dinheiro depois de nomear o que ficará sem ele.\n- [ ] Passo 3: Defina um tamanho suportável\n  Escreva o valor que pode cair sem mudar suas contas.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/medo-de-ficar-de-fora/",
+  "cheio: O passo de hoje é não dar o passo.": "# Cheguei tarde? — o protocolo do medo de ficar de fora\nGerado em 20/11/2026\n\n> O passo de hoje é não dar o passo.\n\n## Resumo\n\n- **6** — perguntas respondidas\n- **24h** — prazo antes de executar\n- **3** — passos no plano\n\nEntrar devendo ou alavancado por causa de um aperto de pressa é o roteiro mais clássico de transformar FOMO em prejuízo — e em dívida, que dói muito depois que a euforia passa.\n\nIsso não fecha a porta pra sempre. Fecha a porta pra decidir isso agora, com dinheiro que você não tem, empurrado pela sensação. Se a tese for boa, ela continua boa quando você tiver capital que possa perder sem quebrar.\n\nReleia o que você escreveu sobre pra que o seu dinheiro serve, ali embaixo. A pergunta que desarma o FOMO é uma só: este movimento te aproxima disso — ou só alivia, por alguns minutos, o aperto de ficar de fora?\n\nVocê se comprometeu com isto: “Texto de teste, com “aspas” e ponto final.”. Ele está no seu registro abaixo — releia amanhã, sem a pressa de hoje.\n\n## O que você registrou\n\n**O que estava mais forte**\nAperto de “agora ou nunca” — se eu não entrar já, perco\n\n**O pensamento que me empurrava**\nTexto de teste, com “aspas” e ponto final.\n\n**Como ele soou quando reli como “um pensamento”**\nPerde um pouco da força quando vejo que é só um pensamento\n\n**De onde sairia o dinheiro**\nEu não tenho agora — entraria devendo ou alavancado\n\n**Pra que o meu dinheiro serve, daqui a dez anos**\nTexto de teste, com “aspas” e ponto final.\n\n**Meu compromisso para as próximas 24 horas**\nTexto de teste, com “aspas” e ponto final.\n\n## Seu plano\n\n- [ ] Passo 1: Não execute nada hoje\n  Feche o app e proteja o dinheiro que já tem função.\n- [ ] Passo 2: Devolva o dinheiro para a função dele\n  Reserva, contas e orçamento não viram capital de risco por impulso.\n- [ ] Passo 3: Escreva a tese sem pressa\n  Se a oportunidade só existir hoje, ela não precisa ser sua.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/medo-de-ficar-de-fora/",
+  "cheio: Decidir com calma, com dinheiro que sobra, é legítimo — inclusive decidir sim.": "# Cheguei tarde? — o protocolo do medo de ficar de fora\nGerado em 20/11/2026\n\n> Decidir com calma, com dinheiro que sobra, é legítimo — inclusive decidir sim.\n\n## Resumo\n\n- **6** — perguntas respondidas\n- **24h** — prazo antes de executar\n- **3** — passos no plano\n\nVocê marcou que não há aperto e que o dinheiro já está sobrando. Essa é a única combinação em que entrar não é FOMO — é escolha. Aqui o protocolo não te segura.\n\nSe for entrar, entre pensando no tamanho, não no timing: um valor que você aguente ver cair pela metade amanhã sem que isso mude a sua vida. O que protege você não é acertar a hora — é o tamanho da aposta.\n\nReleia o que você escreveu sobre pra que o seu dinheiro serve, ali embaixo. A pergunta que desarma o FOMO é uma só: este movimento te aproxima disso — ou só alivia, por alguns minutos, o aperto de ficar de fora?\n\nVocê se comprometeu com isto: “Texto de teste, com “aspas” e ponto final.”. Ele está no seu registro abaixo — releia amanhã, sem a pressa de hoje.\n\n## O que você registrou\n\n**O que estava mais forte**\nCuriosidade tranquila, sem aperto nenhum\n\n**O pensamento que me empurrava**\nTexto de teste, com “aspas” e ponto final.\n\n**Como ele soou quando reli como “um pensamento”**\nPerde um pouco da força quando vejo que é só um pensamento\n\n**De onde sairia o dinheiro**\nJá está parado, sobrando — eu escolheria com consciência\n\n**Pra que o meu dinheiro serve, daqui a dez anos**\nTexto de teste, com “aspas” e ponto final.\n\n**Meu compromisso para as próximas 24 horas**\nTexto de teste, com “aspas” e ponto final.\n\n## Seu plano\n\n- [ ] Passo 1: Escreva a tese em duas frases\n  Se não couber, a decisão ainda precisa de clareza.\n- [ ] Passo 2: Defina o tamanho antes do preço\n  Escolha o valor que pode cair sem alterar sua vida.\n- [ ] Passo 3: Anote o critério de saída\n  Preço, prazo ou evento — o que vier primeiro.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/medo-de-ficar-de-fora/",
+  "vazio: É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.": "# Cheguei tarde? — o protocolo do medo de ficar de fora\nGerado em 20/11/2026\n\n> É dinheiro que sobra — mas quem está decidindo agora é o aperto, não você.\n\n## Resumo\n\n- **6** — perguntas respondidas\n- **24h** — prazo antes de executar\n- **3** — passos no plano\n\nEssa é a situação mais escorregadia: como o dinheiro sobra, parece seguro entrar. E pode até ser. Mas você marcou que o que está no comando é a pressa, a inveja ou o medo de ficar pra trás — e nenhum desses é um bom analista.\n\nVocê já sentiu o pensamento perder um pouco da força quando o viu como pensamento. Use isso: a decisão não precisa ser dele.\n\nFaça o teste das 24 horas. Se amanhã, sem o aperto, a ideia ainda fizer sentido, entre — mas com um tamanho que você aguente ver cair 50% no dia seguinte sem perder o sono. Se o aperto passar e a vontade sumir junto, você acabou de economizar o preço de uma lição.\n\nVocê preferiu não escrever pra que o dinheiro serve na sua vida — e tudo bem. Mas vale voltar nisso: o FOMO só perde a força quando você lembra que o dinheiro serve a uma vida, não a um placar contra os outros.\n\nVocê não deixou um compromisso escrito — vale voltar e escrever um. É a diferença entre refletir e decidir.\n\n## O que você registrou\n\n**O que estava mais forte**\nAperto de “agora ou nunca” — se eu não entrar já, perco\n\n**Como ele soou quando reli como “um pensamento”**\nPerde um pouco da força quando vejo que é só um pensamento\n\n**De onde sairia o dinheiro**\nJá está parado, sobrando — eu escolheria com consciência\n\n## Seu plano\n\n- [ ] Passo 1: Espere 24 horas antes de executar\n  Se a tese continuar viva amanhã, ela não dependia do impulso.\n- [ ] Passo 2: Corte o valor pela metade\n  Reduza a exposição até um erro não tirar seu sono.\n- [ ] Passo 3: Escreva o que mudaria sua ideia\n  Preço, prazo ou evento: deixe a saída visível.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/medo-de-ficar-de-fora/",
+  "vazio: Antes de tirar de outro lugar, olhe o que você trocaria.": "# Cheguei tarde? — o protocolo do medo de ficar de fora\nGerado em 20/11/2026\n\n> Antes de tirar de outro lugar, olhe o que você trocaria.\n\n## Resumo\n\n- **6** — perguntas respondidas\n- **24h** — prazo antes de executar\n- **3** — passos no plano\n\nTirar da reserva, das contas ou de uma meta que você já tinha para correr atrás desta é trocar um plano por um impulso. Às vezes vale — mas é uma decisão grande demais para ser tomada no aperto.\n\nO teste é simples: se amanhã, sem a pressa de hoje, você ainda achar que faz sentido mover esse dinheiro, ele continua disponível. O que o FOMO não suporta é esperar 24 horas — porque ele sabe que não sobrevive à calma.\n\nVocê preferiu não escrever pra que o dinheiro serve na sua vida — e tudo bem. Mas vale voltar nisso: o FOMO só perde a força quando você lembra que o dinheiro serve a uma vida, não a um placar contra os outros.\n\nVocê não deixou um compromisso escrito — vale voltar e escrever um. É a diferença entre refletir e decidir.\n\n## O que você registrou\n\n**O que estava mais forte**\nAperto de “agora ou nunca” — se eu não entrar já, perco\n\n**Como ele soou quando reli como “um pensamento”**\nPerde um pouco da força quando vejo que é só um pensamento\n\n**De onde sairia o dinheiro**\nEu teria que tirar de algo: reserva, contas, outra meta\n\n## Seu plano\n\n- [ ] Passo 1: Espere 24 horas\n  A ideia precisa continuar de pé sem a urgência de agora.\n- [ ] Passo 2: Proteja a reserva e a meta\n  Só mova dinheiro depois de nomear o que ficará sem ele.\n- [ ] Passo 3: Defina um tamanho suportável\n  Escreva o valor que pode cair sem mudar suas contas.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/medo-de-ficar-de-fora/",
+  "vazio: O passo de hoje é não dar o passo.": "# Cheguei tarde? — o protocolo do medo de ficar de fora\nGerado em 20/11/2026\n\n> O passo de hoje é não dar o passo.\n\n## Resumo\n\n- **6** — perguntas respondidas\n- **24h** — prazo antes de executar\n- **3** — passos no plano\n\nEntrar devendo ou alavancado por causa de um aperto de pressa é o roteiro mais clássico de transformar FOMO em prejuízo — e em dívida, que dói muito depois que a euforia passa.\n\nIsso não fecha a porta pra sempre. Fecha a porta pra decidir isso agora, com dinheiro que você não tem, empurrado pela sensação. Se a tese for boa, ela continua boa quando você tiver capital que possa perder sem quebrar.\n\nVocê preferiu não escrever pra que o dinheiro serve na sua vida — e tudo bem. Mas vale voltar nisso: o FOMO só perde a força quando você lembra que o dinheiro serve a uma vida, não a um placar contra os outros.\n\nVocê não deixou um compromisso escrito — vale voltar e escrever um. É a diferença entre refletir e decidir.\n\n## O que você registrou\n\n**O que estava mais forte**\nAperto de “agora ou nunca” — se eu não entrar já, perco\n\n**Como ele soou quando reli como “um pensamento”**\nPerde um pouco da força quando vejo que é só um pensamento\n\n**De onde sairia o dinheiro**\nEu não tenho agora — entraria devendo ou alavancado\n\n## Seu plano\n\n- [ ] Passo 1: Não execute nada hoje\n  Feche o app e proteja o dinheiro que já tem função.\n- [ ] Passo 2: Devolva o dinheiro para a função dele\n  Reserva, contas e orçamento não viram capital de risco por impulso.\n- [ ] Passo 3: Escreva a tese sem pressa\n  Se a oportunidade só existir hoje, ela não precisa ser sua.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/medo-de-ficar-de-fora/",
+  "vazio: Decidir com calma, com dinheiro que sobra, é legítimo — inclusive decidir sim.": "# Cheguei tarde? — o protocolo do medo de ficar de fora\nGerado em 20/11/2026\n\n> Decidir com calma, com dinheiro que sobra, é legítimo — inclusive decidir sim.\n\n## Resumo\n\n- **6** — perguntas respondidas\n- **24h** — prazo antes de executar\n- **3** — passos no plano\n\nVocê marcou que não há aperto e que o dinheiro já está sobrando. Essa é a única combinação em que entrar não é FOMO — é escolha. Aqui o protocolo não te segura.\n\nSe for entrar, entre pensando no tamanho, não no timing: um valor que você aguente ver cair pela metade amanhã sem que isso mude a sua vida. O que protege você não é acertar a hora — é o tamanho da aposta.\n\nVocê preferiu não escrever pra que o dinheiro serve na sua vida — e tudo bem. Mas vale voltar nisso: o FOMO só perde a força quando você lembra que o dinheiro serve a uma vida, não a um placar contra os outros.\n\nVocê não deixou um compromisso escrito — vale voltar e escrever um. É a diferença entre refletir e decidir.\n\n## O que você registrou\n\n**O que estava mais forte**\nCuriosidade tranquila, sem aperto nenhum\n\n**Como ele soou quando reli como “um pensamento”**\nPerde um pouco da força quando vejo que é só um pensamento\n\n**De onde sairia o dinheiro**\nJá está parado, sobrando — eu escolheria com consciência\n\n## Seu plano\n\n- [ ] Passo 1: Escreva a tese em duas frases\n  Se não couber, a decisão ainda precisa de clareza.\n- [ ] Passo 2: Defina o tamanho antes do preço\n  Escolha o valor que pode cair sem alterar sua vida.\n- [ ] Passo 3: Anote o critério de saída\n  Preço, prazo ou evento — o que vier primeiro.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/medo-de-ficar-de-fora/"
+ }
+}

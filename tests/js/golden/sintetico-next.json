@@ -1,0 +1,359 @@
+{
+ "protocolo": "sintetico-next",
+ "texto": {
+  "cheio": {
+   "2": {
+    "passos": "0",
+    "telas": "f78bb20ade5b2868",
+    "terminou": true,
+    "veredito": "Fim do sintético",
+    "resultado": "d5a71d4b038efd18",
+    "md": "fd0e637cb2a9ee2f",
+    "mdNome": "sintetico-next.md"
+   },
+   "0.t.0.0": {
+    "passos": "0,1,2,3",
+    "telas": "bdbc30b1bc20dae6",
+    "terminou": true,
+    "veredito": "Fim do sintético",
+    "resultado": "d43c818285f62537",
+    "md": "8d51c4362b881cec",
+    "mdNome": "sintetico-next.md"
+   },
+   "0.t.0.1": {
+    "passos": "0,1,2,3",
+    "telas": "bdbc30b1bc20dae6",
+    "terminou": true,
+    "veredito": "Fim do sintético",
+    "resultado": "d43c818285f62537",
+    "md": "8d51c4362b881cec",
+    "mdNome": "sintetico-next.md"
+   },
+   "0.t.1.0": {
+    "passos": "0,1,2,3",
+    "telas": "bdbc30b1bc20dae6",
+    "terminou": true,
+    "veredito": "Fim do sintético",
+    "resultado": "d43c818285f62537",
+    "md": "8d51c4362b881cec",
+    "mdNome": "sintetico-next.md"
+   },
+   "0.t.1.1": {
+    "passos": "0,1,2,3",
+    "telas": "bdbc30b1bc20dae6",
+    "terminou": true,
+    "veredito": "Fim do sintético",
+    "resultado": "d43c818285f62537",
+    "md": "8d51c4362b881cec",
+    "mdNome": "sintetico-next.md"
+   },
+   "1.0": {
+    "passos": "0,3",
+    "telas": "530a6927aa60bc1e",
+    "terminou": true,
+    "veredito": "Fim do sintético",
+    "resultado": "aff5c18f4860eb5c",
+    "md": "6d91547134614327",
+    "mdNome": "sintetico-next.md"
+   },
+   "1.1": {
+    "passos": "0,3",
+    "telas": "530a6927aa60bc1e",
+    "terminou": true,
+    "veredito": "Fim do sintético",
+    "resultado": "aff5c18f4860eb5c",
+    "md": "6d91547134614327",
+    "mdNome": "sintetico-next.md"
+   }
+  },
+  "vazio": {
+   "2": {
+    "passos": "0",
+    "telas": "f78bb20ade5b2868",
+    "terminou": true,
+    "veredito": "Fim do sintético",
+    "resultado": "d5a71d4b038efd18",
+    "md": "fd0e637cb2a9ee2f",
+    "mdNome": "sintetico-next.md"
+   },
+   "0.t.0.0": {
+    "passos": "0,1,2,3",
+    "telas": "bdbc30b1bc20dae6",
+    "terminou": true,
+    "veredito": "Fim do sintético",
+    "resultado": "d5f54863221688de",
+    "md": "9173c3006a35d0c9",
+    "mdNome": "sintetico-next.md"
+   },
+   "0.t.0.1": {
+    "passos": "0,1,2,3",
+    "telas": "bdbc30b1bc20dae6",
+    "terminou": true,
+    "veredito": "Fim do sintético",
+    "resultado": "d5f54863221688de",
+    "md": "9173c3006a35d0c9",
+    "mdNome": "sintetico-next.md"
+   },
+   "0.t.1.0": {
+    "passos": "0,1,2,3",
+    "telas": "bdbc30b1bc20dae6",
+    "terminou": true,
+    "veredito": "Fim do sintético",
+    "resultado": "d5f54863221688de",
+    "md": "9173c3006a35d0c9",
+    "mdNome": "sintetico-next.md"
+   },
+   "0.t.1.1": {
+    "passos": "0,1,2,3",
+    "telas": "bdbc30b1bc20dae6",
+    "terminou": true,
+    "veredito": "Fim do sintético",
+    "resultado": "d5f54863221688de",
+    "md": "9173c3006a35d0c9",
+    "mdNome": "sintetico-next.md"
+   },
+   "1.0": {
+    "passos": "0,3",
+    "telas": "530a6927aa60bc1e",
+    "terminou": true,
+    "veredito": "Fim do sintético",
+    "resultado": "aff5c18f4860eb5c",
+    "md": "6d91547134614327",
+    "mdNome": "sintetico-next.md"
+   },
+   "1.1": {
+    "passos": "0,3",
+    "telas": "530a6927aa60bc1e",
+    "terminou": true,
+    "veredito": "Fim do sintético",
+    "resultado": "aff5c18f4860eb5c",
+    "md": "6d91547134614327",
+    "mdNome": "sintetico-next.md"
+   }
+  }
+ },
+ "roteiros": {
+  "cheio": [
+   [
+    {
+     "rotulo": "Passo 1 de 4",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "17b1fa9f798f65b9"
+    },
+    {
+     "rotulo": "Passo 4 de 4",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "9860e74224a96dd8"
+    },
+    {
+     "rotulo": "Passo 1 de 4",
+     "marcadas": [
+      "Pular para d"
+     ],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "419ce5a8119dcf08"
+    },
+    {
+     "rotulo": "Passo 2 de 4",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "c86a7e33d5cfa416"
+    },
+    {
+     "rotulo": "Passo 3 de 4",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "28ad0d310f46a7ba"
+    },
+    {
+     "rotulo": "Passo 4 de 4",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "9860e74224a96dd8"
+    },
+    {
+     "rotulo": "Passo 3 de 4",
+     "marcadas": [
+      "Id que não existe"
+     ],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "c7409d317969b0ee"
+    },
+    {
+     "rotulo": "Passo 2 de 4",
+     "marcadas": [],
+     "texto": "Texto de teste, com “aspas” e ponto final.",
+     "voltarAtivo": "false",
+     "dom": "c86a7e33d5cfa416"
+    },
+    {
+     "rotulo": "Passo 1 de 4",
+     "marcadas": [
+      "Em ordem"
+     ],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "375541d053c62f96"
+    },
+    {
+     "resultado": "e5cb5b67c1d416bc"
+    }
+   ],
+   [
+    {
+     "rotulo": "Passo 1 de 4",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "17b1fa9f798f65b9"
+    },
+    {
+     "rotulo": "Passo 2 de 4",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "c86a7e33d5cfa416"
+    },
+    {
+     "rotulo": "Passo 3 de 4",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "28ad0d310f46a7ba"
+    },
+    {
+     "rotulo": "Passo 4 de 4",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "9860e74224a96dd8"
+    },
+    {
+     "resultado": "d43c818285f62537"
+    }
+   ]
+  ],
+  "vazio": [
+   [
+    {
+     "rotulo": "Passo 1 de 4",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "17b1fa9f798f65b9"
+    },
+    {
+     "rotulo": "Passo 4 de 4",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "9860e74224a96dd8"
+    },
+    {
+     "rotulo": "Passo 1 de 4",
+     "marcadas": [
+      "Pular para d"
+     ],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "419ce5a8119dcf08"
+    },
+    {
+     "rotulo": "Passo 2 de 4",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "c86a7e33d5cfa416"
+    },
+    {
+     "rotulo": "Passo 3 de 4",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "28ad0d310f46a7ba"
+    },
+    {
+     "rotulo": "Passo 4 de 4",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "9860e74224a96dd8"
+    },
+    {
+     "rotulo": "Passo 3 de 4",
+     "marcadas": [
+      "Id que não existe"
+     ],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "c7409d317969b0ee"
+    },
+    {
+     "rotulo": "Passo 2 de 4",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "c86a7e33d5cfa416"
+    },
+    {
+     "rotulo": "Passo 1 de 4",
+     "marcadas": [
+      "Em ordem"
+     ],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "375541d053c62f96"
+    },
+    {
+     "resultado": "d5a71d4b038efd18"
+    }
+   ],
+   [
+    {
+     "rotulo": "Passo 1 de 4",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "true",
+     "dom": "17b1fa9f798f65b9"
+    },
+    {
+     "rotulo": "Passo 2 de 4",
+     "marcadas": [],
+     "texto": "",
+     "voltarAtivo": "false",
+     "dom": "c86a7e33d5cfa416"
+    },
+    {
+     "rotulo": "Passo 3 de 4",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "28ad0d310f46a7ba"
+    },
+    {
+     "rotulo": "Passo 4 de 4",
+     "marcadas": [],
+     "texto": null,
+     "voltarAtivo": "false",
+     "dom": "9860e74224a96dd8"
+    },
+    {
+     "resultado": "d5f54863221688de"
+    }
+   ]
+  ]
+ },
+ "amostras": {
+  "cheio: Fim do sintético": "# Protocolo sintético\nGerado em 20/11/2026\n\n> Fim do sintético\n\nCorpo.\n\n## O que você registrou\n\n**A**\nEm ordem\n\n**B**\nTexto de teste, com “aspas” e ponto final.\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/sintetico-next/",
+  "vazio: Fim do sintético": "# Protocolo sintético\nGerado em 20/11/2026\n\n> Fim do sintético\n\nCorpo.\n\n## O que você registrou\n\n**A**\nEm ordem\n\n---\nReflexão estruturada da DLT Academy — não é terapia nem recomendação de investimento.\ndlt.academy/protocolos/sintetico-next/"
+ }
+}
