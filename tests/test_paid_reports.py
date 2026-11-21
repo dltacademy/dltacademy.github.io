@@ -412,6 +412,7 @@ console.log(link.href);
         specs = (
             ("decisao-fria", "exemplo-relatorio-decisao-fria.pdf", 7),
             ("carteira-aguenta", "exemplo-relatorio-carteira-aguenta.pdf", 6),
+            ("mapa-do-seu-teto", "exemplo-relatorio-mapa-do-seu-teto.pdf", 4),
         )
         for slug, filename, expected_pages in specs:
             pdf_path = self.root / "produtos" / slug / filename
@@ -443,24 +444,28 @@ console.log(link.href);
                 self.assertIn('referrerpolicy="no-referrer"', tag)
 
     def test_pix_biografia_entregas_e_datas_alinhadas(self):
-        for rel in (
-            "index.html",
-            "termos/index.html",
-            "privacidade/index.html",
-            "js/paid-reports.js",
-            "produtos/decisao-fria/index.html",
-            "produtos/carteira-aguenta/index.html",
-        ):
+        # Data das paginas legais atualizada em 2026-11-21 ao incluir O Mapa do seu Teto (retencao 10d e lembretes D10);
+        # decisao-fria e carteira-aguenta permanecem em 2026-11-19.
+        datas_por_arquivo = {
+            "index.html": "2026-11-19",
+            "termos/index.html": "2026-11-21",
+            "privacidade/index.html": "2026-11-21",
+            "js/paid-reports.js": None,
+            "produtos/decisao-fria/index.html": "2026-11-19",
+            "produtos/carteira-aguenta/index.html": "2026-11-19",
+            "produtos/mapa-do-seu-teto/index.html": "2026-11-21",
+        }
+        for rel, expected_date in datas_por_arquivo.items():
             with self.subTest(arquivo=rel):
                 text = (self.root / rel).read_text(encoding="utf-8")
                 self.assertIn("Pix", text)
                 self.assertIn("Stripe", text)
-                if rel.endswith(".html"):
-                    self.assertIn('"dateModified": "2026-11-19"', text)
+                if rel.endswith(".html") and expected_date:
+                    self.assertIn(f'"dateModified": "{expected_date}"', text)
         for legal in ("termos/index.html", "privacidade/index.html"):
             text = (self.root / legal).read_text(encoding="utf-8")
-            self.assertIn('<time datetime="2026-11-19">19 de novembro de 2026</time>', text)
-        for slug in ("decisao-fria", "carteira-aguenta"):
+            self.assertIn('<time datetime="2026-11-21">21 de novembro de 2026</time>', text)
+        for slug in ("decisao-fria", "carteira-aguenta", "mapa-do-seu-teto"):
             html = (self.root / f"produtos/{slug}/index.html").read_text(encoding="utf-8")
             with self.subTest(sales_page=slug):
                 self.assertIn("<strong>Tiago · Fundador da DLT Academy</strong>", html)
@@ -469,11 +474,13 @@ console.log(link.href);
                 self.assertIn('target="_blank"', bio_links[0])
                 self.assertIn('rel="noopener noreferrer"', bio_links[0])
                 self.assertIn('referrerpolicy="no-referrer"', bio_links[0])
-                self.assertIn("simulador interativo", html.lower())
-                self.assertIn(".ics", html)
+                if slug in ("decisao-fria", "carteira-aguenta"):
+                    self.assertIn("simulador interativo", html.lower())
+                    self.assertIn(".ics", html)
 
     def test_pagina_de_vendas_nao_fica_orfa_no_portal(self):
         self.assertIn('paginaUrl: "/produtos/decisao-fria/"', self.catalog)
+        self.assertIn('paginaUrl: "/produtos/mapa-do-seu-teto/"', self.catalog)
         for rel in (
             "index.html",
             "blog/fomo-investimentos-depois-da-alta/index.html",
@@ -482,6 +489,7 @@ console.log(link.href);
             with self.subTest(page=rel):
                 html = (self.root / rel).read_text(encoding="utf-8")
                 self.assertIn('href="/produtos/decisao-fria/"', html)
+        self.assertIn('href="/produtos/mapa-do-seu-teto/"', (self.root / "transparencia/index.html").read_text(encoding="utf-8"))
 
     def test_oferta_nao_carrega_respostas_nem_entra_no_arquivo(self):
         builder = self.engine[
