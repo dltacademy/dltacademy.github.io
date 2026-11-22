@@ -72,7 +72,7 @@ const PAID_REPORTS = {
     paginaUrl: "/produtos/mapa-do-seu-teto/",
     botaoPagina: "Ver exemplo da leitura",
     plataforma: "Stripe",
-    checkoutUrl: "",
+    checkoutUrl: "https://relatorio.dlt.academy/comprar/teto-avancado?utm_source=portal&utm_medium=protocolo",
     aviso: "Pagamento único por ciclo via Pix (confirma na hora) ou cartão pelo Stripe. Nada do que você escreveu aqui vai no link: depois de pagar, você escolhe se carrega o seu arquivo (.md). Suas respostas passam por um serviço de geração de texto contratado por nós apenas para produzir a leitura e ficam acessíveis no seu link por 10 dias para permitir o ajuste no dia 7 (ou você apaga na hora pelo botão da página; os lembretes quinzenais até o dia 90 são opcionais, neutros e com saída em 1 clique). É material educacional sobre hábitos com dinheiro, não é diagnóstico nem recomendação de investimento. Você tem 7 dias para pedir reembolso.",
     perfis: {
       "ganho-que-escorre": {

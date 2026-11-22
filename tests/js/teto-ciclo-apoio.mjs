@@ -31,7 +31,7 @@ export function abrir({ hash = "", local = {}, sessao = {}, dataFixa, catalogo }
   env.janela.history.replaceState = (...args) => env.chamadasReplaceState.push(args);
   if (catalogo !== undefined) {
     env.carregar("js/paid-reports.js");
-    if (catalogo) env.rodar(`PAID_REPORTS["teto-avancado"].checkoutUrl = ${JSON.stringify(catalogo)};`);
+    env.rodar(`PAID_REPORTS["teto-avancado"].checkoutUrl = ${JSON.stringify(catalogo)};`);
   }
   SCRIPTS.forEach((arquivo) => env.carregar(arquivo));
   env.carregar("protocolos/teto-financeiro/js/protocol.js");
