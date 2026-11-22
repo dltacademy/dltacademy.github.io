@@ -33,6 +33,7 @@ INSTITUTIONAL_URLS = {
     "https://dlt.academy/termos/",
     "https://dlt.academy/produtos/decisao-fria/",
     "https://dlt.academy/produtos/carteira-aguenta/",
+    "https://dlt.academy/produtos/mapa-do-seu-teto/",
     "https://dlt.academy/comunidade/",
 }
 ID_PATTERN = re.compile(r"^[a-z0-9-]+$")

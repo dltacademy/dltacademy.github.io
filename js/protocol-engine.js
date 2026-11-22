@@ -1673,7 +1673,7 @@ function buildPaidReportOffer(ref, el) {
   buy.appendChild(el("p", "protocol-paid-price", product.preco + (product.formato ? " · " + product.formato : "")));
   const actions = el("div", "protocol-paid-actions");
   const a = el("a", "btn btn-md btn-primary", product.botao || "Quero o relatório completo →");
-  a.href = checkout;
+  a.href = appendPaidOfferUtms(checkout, true);
   a.target = "_blank";
   a.rel = "noopener noreferrer";
   a.setAttribute("referrerpolicy", "no-referrer");
@@ -1681,7 +1681,7 @@ function buildPaidReportOffer(ref, el) {
   const pagina = paidReportPageUrl(product.paginaUrl);
   if (pagina) {
     const ver = el("a", "btn btn-ghost", product.botaoPagina || "Ver exemplo do relatório");
-    ver.href = pagina;
+    ver.href = appendPaidOfferUtms(pagina, false);
     actions.appendChild(ver);
   }
   buy.appendChild(actions);
@@ -1727,6 +1727,45 @@ function paidReportCheckoutUrl(value) {
 function paidReportPageUrl(value) {
   if (typeof value !== "string" || !value) return null;
   return /^\/produtos\/[a-z0-9-]+\/$/.test(value) ? value : null;
+}
+
+/**
+ * O que faz: Repassa os parametros utm_* da visita atual para os links de oferta e checkout.
+ * Por que: Preserva a origem de campanha sem carregar nenhuma resposta ou dado pessoal na URL.
+ * Erro e ataque: Aceita apenas chaves utm_source/medium/campaign/content/term com caracteres [a-z0-9_-] ate 200 chars e revalida o destino no checkout.
+ * Prova: tests/test_paid_reports.py (test_oferta_propaga_utms_para_checkout_e_pagina).
+ */
+function appendPaidOfferUtms(rawUrl, isCheckout) {
+  if (typeof rawUrl !== "string" || !rawUrl) return rawUrl;
+  if (typeof window === "undefined" || !window.location || !window.location.search) return rawUrl;
+  const ALLOWED = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+  let visita;
+  try {
+    visita = new URLSearchParams(window.location.search);
+  } catch (error) {
+    return rawUrl;
+  }
+  const limpo = (v) => {
+    if (typeof v !== "string") return "";
+    const norm = v.trim().toLowerCase();
+    return /^[a-z0-9_-]{1,200}$/.test(norm) ? norm : "";
+  };
+  const extras = ALLOWED.map((k) => [k, limpo(visita.get(k))]).filter((par) => par[1] !== "");
+  if (!extras.length) return rawUrl;
+  let parsed;
+  try {
+    parsed = isCheckout ? new URL(rawUrl) : new URL(rawUrl, "https://dlt.academy");
+  } catch (error) {
+    return rawUrl;
+  }
+  const origContent = parsed.searchParams.get("utm_content");
+  ALLOWED.forEach((k) => parsed.searchParams.delete(k));
+  extras.forEach((par) => parsed.searchParams.set(par[0], par[1]));
+  if (isCheckout && origContent && !parsed.searchParams.has("utm_term")) {
+    parsed.searchParams.set("utm_term", origContent);
+  }
+  if (isCheckout) return paidReportCheckoutUrl(parsed.href) || rawUrl;
+  return parsed.pathname + parsed.search;
 }
 
 function prepareProtocolPdfBrand() {

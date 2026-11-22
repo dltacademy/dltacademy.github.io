@@ -121,6 +121,20 @@ const CONTENT = [
     "related": ["protocolo-medo-de-ficar-de-fora", "tool-vender-ou-segurar"]
   },
   {
+    "id": "protocolo-teto-financeiro",
+    "type": "protocolo",
+    "title": "Teto financeiro",
+    "description": "Em cerca de 8 minutos, ache o padrão que mais se repete na sua relação com o dinheiro e saia com uma trava prática para usar hoje.",
+    "url": "/protocolos/teto-financeiro/",
+    "tag": "Hábitos com dinheiro",
+    "tone": "green",
+    "sit": ["comecar", "posicao"],
+    "mark": "TF",
+    "effort": "Ato 1 (8 min) · Ato 2 opcional (15 min)",
+    "primaryNext": "protocolo-decisao-fria",
+    "related": ["tool-sobrevive-ou-quebra"]
+  },
+  {
     "id": "guide-conta-binance",
     "type": "guide",
     "title": "Criar conta com segurança",
