@@ -28,9 +28,9 @@
   transition: border-color .15s, transform .15s;
 }
 .post-card:hover { border-color: var(--accent); transform: translateY(-2px); }
-.post-card h3 { font-family: var(--font-head); font-size: 19px; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
-.post-card p { color: var(--text-dim); font-size: 14.5px; margin: 0; line-height: 1.5; }
-.post-card .post-card-date { font-size: 12px; color: var(--text-faint); margin-top: auto; padding-top: 8px; }
+.post-card h3 { font-family: var(--font-head); font-size: 1.1875rem; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+.post-card p { color: var(--text-dim); font-size: 0.9062rem; margin: 0; line-height: 1.5; }
+.post-card .post-card-date { font-size: 0.75rem; color: var(--text-faint); margin-top: auto; padding-top: 8px; }
 
 /* Página de post — largura de leitura própria, não usa --max-width global
    (que é 780px na ferramenta/960px no portal) pra não acoplar a essas páginas. */
@@ -44,24 +44,24 @@
   gap: 10px;
   align-items: center;
   color: var(--text-faint);
-  font-size: 13px;
+  font-size: 0.8125rem;
   margin-bottom: 8px;
 }
 .article-meta .tag { margin-bottom: 0; }
 .article h1 { margin-top: 6px; }
 
-.article-body { font-size: 16.5px; line-height: 1.75; }
+.article-body { font-size: 1.0312rem; line-height: 1.75; }
 .article-body p { margin: 0 0 20px; }
 .article-body h2 {
   font-family: var(--font-head);
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   margin: 40px 0 14px;
 }
 .article-body h3 {
   font-family: var(--font-head);
-  font-size: 19px;
+  font-size: 1.1875rem;
   font-weight: 700;
   margin: 30px 0 12px;
 }
@@ -94,7 +94,7 @@
 .article-body a.btn-primary { color: white; }
 .article-body a.btn-secondary { color: var(--text); }
 .article-body img { max-width: 100%; border-radius: var(--radius); display: block; margin: 24px auto; }
-.article-body figcaption { text-align: center; color: var(--text-faint); font-size: 13px; margin-top: -12px; margin-bottom: 20px; }
+.article-body figcaption { text-align: center; color: var(--text-faint); font-size: 0.8125rem; margin-top: -12px; margin-bottom: 20px; }
 .article-body hr { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
 .article-body .article-callout {
   background: var(--bg-elev);
@@ -110,7 +110,7 @@
    do custo sem introduzir tokens visuais novos. */
 .arq-source-note {
   color: var(--text-faint);
-  font-size: 12.5px;
+  font-size: 0.7812rem;
   line-height: 1.55;
   margin: -10px 0 24px;
 }
@@ -123,7 +123,7 @@
   justify-content: space-between;
   gap: 16px;
   color: var(--text-dim);
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: 600;
 }
 .calc .calc-control output {
@@ -138,7 +138,7 @@
 }
 .calc .calc-rows { display: grid; gap: 12px; margin-bottom: 18px; }
 .calc .calc-rows.bar-chart { grid-auto-flow: row; height: auto; }
-.calc .calc-assumption-note { color: var(--text-faint); font-size: 12.5px; line-height: 1.55; margin: -4px 0 18px; }
+.calc .calc-assumption-note { color: var(--text-faint); font-size: 0.7812rem; line-height: 1.55; margin: -4px 0 18px; }
 /* Linha de resultado: nome, barra e número com espaço para o texto de 12 px; no celular, em pilha (nome, barra, número). */
 .calc .calc-rows .calc-row { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1.4fr); }
 .calc .calc-rows .calc-out { text-align: left; }
@@ -154,7 +154,7 @@
   white-space: nowrap;
 }
 .cost-parts .figure-cell { padding: 16px; }
-.cost-parts .figure-value { font-size: 25px; color: var(--text); }
+.cost-parts .figure-value { font-size: 1.5625rem; color: var(--text); }
 
 /* Largura inicial das barras (do zero) antes do JS ou sem JS; o script recalcula. */
 .calc .calc-track .range-fill.calc-bar-90 { left: 0; width: 90%; }
@@ -163,7 +163,7 @@
 .calc .calc-track .range-fill.calc-bar-100 { left: 0; width: 100%; }
 
 /* Rótulo da nota nunca abaixo de 12 px. */
-.article-wrap .note > p:first-child { font-size: 12px; }
+.article-wrap .note > p:first-child { font-size: 0.75rem; }
 
 /* Cartão de próximo passo prático dentro do artigo. */
 .card-next-action {
@@ -177,7 +177,7 @@
 .card-next-action h3 { margin-top: 0; margin-bottom: 0.75rem; }
 .card-next-action p:not(.eyebrow) { margin-bottom: 1.25rem; }
 /* Linha secundária depois do botão: atalho em texto, sem competir com a ação primária. */
-.card-next-action p.next-action-alt { margin: 1rem 0 0; color: var(--text-dim); font-size: 15px; line-height: 1.6; }
+.card-next-action p.next-action-alt { margin: 1rem 0 0; color: var(--text-dim); font-size: 0.9375rem; line-height: 1.6; }
 .card-next-action p.next-action-alt a { display: block; width: fit-content; padding: 10px 0; font-weight: 600; }
 
 @media (max-width: 720px) {

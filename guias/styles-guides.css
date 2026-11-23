@@ -5,34 +5,34 @@
 .guide-hero h1 { margin-top: 0; }
 .guide-card { background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
 .guide-hero-cta { margin-top: 22px; }
-.guide-hero-cta p { color: var(--text-faint); font-size: 12px; line-height: 1.5; margin: 10px 0 0; }
-.guide-step-label { color: var(--sky-light, #8FBBFF); font-family: var(--font-head); font-size: 12px; font-weight: 700; letter-spacing: .08em; margin: 0 0 8px; text-transform: uppercase; }
-.guide-card h2 { font-size: 24px; margin-bottom: 10px; }
+.guide-hero-cta p { color: var(--text-faint); font-size: 0.75rem; line-height: 1.5; margin: 10px 0 0; }
+.guide-step-label { color: var(--sky-light, #8FBBFF); font-family: var(--font-head); font-size: 0.75rem; font-weight: 700; letter-spacing: .08em; margin: 0 0 8px; text-transform: uppercase; }
+.guide-card h2 { font-size: 1.5rem; margin-bottom: 10px; }
 .guide-card > p { color: var(--text-dim); margin: 0 0 18px; }
 .guide-list { color: var(--text-dim); line-height: 1.65; margin: 0 0 22px; padding-left: 20px; }
 .guide-list li + li { margin-top: 8px; }
 .guide-wrap .note { margin-bottom: 20px; }
 /* Rótulo da nota: nunca abaixo de 12 px. Nota sem rótulo (fórmula, fonte no corpo do texto) é só um parágrafo. */
-.guide-wrap .note > p:first-child { font-size: 12px; }
-.guide-wrap .note > p:only-child { font-family: var(--font-body); font-size: 15px; font-weight: 400; letter-spacing: 0; line-height: 1.6; text-transform: none; }
+.guide-wrap .note > p:first-child { font-size: 0.75rem; }
+.guide-wrap .note > p:only-child { font-family: var(--font-body); font-size: 0.9375rem; font-weight: 400; letter-spacing: 0; line-height: 1.6; text-transform: none; }
 .guide-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 .guide-progress { display: flex; gap: 8px; list-style: none; margin: 0 0 18px; padding: 0; }
-.guide-progress li { background: var(--bg-elev-2); border-radius: 999px; color: var(--text-faint); flex: 1; font-size: 11px; height: 5px; }
+.guide-progress li { background: var(--bg-elev-2); border-radius: 999px; color: var(--text-faint); flex: 1; font-size: 0.6875rem; height: 5px; }
 .guide-progress li.active { background: var(--green); }
 .guide-noscript { color: var(--text-dim); padding-bottom: 40px; }
 .guide-reference, .guide-faq { border-top: 1px solid var(--border); margin-top: 40px; padding: 32px 0 0; }
-.guide-reference h2, .guide-faq h2 { font-size: 22px; }
+.guide-reference h2, .guide-faq h2 { font-size: 1.375rem; }
 .guide-reference ol { color: var(--text-dim); line-height: 1.65; margin: 16px 0 0; padding-left: 22px; }
 .guide-reference li + li { margin-top: 10px; }
 .guide-reference strong { color: var(--text); }
 .table-scroll { margin: 16px 0 22px; overflow-x: auto; }
 .table-scroll table { border-collapse: collapse; min-width: 420px; width: 100%; }
 .table-scroll th, .table-scroll td { border-bottom: 1px solid var(--border); padding: 11px 12px; text-align: left; }
-.table-scroll th { background: var(--bg-elev-2); color: var(--text); font-family: var(--font-head); font-size: 13px; }
-.table-scroll td { color: var(--text-dim); font-size: 15px; }
+.table-scroll th { background: var(--bg-elev-2); color: var(--text); font-family: var(--font-head); font-size: 0.8125rem; }
+.table-scroll td { color: var(--text-dim); font-size: 0.9375rem; }
 .guide-faq { padding-bottom: 20px; }
 .guide-faq details { border-bottom: 1px solid var(--border); color: var(--text-dim); padding: 14px 0; }
-.guide-faq summary { color: var(--text); cursor: pointer; font-family: var(--font-head); font-size: 15px; font-weight: 600; }
+.guide-faq summary { color: var(--text); cursor: pointer; font-family: var(--font-head); font-size: 0.9375rem; font-weight: 600; }
 .guide-faq.faq p { line-height: 1.6; margin: 10px 0 0; }
 
 @media (max-width: 560px) {
