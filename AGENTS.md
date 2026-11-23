@@ -43,7 +43,8 @@ uma melhoria real de texto ou de experiência, o gate está errado: corrija o ga
 - `dlt-patterns.css` reúne os componentes e é carregado depois dos estilos base/específicos; `js/dlt-interactions.js` reúne comportamentos opt-in por `data-*`. Carregar os dois é pré-requisito, não prova de que o modelo foi implementado.
 - Nenhum claim volátil entra no JavaScript compartilhado. A fórmula de uma peça fica no JS da própria peça e lê as tarifas de atributos `data-*` datados no HTML.
 - Monograma de duas letras ou numeral, não emoji, em cards e ícones de produto.
-- Em componente novo ou alterado: texto corrido com 15 px ou mais; legenda, rótulo e metadado não abaixo de 12 px; alvo de toque com 44 px ou mais. (O CSS antigo tem rótulos menores; melhore quando mexer, sem refazer o que não está no escopo.)
+- Texto corrido com 15 px ou mais; legenda, rótulo e metadado não abaixo de 12 px; alvo de toque com 44 px ou mais. Tamanho de fonte sempre em `rem` (16 px = 1rem), para o texto acompanhar a letra que a pessoa escolheu no aparelho.
+- O cabeçalho é um só em todas as páginas (`styles-base.css`): logo + Ferramentas · Guias · Blog · Sobre, com `aria-current="page"` no link da página atual e `aria-current="true"` no da seção atual. Não esconda itens no celular; com letra aumentada o menu desce para a segunda linha.
 - O conteúdo essencial funciona sem JavaScript. Respeite `prefers-reduced-motion`, foco visível e navegação por teclado.
 - Imagem de conteúdo tem `alt`, `width` e `height`, e `loading="lazy"` fora da primeira tela. Prefira WebP.
 
