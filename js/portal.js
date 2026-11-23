@@ -54,8 +54,69 @@
 
   const FUNNEL_TRACKS = [
     {
-      id: "ordem",
+      id: "padrao",
       num: "Trilha 01",
+      tabTitle: "O dinheiro sempre volta para o mesmo lugar",
+      headline: "Para quando o ganho escorre, o preço trava na hora de cobrar ou o plano morre na quinta.",
+      summary: "Ache primeiro o padrão que mais custa no seu caso, com uma trava para usar hoje, e só depois decida se vale a leitura das suas três cenas.",
+      situationFilter: "comecar",
+      scenarios: [
+        {
+          label: "O ganho entra e escorre antes de o mês acabar",
+          badge: "Caminho sugerido · Grátis (8 min)",
+          title: "Protocolo do Teto Financeiro",
+          why: "Escolhas rápidas para achar o padrão, um exercício de 60 segundos e uma trava para usar hoje. Tudo fica no seu navegador, sem cadastro.",
+          primary: {
+            label: "Fazer o protocolo grátis →",
+            url: "/protocolos/teto-financeiro/"
+          },
+          secondary: {
+            label: "Ver O Mapa do seu Teto",
+            url: "/produtos/mapa-do-seu-teto/"
+          }
+        },
+        {
+          label: "Travo na hora de cobrar ou dou desconto antes de pedirem",
+          badge: "Caminho sugerido · Grátis (8 min)",
+          title: "Protocolo do Teto Financeiro",
+          why: "O protocolo separa o medo da recusa do fato e você sai com uma trava para a próxima proposta.",
+          primary: {
+            label: "Fazer o protocolo grátis →",
+            url: "/protocolos/teto-financeiro/"
+          },
+          secondary: {
+            label: "Ver O Mapa do seu Teto",
+            url: "/produtos/mapa-do-seu-teto/"
+          }
+        },
+        {
+          label: "Já fiz o protocolo e quero a leitura das minhas 3 cenas",
+          badge: "Caminho sugerido · Leitura sob medida (R$ 97)",
+          title: "O Mapa do seu Teto",
+          why: "Você carrega o arquivo (.md) do protocolo, conta mais duas cenas e recebe o que se repete nas três, o plano da sua semana e o ajuste no dia 7.",
+          primary: {
+            label: "Abrir O Mapa do seu Teto →",
+            url: "/produtos/mapa-do-seu-teto/"
+          },
+          secondary: {
+            label: "Refazer o protocolo grátis",
+            url: "/protocolos/teto-financeiro/"
+          }
+        }
+      ],
+      step1Ids: ["protocolo-teto-financeiro"],
+      step2Ids: [],
+      step3: {
+        kicker: "Se o padrão pesar · Leitura sob medida (R$ 97)",
+        title: "O Mapa do seu Teto",
+        desc: "Os agentes cruzam três cenas reais suas, prendem cada conclusão às suas palavras e montam o plano da semana; no dia 7, o plano de 90 dias é reescrito com o que aconteceu.",
+        primaryCta: { label: "Ver exemplo e a oferta →", url: "/produtos/mapa-do-seu-teto/" },
+        secondaryCta: { label: "Começar no protocolo grátis (8 min)", url: "/protocolos/teto-financeiro/" }
+      }
+    },
+    {
+      id: "ordem",
+      num: "Trilha 02",
       tabTitle: "Entrar, aumentar ou sair de posição",
       headline: "Para quando bate a pressa na tela — seja na euforia da alta ou no medo da queda.",
       summary: "Separe tese de impulso, confira se cabe na sua reserva e defina limite e saída antes de abrir a corretora.",
@@ -116,7 +177,7 @@
     },
     {
       id: "carteira",
-      num: "Trilha 02",
+      num: "Trilha 03",
       tabTitle: "Saber se a carteira aguenta uma queda",
       headline: "Para enxergar o risco real na soma das posições — antes que o mercado cobre a conta.",
       summary: "Teste uma queda forte na carteira inteira, descubra o que cai junto na mesma rede e veja quanto fica preso se uma plataforma travar.",
@@ -177,7 +238,7 @@
     },
     {
       id: "viagem",
-      num: "Trilha 03",
+      num: "Trilha 04",
       tabTitle: "Viajar e pagar no exterior sem dreno",
       headline: "Para gastar e sacar em outros países sem perder no câmbio invisível do banco.",
       summary: "Compare IOF, spread, saques em ATM e pagamentos via QR local estruturados em viagens reais na Ásia, China e Europa.",
@@ -238,7 +299,7 @@
     },
     {
       id: "base",
-      num: "Trilha 04",
+      num: "Trilha 05",
       tabTitle: "Começar certo e cortar taxas",
       headline: "Para montar segurança, escolher conta e evitar erros caros logo no início.",
       summary: "Estruture reserva, crie conta com blindagem e reduza o custo composto de taxas operacionais antes do primeiro grande aporte.",
@@ -579,6 +640,7 @@
 
     function buildLadder(track) {
       const step3 = track.step3;
+      const hasGuides = Array.isArray(track.step2Ids) && track.step2Ids.length > 0;
       const paid = el("div", { className: "ladder-card" }, [
         el("p", { className: "ladder-card-title", textContent: step3.title }),
         el("p", { className: "ladder-card-desc", textContent: step3.desc }),
@@ -591,8 +653,9 @@
         el("p", { className: "panel-label", textContent: "A escada desta trilha" }),
         el("ol", { className: "ladder" }, [
           buildStep("free", 1, "Grátis agora · Diagnóstico rápido", [buildStepList(track.step1Ids)], false),
-          buildStep("guide", 2, "Para executar · Guias e análises", [buildStepList(track.step2Ids)], false),
-          buildStep("paid", 3, step3.kicker, [paid], true)
+          // A etapa de guias só aparece quando a trilha tem guias (a do Teto não tem).
+          hasGuides ? buildStep("guide", 2, "Para executar · Guias e análises", [buildStepList(track.step2Ids)], false) : null,
+          buildStep("paid", hasGuides ? 3 : 2, step3.kicker, [paid], true)
         ])
       ]);
     }
