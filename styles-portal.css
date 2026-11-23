@@ -259,7 +259,6 @@ body.home { background-image: none; }
 .home header.top { background: rgba(6, 9, 15, .88); border-bottom-color: #16213B; }
 /* header.top > … vence a regra geral do cabeçalho em styles-base.css */
 .home header.top > .header-row { min-height: 68px; column-gap: 24px; }
-.home .brand img { height: 30px; }
 /* os links já têm 10 px de respiro de cada lado (alvo de toque): 8 + 20 = os 28 px de antes */
 .home .header-nav { gap: 8px; }
 .home .header-nav a:not(.header-cta) { font-family: var(--font-body); font-size: 0.9375rem; font-weight: 600; color: #C3CDE0; }
@@ -270,6 +269,15 @@ body.home { background-image: none; }
 }
 @media (min-width: 561px) {
   .home .header-nav a.header-cta { display: inline-flex; margin-left: 10px; }
+}
+/* No tablet o menu inteiro não cabe numa linha: as âncoras da própria página
+   (Por onde começar, Acervo) saem, como no celular, e o cabeçalho fica numa linha. */
+@media (max-width: 960px) {
+  .home .header-nav a.nav-catalog { display: none; }
+}
+/* Logo abaixo de 640 px o botão do topo também sai (o hero já tem o mesmo botão). */
+@media (max-width: 640px) {
+  .home .header-nav a.header-cta { display: none; }
 }
 @media (max-width: 560px) {
   .home .header-nav { gap: 6px; }
