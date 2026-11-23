@@ -257,9 +257,11 @@ body.home { background-image: none; }
 
 /* ---------- Cabeçalho ---------- */
 .home header.top { background: rgba(6, 9, 15, .88); border-bottom-color: #16213B; }
-.home .header-row { min-height: 68px; gap: 24px; }
+/* header.top > … vence a regra geral do cabeçalho em styles-base.css */
+.home header.top > .header-row { min-height: 68px; column-gap: 24px; }
 .home .brand img { height: 30px; }
-.home .header-nav { gap: 28px; }
+/* os links já têm 10 px de respiro de cada lado (alvo de toque): 8 + 20 = os 28 px de antes */
+.home .header-nav { gap: 8px; }
 .home .header-nav a:not(.header-cta) { font-family: var(--font-body); font-size: 0.9375rem; font-weight: 600; color: #C3CDE0; }
 .home .header-nav a:not(.header-cta):hover { color: var(--text); }
 .home .header-nav a.header-cta {
@@ -267,7 +269,7 @@ body.home { background-image: none; }
   border-radius: 10px; box-shadow: none; font-family: var(--font-body); font-size: 0.9375rem;
 }
 @media (min-width: 561px) {
-  .home .header-nav a.header-cta { display: inline-flex; }
+  .home .header-nav a.header-cta { display: inline-flex; margin-left: 10px; }
 }
 @media (max-width: 560px) {
   .home .header-nav { gap: 6px; }
