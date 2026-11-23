@@ -329,6 +329,8 @@ body.home { background-image: none; }
 }
 .home-hero .hero-actions { display: flex; flex-direction: column; gap: 10px; justify-content: flex-start; margin: 0; }
 .btn-hero { justify-content: center; min-height: 52px; padding: 15px 24px; border-radius: 12px; font-size: 1rem; gap: 10px; }
+/* Celular estreito (até 345 px): menos respiro lateral para o texto do botão caber numa linha. */
+@media (max-width: 345px) { .btn-hero { padding-left: 14px; padding-right: 14px; font-size: .9375rem; gap: 8px; } }
 .hero-checks {
   list-style: none; margin: 0; padding: 16px 0 0; border-top: 1px solid #16213B;
   display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 12px 24px;

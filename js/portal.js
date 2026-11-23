@@ -56,7 +56,7 @@
     {
       id: "padrao",
       num: "Trilha 01",
-      tabTitle: "O dinheiro sempre volta para o mesmo lugar",
+      tabTitle: "Um teto no quanto você ganha",
       headline: "Para quando o ganho escorre, o preço trava na hora de cobrar ou o plano morre na quinta.",
       summary: "Ache primeiro o padrão que mais custa no seu caso, com uma trava para usar hoje, e só depois decida se vale a leitura das suas três cenas.",
       situationFilter: "comecar",
