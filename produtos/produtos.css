@@ -70,6 +70,9 @@
 .sp-cena { border-left: 3px solid #3A4E78; padding: 6px 0 6px 24px; max-width: 720px; }
 .sp-cena p { font-size: 1.25rem; line-height: 1.6; margin: 0 0 14px; color: var(--text); }
 .sp-cena p.sp-virada { color: var(--text-dim); font-size: 1.0625rem; margin-bottom: 0; }
+/* Seção de identificação (Mapa do Teto): cartões de dentro e de fora, depois a ponte. */
+.sp-identifica .sp-dois { margin-top: 22px; }
+.sp-identifica .sp-cena { margin-top: 30px; }
 
 /* História de origem: quem criou o método, em primeira pessoa, com a
    assinatura de fundador. Uma por página de vendas, depois da cena. */
