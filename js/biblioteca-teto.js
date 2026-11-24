@@ -85,7 +85,7 @@
           }
         },
         "leitura": {
-          "base": "Quando entra dinheiro a mais, ele costuma sair antes de ter um destino. O padrão protege o lugar em que você se sente em casa com o dinheiro, e a culpa de ter mais do que você costuma ter."
+          "base": "Quando entra dinheiro a mais, ele costuma sair antes de ter um destino — ou o ritmo cai logo depois de um mês bom e a média volta ao mesmo número. O padrão protege o patamar em que você se sente em casa com o dinheiro, e a culpa de ter mais do que costuma ter."
         },
         "regra_trabalho_exemplo": "dinheiro vai para onde eu decido antes de ele chegar",
         "rascunho": false
@@ -222,7 +222,7 @@
           "texto": "Hoje: escreva a menor ação que leva você ao próximo passo e o dia em que vai fazê-la. Se o medo for o que pesa, escreva também o pior caso real."
         },
         "leitura": {
-          "base": "Quando a chance aparece, o passo não sai. O padrão protege você de errar e de passar por uma prova, e o preço é a chance que passa.",
+          "base": "Quando a chance aparece, o passo não sai. O padrão protege você de errar, passar por uma prova ou carregar o peso de um patamar maior, e o preço é a chance que passa.",
           "por_variante": {
             "medo-de-errar": "No seu caso, o que mais pesa é o medo de errar: o \"e se\" fala mais alto que a chance.",
             "nao-estou-pronto": "No seu caso, o que mais pesa é a sensação de que ainda falta preparo: sempre há mais um pouco para preparar antes de começar."
@@ -430,7 +430,7 @@
           "texto": "Hoje: escreva o preço-alvo, ou a menor ação que leva a ganhar um pouco mais, e uma frase sobre dinheiro que você ouvia em casa."
         },
         "leitura": {
-          "base": "Ganhar mais que o seu círculo traz desconforto, como se o dinheiro não combinasse com você. O padrão protege o pertencimento e a lealdade a onde você veio."
+          "base": "Ganhar mais que o seu círculo traz desconforto, como se o dinheiro não combinasse com você. O padrão protege o pertencimento, a lealdade a onde você veio e o receio de ofuscar ou se afastar de quem está perto."
         },
         "regra_trabalho_exemplo": "posso crescer e continuar perto de quem importa para mim",
         "rascunho": false
