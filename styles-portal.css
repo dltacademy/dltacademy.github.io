@@ -315,12 +315,12 @@ body.home { background-image: none; }
   grid-template-columns: minmax(0, 1fr);
   gap: clamp(32px, 5vw, 72px);
   align-items: center;
-  padding-top: clamp(36px, 8vw, 104px);
-  padding-bottom: clamp(32px, 7vw, 96px);
+  padding-top: clamp(32px, 5vw, 60px);
+  padding-bottom: clamp(32px, 5vw, 64px);
 }
 .hero-copy { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
 .home-hero h1 {
-  font-family: var(--font-head); font-size: clamp(2.125rem, 4.6vw, 3.875rem); line-height: 1.06;
+  font-family: var(--font-head); font-size: clamp(2rem, 3.6vw, 3.125rem); line-height: 1.08;
   letter-spacing: -0.03em; font-weight: 700; color: #F2F5FB; margin: 0; text-wrap: balance;
 }
 .hero-hl { color: var(--sky-light); }
@@ -541,7 +541,7 @@ a.article-row:hover { background: #0F1B33; color: var(--text); }
 /* ---------- Telas largas ---------- */
 @media (min-width: 721px) {
   .home-hero { background-size: 56px 56px; }
-  .home .hero-copy { gap: 28px; }
+  .home .hero-copy { gap: 22px; }
   .home .hero-checks { padding-top: 22px; }
   .home .case-card { gap: 22px; border-radius: 22px; }
   .home .case-tabs { gap: 6px; padding: 5px; }
@@ -591,6 +591,8 @@ a.article-row:hover { background: #0F1B33; color: var(--text); }
   .track-intro h3 { font-size: 1.1875rem; }
   .choice-row { padding: 13px 14px; gap: 12px; min-height: 50px; }
   .track-path { padding-top: 14px; }
+  .product-top { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .product-price { align-items: flex-start; }
   .product-price-num { font-size: 1.75rem; }
   .site-footer-col a { min-height: 44px; }
   /* espaço para a barra fixa não cobrir o fim da página */
