@@ -444,15 +444,15 @@ console.log(link.href);
                 self.assertIn('referrerpolicy="no-referrer"', tag)
 
     def test_pix_biografia_entregas_e_datas_alinhadas(self):
-        # Datas atualizadas em 2026-11-25 para home, mapa-do-seu-teto e decisao-fria;
-        # paginas legais seguem em 2026-11-21 e carteira-aguenta em 2026-11-19.
+        # Datas atualizadas em 2026-11-25 para home e paginas de vendas;
+        # paginas legais seguem em 2026-11-21.
         datas_por_arquivo = {
             "index.html": "2026-11-25",
             "termos/index.html": "2026-11-21",
             "privacidade/index.html": "2026-11-21",
             "js/paid-reports.js": None,
             "produtos/decisao-fria/index.html": "2026-11-25",
-            "produtos/carteira-aguenta/index.html": "2026-11-19",
+            "produtos/carteira-aguenta/index.html": "2026-11-25",
             "produtos/mapa-do-seu-teto/index.html": "2026-11-25",
         }
         for rel, expected_date in datas_por_arquivo.items():
