@@ -444,14 +444,14 @@ console.log(link.href);
                 self.assertIn('referrerpolicy="no-referrer"', tag)
 
     def test_pix_biografia_entregas_e_datas_alinhadas(self):
-        # Data das paginas legais atualizada em 2026-11-21 ao incluir O Mapa do seu Teto (retencao 10d e lembretes D10);
-        # decisao-fria e carteira-aguenta permanecem em 2026-11-19.
+        # Datas atualizadas em 2026-11-25 para home, mapa-do-seu-teto e decisao-fria;
+        # paginas legais seguem em 2026-11-21 e carteira-aguenta em 2026-11-19.
         datas_por_arquivo = {
-            "index.html": "2026-11-19",
+            "index.html": "2026-11-25",
             "termos/index.html": "2026-11-21",
             "privacidade/index.html": "2026-11-21",
             "js/paid-reports.js": None,
-            "produtos/decisao-fria/index.html": "2026-11-19",
+            "produtos/decisao-fria/index.html": "2026-11-25",
             "produtos/carteira-aguenta/index.html": "2026-11-19",
             "produtos/mapa-do-seu-teto/index.html": "2026-11-25",
         }
@@ -672,6 +672,39 @@ console.log(JSON.stringify({{ normal: rodar(false), reduzido: rodar(true) }}));
         self.assertEqual({"tocando": True, "texto": "Pausar animação"}, out["normal"]["aposRepetir"])
         self.assertEqual({"pronto": None, "tocando": False}, out["reduzido"]["antes"])
         self.assertEqual({"tocando": False, "texto": "Pausar animação"}, out["reduzido"]["aposRepetir"])
+
+    def test_decisao_fria_alinhamento_mecanismo_e_funil(self):
+        html = self.sales_page
+        mapa_html = (self.root / "produtos/mapa-do-seu-teto/index.html").read_text(encoding="utf-8")
+        home_html = (self.root / "index.html").read_text(encoding="utf-8")
+        proto_html = self.index
+        proto_js = self.protocol
+
+        # Mecanismo, prova visual, comparativo, kit, objecoes e garantia nomeada na LP do Decisao Fria
+        self.assertIn("Ilusão da Certeza no Calor", html)
+        self.assertIn("data-df-limites", html)
+        self.assertIn('id="graf-df-limites-titulo"', html)
+        self.assertIn('id="diferenca"', html)
+        self.assertIn("sp-kit-bloco", html)
+        self.assertIn('id="funciona-mesmo"', html)
+        self.assertIn("Garantia da Cabeça Fria", html)
+        self.assertNotIn("—", html)
+        self.assertNotIn("!", html.replace("<!DOCTYPE html>", "", 1))
+        self.assertNotIn(" style=", html)
+        self.assertNotIn("um a dois minutos", html.lower())
+        self.assertNotIn("1 a 2 minutos", html.lower())
+
+        # Limpeza de gatilhos de cripto na LP e no protocolo gratuito do Decisao Fria
+        for texto in (html.lower(), proto_html.lower(), proto_js.lower()):
+            self.assertNotIn("cripto", texto)
+        self.assertNotIn("gema", html.lower())
+        self.assertNotIn("primeiros-passos-cripto", proto_js.lower())
+
+        # Alinhamento bidirecional do funil Teto <-> Decisao Fria e home atualizada
+        self.assertIn('href="/produtos/decisao-fria/"', mapa_html)
+        self.assertIn('href="/produtos/mapa-do-seu-teto/"', html)
+        self.assertIn("por que o crescimento trava ou devolve?", home_html)
+        self.assertIn("(R$ 47 e R$ 97)", home_html)
 
 
 if __name__ == "__main__":

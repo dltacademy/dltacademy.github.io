@@ -914,6 +914,48 @@ function runProtocol(protocol, mountId) {
       });
       card.appendChild(group);
     } else if (step.type === "write") {
+      const numInputs = [];
+      if (Array.isArray(step.camposNumericos) && step.camposNumericos.length) {
+        const box = el("fieldset", "protocol-num-group");
+        box.appendChild(el("legend", "protocol-num-legend", resolve(step.camposNumericosTitulo) || "Opcional: confira quanto cabe em reais"));
+        const numHelp = resolve(step.camposNumericosAjuda);
+        if (numHelp) box.appendChild(el("p", "protocol-num-help", numHelp));
+        const grid = el("div", "protocol-num-grid");
+        let preview = null;
+        const atualizarPreview = () => {
+          if (!preview || typeof step.previewNumerico !== "function") return;
+          const valores = {};
+          numInputs.forEach((item) => { valores[item.id] = item.input.value.trim(); });
+          const resumo = step.previewNumerico(valores, state.answers);
+          preview.textContent = resumo ? resumo.texto : "";
+          preview.dataset.estado = resumo && resumo.estado ? resumo.estado : "";
+          preview.hidden = !resumo || !resumo.texto;
+        };
+        step.camposNumericos.forEach((campo) => {
+          const wrap = el("label", "protocol-num-field");
+          wrap.appendChild(el("span", "protocol-num-label", resolve(campo.label)));
+          const inp = el("input", "protocol-num-input");
+          inp.type = "number";
+          inp.setAttribute("inputmode", "decimal");
+          inp.setAttribute("min", String(campo.min != null ? campo.min : 0));
+          inp.setAttribute("step", String(campo.step || "any"));
+          if (campo.placeholder) inp.placeholder = campo.placeholder;
+          inp.value = state.answers[campo.id] || "";
+          inp.addEventListener("input", atualizarPreview);
+          wrap.appendChild(inp);
+          grid.appendChild(wrap);
+          numInputs.push({ id: campo.id, input: inp });
+        });
+        box.appendChild(grid);
+        if (typeof step.previewNumerico === "function") {
+          preview = el("p", "protocol-num-preview");
+          preview.setAttribute("aria-live", "polite");
+          preview.hidden = true;
+          box.appendChild(preview);
+          atualizarPreview();
+        }
+        card.appendChild(box);
+      }
       const ta = el("textarea", "protocol-write");
       ta.rows = 4;
       ta.placeholder = step.placeholder || "Escreva com suas palavras…";
@@ -923,6 +965,11 @@ function runProtocol(protocol, mountId) {
       const cont = el("button", "btn btn-primary", step.cta || "Continuar");
       cont.type = "button";
       cont.addEventListener("click", () => {
+        numInputs.forEach((item) => {
+          const val = item.input.value.trim();
+          if (val) state.answers[item.id] = val;
+          else delete state.answers[item.id];
+        });
         state.answers[step.id] = ta.value.trim();
         state.path.push(index);
         render(nextIndex(index), true);
@@ -2284,6 +2331,10 @@ function fileNameFor(result, kind, fallback) {
 // Uma seção do resultado em Markdown (título, parágrafos e itens).
 function markdownSection(section) {
   const linhas = ["## " + section.title, ""];
+  if (section.painelDecisao && Array.isArray(section.painelDecisao.linhasMd)) {
+    section.painelDecisao.linhasMd.forEach((l) => linhas.push("- " + l));
+    if (section.painelDecisao.linhasMd.length) linhas.push("");
+  }
   (section.paragraphs || []).forEach((p) => { linhas.push(p); linhas.push(""); });
   (section.items || []).forEach((item) => {
     if (item && typeof item === "object") linhas.push("- **" + item.title + "**" + (item.text ? " — " + item.text : ""));
@@ -2306,6 +2357,7 @@ function writeSection(pen, section) {
   pen.writeLines(section.title, { fontSize: 14, lineHeight: 6.5, fontStyle: "bold", color: pen.colors.ink });
   pen.y += 2;
   if (section.curva) writeCurvaTetoPdf(pen, section.curva);
+  if (section.painelDecisao) writePainelDecisaoPdf(pen, section.painelDecisao);
   (section.paragraphs || []).forEach((paragraph) => {
     pen.writeLines(paragraph, { fontSize: 10.5, lineHeight: 5.2, color: pen.colors.ink });
     pen.y += 3.2;
@@ -2421,6 +2473,68 @@ function writeCurvaTetoPdf(pen, c) {
   }
 }
 
+/**
+ * O que faz: Desenha no PDF o painel vetorial personalizado do Decisão Fria (barras de limite em reais ou barras dos 4 eixos de sinais).
+ * Por quê: Garante que o arquivo baixado entregue a mesma prova visual exibida na tela, sem depender de captura de imagem nem texto genérico.
+ * Erro e ataque: Limita proporções entre 0 e 1, higieniza todo rótulo via safePdfText e usa fallback de roundedRect caso doc.rect não exista.
+ * Prova: tests/js/decisao-fria-limite.test.mjs.
+ */
+function writePainelDecisaoPdf(pen, p) {
+  if (!p || !Array.isArray(p.barras) || !p.barras.length) return;
+  const doc = pen.doc;
+  const m = pen.margin;
+  const w = pen.contentWidth;
+  const barras = p.barras.slice(0, 4);
+  const boxH = 16 + barras.length * 11.5;
+  pen.ensureSpace(boxH + 16);
+  const y = pen.y;
+
+  const cores = {
+    verde: [74, 222, 128],
+    azul: [96, 165, 250],
+    ambar: [251, 191, 36],
+    vermelho: [248, 113, 113],
+  };
+  const corTom = (tom) => cores[tom] || cores.azul;
+
+  doc.setFillColor(10, 17, 32);
+  doc.roundedRect(m, y, w, boxH, 3, 3, "F");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(9.4);
+  doc.setTextColor(242, 245, 251);
+  doc.text(safePdfText(p.titulo || "Painel visual da decisão"), m + 5, y + 6.8);
+  if (p.selo) {
+    doc.setFontSize(7.4);
+    doc.setTextColor(...corTom(p.seloTom || "azul"));
+    doc.text(safePdfText(String(p.selo).toUpperCase()), m + w - 5, y + 6.8, { align: "right" });
+  }
+
+  const bx = m + 5;
+  const bw = w - 10;
+  let ry = y + 13.5;
+  barras.forEach((b) => {
+    const pct = Math.max(0.04, Math.min(1, Number(b.proporcao) || 0));
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(7.8);
+    doc.setTextColor(216, 224, 239);
+    doc.text(safePdfText(b.rotulo || ""), bx, ry);
+    doc.setTextColor(...corTom(b.tom));
+    doc.text(safePdfText(b.valorTexto || ""), bx + bw, ry, { align: "right" });
+
+    doc.setFillColor(20, 31, 56);
+    doc.roundedRect(bx, ry + 1.8, bw, 3.6, 1.4, 1.4, "F");
+    doc.setFillColor(...corTom(b.tom));
+    doc.roundedRect(bx, ry + 1.8, Math.max(3, bw * pct), 3.6, 1.4, 1.4, "F");
+    ry += 11.2;
+  });
+
+  pen.y = y + boxH + 4;
+  if (p.legenda) {
+    pen.writeLines(p.legenda, { fontSize: 9.2, lineHeight: 4.5, color: pen.colors.muted });
+    pen.y += 2.5;
+  }
+}
+
 // O registro no PDF: o resumo legível e o código em courier pequeno, quebrado em linhas
 // sem espaço (quem lê junta as linhas).
 function writeRegistro(pen, registro) {
@@ -2506,6 +2620,7 @@ function buildSection(section, index, el) {
   title.id = titleId;
   box.appendChild(title);
   if (section.curva) box.appendChild(buildCurvaTeto(section.curva, el));
+  if (section.painelDecisao) box.appendChild(buildPainelDecisao(section.painelDecisao, section.id == null ? index : section.id, el));
   (section.paragraphs || []).forEach((p) => box.appendChild(el("p", "protocol-body", p)));
   if (section.items && section.items.length) {
     const list = el("ul", "protocol-section-items");
@@ -2667,6 +2782,80 @@ function buildCurvaTeto(curva, el) {
       tocar();
     }
   }
+  return fig;
+}
+
+/**
+ * O que faz: Renderiza o painel visual SVG personalizado do Decisão Fria (barras de limite em reais ou leitura dos 4 eixos da decisão) com IDs determinísticos.
+ * Por quê: Entrega visualização imediata na versão básica gratuita, respeitando prefers-reduced-motion e mantendo o DOM seguro e determinístico para testes.
+ * Erro e ataque: Limita proporções a [0, 1], valida classes de tom contra lista fixa e escapa todo texto via textContent sem HTML cru.
+ * Prova: tests/js/decisao-fria-limite.test.mjs e tests/js/golden.test.mjs.
+ */
+function buildPainelDecisao(dados, domKey, el) {
+  const modo = dados && dados.modo === "limite" ? "limite" : "sinais";
+  const barras = Array.isArray(dados && dados.barras) ? dados.barras.slice(0, 4) : [];
+  const TONS = { verde: "verde", azul: "azul", ambar: "ambar", vermelho: "vermelho" };
+  const tomSeguro = (t) => TONS[t] || "azul";
+
+  const fig = el("figure", "protocol-df-graf protocol-df-" + modo);
+  const topo = el("div", "protocol-curva-topo");
+  topo.appendChild(el("p", "protocol-curva-titulo", dados.titulo || "Painel visual desta decisão"));
+  if (dados.selo) {
+    topo.appendChild(el("span", "protocol-df-selo is-" + tomSeguro(dados.seloTom), dados.selo));
+  }
+  fig.appendChild(topo);
+
+  const palco = el("div", "protocol-curva-palco");
+  const titleId = "pdf-graf-title-" + (safeDomId(domKey) || "0");
+  const altura = 18 + barras.length * 42;
+  const svg = protocolSvgEl("svg", {
+    class: "protocol-df-svg",
+    viewBox: "0 0 420 " + altura,
+    role: "img",
+    "aria-labelledby": titleId,
+  });
+  svg.appendChild(protocolSvgEl("title", { id: titleId }, (dados.titulo || "Painel visual") + ". " + (dados.legenda || "")));
+
+  const x0 = 14;
+  const largura = 392;
+  const guia = typeof dados.linhaLimite === "number" && dados.linhaLimite > 0 && dados.linhaLimite <= 1
+    ? x0 + Math.round(largura * dados.linhaLimite)
+    : null;
+
+  if (guia !== null) {
+    svg.appendChild(protocolSvgEl("line", {
+      class: "pdf-guia-limite",
+      x1: guia,
+      y1: 12,
+      x2: guia,
+      y2: altura - 8,
+      "aria-hidden": "true",
+    }));
+  }
+
+  barras.forEach((b, i) => {
+    const gy = 18 + i * 42;
+    const pct = Math.max(0.03, Math.min(1, Number(b.proporcao) || 0));
+    const w = Math.max(10, Math.round(largura * pct));
+    const tom = tomSeguro(b.tom);
+    const g = protocolSvgEl("g", { class: "pdf-linha", "aria-hidden": "true" });
+    g.appendChild(protocolSvgEl("text", { class: "pdf-rot", x: x0, y: gy }, String(b.rotulo || "")));
+    g.appendChild(protocolSvgEl("text", { class: "pdf-val is-" + tom, x: x0 + largura, y: gy }, String(b.valorTexto || "")));
+    g.appendChild(protocolSvgEl("rect", { class: "pdf-trilho", x: x0, y: gy + 7, width: largura, height: 11, rx: 5.5 }));
+    g.appendChild(protocolSvgEl("rect", {
+      class: "pdf-barra is-" + tom + " pdf-b-" + (i + 1),
+      x: x0,
+      y: gy + 7,
+      width: w,
+      height: 11,
+      rx: 5.5,
+    }));
+    svg.appendChild(g);
+  });
+
+  palco.appendChild(svg);
+  fig.appendChild(palco);
+  if (dados.legenda) fig.appendChild(el("figcaption", "protocol-curva-legenda", dados.legenda));
   return fig;
 }
 

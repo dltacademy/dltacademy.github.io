@@ -431,7 +431,7 @@
     const reduzido = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const repetir = raiz.querySelector("[data-graf-repetir]");
     const pausar = raiz.querySelector("[data-graf-pausar]");
-    const repeteAuto = raiz.hasAttribute("data-teto-graficos");
+    const repeteAuto = raiz.hasAttribute("data-teto-graficos") || raiz.hasAttribute("data-df-limites");
     let pausado = false;
     let visivel = false;
     let timer = null;
@@ -521,7 +521,7 @@
   document.querySelectorAll("[data-calc-limite]").forEach(calculadora);
   document.querySelectorAll("[data-calc-queda]").forEach(testeDeQueda);
   document.querySelectorAll("[data-enxame]").forEach(enxame);
-  document.querySelectorAll("[data-teto-graficos], [data-teto-blindagem]").forEach(graficosTeto);
+  document.querySelectorAll("[data-teto-graficos], [data-teto-blindagem], [data-df-limites]").forEach(graficosTeto);
   document.querySelectorAll("[data-abas]").forEach(abas);
   document.querySelectorAll("[data-medidor]").forEach((el) => { if (!el.closest("[hidden]")) encher(el); });
   document.querySelectorAll("[data-barra-fixa]").forEach(barraFixa);
