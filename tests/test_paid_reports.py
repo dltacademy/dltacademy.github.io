@@ -597,6 +597,10 @@ console.log(JSON.stringify({{
         self.assertIn('id="graf-blindagem-titulo"', html)
         self.assertIn("data-graf-repetir", html)
         self.assertIn("data-graf-pausar", html)
+        self.assertIn("Reflexo de Retorno ao Patamar", html)
+        self.assertIn("Garantia do Espelho Real", html)
+        self.assertIn('id="funciona-mesmo"', html)
+        self.assertNotIn("—", html)
         self.assertNotIn(" style=", html)
         self.assertIn("@media (prefers-reduced-motion: no-preference)", css)
         # Metadados do protocolo gratuito alinhados à linha de resistência.
