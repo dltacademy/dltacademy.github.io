@@ -370,7 +370,7 @@
           }
         },
         "leitura": {
-          "base": "Você começa, e algumas semanas depois a rotina perde força. O padrão protege você da monotonia e de se comprometer por muito tempo."
+          "base": "Você engrena um ritmo bom de crescimento ou de aportes, e algumas semanas depois algo tira você do acelerador — ou um imprevisto vira meses parado. O padrão protege você da monotonia e do peso de sustentar um patamar novo."
         },
         "regra_trabalho_exemplo": "pular uma vez não cancela; a próxima vez é a que conta",
         "rascunho": false
@@ -673,7 +673,7 @@
         "id": "cena_extra",
         "empurrao": "dinheiro a mais",
         "padrao_principal": "ganho-que-escorre",
-        "prompt": "No último ano, quando entrou um dinheiro a mais (bônus, 13º, um trabalho extra, uma venda boa), o que costumava acontecer?",
+        "prompt": "No último ano, quando o seu ganho passou do patamar habitual (meses bons seguidos, lucro alto, bônus ou venda grande), o que costumava acontecer?",
         "opcoes": [
           {
             "value": "extra_sumiu",
@@ -856,7 +856,7 @@
         "id": "cena_plano",
         "empurrao": "a hora de executar",
         "padrao_principal": "passo-que-nao-sai",
-        "prompt": "Quando chegou a hora de pôr em prática um plano com dinheiro (começar a guardar, lançar algo, organizar as contas), o que costumava acontecer?",
+        "prompt": "Quando chegou a hora de dar o passo seguinte no seu crescimento (investir com constância, lançar algo maior, subir de nível), o que costumava acontecer?",
         "opcoes": [
           {
             "value": "plano_pesquisa",
@@ -894,7 +894,7 @@
         "id": "cena_semanas",
         "empurrao": "semanas depois de começar",
         "padrao_principal": "progresso-sem-trilho",
-        "prompt": "Algumas semanas depois de começar algo com dinheiro (um controle, uma meta, uma reserva), o que costumava acontecer?",
+        "prompt": "Algumas semanas ou meses depois de engrenar um ritmo bom de crescimento ou de aportes, o que costumava acontecer?",
         "opcoes": [
           {
             "value": "semanas_segunda",
@@ -2382,7 +2382,7 @@
     },
     "textos": {
       "abertura": {
-        "titulo": "O que segura o seu dinheiro?",
+        "titulo": "Por que o seu crescimento trava sempre no mesmo patamar?",
         "paragrafos": [
           "Ato 1 (8 min): escolhas rápidas para achar o seu padrão, um exercício de 60 segundos e uma trava imediata. Ato 2 (15 min, opcional): escrita curta para mapear a última vez e montar os planos de 7 e 90 dias. Você pode parar entre os dois e voltar.",
           "Material educacional sobre hábitos com dinheiro. Não é diagnóstico, avaliação psicológica nem recomendação de investimento."
