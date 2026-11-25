@@ -422,40 +422,97 @@
   }
 
   /**
-   * O que faz: Dispara a animação didática dos gráficos de resistência ao entrarem na tela e permite repetir pelo botão.
-   * Por quê: Mantém os dois ciclos (estagnação e queda no pico) visíveis no estado final sem JS ou com movimento reduzido, e anima uma vez quando a pessoa chega na seção.
-   * Erro e ataque: Ignora ambientes sem matchMedia ou IntersectionObserver deixando o estado final visível; não altera innerHTML nem injeta estilo inline.
+   * O que faz: Dispara a animação didática dos gráficos de resistência ao entrarem na tela, repete após pausa calma enquanto visíveis e oferece botões de repetir e pausar/reproduzir.
+   * Por quê: Garante que quem rolou a página veja o movimento completo, mantendo pausa explícita acessível (WCAG 2.2.2) e estado final estático sem JS ou com movimento reduzido.
+   * Erro e ataque: Limpa temporizadores ao sair da tela, pausar ou esconder a aba; ignora ambientes sem matchMedia ou IntersectionObserver sem lançar exceção.
    * Prova: tests/test_paid_reports.py (test_graficos_resistencia_no_mapa_do_teto).
    */
   function graficosTeto(raiz) {
     const reduzido = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const repetir = raiz.querySelector("[data-graf-repetir]");
+    const pausar = raiz.querySelector("[data-graf-pausar]");
+    const repeteAuto = raiz.hasAttribute("data-teto-graficos");
+    let pausado = false;
+    let visivel = false;
+    let timer = null;
+
+    function limparTimer() {
+      if (timer !== null) {
+        clearTimeout(timer);
+        timer = null;
+      }
+    }
+
+    function agendarProximo() {
+      limparTimer();
+      if (!repeteAuto || pausado || !visivel) return;
+      timer = setTimeout(() => {
+        timer = null;
+        if (pausado || !visivel) return;
+        if (typeof document !== "undefined" && document.visibilityState === "hidden") return;
+        tocar();
+      }, 9200);
+    }
 
     function tocar() {
       if (reduzido) return;
+      limparTimer();
+      raiz.dataset.grafPronto = "1";
       raiz.classList.remove("tocando");
-      // Força novo ciclo limpo de animação CSS quando a pessoa clica em repetir.
+      // Força novo ciclo limpo de animação CSS quando entra na tela ou repete.
       void raiz.offsetWidth;
       raiz.classList.add("tocando");
+      agendarProximo();
     }
 
-    if (repetir) repetir.addEventListener("click", tocar);
+    if (repetir) {
+      repetir.addEventListener("click", () => {
+        if (pausado) {
+          pausado = false;
+          if (pausar) pausar.textContent = "Pausar animação";
+        }
+        visivel = true;
+        tocar();
+      });
+    }
+    if (pausar) {
+      pausar.addEventListener("click", () => {
+        pausado = !pausado;
+        pausar.textContent = pausado ? "Reproduzir animação" : "Pausar animação";
+        if (pausado) {
+          limparTimer();
+          raiz.classList.remove("tocando");
+          delete raiz.dataset.grafPronto;
+        } else {
+          visivel = true;
+          tocar();
+        }
+      });
+    }
     if (reduzido) return;
     raiz.dataset.grafPronto = "1";
     const jaVisivel = typeof raiz.getBoundingClientRect === "function" &&
       typeof window !== "undefined" && typeof window.innerHeight === "number" &&
       raiz.getBoundingClientRect().top < window.innerHeight * 0.92;
-    if (jaVisivel) {
-      tocar();
-    } else if (typeof window !== "undefined" && "IntersectionObserver" in window) {
+    if (typeof window !== "undefined" && "IntersectionObserver" in window) {
       const obs = new IntersectionObserver((entradas) => {
-        if (entradas.some((e) => e.isIntersecting)) {
-          obs.disconnect();
-          tocar();
+        const entrou = entradas.some((e) => e.isIntersecting);
+        if (entrou && !visivel) {
+          visivel = true;
+          if (!pausado) tocar();
+          if (!repeteAuto) obs.disconnect();
+        } else if (!entrou && visivel) {
+          visivel = false;
+          limparTimer();
         }
       }, { threshold: 0.1 });
       obs.observe(raiz);
+      if (jaVisivel) {
+        visivel = true;
+        tocar();
+      }
     } else {
+      visivel = true;
       tocar();
     }
   }
@@ -464,7 +521,7 @@
   document.querySelectorAll("[data-calc-limite]").forEach(calculadora);
   document.querySelectorAll("[data-calc-queda]").forEach(testeDeQueda);
   document.querySelectorAll("[data-enxame]").forEach(enxame);
-  document.querySelectorAll("[data-teto-graficos]").forEach(graficosTeto);
+  document.querySelectorAll("[data-teto-graficos], [data-teto-blindagem]").forEach(graficosTeto);
   document.querySelectorAll("[data-abas]").forEach(abas);
   document.querySelectorAll("[data-medidor]").forEach((el) => { if (!el.closest("[hidden]")) encher(el); });
   document.querySelectorAll("[data-barra-fixa]").forEach(barraFixa);

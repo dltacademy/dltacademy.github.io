@@ -677,7 +677,7 @@
         "opcoes": [
           {
             "value": "extra_sumiu",
-            "label": "Em poucas semanas ele tinha sumido, e eu não sei bem para onde",
+            "label": "Tirei o pé depois do mês bom ou o extra sumiu em semanas, e a média voltou ao mesmo número",
             "padrao": "ganho-que-escorre",
             "tipo": "sinal"
           },
@@ -898,7 +898,7 @@
         "opcoes": [
           {
             "value": "semanas_segunda",
-            "label": "Pulei uma vez e pensei \"segunda eu recomeço\"",
+            "label": "Um imprevisto ou aperto quebrou o ritmo, parei os aportes e fiquei no \"segunda eu recomeço\"",
             "padrao": "progresso-sem-trilho",
             "tipo": "sinal"
           },
@@ -978,7 +978,7 @@
         "id": "cena_pedido",
         "empurrao": "alguém próximo pede dinheiro",
         "padrao_principal": "caixa-da-familia",
-        "prompt": "Quando alguém próximo pediu dinheiro (empréstimo, ajuda com uma conta, o seu nome ou o seu cartão), o que costumava acontecer?",
+        "prompt": "Quando alguém próximo pediu dinheiro ou surgiu uma urgência em casa (empréstimo, parente doente, ajuda com conta, o seu nome ou cartão), o que costumava acontecer?",
         "opcoes": [
           {
             "value": "pedido_sim",

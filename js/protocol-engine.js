@@ -2305,6 +2305,7 @@ function writeSection(pen, section) {
   pen.y += 9;
   pen.writeLines(section.title, { fontSize: 14, lineHeight: 6.5, fontStyle: "bold", color: pen.colors.ink });
   pen.y += 2;
+  if (section.curva) writeCurvaTetoPdf(pen, section.curva);
   (section.paragraphs || []).forEach((paragraph) => {
     pen.writeLines(paragraph, { fontSize: 10.5, lineHeight: 5.2, color: pen.colors.ink });
     pen.y += 3.2;
@@ -2319,6 +2320,105 @@ function writeSection(pen, section) {
     }
     pen.y += 2.2;
   });
+}
+
+// Desenha a curva personalizada de resistência no PDF do protocolo (componente reutilizável do kit).
+function writeCurvaTetoPdf(pen, c) {
+  if (!c || typeof c !== "object") return;
+  const doc = pen.doc;
+  const modo = c.modo === "devolve" ? "devolve" : "estagna";
+  const m = pen.margin;
+  const w = pen.contentWidth;
+  const boxH = 52;
+  pen.ensureSpace(boxH + 16);
+  const y = pen.y;
+
+  doc.setFillColor(10, 17, 32);
+  doc.roundedRect(m, y, w, boxH, 3, 3, "F");
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(9.4);
+  doc.setTextColor(242, 245, 251);
+  doc.text(safePdfText(c.titulo || "Curva do seu teto"), m + 5, y + 6.8);
+  doc.setFontSize(7.4);
+  doc.setTextColor(...(modo === "devolve" ? [252, 165, 165] : [253, 186, 116]));
+  doc.text(safePdfText(String(c.selo || "").toUpperCase()), m + w - 5, y + 6.8, { align: "right" });
+
+  const px = m + 5, py = y + 10.5, pw = w - 10, ph = 36.5;
+  doc.setFillColor(6, 9, 15);
+  doc.setDrawColor(30, 44, 78);
+  doc.setLineWidth(0.25);
+  doc.roundedRect(px, py, pw, ph, 2, 2, "FD");
+  const sx = (vx) => px + (vx / 420) * pw;
+  const sy = (vy) => py + (vy / 218) * ph;
+
+  doc.setDrawColor(46, 62, 96);
+  doc.setLineWidth(0.2);
+  doc.line(sx(16), sy(168), sx(404), sy(168));
+  doc.setFillColor(42, 34, 18);
+  if (typeof doc.rect === "function") doc.rect(sx(16), sy(58), sx(404) - sx(16), sy(70) - sy(58), "F");
+  else doc.roundedRect(sx(16), sy(58), sx(404) - sx(16), sy(70) - sy(58), 0, 0, "F");
+  doc.setDrawColor(251, 191, 36);
+  doc.setLineWidth(0.5);
+  if (typeof doc.setLineDashPattern === "function") doc.setLineDashPattern([2.2, 1.8], 0);
+  doc.line(sx(16), sy(64), sx(404), sy(64));
+  if (typeof doc.setLineDashPattern === "function") doc.setLineDashPattern([], 0);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(6.6);
+  doc.setTextColor(251, 191, 36);
+  doc.text(safePdfText(String(c.rotuloTeto || "TETO").slice(0, 26)), sx(18), sy(54));
+
+  const tracar = (pts, cor) => {
+    doc.setDrawColor(...cor);
+    doc.setLineWidth(0.8);
+    for (let i = 0; i < pts.length - 1; i += 1) {
+      doc.line(sx(pts[i][0]), sy(pts[i][1]), sx(pts[i + 1][0]), sy(pts[i + 1][1]));
+    }
+  };
+  const ponto = (cx, cy, cor) => {
+    doc.setFillColor(6, 9, 15);
+    doc.setDrawColor(...cor);
+    doc.setLineWidth(0.5);
+    if (typeof doc.circle === "function") doc.circle(sx(cx), sy(cy), 1.3, "FD");
+    else doc.roundedRect(sx(cx) - 1.3, sy(cy) - 1.3, 2.6, 2.6, 1.3, 1.3, "FD");
+  };
+  const verde = [74, 222, 128], laranja = [251, 146, 60], vermelho = [248, 113, 113], ambar = [251, 191, 36];
+
+  if (modo === "devolve") {
+    tracar([[20, 164], [44, 144], [56, 149], [82, 110], [94, 116], [122, 66]], verde);
+    tracar([[122, 66], [138, 106], [146, 100], [160, 144], [166, 139], [176, 162]], vermelho);
+    tracar([[176, 162], [200, 144], [212, 148], [238, 110], [250, 115], [274, 68], [292, 40]], verde);
+    tracar([[292, 40], [310, 66], [326, 110], [336, 103], [360, 146], [370, 140], [392, 160]], vermelho);
+    ponto(122, 66, vermelho); ponto(176, 162, vermelho); ponto(292, 40, verde); ponto(392, 160, vermelho);
+    doc.setTextColor(253, 230, 138); doc.text(safePdfText(c.toque || "bate no teto"), sx(122), sy(44), { align: "center" });
+    doc.setTextColor(252, 165, 165); doc.text(safePdfText(c.recuo || "devolve o ganho"), sx(176), sy(188), { align: "center" });
+    doc.setTextColor(134, 239, 172); doc.text(safePdfText(c.pico2 || "passa um pouco"), sx(292), sy(23), { align: "center" });
+    doc.setTextColor(252, 165, 165); doc.text(safePdfText(c.fim || "cai de novo"), sx(366), sy(188), { align: "center" });
+  } else {
+    tracar([[20, 164], [40, 148], [52, 153], [76, 116], [88, 122], [114, 66]], verde);
+    tracar([[114, 66], [130, 98], [146, 95], [164, 102], [182, 97], [200, 101]], laranja);
+    tracar([[200, 101], [216, 84], [224, 88], [242, 66]], verde);
+    tracar([[242, 66], [260, 100], [278, 96], [296, 103], [314, 98], [332, 101]], laranja);
+    tracar([[332, 101], [348, 84], [356, 88], [374, 66]], verde);
+    tracar([[374, 66], [388, 94], [400, 96]], laranja);
+    ponto(114, 66, ambar); ponto(242, 66, ambar); ponto(374, 66, ambar);
+    doc.setTextColor(253, 230, 138);
+    doc.text(safePdfText(c.toque || "1º toque"), sx(114), sy(44), { align: "center" });
+    doc.text(safePdfText(c.pico2 || "2º toque"), sx(242), sy(44), { align: "center" });
+    doc.text(safePdfText("3º toque"), sx(374), sy(44), { align: "center" });
+    doc.setTextColor(253, 186, 116);
+    doc.text(safePdfText(c.recuo || "recua e estagna"), sx(164), sy(134), { align: "center" });
+    doc.text(safePdfText(c.fim || "estagna de novo"), sx(296), sy(134), { align: "center" });
+  }
+  doc.setFont("helvetica", "normal");
+  doc.setTextColor(154, 167, 194);
+  doc.text(safePdfText(String(c.rotuloBase || "Patamar anterior").slice(0, 32)), sx(16), sy(209));
+  doc.text("Ciclo no tempo ->", sx(404), sy(209), { align: "right" });
+
+  pen.y = y + boxH + 4;
+  if (c.legenda) {
+    pen.writeLines(c.legenda, { fontSize: 9.2, lineHeight: 4.5, color: pen.colors.muted });
+    pen.y += 2.5;
+  }
 }
 
 // O registro no PDF: o resumo legível e o código em courier pequeno, quebrado em linhas
@@ -2405,6 +2505,7 @@ function buildSection(section, index, el) {
   const title = el("h3", "protocol-section-title", section.title);
   title.id = titleId;
   box.appendChild(title);
+  if (section.curva) box.appendChild(buildCurvaTeto(section.curva, el));
   (section.paragraphs || []).forEach((p) => box.appendChild(el("p", "protocol-body", p)));
   if (section.items && section.items.length) {
     const list = el("ul", "protocol-section-items");
@@ -2421,6 +2522,152 @@ function buildSection(section, index, el) {
     box.appendChild(list);
   }
   return box;
+}
+
+const PROTOCOL_SVG_NS = "http://www.w3.org/2000/svg";
+function protocolSvgEl(tag, attrs, text) {
+  const node = typeof document.createElementNS === "function"
+    ? document.createElementNS(PROTOCOL_SVG_NS, tag)
+    : document.createElement(tag);
+  if (attrs) {
+    Object.keys(attrs).forEach((k) => {
+      if (attrs[k] !== undefined && attrs[k] !== null) node.setAttribute(k, String(attrs[k]));
+    });
+  }
+  if (text !== undefined && text !== null) node.textContent = String(text);
+  return node;
+}
+
+/**
+ * O que faz: Renderiza a curva personalizada de resistência de um protocolo em SVG acessível com animação opt-in, repetição controlada e controles de repetir/pausar.
+ * Por quê: Torna o gráfico personalizado de teto um componente visual padrão do kit de protocolos no navegador, sem HTML cru nem estilo inline.
+ * Erro e ataque: Aceita apenas modos "estagna" ou "devolve", escapa todo texto via textContent e preserva o estado completo visível sob movimento reduzido.
+ * Prova: tests/test_paid_reports.py e tests/js/teto-ato1.test.mjs.
+ */
+function buildCurvaTeto(curva, el) {
+  const modo = curva && curva.modo === "devolve" ? "devolve" : "estagna";
+  const fig = el("figure", "protocol-curva protocol-curva-" + modo);
+  const topo = el("div", "protocol-curva-topo");
+  topo.appendChild(el("p", "protocol-curva-titulo", curva.titulo || (modo === "devolve" ? "Curva do seu teto · Bate e devolve" : "Curva do seu teto · Empaca na resistência")));
+  topo.appendChild(el("span", "protocol-curva-selo protocol-curva-selo-" + modo, curva.selo || (modo === "devolve" ? "Toca e devolve" : "Toca e estagna")));
+  fig.appendChild(topo);
+
+  const palco = el("div", "protocol-curva-palco");
+  const uid = Math.random().toString(36).slice(2, 7);
+  const gradId = "pc-grad-" + modo + "-" + uid;
+  const titleId = "pc-title-" + uid;
+  const svg = protocolSvgEl("svg", { class: "protocol-curva-svg", viewBox: "0 0 420 218", role: "img", "aria-labelledby": titleId });
+  svg.appendChild(protocolSvgEl("title", { id: titleId }, (curva.titulo || "Curva do seu teto") + ". " + (curva.legenda || "")));
+
+  const defs = protocolSvgEl("defs");
+  const grad = protocolSvgEl("linearGradient", { id: gradId, x1: "0", y1: "0", x2: "0", y2: "1" });
+  const stopCor = modo === "devolve" ? "#f87171" : "#fbbf24";
+  grad.appendChild(protocolSvgEl("stop", { offset: "0%", "stop-color": stopCor, "stop-opacity": "0.17" }));
+  grad.appendChild(protocolSvgEl("stop", { offset: "100%", "stop-color": stopCor, "stop-opacity": "0" }));
+  defs.appendChild(grad);
+  svg.appendChild(defs);
+
+  const eixos = protocolSvgEl("g", { "aria-hidden": "true" });
+  eixos.appendChild(protocolSvgEl("line", { class: "pc-ref", x1: "16", y1: "116", x2: "404", y2: "116" }));
+  eixos.appendChild(protocolSvgEl("line", { class: "pc-base", x1: "16", y1: "168", x2: "404", y2: "168" }));
+  eixos.appendChild(protocolSvgEl("rect", { class: "pc-faixa", x: "16", y: "57", width: "388", height: "14", rx: "2" }));
+  eixos.appendChild(protocolSvgEl("line", { class: "pc-teto", x1: "16", y1: "64", x2: "404", y2: "64" }));
+  eixos.appendChild(protocolSvgEl("line", { class: "pc-teto-pulso pc-pulso-" + modo, x1: "16", y1: "64", x2: "404", y2: "64" }));
+  eixos.appendChild(protocolSvgEl("text", { class: "pc-teto-rot", x: "18", y: "54" }, String(curva.rotuloTeto || "TETO").slice(0, 26)));
+  eixos.appendChild(protocolSvgEl("text", { class: "pc-eixo", x: "16", y: "208" }, String(curva.rotuloBase || "Patamar anterior").slice(0, 34)));
+  eixos.appendChild(protocolSvgEl("text", { class: "pc-eixo pc-eixo-dir", x: "404", y: "208" }, "Ciclo no tempo →"));
+  svg.appendChild(eixos);
+
+  const marcadores = protocolSvgEl("g", { "aria-hidden": "true" });
+  if (modo === "devolve") {
+    svg.appendChild(protocolSvgEl("path", { class: "pc-area", fill: "url(#" + gradId + ")", d: "M 20 164 L 44 144 L 56 149 L 82 110 L 94 116 L 122 66 L 138 106 L 146 100 L 160 144 L 166 139 L 176 162 L 200 144 L 212 148 L 238 110 L 250 115 L 274 68 L 292 40 L 310 66 L 326 110 L 336 103 L 360 146 L 370 140 L 392 160 L 392 168 L 20 168 Z" }));
+    svg.appendChild(protocolSvgEl("path", { class: "pc-seg pc-subida pc-d-s1", pathLength: "100", d: "M 20 164 L 44 144 L 56 149 L 82 110 L 94 116 L 122 66" }));
+    svg.appendChild(protocolSvgEl("path", { class: "pc-seg pc-queda pc-d-s2", pathLength: "100", d: "M 122 66 L 138 106 L 146 100 L 160 144 L 166 139 L 176 162" }));
+    svg.appendChild(protocolSvgEl("path", { class: "pc-seg pc-subida pc-d-s3", pathLength: "100", d: "M 176 162 L 200 144 L 212 148 L 238 110 L 250 115 L 274 68 L 292 40" }));
+    svg.appendChild(protocolSvgEl("path", { class: "pc-seg pc-queda pc-d-s4", pathLength: "100", d: "M 292 40 L 310 66 L 326 110 L 336 103 L 360 146 L 370 140 L 392 160" }));
+
+    marcadores.appendChild(protocolSvgEl("circle", { class: "pc-anel pc-anel-queda pc-d-m1", cx: "122", cy: "66", r: "9" }));
+    marcadores.appendChild(protocolSvgEl("circle", { class: "pc-ponto pc-ponto-queda pc-d-m1", cx: "122", cy: "66", r: "3.8" }));
+    marcadores.appendChild(protocolSvgEl("text", { class: "pc-nota pc-nota-teto pc-d-m1", x: "122", y: "45" }, String(curva.toque || "bate no teto").slice(0, 22)));
+    marcadores.appendChild(protocolSvgEl("circle", { class: "pc-ponto pc-ponto-queda pc-d-t1", cx: "176", cy: "162", r: "3.5" }));
+    marcadores.appendChild(protocolSvgEl("text", { class: "pc-nota pc-nota-queda pc-d-t1", x: "176", y: "186" }, String(curva.recuo || "devolve o ganho").slice(0, 22)));
+    marcadores.appendChild(protocolSvgEl("circle", { class: "pc-anel pc-anel-pico pc-d-m2", cx: "292", cy: "40", r: "9" }));
+    marcadores.appendChild(protocolSvgEl("circle", { class: "pc-ponto pc-ponto-pico pc-d-m2", cx: "292", cy: "40", r: "3.8" }));
+    marcadores.appendChild(protocolSvgEl("text", { class: "pc-nota pc-nota-pico pc-d-m2", x: "292", y: "22" }, String(curva.pico2 || "passa um pouco").slice(0, 22)));
+    marcadores.appendChild(protocolSvgEl("circle", { class: "pc-ponto pc-ponto-queda pc-d-t2", cx: "392", cy: "160", r: "3.5" }));
+    marcadores.appendChild(protocolSvgEl("text", { class: "pc-nota pc-nota-queda pc-d-t2", x: "366", y: "186" }, String(curva.fim || "cai de novo").slice(0, 22)));
+  } else {
+    svg.appendChild(protocolSvgEl("path", { class: "pc-area", fill: "url(#" + gradId + ")", d: "M 20 164 L 40 148 L 52 153 L 76 116 L 88 122 L 114 66 L 130 98 L 146 95 L 164 102 L 182 97 L 200 101 L 216 84 L 224 88 L 242 66 L 260 100 L 278 96 L 296 103 L 314 98 L 332 101 L 348 84 L 356 88 L 374 66 L 388 94 L 400 96 L 400 168 L 20 168 Z" }));
+    svg.appendChild(protocolSvgEl("path", { class: "pc-seg pc-subida pc-e-s1", pathLength: "100", d: "M 20 164 L 40 148 L 52 153 L 76 116 L 88 122 L 114 66" }));
+    svg.appendChild(protocolSvgEl("path", { class: "pc-seg pc-estagna pc-e-s2", pathLength: "100", d: "M 114 66 L 130 98 L 146 95 L 164 102 L 182 97 L 200 101" }));
+    svg.appendChild(protocolSvgEl("path", { class: "pc-seg pc-subida pc-e-s3", pathLength: "100", d: "M 200 101 L 216 84 L 224 88 L 242 66" }));
+    svg.appendChild(protocolSvgEl("path", { class: "pc-seg pc-estagna pc-e-s4", pathLength: "100", d: "M 242 66 L 260 100 L 278 96 L 296 103 L 314 98 L 332 101" }));
+    svg.appendChild(protocolSvgEl("path", { class: "pc-seg pc-subida pc-e-s5", pathLength: "100", d: "M 332 101 L 348 84 L 356 88 L 374 66" }));
+    svg.appendChild(protocolSvgEl("path", { class: "pc-seg pc-estagna pc-e-s6", pathLength: "100", d: "M 374 66 L 388 94 L 400 96" }));
+
+    marcadores.appendChild(protocolSvgEl("circle", { class: "pc-anel pc-anel-teto pc-e-m1", cx: "114", cy: "66", r: "9" }));
+    marcadores.appendChild(protocolSvgEl("circle", { class: "pc-ponto pc-ponto-teto pc-e-m1", cx: "114", cy: "66", r: "3.8" }));
+    marcadores.appendChild(protocolSvgEl("text", { class: "pc-nota pc-nota-teto pc-e-m1", x: "114", y: "45" }, String(curva.toque || "1º toque").slice(0, 22)));
+    marcadores.appendChild(protocolSvgEl("text", { class: "pc-nota pc-nota-estagna pc-e-t1", x: "164", y: "134" }, String(curva.recuo || "recua e estagna").slice(0, 22)));
+    marcadores.appendChild(protocolSvgEl("circle", { class: "pc-anel pc-anel-teto pc-e-m2", cx: "242", cy: "66", r: "9" }));
+    marcadores.appendChild(protocolSvgEl("circle", { class: "pc-ponto pc-ponto-teto pc-e-m2", cx: "242", cy: "66", r: "3.8" }));
+    marcadores.appendChild(protocolSvgEl("text", { class: "pc-nota pc-nota-teto pc-e-m2", x: "242", y: "45" }, String(curva.pico2 || "2º toque").slice(0, 22)));
+    marcadores.appendChild(protocolSvgEl("text", { class: "pc-nota pc-nota-estagna pc-e-t2", x: "296", y: "134" }, String(curva.fim || "estagna de novo").slice(0, 22)));
+    marcadores.appendChild(protocolSvgEl("circle", { class: "pc-anel pc-anel-teto pc-e-m3", cx: "374", cy: "66", r: "9" }));
+    marcadores.appendChild(protocolSvgEl("circle", { class: "pc-ponto pc-ponto-teto pc-e-m3", cx: "374", cy: "66", r: "3.8" }));
+    marcadores.appendChild(protocolSvgEl("text", { class: "pc-nota pc-nota-teto pc-e-m3", x: "374", y: "45" }, "3º toque"));
+  }
+  svg.appendChild(marcadores);
+  palco.appendChild(svg);
+  fig.appendChild(palco);
+  if (curva.legenda) fig.appendChild(el("figcaption", "protocol-curva-legenda", curva.legenda));
+
+  const reduzido = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!reduzido) {
+    const acoes = el("div", "protocol-curva-acoes");
+    const btnRepetir = el("button", "btn btn-secondary protocol-curva-btn", "Ver de novo");
+    btnRepetir.type = "button";
+    const btnPausar = el("button", "btn btn-secondary protocol-curva-btn", "Pausar animação");
+    btnPausar.type = "button";
+    let pausado = false;
+    let timer = null;
+    const limpar = () => { if (timer) { window.clearTimeout(timer); timer = null; } };
+    const tocar = () => {
+      limpar();
+      fig.classList.remove("tocando");
+      void fig.offsetWidth;
+      fig.classList.add("tocando");
+      if (!pausado) {
+        timer = window.setTimeout(() => {
+          if (!fig.isConnected || pausado || document.visibilityState !== "visible") return;
+          tocar();
+        }, 9200);
+      }
+    };
+    btnRepetir.addEventListener("click", tocar);
+    btnPausar.addEventListener("click", () => {
+      pausado = !pausado;
+      btnPausar.textContent = pausado ? "Reproduzir animação" : "Pausar animação";
+      if (pausado) {
+        limpar();
+        fig.classList.remove("tocando");
+        delete fig.dataset.pcPronto;
+      } else {
+        fig.dataset.pcPronto = "1";
+        tocar();
+      }
+    });
+    acoes.appendChild(btnRepetir);
+    acoes.appendChild(btnPausar);
+    fig.appendChild(acoes);
+    fig.dataset.pcPronto = "1";
+    if (typeof window.requestAnimationFrame === "function") {
+      window.requestAnimationFrame(() => window.requestAnimationFrame(tocar));
+    } else {
+      tocar();
+    }
+  }
+  return fig;
 }
 
 // ---- recursos novos (usam o kit): tipos de passo, progresso e complemento ----
