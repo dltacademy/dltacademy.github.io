@@ -59,11 +59,11 @@ const PAID_REPORTS = {
   },
   "teto-avancado": {
     titulo: "O Mapa do seu Teto: leitura das suas 3 cenas + ajuste no dia 7",
-    promessa: "Você carrega o arquivo (.md) do protocolo gratuito, conta mais duas cenas reais e recebe a leitura do que se repete nas três, um plano desenhado para a sua semana e o ajuste do plano de 90 dias no dia 7.",
+    promessa: "Você carrega o arquivo (.md) do protocolo gratuito, conta mais duas situações em que o seu crescimento travou ou voltou e recebe o compromisso oculto que puxa o freio, o plano para fazer diferente no teto, a blindagem do novo patamar e o ajuste dos 90 dias no dia 7.",
     conteudo: [
-      "O que se repete nas suas 3 cenas reais, com cada conclusão presa às suas próprias frases",
-      "Plano de 7 dias montado na sua semana real (e roteiro de conversa nos padrões de cobrança e família)",
-      "Ajuste no dia 7: você traz o que aconteceu nos experimentos e o plano de 90 dias é reescrito com evidência",
+      "O que se repete nas suas 3 cenas e o compromisso oculto que pisa no freio, preso às suas próprias frases",
+      "Inversão do padrão (onde dizer não e onde dizer sim no teto) + blindagem do novo patamar em 3 travas",
+      "Plano de 7 dias na sua semana real (com roteiros editáveis) + ajuste no dia 7 reescrevendo os 90 dias com evidência",
       "Relatório em PDF + texto (.md) + lembretes quinzenais neutros até o dia 90 (opcionais, 1 clique para sair)",
     ],
     preco: "R$ 97",
