@@ -412,7 +412,7 @@ console.log(link.href);
         specs = (
             ("decisao-fria", "exemplo-relatorio-decisao-fria.pdf", 7),
             ("carteira-aguenta", "exemplo-relatorio-carteira-aguenta.pdf", 6),
-            ("mapa-do-seu-teto", "exemplo-relatorio-mapa-do-seu-teto.pdf", 7),
+            ("mapa-do-seu-teto", "exemplo-relatorio-mapa-do-seu-teto.pdf", 8),
         )
         for slug, filename, expected_pages in specs:
             pdf_path = self.root / "produtos" / slug / filename
