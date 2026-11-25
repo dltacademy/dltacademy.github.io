@@ -280,3 +280,147 @@
 }
 .sp-rel-caso { margin: 0 0 16px; font-style: italic; color: var(--text-dim); font-size: 0.9375rem; line-height: 1.55; border-left: 2px solid var(--border); padding-left: 14px; }
 .sp-rel-caso small { display: block; margin-top: 6px; font-style: normal; font-size: 0.7812rem; color: var(--text-faint); }
+
+/* ---- gráficos de resistência (Mapa do seu Teto) -------------- */
+/* Sem JS ou com movimento reduzido, os dois gráficos já nascem completos
+   no estado final. A animação é opt-in dentro de prefers-reduced-motion:
+   no-preference, usando a paleta semântica das curvas:
+   verde = subida, âmbar = resistência (teto), laranja = estagnação,
+   vermelho = queda no pico. */
+.sp-graficos { margin: 0 0 32px; }
+.sp-graf-grade { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.sp-graf-card { margin: 0; background: radial-gradient(circle at 84% 6%, rgba(251,191,36,.08), transparent 52%), linear-gradient(180deg, rgba(14,33,72,.38), var(--bg-elev)); border: 1px solid var(--border); border-radius: 20px; padding: 22px 22px 20px; box-shadow: 0 20px 52px rgba(0,0,0,.32), inset 0 1px 0 rgba(255,255,255,.06); display: flex; flex-direction: column; }
+.sp-graf-topo { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 10px 12px; }
+.sp-graf-num { display: block; font-family: var(--font-head); font-size: 0.72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--text-faint); }
+.sp-graf-titulo { font-family: var(--font-head); font-size: 1.1875rem; line-height: 1.25; margin: 4px 0 0; color: var(--text); }
+.sp-graf-selo { font-family: var(--font-head); font-size: 0.75rem; font-weight: 700; letter-spacing: .04em; padding: 5px 10px; border-radius: 999px; white-space: nowrap; }
+.sp-graf-selo-estagna { color: #fdba74; background: rgba(251,146,60,.12); border: 1px solid rgba(251,146,60,.34); }
+.sp-graf-selo-queda { color: #fca5a5; background: rgba(248,113,113,.12); border: 1px solid rgba(248,113,113,.34); }
+.sp-graf-palco { margin: 16px 0 14px; padding: 10px 10px 6px; border-radius: 14px; background: rgba(6,9,15,.72); border: 1px solid rgba(30,44,78,.88); }
+.sp-graf-svg { display: block; width: 100%; height: auto; overflow: visible; }
+.sp-graf-linha-ref { stroke: rgba(154,167,194,.14); stroke-width: 1; stroke-dasharray: 4 7; }
+.sp-graf-linha-base { stroke: rgba(154,167,194,.24); stroke-width: 1; }
+.sp-graf-faixa-teto { fill: rgba(251,191,36,.06); }
+.sp-graf-teto { stroke: var(--amber); stroke-width: 1.8; stroke-dasharray: 7 6; opacity: .88; }
+.sp-graf-teto-pulso { stroke: #fde68a; stroke-width: 3.4; stroke-dasharray: 7 6; opacity: 0; }
+.sp-graf-teto-rotulo { font-family: var(--font-head); font-size: 9.5px; font-weight: 800; letter-spacing: .1em; fill: var(--amber); }
+.sp-graf-eixo-txt { font-family: var(--font-body, Manrope, sans-serif); font-size: 9.5px; font-weight: 600; fill: var(--text-faint); }
+.sp-graf-eixo-dir { text-anchor: end; }
+.sp-graf-area { opacity: 1; }
+.sp-graf-seg { fill: none; stroke-width: 2.8; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 101; stroke-dashoffset: 0; }
+.sp-graf-subida { stroke: #4ade80; filter: drop-shadow(0 0 6px rgba(74,222,128,.35)); }
+.sp-graf-estagna-ln { stroke: #fb923c; filter: drop-shadow(0 0 6px rgba(251,146,60,.34)); }
+.sp-graf-queda-ln { stroke: var(--red); filter: drop-shadow(0 0 7px rgba(248,113,113,.42)); }
+.sp-graf-anel { fill: none; stroke-width: 1.6; opacity: .34; transform-box: fill-box; transform-origin: center; }
+.sp-graf-anel-teto { stroke: var(--amber); }
+.sp-graf-anel-queda { stroke: var(--red); }
+.sp-graf-anel-pico { stroke: #4ade80; }
+.sp-graf-ponto { fill: var(--bg); stroke-width: 2.2; transform-box: fill-box; transform-origin: center; }
+.sp-graf-ponto-teto { stroke: var(--amber); }
+.sp-graf-ponto-queda { stroke: var(--red); }
+.sp-graf-ponto-pico { stroke: #4ade80; }
+.sp-graf-nota { font-family: var(--font-head); font-size: 10px; font-weight: 700; text-anchor: middle; letter-spacing: .01em; }
+.sp-graf-nota-teto { fill: #fde68a; }
+.sp-graf-nota-estagna { fill: #fdba74; }
+.sp-graf-nota-queda { fill: #fca5a5; }
+.sp-graf-nota-pico { fill: #86efac; }
+.sp-graf-legenda { margin: 0; color: var(--text-dim); font-size: 0.9375rem; line-height: 1.58; }
+.sp-graf-legenda strong { color: var(--text); font-weight: 700; }
+.sp-graf-rodape { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; margin: 14px 0 0; }
+.sp-graf-chaves { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 18px; color: var(--text-dim); font-size: 0.8438rem; }
+.sp-graf-chaves li { display: inline-flex; align-items: center; gap: 8px; }
+.sp-graf-chave { display: inline-block; width: 18px; height: 3px; border-radius: 999px; flex-shrink: 0; }
+.sp-graf-chave-subida { background: #4ade80; }
+.sp-graf-chave-teto { height: 0; border-top: 2px dashed var(--amber); border-radius: 0; }
+.sp-graf-chave-estagna { background: #fb923c; }
+.sp-graf-chave-queda { background: var(--red); }
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-teto-graficos][data-graf-pronto]:not(.tocando) .sp-graf-seg { stroke-dashoffset: 101; opacity: 0; }
+  [data-teto-graficos][data-graf-pronto]:not(.tocando) .sp-graf-area,
+  [data-teto-graficos][data-graf-pronto]:not(.tocando) .sp-graf-anel,
+  [data-teto-graficos][data-graf-pronto]:not(.tocando) .sp-graf-ponto,
+  [data-teto-graficos][data-graf-pronto]:not(.tocando) .sp-graf-nota { opacity: 0; }
+
+  [data-teto-graficos].tocando .sp-graf-area { animation: sp-graf-area-in 1.3s ease 1.15s both; }
+  [data-teto-graficos].tocando .sp-graf-teto-pulso-1 { animation: sp-graf-pulso-1 4.35s linear both; }
+  [data-teto-graficos].tocando .sp-graf-teto-pulso-2 { animation: sp-graf-pulso-2 4.30s linear both; }
+
+  /* Padrão 01: sobe → toca → recua e estagna → sobe → toca → estagna → 3º toque */
+  [data-teto-graficos].tocando .sp-g1-s1 { animation: sp-graf-desenha .85s cubic-bezier(.25,.46,.45,.94) .15s both; }
+  [data-teto-graficos].tocando .sp-g1-s2 { animation: sp-graf-desenha .95s ease-in-out 1.02s both; }
+  [data-teto-graficos].tocando .sp-g1-s3 { animation: sp-graf-desenha .55s cubic-bezier(.25,.46,.45,.94) 1.97s both; }
+  [data-teto-graficos].tocando .sp-g1-s4 { animation: sp-graf-desenha .95s ease-in-out 2.54s both; }
+  [data-teto-graficos].tocando .sp-g1-s5 { animation: sp-graf-desenha .52s cubic-bezier(.25,.46,.45,.94) 3.49s both; }
+  [data-teto-graficos].tocando .sp-g1-s6 { animation: sp-graf-desenha .32s ease-out 4.03s both; }
+  [data-teto-graficos].tocando .sp-graf-anel.sp-g1-m1 { animation: sp-graf-anel-in .72s ease-out .98s both; }
+  [data-teto-graficos].tocando .sp-graf-ponto.sp-g1-m1 { animation: sp-graf-ponto-in .3s ease-out .98s both; }
+  [data-teto-graficos].tocando .sp-graf-nota.sp-g1-m1 { animation: sp-graf-nota-in .35s ease-out 1.02s both; }
+  [data-teto-graficos].tocando .sp-graf-nota.sp-g1-t1 { animation: sp-graf-nota-in .35s ease-out 1.58s both; }
+  [data-teto-graficos].tocando .sp-graf-anel.sp-g1-m2 { animation: sp-graf-anel-in .72s ease-out 2.50s both; }
+  [data-teto-graficos].tocando .sp-graf-ponto.sp-g1-m2 { animation: sp-graf-ponto-in .3s ease-out 2.50s both; }
+  [data-teto-graficos].tocando .sp-graf-nota.sp-g1-m2 { animation: sp-graf-nota-in .35s ease-out 2.54s both; }
+  [data-teto-graficos].tocando .sp-graf-nota.sp-g1-t2 { animation: sp-graf-nota-in .35s ease-out 3.12s both; }
+  [data-teto-graficos].tocando .sp-graf-anel.sp-g1-m3 { animation: sp-graf-anel-in .72s ease-out 3.99s both; }
+  [data-teto-graficos].tocando .sp-graf-ponto.sp-g1-m3 { animation: sp-graf-ponto-in .3s ease-out 3.99s both; }
+  [data-teto-graficos].tocando .sp-graf-nota.sp-g1-m3 { animation: sp-graf-nota-in .35s ease-out 4.03s both; }
+
+  /* Padrão 02: sobe forte → toca → perde quase tudo → volta e passa um pouco → cai de novo */
+  [data-teto-graficos].tocando .sp-g2-s1 { animation: sp-graf-desenha .90s cubic-bezier(.25,.46,.45,.94) .15s both; }
+  [data-teto-graficos].tocando .sp-g2-s2 { animation: sp-graf-desenha .80s cubic-bezier(.42,0,.78,.92) 1.07s both; }
+  [data-teto-graficos].tocando .sp-g2-s3 { animation: sp-graf-desenha 1.35s cubic-bezier(.25,.46,.45,.94) 1.92s both; }
+  [data-teto-graficos].tocando .sp-g2-s4 { animation: sp-graf-desenha .95s cubic-bezier(.42,0,.78,.92) 3.32s both; }
+  [data-teto-graficos].tocando .sp-graf-anel.sp-g2-m1 { animation: sp-graf-anel-in .72s ease-out 1.03s both; }
+  [data-teto-graficos].tocando .sp-graf-ponto.sp-g2-m1 { animation: sp-graf-ponto-in .3s ease-out 1.03s both; }
+  [data-teto-graficos].tocando .sp-graf-nota.sp-g2-m1 { animation: sp-graf-nota-in .35s ease-out 1.07s both; }
+  [data-teto-graficos].tocando .sp-graf-ponto.sp-g2-t1 { animation: sp-graf-ponto-in .3s ease-out 1.84s both; }
+  [data-teto-graficos].tocando .sp-graf-nota.sp-g2-t1 { animation: sp-graf-nota-in .35s ease-out 1.86s both; }
+  [data-teto-graficos].tocando .sp-graf-anel.sp-g2-m2 { animation: sp-graf-anel-in .72s ease-out 3.25s both; }
+  [data-teto-graficos].tocando .sp-graf-ponto.sp-g2-m2 { animation: sp-graf-ponto-in .3s ease-out 3.25s both; }
+  [data-teto-graficos].tocando .sp-graf-nota.sp-g2-m2 { animation: sp-graf-nota-in .35s ease-out 3.27s both; }
+  [data-teto-graficos].tocando .sp-graf-ponto.sp-g2-t2 { animation: sp-graf-ponto-in .3s ease-out 4.24s both; }
+  [data-teto-graficos].tocando .sp-graf-nota.sp-g2-t2 { animation: sp-graf-nota-in .35s ease-out 4.24s both; }
+}
+
+@keyframes sp-graf-desenha {
+  0% { stroke-dashoffset: 101; opacity: 0; }
+  3% { opacity: 1; }
+  100% { stroke-dashoffset: 0; opacity: 1; }
+}
+@keyframes sp-graf-area-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes sp-graf-ponto-in {
+  from { opacity: 0; transform: scale(.35); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes sp-graf-anel-in {
+  0% { opacity: 0; transform: scale(.35); }
+  38% { opacity: .88; transform: scale(1.38); }
+  100% { opacity: .34; transform: scale(1); }
+}
+@keyframes sp-graf-nota-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes sp-graf-pulso-1 {
+  0%, 20%, 30%, 54%, 64%, 88%, 100% { opacity: 0; }
+  23%, 58%, 92% { opacity: .88; }
+}
+@keyframes sp-graf-pulso-2 {
+  0%, 21%, 31%, 73%, 83%, 100% { opacity: 0; }
+  25%, 77% { opacity: .88; }
+}
+
+@media (max-width: 860px) {
+  .sp-graf-grade { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .sp-graf-card { padding: 18px 16px 16px; }
+  .sp-graf-palco { padding: 8px 6px 4px; }
+  .sp-graf-rodape [data-graf-repetir] { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-graf-repetir] { display: none; }
+}

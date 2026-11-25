@@ -584,6 +584,73 @@ console.log(JSON.stringify({{
             out["pagina"],
         )
 
+    def test_graficos_resistencia_no_mapa_do_teto(self):
+        html = (self.root / "produtos/mapa-do-seu-teto/index.html").read_text(encoding="utf-8")
+        css = (self.root / "produtos/produtos.css").read_text(encoding="utf-8")
+        produtos_js = str(self.root / "produtos/produtos.js")
+        self.assertIn("data-teto-graficos", html)
+        self.assertEqual(2, html.count('<figure class="sp-graf-card'))
+        self.assertEqual(2, html.count("<figcaption class=\"sp-graf-legenda\">"))
+        self.assertIn('id="graf-estagna-titulo"', html)
+        self.assertIn('id="graf-queda-titulo"', html)
+        self.assertIn("data-graf-repetir", html)
+        self.assertNotIn(" style=", html)
+        self.assertIn("@media (prefers-reduced-motion: no-preference)", css)
+
+        script = f"""
+const fs = require("node:fs");
+const codigo = fs.readFileSync({json.dumps(produtos_js)}, "utf8");
+function rodar(reduzido) {{
+  let cbObs = null;
+  let desconectou = false;
+  let clique = null;
+  const classes = new Set();
+  const botao = {{ addEventListener(ev, fn) {{ if (ev === "click") clique = fn; }} }};
+  const raiz = {{
+    dataset: {{}},
+    offsetWidth: 0,
+    classList: {{
+      add(c) {{ classes.add(c); }},
+      remove(c) {{ classes.delete(c); }},
+      has(c) {{ return classes.has(c); }},
+    }},
+    querySelector(sel) {{ return sel === "[data-graf-repetir]" ? botao : null; }},
+  }};
+  global.window = {{
+    matchMedia: () => ({{ matches: reduzido }}),
+    IntersectionObserver: class {{
+      constructor(fn) {{ cbObs = fn; }}
+      observe() {{}}
+      disconnect() {{ desconectou = true; }}
+    }},
+  }};
+  global.IntersectionObserver = global.window.IntersectionObserver;
+  global.requestAnimationFrame = (fn) => fn();
+  global.document = {{
+    body: {{ onbeforematch: null }},
+    getElementById: () => null,
+    querySelector: () => null,
+    querySelectorAll(sel) {{ return sel === "[data-teto-graficos]" ? [raiz] : []; }},
+  }};
+  eval(codigo);
+  const antes = {{ pronto: raiz.dataset.grafPronto || null, tocando: classes.has("tocando") }};
+  if (cbObs) cbObs([{{ isIntersecting: true }}]);
+  const aposEntrar = {{ tocando: classes.has("tocando"), desconectou }};
+  classes.delete("tocando");
+  if (clique) clique();
+  const aposRepetir = {{ tocando: classes.has("tocando") }};
+  return {{ antes, aposEntrar, aposRepetir }};
+}}
+console.log(JSON.stringify({{ normal: rodar(false), reduzido: rodar(true) }}));
+"""
+        proc = subprocess.run(["node", "-e", script], capture_output=True, text=True, check=True)
+        out = json.loads(proc.stdout)
+        self.assertEqual({"pronto": "1", "tocando": False}, out["normal"]["antes"])
+        self.assertEqual({"tocando": True, "desconectou": True}, out["normal"]["aposEntrar"])
+        self.assertEqual({"tocando": True}, out["normal"]["aposRepetir"])
+        self.assertEqual({"pronto": None, "tocando": False}, out["reduzido"]["antes"])
+        self.assertEqual({"tocando": False}, out["reduzido"]["aposRepetir"])
+
 
 if __name__ == "__main__":
     unittest.main()
