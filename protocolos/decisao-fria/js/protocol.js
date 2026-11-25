@@ -98,7 +98,7 @@ const PROTOCOL = {
         : "Agora o teste do pior caso. Se esse dinheiro valesse 70% menos amanhã, o que mudaria na sua vida?",
       help: (a) => a.intencao === "alavancar"
         ? "Com alavancagem, uma queda bem menor que 70% já pode levar a garantia inteira. Não é previsão, é o tamanho do que você está arriscando."
-        : "Não é previsão, é tamanho. Quedas de 70% já aconteceram com ações de empresas sólidas e com quase todo cripto. A pergunta é se você aguenta, não se vai acontecer.",
+        : "Não é previsão, é tamanho. Quedas de 70% já aconteceram com ações de empresas sólidas e com outros ativos de risco. A pergunta é se você aguenta, não se vai acontecer.",
       options: [
         { value: "nada", label: "Nada no meu sono nem nas minhas contas. Doeria, mas passa" },
         { value: "aperta", label: "Apertaria: eu cortaria gastos e adiaria planos" },
@@ -109,19 +109,30 @@ const PROTOCOL = {
       id: "travas",
       type: "write",
       eyebrow: "7 de 7 · Dar o passo",
-      prompt: "Antes de qualquer clique, escreva as suas três travas: quanto no máximo, o que te faz sair, e quando você revisa esta decisão.",
+      prompt: "Antes de qualquer clique, confira quanto cabe em reais e escreva as suas três travas: quanto no máximo, o que te faz sair, e quando você revisa esta decisão.",
       help: "Trava escrita antes de entrar é decisão da cabeça fria. Trava inventada depois, com o preço andando, é negociação com a cabeça quente.",
+      camposNumericosTitulo: "Opcional: confira quanto cabe em reais (versão básica)",
+      camposNumericosAjuda: (a) => a.intencao === "alavancar"
+        ? "Com alavancagem, a conta testa perda de 100% da garantia. Fica só no seu navegador."
+        : "A conta testa uma queda de 70% do valor. Deixe em branco se preferir seguir sem números.",
+      camposNumericos: [
+        { id: "valor_planejado", label: "Quanto você pretende colocar (R$)", placeholder: "Ex.: 5000" },
+        { id: "perda_aceitavel", label: "Quanto aceita perder sem mudar sua vida (R$)", placeholder: "Ex.: 1500" },
+      ],
+      previewNumerico: (vals, a) => previewLimiteBasico(vals, a),
       placeholder: "Ex.: no máximo R$ 2.000. Saio se cair 25% ou se o resultado do trimestre não confirmar a tese. Reviso em 30 dias, no dia 29/10.",
       cta: "Ver meu resultado",
     },
   ],
 
   result(a) {
-    const record = buildRecord(a);
+    const limite = calcularLimiteBasico(a);
+    const record = buildRecord(a, limite);
     const alertas = contarAlertas(a);
     const semTese = !(a.tese || "").trim();
     const semContra = !(a.contra || "").trim();
     const semTravas = !(a.travas || "").trim();
+    const secaoVisual = montarSecaoVisual(a, alertas, limite);
     const ecoContra = semContra
       ? "Você não escreveu o outro lado. De tudo que o protocolo pede, esse é o passo que mais importa: quem não consegue argumentar contra a própria ideia ainda não enxergou o risco dela. Vale voltar e tentar."
       : "Releia o argumento contrário que você escreveu. Se ele te incomodou, ótimo: é ali que está o risco que a vontade não mostrava. A decisão fria não ignora esse argumento. Ela decide o que fazer se ele estiver certo.";
@@ -167,7 +178,7 @@ const PROTOCOL = {
       ],
     };
 
-    const base = { record, safety: safetyNote };
+    const base = { record, sections: [secaoVisual], safety: safetyNote };
 
     // Ramo 1 — a perda compromete contas ou dependentes: não.
     // Sem oferta paga neste ramo: aqui a resposta é não arriscar,
@@ -185,13 +196,13 @@ const PROTOCOL = {
           ecoContra,
         ],
         plan: plans.nao,
-        stats: resultStats(alertas, "não", plans.nao),
+        stats: resultStats(alertas, "não", plans.nao, limite),
         cta: {
           tipo: "artigo",
-          headline: "Antes de arriscar, separe o que pode e o que não pode ser perdido.",
-          texto: "Primeiros Passos no Cripto ajuda a montar reserva, objetivo e ritmo de entrada usando só dinheiro que já sobra.",
-          label: "Montar meus primeiros passos →",
-          href: "https://primeiros-passos-cripto.dlt.academy/",
+          headline: "Antes de arriscar, organize o que pressiona o seu caixa hoje.",
+          texto: "O protocolo gratuito do Teto Financeiro ajuda a mapear o padrão que aperta o seu mês e montar uma trava prática sem usar dinheiro essencial.",
+          label: "Fazer o protocolo do Teto Financeiro →",
+          href: "/protocolos/teto-financeiro/",
           external: false,
         },
       };
@@ -212,7 +223,7 @@ const PROTOCOL = {
           ecoTravas,
         ],
         plan: plans.recuperacao,
-        stats: resultStats(alertas, "não", plans.recuperacao),
+        stats: resultStats(alertas, "não", plans.recuperacao, limite),
         cta: {
           tipo: "artigo",
           headline: "Se a vontade de voltar agora está forte, faça o exercício do aperto antes.",
@@ -245,7 +256,7 @@ const PROTOCOL = {
           ecoTravas,
         ],
         plan: risco ? plans.alavancagemRisco : plans.alavancagem,
-        stats: resultStats(alertas, risco ? "espere" : "ajuste", risco ? plans.alavancagemRisco : plans.alavancagem),
+        stats: resultStats(alertas, risco ? "espere" : "ajuste", risco ? plans.alavancagemRisco : plans.alavancagem, limite),
         cta: {
           tipo: "artigo",
           headline: "Veja o que cada tamanho de posição faz com o seu patrimônio antes de abrir.",
@@ -273,7 +284,7 @@ const PROTOCOL = {
           ecoTravas,
         ],
         plan: plans.pressa,
-        stats: resultStats(alertas, "espere", plans.pressa),
+        stats: resultStats(alertas, "espere", plans.pressa, limite),
         cta: {
           tipo: "artigo",
           headline: "Se o que empurra é a sensação de estar ficando para trás, comece por ela.",
@@ -286,9 +297,10 @@ const PROTOCOL = {
       };
     }
 
-    // Ramo 5 — um sinal, ou a decisão ainda não foi escrita.
-    if (alertas === 1 || semTese || semContra || semTravas) {
+    // Ramo 5 — um sinal, excesso no limite em reais ou a decisão ainda não foi escrita.
+    if (alertas === 1 || semTese || semContra || semTravas || (limite && limite.passa)) {
       const pendencias = descreverAlertas(a);
+      if (limite && limite.passa) pendencias.push(`o valor pretendido (${formatarReais(limite.valor)}) passa ${formatarReais(limite.excesso)} do limite que cabe na perda aceita (${formatarReais(limite.limite)})`);
       if (semTese) pendencias.push("a tese não foi escrita");
       if (semContra) pendencias.push("o argumento contrário não foi escrito");
       if (semTravas) pendencias.push("as travas não foram escritas");
@@ -305,7 +317,7 @@ const PROTOCOL = {
           ecoTravas,
         ],
         plan: plans.ajuste,
-        stats: resultStats(alertas, "ajuste", plans.ajuste),
+        stats: resultStats(alertas, "ajuste", plans.ajuste, limite),
         cta: {
           tipo: "artigo",
           headline: "Confira se o tamanho que você escreveu aguenta os cenários ruins.",
@@ -332,7 +344,7 @@ const PROTOCOL = {
         ecoTravas,
       ],
       plan: plans.segue,
-      stats: resultStats(alertas, "siga", plans.segue),
+      stats: resultStats(alertas, "siga", plans.segue, limite),
       cta: {
         tipo: "artigo",
         headline: "Antes de executar, confira o tamanho contra os cenários ruins.",
@@ -373,12 +385,160 @@ function descreverAlertas(a) {
   return sinais;
 }
 
-function resultStats(alertas, veredito, plan) {
+function resultStats(alertas, veredito, plan, limite) {
+  const terceiro = limite
+    ? { value: formatarReais(limite.limite), label: "limite que cabe" }
+    : { value: String(plan.length), label: "passos no plano" };
   return [
     { value: String(alertas), label: alertas === 1 ? "sinal de alerta" : "sinais de alerta" },
     { value: veredito, label: "veredito" },
-    { value: String(plan.length), label: "passos no plano" },
+    terceiro,
   ];
+}
+
+function formatarReais(valor) {
+  return "R$ " + new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 }).format(Math.max(0, Math.round(valor || 0)));
+}
+
+function lerNumeroPositivo(bruto) {
+  const texto = String(bruto == null ? "" : bruto).trim().replace(",", ".");
+  if (!texto) return NaN;
+  const n = Number(texto);
+  return Number.isFinite(n) && n >= 0 ? n : NaN;
+}
+
+/**
+ * O que faz: Calcula quanto cabe em reais na versão básica (queda de 70%, ou 100% com alavancagem) a partir do valor pretendido e da perda aceita.
+ * Por quê: Unifica a promessa da versão básica grátis com a mesma primeira regra determinística usada na calculadora e no relatório pago.
+ * Erro e ataque: Campos vazios, inválidos ou negativos retornam null sem quebrar o fluxo do protocolo nem gerar NaN.
+ * Prova: tests/js/decisao-fria-limite.test.mjs.
+ */
+function calcularLimiteBasico(a) {
+  const valor = lerNumeroPositivo(a.valor_planejado);
+  const perda = lerNumeroPositivo(a.perda_aceitavel);
+  if (!(valor > 0) || Number.isNaN(perda)) return null;
+  const queda = a.intencao === "alavancar" ? 1 : 0.7;
+  const limite = Math.floor(perda / queda);
+  const perdaPiorCaso = Math.round(valor * queda);
+  const passa = valor > limite;
+  return {
+    valor,
+    perda,
+    queda,
+    quedaPct: Math.round(queda * 100),
+    limite,
+    perdaPiorCaso,
+    passa,
+    excesso: Math.max(0, valor - limite),
+  };
+}
+
+function previewLimiteBasico(vals, a) {
+  const c = calcularLimiteBasico(Object.assign({}, a, vals));
+  if (!c) return null;
+  if (c.passa) {
+    return {
+      estado: "passa",
+      texto: `Limite que cabe: ${formatarReais(c.limite)} (queda de ${c.quedaPct}%). Os ${formatarReais(c.valor)} passam ${formatarReais(c.excesso)} do que cabe na sua perda aceita.`,
+    };
+  }
+  return {
+    estado: "ok",
+    texto: `Limite que cabe: ${formatarReais(c.limite)} (queda de ${c.quedaPct}%). Cabe: no pior caso, a perda máxima seria ${formatarReais(c.perdaPiorCaso)}.`,
+  };
+}
+
+function montarSecaoVisual(a, alertas, limite) {
+  if (limite) {
+    const topo = Math.max(limite.valor, limite.limite, limite.perdaPiorCaso, limite.perda, 1);
+    const selo = a.impacto === "compromete" ? "Dinheiro essencial" : limite.passa ? "Passa do limite" : "Cabe na perda aceita";
+    const seloTom = a.impacto === "compromete" || limite.passa ? "vermelho" : "verde";
+    const legenda = a.impacto === "compromete"
+      ? `Mesmo com limite aritmético de ${formatarReais(limite.limite)}, você marcou que a perda compromete contas ou dependentes. Nesse caso, o teto prático é R$ 0.`
+      : limite.passa
+        ? `Numa queda de ${limite.quedaPct}%, ${formatarReais(limite.valor)} podem perder ${formatarReais(limite.perdaPiorCaso)}, acima dos ${formatarReais(limite.perda)} que você aceita. O valor máximo por esta conta é ${formatarReais(limite.limite)}.`
+        : `Numa queda de ${limite.quedaPct}%, ${formatarReais(limite.valor)} podem perder ${formatarReais(limite.perdaPiorCaso)}, dentro dos ${formatarReais(limite.perda)} que você aceita (teto de ${formatarReais(limite.limite)}).`;
+    return {
+      id: "painel-limite",
+      kind: "visual",
+      title: "Quanto cabe em reais nesta decisão",
+      painelDecisao: {
+        modo: "limite",
+        titulo: `Teste de queda de ${limite.quedaPct}% · Versão básica`,
+        selo,
+        seloTom,
+        linhaLimite: Math.max(0.05, Math.min(1, limite.limite / topo)),
+        barras: [
+          { rotulo: "Valor pretendido", valorTexto: formatarReais(limite.valor), proporcao: limite.valor / topo, tom: limite.passa ? "vermelho" : "azul" },
+          { rotulo: "Limite máximo que cabe", valorTexto: formatarReais(limite.limite), proporcao: limite.limite / topo, tom: "verde" },
+          { rotulo: `Perda no pior caso (-${limite.quedaPct}%)`, valorTexto: formatarReais(limite.perdaPiorCaso), proporcao: limite.perdaPiorCaso / topo, tom: limite.perdaPiorCaso > limite.perda ? "vermelho" : "ambar" },
+          { rotulo: "Perda que você aceita", valorTexto: formatarReais(limite.perda), proporcao: limite.perda / topo, tom: "azul" },
+        ],
+        legenda,
+        linhasMd: [
+          `Valor pretendido: ${formatarReais(limite.valor)}`,
+          `Perda que você aceita: ${formatarReais(limite.perda)}`,
+          `Limite máximo nesta conta (queda de ${limite.quedaPct}%): ${formatarReais(limite.limite)}`,
+          `Perda estimada no pior caso: ${formatarReais(limite.perdaPiorCaso)}`,
+        ],
+      },
+      paragraphs: [
+        "Esta é a primeira das três contas do método (pela perda que você aceita). Na versão avançada, o código cruza também o limite de 25% num ativo só e o teto da sua parte de alto risco na carteira.",
+      ],
+    };
+  }
+
+  const eixoIntencao = a.intencao === "recuperar"
+    ? { texto: "Recuperar perda (bloqueio)", p: 1, tom: "vermelho" }
+    : a.intencao === "alavancar"
+      ? { texto: "Alavancagem (risco alto)", p: 0.88, tom: "vermelho" }
+      : a.intencao === "aumentar"
+        ? { texto: "Aumentar após alta", p: 0.62, tom: "ambar" }
+        : { texto: "Aporte planejado", p: 0.22, tom: "verde" };
+  const eixoBase = a.base === "numeros"
+    ? { texto: "Números conferidos", p: 0.22, tom: "verde" }
+    : a.base === "alguem"
+      ? { texto: "Opinião de terceiros", p: 0.72, tom: "ambar" }
+      : { texto: "Sensação forte", p: 0.85, tom: "vermelho" };
+  const eixoRelogio = a.relogio === "semana"
+    ? { texto: "Pode esperar 1 semana", p: 0.22, tom: "verde" }
+    : a.relogio === "confirmar"
+      ? { texto: "Buscando confirmação", p: 0.72, tom: "ambar" }
+      : { texto: "Pressa de horas", p: 0.9, tom: "vermelho" };
+  const eixoImpacto = a.impacto === "nada"
+    ? { texto: "Não muda contas nem sono", p: 0.22, tom: "verde" }
+    : a.impacto === "aperta"
+      ? { texto: "Apertaria gastos e planos", p: 0.68, tom: "ambar" }
+      : { texto: "Compromete o essencial", p: 1, tom: "vermelho" };
+
+  const bloqueio = a.impacto === "compromete" || a.intencao === "recuperar";
+  const selo = bloqueio ? "Bloqueio de segurança" : alertas === 0 ? "Decisão fria" : `${alertas} ${alertas === 1 ? "sinal de alerta" : "sinais de alerta"}`;
+  const seloTom = bloqueio ? "vermelho" : alertas === 0 ? "verde" : alertas >= 2 ? "vermelho" : "ambar";
+
+  return {
+    id: "painel-sinais",
+    kind: "visual",
+    title: "Raio-X visual desta decisão",
+    painelDecisao: {
+      modo: "sinais",
+      titulo: "Pressão em cada eixo antes do clique",
+      selo,
+      seloTom,
+      barras: [
+        { rotulo: "1 · Intenção", valorTexto: eixoIntencao.texto, proporcao: eixoIntencao.p, tom: eixoIntencao.tom },
+        { rotulo: "2 · Base da ideia", valorTexto: eixoBase.texto, proporcao: eixoBase.p, tom: eixoBase.tom },
+        { rotulo: "3 · Relógio", valorTexto: eixoRelogio.texto, proporcao: eixoRelogio.p, tom: eixoRelogio.tom },
+        { rotulo: "4 · Teste do pior caso", valorTexto: eixoImpacto.texto, proporcao: eixoImpacto.p, tom: eixoImpacto.tom },
+      ],
+      legenda: "Quanto mais curta e verde a barra, mais fria a decisão. Se quiser ver quanto cabe em reais, volte ao passo 7 e preencha os dois valores opcionais.",
+      linhasMd: [
+        `Intenção: ${eixoIntencao.texto}`,
+        `Base da ideia: ${eixoBase.texto}`,
+        `Relógio: ${eixoRelogio.texto}`,
+        `Teste do pior caso: ${eixoImpacto.texto}`,
+      ],
+    },
+  };
 }
 
 // Tira a pontuação final para o eco entre aspas não sair com ".”."
@@ -386,16 +546,23 @@ function semPontoFinal(texto) {
   return String(texto || "").trim().replace(/[.!?…;,\s]+$/, "");
 }
 
-function buildRecord(a) {
-  return [
+function buildRecord(a, limite) {
+  const itens = [
     { q: "A decisão", value: a.intencao__label },
     { q: "Em que ela se apoia", value: a.base__label },
     { q: "O relógio", value: a.relogio__label },
     { q: "Minha tese", value: (a.tese || "").trim() },
     { q: "O melhor argumento contra", value: (a.contra || "").trim() },
     { q: "Se o pior acontecesse", value: a.impacto__label },
-    { q: "Minhas travas: limite, saída e revisão", value: (a.travas || "").trim() },
   ];
+  if (limite) {
+    itens.push({
+      q: "Quanto cabe em reais (versão básica)",
+      value: `Pretendido: ${formatarReais(limite.valor)} · Perda aceita: ${formatarReais(limite.perda)} · Limite (queda de ${limite.quedaPct}%): ${formatarReais(limite.limite)}`,
+    });
+  }
+  itens.push({ q: "Minhas travas: limite, saída e revisão", value: (a.travas || "").trim() });
+  return itens;
 }
 
 runProtocol(PROTOCOL, "protocol-mount");

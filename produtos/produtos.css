@@ -456,6 +456,47 @@
 .sp-objecoes li { position: relative; padding: 16px 20px 16px 22px; border-radius: 16px; border: 1px solid var(--border); border-left: 3px solid var(--accent); background: linear-gradient(180deg, rgba(14,33,72,.22), var(--bg-elev)); color: var(--text-dim); font-size: 0.9688rem; line-height: 1.6; }
 .sp-objecoes li strong { color: var(--text); font-family: var(--font-head); }
 
+/* Gráfico animado dos 3 limites em código (Decisão Fria) */
+.sp-df-limites { margin-top: 22px; }
+.sp-df-limites .sp-graf-palco { padding: 14px 12px 10px; }
+.sp-df-rot { font-family: var(--font-head); font-size: 11.5px; font-weight: 700; fill: #d8e0ef; }
+.sp-df-val { font-family: var(--font-head); font-size: 11.5px; font-weight: 700; text-anchor: end; }
+.sp-df-val-risco { fill: #fca5a5; }
+.sp-df-val-trava { fill: #86efac; }
+.sp-df-val-ref { fill: #93c5fd; }
+.sp-df-trilho { fill: rgba(30,44,78,.72); }
+.sp-df-barra { transform-box: fill-box; transform-origin: left center; }
+.sp-df-barra-risco { fill: #f87171; }
+.sp-df-barra-trava { fill: #4ade80; }
+.sp-df-barra-ref { fill: #60a5fa; }
+.sp-df-barra-excesso { fill: rgba(248,113,113,.22); stroke: #f87171; stroke-width: 1.2; stroke-dasharray: 4 3; }
+.sp-df-corte { stroke: #4ade80; stroke-width: 1.8; stroke-dasharray: 6 5; }
+.sp-df-corte-rot { font-family: var(--font-head); font-size: 10px; font-weight: 800; letter-spacing: .06em; fill: #86efac; }
+.sp-df-excesso-rot { font-family: var(--font-head); font-size: 10px; font-weight: 700; fill: #fca5a5; text-anchor: middle; }
+.sp-df-selo-trava { color: #86efac; background: rgba(74,222,128,.12); border: 1px solid rgba(74,222,128,.36); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .sp-df-limites[data-graf-pronto]:not(.tocando) .sp-df-barra,
+  .sp-df-limites[data-graf-pronto]:not(.tocando) .sp-df-barra-excesso,
+  .sp-df-limites[data-graf-pronto]:not(.tocando) .sp-df-corte,
+  .sp-df-limites[data-graf-pronto]:not(.tocando) .sp-df-corte-rot,
+  .sp-df-limites[data-graf-pronto]:not(.tocando) .sp-df-excesso-rot { opacity: 0; }
+  .sp-df-limites.tocando .sp-df-b1 { animation: sp-df-cresce .72s cubic-bezier(.22,1,.36,1) .15s both; }
+  .sp-df-limites.tocando .sp-df-b2 { animation: sp-df-cresce .72s cubic-bezier(.22,1,.36,1) .85s both; }
+  .sp-df-limites.tocando .sp-df-b3 { animation: sp-df-cresce .72s cubic-bezier(.22,1,.36,1) 1.55s both; }
+  .sp-df-limites.tocando .sp-df-b4 { animation: sp-df-cresce .72s cubic-bezier(.22,1,.36,1) 2.25s both; }
+  .sp-df-limites.tocando .sp-df-corte { animation: sp-df-aparece .5s ease-out 2.95s both; }
+  .sp-df-limites.tocando .sp-df-corte-rot { animation: sp-df-aparece .45s ease-out 3.1s both; }
+  .sp-df-limites.tocando .sp-df-barra-excesso { animation: sp-df-aparece .55s ease-out 3.35s both; }
+  .sp-df-limites.tocando .sp-df-excesso-rot { animation: sp-df-aparece .45s ease-out 3.55s both; }
+}
+@keyframes sp-df-cresce { from { transform: scaleX(0); opacity: .25; } to { transform: scaleX(1); opacity: 1; } }
+@keyframes sp-df-aparece { from { opacity: 0; } to { opacity: 1; } }
+
+.sp-funil-ponte { margin: 22px 0 0; padding: 18px 20px; border-radius: 16px; border: 1px solid var(--border); background: rgba(14,33,72,.22); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 20px; }
+.sp-funil-ponte p { margin: 4px 0 0; color: var(--text-dim); font-size: 0.9375rem; line-height: 1.55; max-width: 600px; }
+.sp-funil-ponte h3 { margin: 0; font-family: var(--font-head); font-size: 1.0625rem; color: var(--text); }
+
 @media (max-width: 860px) {
   .sp-graf-grade { grid-template-columns: minmax(0, 1fr); }
   .sp-kit-grid { grid-template-columns: minmax(0, 1fr); }

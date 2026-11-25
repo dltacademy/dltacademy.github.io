@@ -105,7 +105,7 @@
         }
       ],
       step1Ids: ["protocolo-teto-financeiro"],
-      step2Ids: [],
+      step2Ids: ["protocolo-decisao-fria"],
       step3: {
         kicker: "Se o padrão pesar · Leitura sob medida (R$ 97)",
         title: "O Mapa do seu Teto",

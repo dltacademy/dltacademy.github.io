@@ -22,13 +22,13 @@ const PAID_REPORT_HOSTS = ["relatorio.dlt.academy"];
 
 const PAID_REPORTS = {
   "decisao-fria": {
-    titulo: "Decisão Fria: relatório do seu caso + Dossiê",
-    promessa: "Um relatório da decisão que você está prestes a tomar, escrito a partir do que você contar, e o Dossiê com o método completo, para usar nas próximas decisões de dinheiro com risco.",
+    titulo: "Decisão Fria: versão avançada do seu caso + Dossiê",
+    promessa: "Para decisões importantes: saiba antes do clique se vale entrar, qual é o valor máximo em reais pelos três limites em código, o que precisa mudar para destravar e em quais datas revisar, com simulador e Dossiê de 24 páginas.",
     conteudo: [
-      "Seu veredito, com o nível de frieza da decisão e os pontos cegos do seu caso",
-      "O limite em reais, calculado a partir do que você aguenta perder",
-      "Três argumentos contra a sua tese, cada um virando condição de saída, e travas com lembretes de revisão de 7, 30 e 90 dias em 1 clique (.ics)",
-      "Simulador interativo pós-relatório para testar cenários sem pagar de novo + Dossiê Decisão Fria (24 pág. em PDF com fichas)",
+      "Veredito (SIGA, AJUSTE, ESPERE ou NÃO), nível de frieza e o que destrava o seu caso",
+      "Três limites em reais travados em código: perda aceita, concentração de 25% num ativo e teto de alto risco",
+      "Leitura da emoção, origem de cada informação, três argumentos contra e lembretes de 7, 30 e 90 dias (.ics)",
+      "Simulador interativo pós-relatório para testar cenários sem pagar de novo + Dossiê Decisão Fria (24 pág. em PDF com 4 fichas)",
     ],
     preco: "R$ 47",
     formato: "relatório na hora + simulador + Dossiê em PDF",
