@@ -443,8 +443,22 @@
   25%, 77% { opacity: .88; }
 }
 
+/* ---- kit pratico incluido + bloco "Funciona mesmo que..." ---- */
+.sp-kit-bloco { margin: 22px 0 0; padding: 24px; border-radius: 20px; border: 1px solid rgba(74,141,248,.26); background: linear-gradient(180deg, rgba(14,33,72,.30), var(--bg-elev)); }
+.sp-kit-bloco .sp-kicker { margin-bottom: 6px; }
+.sp-kit-titulo { font-family: var(--font-head); font-size: 1.1875rem; line-height: 1.3; margin: 0 0 18px; color: var(--text); }
+.sp-kit-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.sp-kit-item { padding: 16px; border-radius: 14px; border: 1px solid rgba(30,44,78,.9); background: rgba(6,9,15,.55); }
+.sp-kit-tag { display: inline-block; font-family: var(--font-head); font-size: 0.72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--sky-light); margin: 0 0 8px; }
+.sp-kit-item h4 { font-family: var(--font-head); font-size: 1rem; line-height: 1.3; margin: 0 0 6px; color: var(--text); }
+.sp-kit-item p { margin: 0; font-size: 0.9062rem; line-height: 1.55; color: var(--text-dim); }
+.sp-objecoes { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; max-width: 860px; }
+.sp-objecoes li { position: relative; padding: 16px 20px 16px 22px; border-radius: 16px; border: 1px solid var(--border); border-left: 3px solid var(--accent); background: linear-gradient(180deg, rgba(14,33,72,.22), var(--bg-elev)); color: var(--text-dim); font-size: 0.9688rem; line-height: 1.6; }
+.sp-objecoes li strong { color: var(--text); font-family: var(--font-head); }
+
 @media (max-width: 860px) {
   .sp-graf-grade { grid-template-columns: minmax(0, 1fr); }
+  .sp-kit-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 560px) {
   .sp-graf-card, .sp-graf-trava-card { padding: 18px 16px 16px; }
