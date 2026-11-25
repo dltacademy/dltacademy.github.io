@@ -13,6 +13,8 @@
 //   [data-ancora]       frase que compara o preço com a perda aceita (ou,
 //                       com data-ancora-base="queda", com a perda no teste)
 //   [data-enxame]       nós de agentes acendendo sobre o caso, animado
+//   [data-teto-graficos] dois gráficos animados da linha de resistência
+//                       no Mapa do seu Teto (estagnação e queda no pico)
 //   [data-barra-fixa]   barra de compra no celular, escondida no topo,
 //                       perto da oferta e no rodapé
 //   botões de compra    os links para relatorio.dlt.academy/comprar/ herdam
@@ -419,10 +421,50 @@
     });
   }
 
+  /**
+   * O que faz: Dispara a animação didática dos gráficos de resistência ao entrarem na tela e permite repetir pelo botão.
+   * Por quê: Mantém os dois ciclos (estagnação e queda no pico) visíveis no estado final sem JS ou com movimento reduzido, e anima uma vez quando a pessoa chega na seção.
+   * Erro e ataque: Ignora ambientes sem matchMedia ou IntersectionObserver deixando o estado final visível; não altera innerHTML nem injeta estilo inline.
+   * Prova: tests/test_paid_reports.py (test_graficos_resistencia_no_mapa_do_teto).
+   */
+  function graficosTeto(raiz) {
+    const reduzido = typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const repetir = raiz.querySelector("[data-graf-repetir]");
+
+    function tocar() {
+      if (reduzido) return;
+      raiz.classList.remove("tocando");
+      // Força novo ciclo limpo de animação CSS quando a pessoa clica em repetir.
+      void raiz.offsetWidth;
+      raiz.classList.add("tocando");
+    }
+
+    if (repetir) repetir.addEventListener("click", tocar);
+    if (reduzido) return;
+    raiz.dataset.grafPronto = "1";
+    const jaVisivel = typeof raiz.getBoundingClientRect === "function" &&
+      typeof window !== "undefined" && typeof window.innerHeight === "number" &&
+      raiz.getBoundingClientRect().top < window.innerHeight * 0.92;
+    if (jaVisivel) {
+      tocar();
+    } else if (typeof window !== "undefined" && "IntersectionObserver" in window) {
+      const obs = new IntersectionObserver((entradas) => {
+        if (entradas.some((e) => e.isIntersecting)) {
+          obs.disconnect();
+          tocar();
+        }
+      }, { threshold: 0.1 });
+      obs.observe(raiz);
+    } else {
+      tocar();
+    }
+  }
+
   repassarUtm();
   document.querySelectorAll("[data-calc-limite]").forEach(calculadora);
   document.querySelectorAll("[data-calc-queda]").forEach(testeDeQueda);
   document.querySelectorAll("[data-enxame]").forEach(enxame);
+  document.querySelectorAll("[data-teto-graficos]").forEach(graficosTeto);
   document.querySelectorAll("[data-abas]").forEach(abas);
   document.querySelectorAll("[data-medidor]").forEach((el) => { if (!el.closest("[hidden]")) encher(el); });
   document.querySelectorAll("[data-barra-fixa]").forEach(barraFixa);
