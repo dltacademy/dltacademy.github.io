@@ -553,3 +553,18 @@ test("o que ela escreve na trava não forja marcador no .md, e volta igual (neut
   // O texto dela nunca vira HTML: só nós de texto.
   assert.ok(b.p.todos().every((e) => !/^(SCRIPT|IFRAME|IMG)$/.test(e.tagName)));
 });
+
+test("curva personalizada de resistência: caso A estagna, caso B devolve e caso E não mostra curva", async () => {
+  const pagA = abrir();
+  await jogar(pagA, "A");
+  assert.equal(pagA.p.porClasse("protocol-curva-estagna").length, 1);
+  assert.equal(pagA.p.porClasse("protocol-curva-svg").length, 1);
+
+  const pagB = abrir();
+  await jogar(pagB, "B");
+  assert.equal(pagB.p.porClasse("protocol-curva-devolve").length, 1);
+
+  const pagE = abrir();
+  await jogar(pagE, "E");
+  assert.equal(pagE.p.porClasse("protocol-curva").length, 0);
+});

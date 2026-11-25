@@ -910,13 +910,39 @@
     return marcasDoPadrao(r, padrao, bib).map(function (m) { return aspas(m.label); });
   }
 
+  function curvaDoTeto(r, calc, bib) {
+    var padrao = bib.padroes[calc.padrao];
+    if (!padrao) return null;
+    var modo = calc.trilha === "ganho" ? "estagna" : "devolve";
+    var alvo = aparar(objeto(r).alvo);
+    var trava = travaImediata(calc.padrao, calc.variante, objeto(r).renda, bib);
+    return {
+      modo: modo,
+      titulo: modo === "devolve" ? "Curva do seu teto · Bate e devolve" : "Curva do seu teto · Empaca na resistência",
+      selo: modo === "devolve" ? "Padrão 02 · Queda no pico" : "Padrão 01 · Estagnação",
+      rotuloTeto: alvo ? "TETO · " + alvo.slice(0, 20) : "RESISTÊNCIA · SEU TETO",
+      rotuloBase: modo === "devolve" ? "Base / ponto de partida" : "Patamar anterior",
+      toque: modo === "devolve" ? "bate no teto" : "1º toque",
+      recuo: modo === "devolve" ? "devolve o ganho" : "recua e estagna",
+      pico2: modo === "devolve" ? "passa um pouco" : "2º toque",
+      fim: modo === "devolve" ? "cai de novo" : "estagna de novo",
+      travaTexto: trava && trava.texto ? trava.texto : "",
+      legenda: padrao.nome + " (empurrão: " + padrao.empurrao + "). " + (modo === "devolve"
+        ? "A curva sobe forte e devolve o ganho logo após o pico ou um imprevisto sem margem."
+        : "A curva encosta no marco, recua um pouco e anda de lado quando chega a hora de avançar."),
+    };
+  }
+
   function secaoDoTeto(r, calc, bib, titulo) {
     var t = textosDaBib(bib).resultado.mapa;
     var frases = marcasEmAspas(r, calc.padrao, bib);
     var paragrafos = [t.trilha[calc.trilha]];
     if (calc.trilhasPerto) paragrafos.push(t.perto);
     if (frases.length) paragrafos.push(t.frases_marcadas);
-    return { id: "teto", title: titulo || "Onde o seu teto pega", kind: "teto", paragraphs: paragrafos, items: frases };
+    var secao = { id: "teto", title: titulo || "Onde o seu teto pega", kind: "teto", paragraphs: paragrafos, items: frases };
+    var curva = curvaDoTeto(r, calc, bib);
+    if (curva) secao.curva = curva;
+    return secao;
   }
 
   function secaoDaFamilia(calc, bib) {
