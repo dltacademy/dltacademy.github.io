@@ -262,7 +262,12 @@ const PROTOCOL = (function montarProtocolo() {
       grupo: GRUPO_ATO1,
       type: "checkpoint",
       actions: { continuar: "Continuar agora", pausar: "Salvar e continuar depois" },
-      render: (a, ctx) => R.montarParcial(a, comPagina(ctx), bib),
+      render: (a, ctx) => {
+        const resultado = R.montarParcial(a, comPagina(ctx), bib);
+        const oferta = R.ofertaDoResultado(a, bib);
+        if (oferta) resultado.oferta = oferta;
+        return resultado;
+      },
     });
     return passos;
   }
