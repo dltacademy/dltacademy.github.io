@@ -1036,6 +1036,7 @@ function runProtocol(protocol, mountId) {
     card.appendChild(buildDelivery(result, card, { partial: true }));
     card.appendChild(buildBack());
     mount.appendChild(card);
+    appendCheckpointPaidOffer(mount, result, emit, el);
     if (moveFocus) verdictHeading.focus({ preventScroll: true });
   }
 
@@ -1576,8 +1577,11 @@ function runProtocol(protocol, mountId) {
     const refs = Array.isArray(offered) ? offered : offered ? [offered] : [];
     const cards = refs.map((ref) => {
       const offerCard = buildPaidReportOffer(ref, el);
-      const buy = offerCard && offerCard.querySelector(".protocol-paid-actions a");
-      if (buy) buy.addEventListener("click", () => emit("oferta", ref.produto));
+      if (offerCard) {
+        offerCard.querySelectorAll(".protocol-paid-actions a").forEach((link) => {
+          link.addEventListener("click", () => emit("oferta", ref.produto));
+        });
+      }
       return offerCard;
     }).filter(Boolean);
     // Um botão cheio por tela: com oferta paga, o primário é o dela (o da
@@ -1624,6 +1628,27 @@ function runProtocol(protocol, mountId) {
 
   if (cycleEnabled) boot();
   else render(startIndex());
+}
+
+// Oferta opcional no checkpoint intermediário (ex.: fim do Ato 1): aparece em bloco
+// separado abaixo do card de entrega, sem entrar nos downloads (.md, PDF, .ics).
+function appendCheckpointPaidOffer(mountNode, result, emitFn, el) {
+  const offered = result && (result.relatorio || result.oferta);
+  if (!offered) return;
+  const refs = Array.isArray(offered) ? offered : [offered];
+  const cards = refs.map((ref) => {
+    const offerCard = buildPaidReportOffer(ref, el);
+    if (offerCard) {
+      offerCard.querySelectorAll(".protocol-paid-actions a").forEach((link) => {
+        link.addEventListener("click", () => emitFn("oferta", ref.produto));
+      });
+    }
+    return offerCard;
+  }).filter(Boolean);
+  if (!cards.length) return;
+  const section = el("section", "protocol-checkpoint-offer");
+  cards.forEach((c) => section.appendChild(c));
+  mountNode.appendChild(section);
 }
 
 // Grau do veredito (1 a 4): SIGA, AJUSTE, ESPERE, NÃO. O desfecho declara
@@ -1719,14 +1744,23 @@ function buildPaidReportOffer(ref, el) {
   const buy = el("div", "protocol-paid-buy");
   buy.appendChild(el("p", "protocol-paid-price", product.preco + (product.formato ? " · " + product.formato : "")));
   const actions = el("div", "protocol-paid-actions");
-  const a = el("a", "btn btn-md btn-primary", product.botao || "Quero o relatório completo →");
+  const pagina = paidReportPageUrl(product.paginaUrl);
+  const preferirPagina = Boolean(product.preferirPagina && pagina);
+
+  if (preferirPagina) {
+    const ver = el("a", "btn btn-md btn-primary", product.botaoPagina || "Ver exemplo do relatório");
+    ver.href = appendPaidOfferUtms(pagina, false);
+    actions.appendChild(ver);
+  }
+
+  const a = el("a", preferirPagina ? "btn btn-ghost" : "btn btn-md btn-primary", product.botao || "Quero o relatório completo →");
   a.href = appendPaidOfferUtms(checkout, true);
   a.target = "_blank";
   a.rel = "noopener noreferrer";
   a.setAttribute("referrerpolicy", "no-referrer");
   actions.appendChild(a);
-  const pagina = paidReportPageUrl(product.paginaUrl);
-  if (pagina) {
+
+  if (!preferirPagina && pagina) {
     const ver = el("a", "btn btn-ghost", product.botaoPagina || "Ver exemplo do relatório");
     ver.href = appendPaidOfferUtms(pagina, false);
     actions.appendChild(ver);

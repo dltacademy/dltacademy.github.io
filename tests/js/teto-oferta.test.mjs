@@ -1,6 +1,6 @@
-// A oferta do Teto avançado e a camada de eventos no Protocolo do Teto: a oferta só no fim do Ato 2
-// e no retorno do dia 7, só com um padrão escolhido, nunca no cuidado nem no "nenhum", sem nada das
-// respostas no link; e os nomes de evento, numa lista fixa, com o envio desligado.
+// A oferta do Teto avançado e a camada de eventos no Protocolo do Teto: a oferta no fim do Ato 1
+// (ponte após os 8 min), no fim do Ato 2 e no retorno do dia 7, só com um padrão escolhido, nunca
+// no cuidado nem no "nenhum", sem nada das respostas no link; e os nomes de evento, numa lista fixa.
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
@@ -8,6 +8,7 @@ import {
 } from "./teto-ciclo-apoio.mjs";
 
 const COMPRA = "https://relatorio.dlt.academy/comprar/teto-avancado?utm_source=portal&utm_medium=protocolo";
+const PAGINA_TETO = "/produtos/mapa-do-seu-teto/";
 const cartoes = (p) => p.porClasse("protocol-paid-report");
 const links = (p) => p.todos().filter((e) => e.tagName === "A").map((a) => a.getAttribute("href") || a.href || "");
 
@@ -36,7 +37,30 @@ test("o que a oferta leva é só o produto e o padrão, e os resultados das regr
   });
 });
 
-// ---- na página, o fim do Ato 2 ---------------------------------------------------------------------------
+// ---- na página, o fim do Ato 1 (checkpoint) e o fim do Ato 2 ------------------------------------
+
+test("no fim do Ato 1, a oferta aparece para casos A/B/C com link prioritário para a LP e sem oferta em D/E/F ou catálogo vazio", async () => {
+  const { percorrer } = await import("./teto-casos.mjs");
+  for (const letra of ["A", "B", "C"]) {
+    const aVazio = abrir({ catalogo: "" });
+    await percorrer({ mount: aVazio.env.mount, passos: aVazio.PROTOCOL.steps, kit, respostas: clone(CASOS[letra]), esperar: async () => aVazio.env.rodarTimers() });
+    assert.equal(cartoes(aVazio.p).length, 0, `${letra} sem catalogo`);
+
+    const a = abrir({ catalogo: COMPRA });
+    const parou = await percorrer({ mount: a.env.mount, passos: a.PROTOCOL.steps, kit, respostas: clone(CASOS[letra]), esperar: async () => a.env.rodarTimers() });
+    assert.equal(parou, "fim_ato1", letra);
+    assert.equal(cartoes(a.p).length, 1, letra);
+    const botoesOferta = cartoes(a.p)[0].querySelectorAll(".protocol-paid-actions a");
+    assert.equal(botoesOferta.length, 2, letra);
+    assert.equal(botoesOferta[0].getAttribute("href"), PAGINA_TETO, "botão primário leva à LP");
+    assert.equal(botoesOferta[1].getAttribute("href"), COMPRA, "botão secundário leva ao checkout");
+  }
+  for (const letra of ["D", "E", "F"]) {
+    const a = abrir({ catalogo: COMPRA });
+    await percorrer({ mount: a.env.mount, passos: a.PROTOCOL.steps, kit, respostas: clone(CASOS[letra]), esperar: async () => a.env.rodarTimers() });
+    assert.equal(cartoes(a.p).length, 0, `${letra} nunca mostra oferta`);
+  }
+});
 
 test("com o catálogo vazio (o estado de hoje) a oferta é invisível em todos os casos", async () => {
   for (const letra of ["A", "B", "C"]) {

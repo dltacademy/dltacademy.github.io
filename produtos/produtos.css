@@ -168,6 +168,7 @@
 
 /* ---- passos -------------------------------------------------- */
 .sp-passos { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; counter-reset: passo; list-style: none; padding: 0; margin: 0; }
+.sp-dois + .sp-passos { margin-top: 18px; }
 .sp-passos li { background: var(--bg-elev); border: 1px solid var(--border); border-radius: 18px; padding: 22px; counter-increment: passo; }
 .sp-passos li::before { content: counter(passo); display: inline-flex; width: 36px; height: 36px; align-items: center; justify-content: center; border-radius: 10px; background: rgba(255,255,255,.05); border: 1px solid var(--border); color: var(--text); font: 800 0.9375rem var(--font-head); margin: 0 0 12px; font-variant-numeric: tabular-nums; }
 .sp-passos h3 { font-family: var(--font-head); font-size: 1.125rem; margin: 0 0 6px; }
@@ -497,16 +498,43 @@
 .sp-funil-ponte p { margin: 4px 0 0; color: var(--text-dim); font-size: 0.9375rem; line-height: 1.55; max-width: 600px; }
 .sp-funil-ponte h3 { margin: 0; font-family: var(--font-head); font-size: 1.0625rem; color: var(--text); }
 
+/* ---- prévia visual do PDF na página de vendas ---------------- */
+.sp-pdf-preview { margin: 22px 0 6px; padding: 18px; border-radius: 18px; border: 1px solid var(--border); background: linear-gradient(180deg, rgba(14,33,72,.28), rgba(6,9,15,.92)); }
+.sp-pdf-preview-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.sp-pdf-preview-item { margin: 0; border-radius: 12px; overflow: hidden; border: 1px solid rgba(74,141,248,.22); background: #0c1220; box-shadow: 0 14px 36px rgba(0,0,0,.38); }
+.sp-pdf-preview-item img { display: block; width: 100%; height: auto; }
+.sp-pdf-preview figcaption { margin: 12px 0 0; color: var(--text-dim); font-size: 0.875rem; line-height: 1.55; }
+
+/* ---- estrutura reutilizável para futuro slot de VSL 16:9 ----- */
+.sp-vsl { margin: 0 0 28px; border-radius: 20px; border: 1px solid rgba(74,141,248,.30); background: linear-gradient(180deg, rgba(14,33,72,.35), var(--bg-elev)); padding: 14px; box-shadow: 0 24px 60px rgba(0,0,0,.42); }
+.sp-vsl-frame { position: relative; aspect-ratio: 16 / 9; border-radius: 14px; overflow: hidden; background: #06090F; }
+.sp-vsl-poster { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sp-vsl-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(6,9,15,.36); border: 0; color: #fff; cursor: pointer; transition: background .15s ease; }
+.sp-vsl-play:hover { background: rgba(6,9,15,.18); }
+
+.sp-aba:active, .sp-pdf-exemplo:active, .sp-continuar-sec:active, .sp-orq-repetir:active { transform: scale(.98); transition: transform .1s ease-out; }
+
 @media (max-width: 860px) {
   .sp-graf-grade { grid-template-columns: minmax(0, 1fr); }
   .sp-kit-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .sp-pdf-preview-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 560px) {
   .sp-graf-card, .sp-graf-trava-card { padding: 18px 16px 16px; }
   .sp-graf-palco { padding: 8px 6px 4px; }
   .sp-graf-controles { width: 100%; }
   .sp-graf-controles button { flex: 1 1 130px; }
+  .sp-pdf-preview { padding: 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
   [data-graf-repetir], [data-graf-pausar] { display: none; }
+  .sp-aba:active, .sp-pdf-exemplo:active, .sp-continuar-sec:active, .sp-orq-repetir:active { transform: none; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .sp-barra-fixa { background: #06090F; backdrop-filter: none; }
+}
+@media (prefers-contrast: more) {
+  .sp-calc, .sp-oferta, .sp-relatorio, .sp-leitura, .sp-cartao, .sp-pdf-preview { border-color: #4A8DF8; }
 }
