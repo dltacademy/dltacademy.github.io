@@ -64,6 +64,20 @@
 .sp-etapas-hero .sp-etapa-num { font-family: var(--font-head); font-size: 0.75rem; font-weight: 700; letter-spacing: .08em; color: var(--sky-light); font-variant-numeric: tabular-nums; flex-shrink: 0; }
 .sp-etapas-hero strong { font-family: var(--font-head); font-size: 0.9375rem; font-weight: 700; color: var(--text); line-height: 1.35; }
 .sp-etapas-hero p { margin: 0; color: var(--text-dim); font-size: 0.9375rem; line-height: 1.5; }
+/* Teste de 20 segundos (cartão do topo, sem JS). */
+.sp-teste { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; counter-reset: teste; }
+.sp-teste li { counter-increment: teste; position: relative; border-top: 1px solid rgba(30,44,78,.8); padding: 12px 0 12px 34px; color: var(--text); font-size: 1rem; line-height: 1.5; }
+.sp-teste li::before { content: counter(teste); position: absolute; left: 0; top: 12px; width: 22px; height: 22px; border-radius: 50%; border: 1px solid rgba(74,141,248,.55); color: var(--sky-light); font-family: var(--font-head); font-size: 0.75rem; font-weight: 700; line-height: 20px; text-align: center; font-variant-numeric: tabular-nums; }
+.sp-teste .sp-teste-ex { display: block; margin-top: 2px; color: var(--text-faint); font-size: 0.875rem; }
+.sp-teste-fecho { margin: 4px 0 0; padding: 14px 0 0; border-top: 1px solid rgba(30,44,78,.8); font-size: 1rem; line-height: 1.5; color: var(--text); }
+.sp-cena.sp-cena-porque p.sp-virada { color: var(--text); font-size: 1.25rem; margin-bottom: 0; }
+.sp-teste-fecho strong { font-family: var(--font-head); font-weight: 700; }
+/* Quatro respostas fora do topo: cartões em grade. */
+.sp-etapas-pagina { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.sp-etapas-pagina li { border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; background: linear-gradient(180deg, rgba(14,33,72,.42), var(--bg-elev)); }
+.sp-etapas-pagina p { font-size: 1rem; line-height: 1.55; }
+.sp-atalho.sp-atalho-solo { justify-content: flex-start; background: none; border: 0; padding: 0; }
+@media (max-width: 720px) { .sp-etapas-pagina { grid-template-columns: minmax(0, 1fr); } }
 .sp-nota { color: var(--text-faint); font-size: 0.7812rem; margin: 14px 0 0; }
 
 /* ---- cena ---------------------------------------------------- */
