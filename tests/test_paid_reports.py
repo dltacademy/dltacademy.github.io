@@ -713,6 +713,8 @@ console.log(JSON.stringify({{ normal: rodar(false), reduzido: rodar(true) }}));
         self.assertIn("sp-kit-bloco", html)
         self.assertIn("sp-kit-grid-2", html)
         self.assertIn("Distância acumulada em 12 meses", html)
+        self.assertIn("Ciclo de Virada", html)
+        self.assertIn("2027", html)
         self.assertIn("31/12/2026", html)
         self.assertIn("R$ 148", html)
         self.assertNotIn("Isso tem nome.", html)
