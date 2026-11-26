@@ -705,6 +705,85 @@ console.log(JSON.stringify({{ normal: rodar(false), reduzido: rodar(true) }}));
         self.assertIn("por que o crescimento trava ou devolve?", home_html)
         self.assertIn("(R$ 47 e R$ 97)", home_html)
 
+    def test_calculadora_pico_media_do_mapa_do_teto(self):
+        html = (self.root / "produtos/mapa-do-seu-teto/index.html").read_text(encoding="utf-8")
+        produtos_js = str(self.root / "produtos/produtos.js")
+        self.assertIn("data-calc-teto", html)
+        self.assertIn('data-ancora-base="teto"', html)
+        self.assertIn("sp-kit-bloco", html)
+        self.assertIn("sp-kit-grid-2", html)
+        self.assertNotIn("—", html)
+        self.assertNotIn("!", html.replace("<!DOCTYPE html>", "", 1))
+        self.assertNotIn(" style=", html)
+
+        script = f"""
+const fs = require("node:fs");
+const codigo = fs.readFileSync({json.dumps(produtos_js)}, "utf8");
+function criarEl(extra = {{}}) {{
+  const listeners = {{}};
+  return Object.assign({{
+    value: "", checked: false, hidden: false, textContent: "", className: "",
+    dataset: {{}}, style: {{}}, validity: {{ badInput: false }},
+    classList: {{ toggle() {{}} }},
+    getAttribute(k) {{ return this[k] || null; }},
+    querySelector() {{ return null; }},
+    querySelectorAll() {{ return []; }},
+    closest() {{ return null; }},
+    addEventListener(ev, fn) {{ (listeners[ev] ||= []).push(fn); }},
+    dispatch(ev, obj = {{}}) {{ (listeners[ev] || []).forEach((fn) => fn(obj)); }},
+  }}, extra);
+}}
+const pico = criarEl(), media = criarEl();
+const saida = criarEl({{ hidden: true }}), gapEl = criarEl(), anualEl = criarEl();
+const barraI = criarEl(), barra = criarEl({{ querySelector: () => barraI }}), msg = criarEl(), resto = criarEl();
+const ancora = criarEl({{ textContent: "Texto padrão", "data-preco": "97", "data-ancora-base": "teto" }});
+const form = criarEl({{
+  querySelector(sel) {{
+    return ({{ "[data-pico]": pico, "[data-media]": media, "[data-saida]": saida,
+      "[data-gap]": gapEl, "[data-gap-anual]": anualEl, "[data-barra]": barra,
+      "[data-msg]": msg, "[data-resto]": resto }})[sel] || null;
+  }},
+}});
+global.window = {{}};
+global.requestAnimationFrame = (fn) => fn();
+global.document = {{
+  body: {{ onbeforematch: null }},
+  getElementById: () => null,
+  querySelector: () => null,
+  querySelectorAll(sel) {{
+    if (sel === "[data-calc-teto]") return [form];
+    if (sel === "[data-ancora]") return [ancora];
+    return [];
+  }},
+}};
+eval(codigo);
+// 1) Só pico preenchido: saída continua recolhida, âncora padrão.
+pico.value = "15000";
+pico.dispatch("input");
+const estadoVazio = {{ hidden: saida.hidden, ancora: ancora.textContent }};
+// 2) Pico igual à média: mostra R$ 0/mês sem alterar a âncora padrão.
+media.value = "15000";
+media.dispatch("input");
+const estadoIgual = {{ hidden: saida.hidden, gap: gapEl.textContent, ancora: ancora.textContent }};
+// 3) Pico 15000 e média 9000: mostra distância de R$ 6.000/mês, R$ 72.000/ano e 1,6% na âncora.
+media.value = "9000";
+media.dispatch("input");
+const estadoGap = {{ hidden: saida.hidden, gap: gapEl.textContent, anual: anualEl.textContent, largura: barraI.style.width, ancora: ancora.textContent }};
+// 4) Submit bloqueado.
+let bloqueouSubmit = false;
+form.dispatch("submit", {{ preventDefault() {{ bloqueouSubmit = true; }} }});
+console.log(JSON.stringify({{ estadoVazio, estadoIgual, estadoGap, bloqueouSubmit }}));
+"""
+        proc = subprocess.run(["node", "-e", script], capture_output=True, text=True, check=True)
+        out = json.loads(proc.stdout)
+        self.assertEqual({"hidden": True, "ancora": "Texto padrão"}, out["estadoVazio"])
+        self.assertEqual({"hidden": False, "gap": "R$ 0/mês", "ancora": "Texto padrão"}, out["estadoIgual"])
+        self.assertEqual("R$ 6.000/mês", out["estadoGap"]["gap"])
+        self.assertEqual("R$ 72.000/ano", out["estadoGap"]["anual"])
+        self.assertEqual("60%", out["estadoGap"]["largura"])
+        self.assertIn("1,6%", out["estadoGap"]["ancora"])
+        self.assertTrue(out["bloqueouSubmit"])
+
 
 if __name__ == "__main__":
     unittest.main()

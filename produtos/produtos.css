@@ -511,15 +511,39 @@
 .sp-vsl-poster { width: 100%; height: 100%; object-fit: cover; display: block; }
 .sp-vsl-play { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(6,9,15,.36); border: 0; color: #fff; cursor: pointer; transition: background .15s ease; }
 .sp-vsl-play:hover { background: rgba(6,9,15,.18); }
+.sp-vsl-legenda { margin: 10px 4px 2px; font-size: 0.8438rem; color: var(--text-dim); line-height: 1.5; }
+
+/* ---- conta rápida de 20s (Pico x Média) + kit 2x2 ------------ */
+.sp-teto-calc { margin-top: 28px; }
+.sp-hero-painel .sp-teto-calc { margin-top: 0; }
+.sp-teto-calc-topo h2,
+.sp-teto-calc-topo h3 { font-family: var(--font-head); font-size: 1.25rem; line-height: 1.3; margin: 0 0 6px; color: var(--text); }
+.sp-teto-calc-topo p:not(.sp-kicker) { color: var(--text-dim); font-size: 0.9375rem; margin: 0 0 18px; }
+.sp-teto-calc-campos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; align-items: end; }
+.sp-teto-calc-nota { margin: 0 0 12px; font-size: 0.8125rem; color: var(--text-faint); }
+.sp-teto-calc-atalho { display: inline-block; margin-top: 12px; font-family: var(--font-head); font-size: 0.875rem; font-weight: 600; color: var(--text-dim); text-decoration: none; }
+.sp-teto-calc-atalho:hover { color: var(--text); }
+.sp-teste-fecho { margin: 4px 0 14px; padding: 14px 0 0; border-top: 1px solid rgba(30,44,78,.8); font-size: 0.9688rem; line-height: 1.5; color: var(--text); }
+.sp-teste-fecho strong { font-family: var(--font-head); font-weight: 700; }
+.sp-cena.sp-cena-porque p.sp-virada { color: var(--text); font-size: 1.25rem; margin-bottom: 0; }
+.sp-etapas-pagina { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.sp-etapas-pagina li { border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; background: linear-gradient(180deg, rgba(14,33,72,.42), var(--bg-elev)); }
+.sp-etapas-pagina p { font-size: 1rem; line-height: 1.55; }
+.sp-atalho.sp-atalho-solo { justify-content: flex-start; background: none; border: 0; padding: 0; }
+.sp-kit-grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
 .sp-aba:active, .sp-pdf-exemplo:active, .sp-continuar-sec:active, .sp-orq-repetir:active { transform: scale(.98); transition: transform .1s ease-out; }
 
 @media (max-width: 860px) {
   .sp-graf-grade { grid-template-columns: minmax(0, 1fr); }
-  .sp-kit-grid { grid-template-columns: minmax(0, 1fr); }
+  .sp-kit-grid, .sp-kit-grid-2 { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 720px) {
+  .sp-etapas-pagina { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 640px) {
   .sp-pdf-preview-grid { grid-template-columns: minmax(0, 1fr); }
+  .sp-teto-calc-campos { grid-template-columns: minmax(0, 1fr); gap: 0; }
 }
 @media (max-width: 560px) {
   .sp-graf-card, .sp-graf-trava-card { padding: 18px 16px 16px; }
@@ -536,5 +560,5 @@
   .sp-barra-fixa { background: #06090F; backdrop-filter: none; }
 }
 @media (prefers-contrast: more) {
-  .sp-calc, .sp-oferta, .sp-relatorio, .sp-leitura, .sp-cartao, .sp-pdf-preview { border-color: #4A8DF8; }
+  .sp-calc, .sp-teto-calc, .sp-kit-bloco, .sp-oferta, .sp-relatorio, .sp-leitura, .sp-cartao, .sp-pdf-preview { border-color: #4A8DF8; }
 }

@@ -35,6 +35,7 @@
 
   let perdaInformada = NaN;
   let perdaNoTeste = NaN;
+  let gapTeto = NaN;
   document.querySelectorAll("[data-ancora]").forEach((el) => {
     el.dataset.padrao = (el.textContent || "").trim();
   });
@@ -162,6 +163,74 @@
   }
 
   /**
+   * O que faz: Calcula ao vivo a distância mensal e anual entre o melhor mês (pico) e a média dos últimos 12 meses.
+   * Por quê: Entrega a conta de 20 segundos na própria página de vendas do Mapa usando apenas cálculos locais no navegador.
+   * Erro e ataque: Campos vazios, inválidos, negativos ou pico não positivo mantêm a saída recolhida; submit é bloqueado sem recarregar. Só usa textContent.
+   * Prova: tests/test_paid_reports.py (test_calculadora_pico_media_do_mapa_do_teto).
+   */
+  function testeTeto(raiz) {
+    const picoEl = raiz.querySelector("[data-pico]");
+    const mediaEl = raiz.querySelector("[data-media]");
+    const saida = raiz.querySelector("[data-saida]");
+    const gapEl = raiz.querySelector("[data-gap]");
+    const anualEl = raiz.querySelector("[data-gap-anual]");
+    const barra = raiz.querySelector("[data-barra]");
+    const barraI = barra && barra.querySelector("i");
+    const msg = raiz.querySelector("[data-msg]");
+    const resto = raiz.querySelector("[data-resto]");
+
+    raiz.addEventListener("submit", (e) => e.preventDefault());
+
+    function atualizar() {
+      const pico = num(picoEl);
+      const media = num(mediaEl);
+      if (!(pico > 0) || !(media >= 0) || Number.isNaN(media)) {
+        gapTeto = NaN;
+        ancorar();
+        if (saida) saida.hidden = true;
+        return;
+      }
+      if (saida) saida.hidden = false;
+      if (pico <= media) {
+        gapTeto = NaN;
+        ancorar();
+        if (saida) saida.dataset.grade = "1";
+        if (barra) barra.dataset.grade = "1";
+        if (barraI) barraI.style.width = "100%";
+        if (gapEl) gapEl.textContent = "R$ 0/mês";
+        if (anualEl) anualEl.textContent = "Sem distância";
+        if (msg) {
+          msg.className = "sp-msg ok";
+          msg.textContent = "Sua média já acompanha o seu melhor mês. Se mesmo assim o crescimento empaca sempre no mesmo valor, o teto aparece na hora de dar o próximo salto.";
+        }
+        if (resto) {
+          resto.textContent = "O Mapa cruza 3 cenas reais da sua rotina para achar o freio que segura o próximo patamar e instala 3 travas antes da hora H.";
+        }
+        return;
+      }
+      const gap = Math.round(pico - media);
+      const anual = gap * 12;
+      gapTeto = gap;
+      ancorar();
+      const grau = gap / pico >= 0.25 ? "3" : "2";
+      if (saida) saida.dataset.grade = grau;
+      if (barra) barra.dataset.grade = grau;
+      if (barraI) barraI.style.width = Math.max(8, Math.min(100, Math.round((media / pico) * 100))) + "%";
+      if (gapEl) gapEl.textContent = brl(gap) + "/mês";
+      if (anualEl) anualEl.textContent = brl(anual) + "/ano";
+      if (msg) {
+        msg.className = "sp-msg passa";
+        msg.textContent = "Seu pico de " + brl(pico) + " mostra o que você já consegue fazer. A distância até a média de " + brl(media) + " é onde algo puxa de volta.";
+      }
+      if (resto) {
+        resto.textContent = "O Mapa do seu Teto marca esse número na sua curva personalizada, mostra o que puxa o freio nas suas 3 cenas e instala 3 travas para o próximo pico.";
+      }
+    }
+    [picoEl, mediaEl].forEach((el) => el && el.addEventListener("input", atualizar));
+    atualizar();
+  }
+
+  /**
    * O que faz: Atualiza o comparativo entre o preço do relatório e a perda aceita informada na calculadora.
    * Por quê: Mantém uma âncora concreta visível desde o carregamento e personalizada quando há perda positiva digitada.
    * Erro e ataque: Se perda for vazia, zero, NaN ou preço inválido, restaura o texto padrão do HTML.
@@ -171,7 +240,21 @@
     document.querySelectorAll("[data-ancora]").forEach((el) => {
       const preco = Number(el.getAttribute("data-preco"));
       const padrao = el.dataset.padrao || "";
-      if (el.getAttribute("data-ancora-base") === "queda") {
+      const base = el.getAttribute("data-ancora-base");
+      if (base === "teto") {
+        if (!(gapTeto > 0) || !(preco > 0)) {
+          el.textContent = padrao;
+          el.hidden = !padrao;
+          return;
+        }
+        const pt = (preco / gapTeto) * 100;
+        el.hidden = false;
+        el.textContent = "Com uma distância de " + brl(gapTeto) + "/mês entre o seu pico e a sua média, o ciclo completo do Mapa custa " +
+          (pt < 0.1 ? "menos de 0,1%" : new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 1 }).format(pt) + "%") +
+          " de um único mês desse teto.";
+        return;
+      }
+      if (base === "queda") {
         if (!(perdaNoTeste > 0) || !(preco > 0)) {
           el.textContent = padrao;
           el.hidden = !padrao;
@@ -520,6 +603,7 @@
   repassarUtm();
   document.querySelectorAll("[data-calc-limite]").forEach(calculadora);
   document.querySelectorAll("[data-calc-queda]").forEach(testeDeQueda);
+  document.querySelectorAll("[data-calc-teto]").forEach(testeTeto);
   document.querySelectorAll("[data-enxame]").forEach(enxame);
   document.querySelectorAll("[data-teto-graficos], [data-teto-blindagem], [data-df-limites]").forEach(graficosTeto);
   document.querySelectorAll("[data-abas]").forEach(abas);
