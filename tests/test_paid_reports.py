@@ -444,16 +444,15 @@ console.log(link.href);
                 self.assertIn('referrerpolicy="no-referrer"', tag)
 
     def test_pix_biografia_entregas_e_datas_alinhadas(self):
-        # Datas atualizadas em 2026-11-25 para home e paginas de vendas;
-        # paginas legais seguem em 2026-11-21.
+        # Datas atualizadas em 2026-11-26 para home, paginas de vendas e legais.
         datas_por_arquivo = {
-            "index.html": "2026-11-25",
-            "termos/index.html": "2026-11-21",
-            "privacidade/index.html": "2026-11-21",
+            "index.html": "2026-11-26",
+            "termos/index.html": "2026-11-26",
+            "privacidade/index.html": "2026-11-26",
             "js/paid-reports.js": None,
-            "produtos/decisao-fria/index.html": "2026-11-25",
-            "produtos/carteira-aguenta/index.html": "2026-11-25",
-            "produtos/mapa-do-seu-teto/index.html": "2026-11-25",
+            "produtos/decisao-fria/index.html": "2026-11-26",
+            "produtos/carteira-aguenta/index.html": "2026-11-26",
+            "produtos/mapa-do-seu-teto/index.html": "2026-11-26",
         }
         for rel, expected_date in datas_por_arquivo.items():
             with self.subTest(arquivo=rel):
@@ -464,7 +463,7 @@ console.log(link.href);
                     self.assertIn(f'"dateModified": "{expected_date}"', text)
         for legal in ("termos/index.html", "privacidade/index.html"):
             text = (self.root / legal).read_text(encoding="utf-8")
-            self.assertIn('<time datetime="2026-11-21">21 de novembro de 2026</time>', text)
+            self.assertIn('<time datetime="2026-11-26">26 de novembro de 2026</time>', text)
         for slug in ("decisao-fria", "carteira-aguenta", "mapa-do-seu-teto"):
             html = (self.root / f"produtos/{slug}/index.html").read_text(encoding="utf-8")
             with self.subTest(sales_page=slug):
