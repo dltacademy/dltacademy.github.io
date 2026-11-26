@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="/styles-portal.css">
 <link rel="stylesheet" href="/blog/styles-blog.css">
 <link rel="stylesheet" href="/dlt-patterns.css">
-<link rel="stylesheet" href="/produtos/produtos.css?v=20261126">
+<link rel="stylesheet" href="/produtos/produtos.css?v=20261126b">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -54,56 +54,58 @@
 
   <section class="sp-hero" data-topo>
     <div>
-      <p class="sp-kicker">O Mapa do seu Teto</p>
+      <p class="sp-kicker">O Mapa do seu Teto · Ciclo de Virada (até 31/12)</p>
       <h1>Parece haver um teto no quanto você ganha. <em>Quando chega perto dele, ou empaca ou perde o que conquistou.</em></h1>
-      <p class="sp-lede">Cruze três situações reais em que seu crescimento travou ou voltou, veja o que puxa o freio no seu caso e saia com um plano prático ajustado no dia 7 para os próximos 90 dias.</p>
+      <p class="sp-lede">É como um gráfico com uma linha de resistência: a renda ou o patrimônio sobe, embala e, sempre que bate naquele marco, estanca ou cai. Em 10 a 15 minutos, o Mapa do seu Teto mostra o que puxa você de volta no seu caso e instala 3 travas para começar 2027 fora do mesmo teto.</p>
       <a class="sp-cta" href="https://relatorio.dlt.academy/comprar/teto-avancado?utm_source=portal&amp;utm_medium=pagina-de-vendas&amp;utm_content=topo" rel="noopener noreferrer" referrerpolicy="no-referrer">Quero o Mapa do meu Teto <span class="sp-cta-preco">· R$ 97</span></a>
-      <ul class="sp-trust"><li>Pix ou cartão, pagamento único</li><li>Dia 0 + ajuste no dia 7</li><li>Garantia do Espelho Real (7 dias)</li><li>Sem banco nem CPF</li></ul>
-      <p class="sp-hero-alt">Campos curtos guiados: você paga agora e preenche no seu ritmo, no celular ou no computador, pelo link que vai para o seu e-mail.</p>
+      <ul class="sp-trust"><li>10 a 15 min · pronto em minutos</li><li>Dia 0 + ajuste no dia 7 + PDF</li><li>Garantia do Espelho Real (7 dias)</li><li>Lançamento até 31/12 · sem banco nem CPF</li></ul>
+      <p class="sp-hero-alt">Campos curtos guiados: você paga agora e preenche no seu ritmo no celular ou no computador (quem fez o gratuito importa a 1ª cena em 1 clique).</p>
     </div>
 
-    <aside class="sp-calc" aria-label="O que você descobre e leva pronto para aplicar">
-      <h2>Quatro respostas presas aos seus fatos</h2>
-      <p>Sem aula para assistir e sem conselho genérico:</p>
-      <ol class="sp-etapas-hero">
-        <li>
-          <div class="sp-etapa-topo"><span class="sp-etapa-num">01</span> <strong>A curva do seu teto</strong></div>
-          <p>Estagnação ou queda no pico, desenhada em tela e PDF com o seu número de referência.</p>
-        </li>
-        <li>
-          <div class="sp-etapa-topo"><span class="sp-etapa-num">02</span> <strong>Causa real, sem chute</strong></div>
-          <p>Separa padrão interno, falta de margem para imprevisto e falta real de caixa.</p>
-        </li>
-        <li>
-          <div class="sp-etapa-topo"><span class="sp-etapa-num">03</span> <strong>Inversão + 3 travas</strong></div>
-          <p>Onde dizer não ou sim na hora H, roteiros editáveis e blindagem para pico e retomada em 48h.</p>
-        </li>
-        <li>
-          <div class="sp-etapa-topo"><span class="sp-etapa-num">04</span> <strong>Plano ajustado no dia 7</strong></div>
-          <p>Uma semana depois, reescreve os próximos 90 dias sobre o que de fato aconteceu.</p>
-        </li>
-      </ol>
-      <a class="sp-calc-cta" href="#teto-cena">Ver as duas curvas e exemplos ↓</a>
-    </aside>
+    <div class="sp-hero-painel">
+      <form class="sp-calc sp-teto-calc" data-calc-teto aria-label="Conta de 20 segundos: existe um teto nos seus números?">
+        <div class="sp-teto-calc-topo">
+          <h2>Confira em 20 segundos</h2>
+          <p>Compare o seu melhor mês dos últimos 12 com a sua média atual.</p>
+        </div>
+        <div class="sp-teto-calc-campos">
+          <label class="sp-campo"><span>Melhor mês (últimos 12, R$)</span><input type="number" inputmode="decimal" min="0" step="any" placeholder="Ex.: 15000" data-pico></label>
+          <label class="sp-campo"><span>Média mensal (últimos 12, R$)</span><input type="number" inputmode="decimal" min="0" step="any" placeholder="Ex.: 9000" data-media></label>
+        </div>
+        <p class="sp-teste-fecho"><strong>O pico mostra o que você consegue. A média mostra onde algo puxa de volta.</strong></p>
+        <p class="sp-teto-calc-nota">Fica só no seu navegador. Nada é enviado nem guardado.</p>
+        <div class="sp-resultado" data-saida hidden aria-live="polite">
+          <div class="sp-numeros">
+            <p class="sp-limite">Distância entre pico e média<strong data-gap>R$ 0/mês</strong></p>
+            <p class="sp-limite">Distância acumulada em 12 meses<strong data-gap-anual>R$ 0/ano</strong></p>
+          </div>
+          <div class="sp-barra" aria-hidden="true"><i></i></div>
+          <p class="sp-msg" data-msg></p>
+          <p class="sp-msg-resto" data-resto></p>
+          <a class="sp-calc-cta" href="https://relatorio.dlt.academy/comprar/teto-avancado?utm_source=portal&amp;utm_medium=pagina-de-vendas&amp;utm_content=calc-teto" rel="noopener noreferrer" referrerpolicy="no-referrer">Quero mapear o meu teto · R$ 97 →</a>
+        </div>
+        <a class="sp-teto-calc-atalho" href="#teto-cena">Ver as duas curvas ↓</a>
+      </form>
+    </div>
   </section>
 
   <section class="sp-identifica" aria-labelledby="teto-cena">
     <p class="sp-kicker">Você se reconhece?</p>
     <h2 id="teto-cena">Você cresce, chega num número e alguma coisa tira você do acelerador.</h2>
-    <p class="sp-sub">Na prática, o teto financeiro quase sempre desenha uma destas duas curvas contra a mesma linha de resistência invisível.</p>
+    <p class="sp-sub">Na prática, o teto desenha uma destas duas curvas contra o mesmo marco.</p>
     <div class="sp-graficos" data-teto-graficos>
       <div class="sp-graf-grade">
         <figure class="sp-graf-card sp-graf-estagna">
           <div class="sp-graf-topo">
             <div>
-              <span class="sp-graf-num">Padrão 01</span>
-              <h3 class="sp-graf-titulo">Empaca na resistência</h3>
+              <span class="sp-graf-num">Curva 1</span>
+              <h3 class="sp-graf-titulo">Empaca no marco</h3>
             </div>
             <span class="sp-graf-selo sp-graf-selo-estagna">Toca e estagna</span>
           </div>
           <div class="sp-graf-palco">
             <svg class="sp-graf-svg" viewBox="0 0 420 218" role="img" aria-labelledby="graf-estagna-titulo">
-              <title id="graf-estagna-titulo">Gráfico do padrão de estagnação: a curva sobe em verde até tocar a linha de resistência, recua um pouco e anda de lado em laranja, sobe de novo, toca a mesma linha, volta a estagnar e trava no terceiro toque sem romper o teto.</title>
+              <title id="graf-estagna-titulo">Gráfico da curva 1, de estagnação: a curva sobe em verde até tocar o marco, recua um pouco e anda de lado em laranja, sobe de novo, toca a mesma linha, volta a estagnar e trava no terceiro toque sem romper o teto.</title>
               <defs>
                 <linearGradient id="graf-area-estagna" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.16"/>
@@ -146,21 +148,21 @@
               </g>
             </svg>
           </div>
-          <figcaption class="sp-graf-legenda"><strong>Sobe até a resistência, recua e anda de lado.</strong> Quando engrena de novo, esfria outra vez: desconto preventivo, passo adiado, ritmo que trava.</figcaption>
+          <figcaption class="sp-graf-legenda"><strong>Sobe até o marco, recua e anda de lado.</strong> Quando engrena de novo, esfria outra vez.</figcaption>
           <p class="sp-graf-trilha"><span>1. Sobe no ritmo</span> → <span>2. Encosta no teto</span> → <span>3. Recua e estagna</span></p>
         </figure>
 
         <figure class="sp-graf-card sp-graf-queda">
           <div class="sp-graf-topo">
             <div>
-              <span class="sp-graf-num">Padrão 02</span>
+              <span class="sp-graf-num">Curva 2</span>
               <h3 class="sp-graf-titulo">Bate e devolve quase tudo</h3>
             </div>
             <span class="sp-graf-selo sp-graf-selo-queda">Toca e devolve</span>
           </div>
           <div class="sp-graf-palco">
             <svg class="sp-graf-svg" viewBox="0 0 420 218" role="img" aria-labelledby="graf-queda-titulo">
-              <title id="graf-queda-titulo">Gráfico do padrão de queda no pico: a curva sobe forte em verde até tocar a linha de resistência, cai em vermelho perdendo quase tudo até a base, volta construindo em verde até passar um pouco acima da resistência e cai de novo em vermelho.</title>
+              <title id="graf-queda-titulo">Gráfico da curva 2, de queda no pico: a curva sobe forte em verde até tocar o marco, cai em vermelho perdendo quase tudo até a base, volta construindo em verde até passar um pouco acima da resistência e cai de novo em vermelho.</title>
               <defs>
                 <linearGradient id="graf-area-queda" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stop-color="#f87171" stop-opacity="0.16"/>
@@ -199,14 +201,14 @@
               </g>
             </svg>
           </div>
-          <figcaption class="sp-graf-legenda"><strong>Sobe forte até a resistência e despenca quase até a base.</strong> Passa um pouco no ciclo seguinte e cai de novo: imprevisto sem margem, jogada no calor, aporte parado.</figcaption>
+          <figcaption class="sp-graf-legenda"><strong>Sobe forte até o marco e despenca quase até a base.</strong> No ciclo seguinte passa um pouco e cai de novo.</figcaption>
           <p class="sp-graf-trilha"><span>1. Sobe forte</span> → <span>2. Bate no teto</span> → <span>3. Perde quase tudo</span></p>
         </figure>
       </div>
       <div class="sp-graf-rodape">
         <ul class="sp-graf-chaves" role="list">
           <li><span class="sp-graf-chave sp-graf-chave-subida" aria-hidden="true"></span>Subida e ritmo</li>
-          <li><span class="sp-graf-chave sp-graf-chave-teto" aria-hidden="true"></span>Resistência (seu teto)</li>
+          <li><span class="sp-graf-chave sp-graf-chave-teto" aria-hidden="true"></span>O marco (seu teto)</li>
           <li><span class="sp-graf-chave sp-graf-chave-estagna" aria-hidden="true"></span>Recuo e estagnação</li>
           <li><span class="sp-graf-chave sp-graf-chave-queda" aria-hidden="true"></span>Queda no pico</li>
         </ul>
@@ -218,7 +220,61 @@
     </div>
     <div class="sp-cena">
       <p>Justo quando o ritmo engrena, algo puxa o freio: às vezes de fora (acidente, parente pedindo ajuda, cliente que atrasa), às vezes de dentro (tirar o pé após um mês bom, dar desconto preventivo, parar os aportes ou ver o cansaço aparecer na subida).</p>
-      <p class="sp-virada">Chamamos isso de <strong>Reflexo de Retorno ao Patamar</strong>. É como um limitador eletrônico que corta a aceleração aos 120 km/h: trocar de planilha ou empurrar na força de vontade é segurar uma porta de mola pesada, na primeira semana cansada ela fecha de volta.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="porque">
+    <p class="sp-kicker">Por que acontece</p>
+    <h2 id="porque">Por que força de vontade não resolve</h2>
+    <div class="sp-cena sp-cena-porque">
+      <p>Gay Hendricks, autor de <cite>The Big Leap</cite>, chamou de problema do limite superior: quando a vida passa do nível com que você se acostumou, alguma coisa puxa de volta para o conhecido. Robert Kegan e Lisa Lahey, autores de <cite>Immunity to Change</cite>, mostraram o mecanismo por trás: o compromisso oculto.</p>
+      <p>Uma parte de você acelera para ganhar mais. Outra segue uma regra silenciosa que pisa no freio para proteger alguma coisa: a imagem, o lugar na família, a tranquilidade de não ter mais a perder.</p>
+      <p class="sp-virada">Nós chamamos isso de <strong>Reflexo de Retorno ao Patamar</strong>. É como um limitador eletrônico: pisar mais fundo, fazer mais um curso ou trocar de planilha não desliga o limitador. O que muda o resultado é enxergar a regra e agir diferente no ponto exato em que ela dispara.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="origem">
+    <p class="sp-kicker">Por que isso existe</p>
+    <h2 id="origem">Eu aprendi isso do jeito mais caro.</h2>
+    <div class="sp-origem">
+      <p>Estou no mercado há mais de dez anos. Construí patrimônio para não precisar mais trabalhar. Duas vezes. E perdi as duas. Quebrei pelo menos outras três vezes, das que deixam marca.</p>
+      <p class="sp-origem-virada">Em várias dessas quedas, a escolha certa já estava na minha cabeça, e não foi feita. Não faltava planilha: faltava enxergar de fora o padrão que disparava na hora H.</p>
+      <p>Olhando de fora, era sempre a mesma curva: subir até o marco e devolver quase tudo.</p>
+      <div class="sp-origem-assinatura">
+        <img src="/assets/dlt-mark.png" alt="" width="32" height="32">
+        <div class="sp-origem-bio">
+          <strong>Tiago · Fundador da DLT Academy</strong>
+          <span>No mercado financeiro desde 2013. Relatórios independentes: sem indicação de ativos, sem promessa de retorno e sem comissão sobre a sua decisão.</span>
+          <span class="sp-origem-links"><a href="https://tiago.dlt.academy/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Perfil do fundador</a> · <a href="/sobre/">Sobre a DLT Academy</a> · <a href="/transparencia/">Transparência</a></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="entrega-mapa">
+    <p class="sp-kicker">O que o Mapa faz</p>
+    <h2 id="entrega-mapa">Quatro respostas presas aos seus fatos</h2>
+    <p class="sp-sub">Sem aula para assistir e sem conselho genérico:</p>
+    <ol class="sp-etapas-hero sp-etapas-pagina" role="list">
+      <li>
+        <div class="sp-etapa-topo"><span class="sp-etapa-num">01</span> <strong>A curva do seu teto</strong></div>
+        <p>Estagnação ou queda no pico, desenhada em tela e PDF com o seu número de referência.</p>
+      </li>
+      <li>
+        <div class="sp-etapa-topo"><span class="sp-etapa-num">02</span> <strong>Causa real, sem chute</strong></div>
+        <p>Separa padrão interno, falta de margem para imprevisto e falta real de caixa.</p>
+      </li>
+      <li>
+        <div class="sp-etapa-topo"><span class="sp-etapa-num">03</span> <strong>Inversão + 3 travas</strong></div>
+        <p>Onde dizer não ou sim na hora H, roteiros editáveis e blindagem para pico e retomada em 48h.</p>
+      </li>
+      <li>
+        <div class="sp-etapa-topo"><span class="sp-etapa-num">04</span> <strong>Plano ajustado no dia 7</strong></div>
+        <p>Uma semana depois, reescreve os próximos 90 dias sobre o que de fato aconteceu.</p>
+      </li>
+    </ol>
+    <div class="sp-atalho sp-atalho-solo">
+      <a class="sp-atalho-link" href="#oferta">Quero o meu Mapa · R$ 97 →</a>
     </div>
   </section>
 
@@ -361,23 +417,6 @@
     </div>
   </section>
 
-  <section aria-labelledby="origem">
-    <p class="sp-kicker">Por que isso existe</p>
-    <h2 id="origem">Eu aprendi isso do jeito mais caro.</h2>
-    <div class="sp-origem">
-      <p>Estou no mercado há mais de dez anos. Construí patrimônio para não precisar mais trabalhar. Duas vezes. E perdi as duas. Quebrei pelo menos outras três vezes, das que deixam marca.</p>
-      <p class="sp-origem-virada">Em várias dessas quedas, a escolha certa já estava na minha cabeça, e não foi feita. Não faltava planilha: faltava enxergar de fora o padrão que disparava na hora H.</p>
-      <div class="sp-origem-assinatura">
-        <img src="/assets/dlt-mark.png" alt="" width="32" height="32">
-        <div class="sp-origem-bio">
-          <strong>Tiago · Fundador da DLT Academy</strong>
-          <span>No mercado financeiro desde 2013. Relatórios independentes: sem indicação de ativos, sem promessa de retorno e sem comissão sobre a sua decisão.</span>
-          <span class="sp-origem-links"><a href="https://tiago.dlt.academy/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Perfil do fundador</a> · <a href="/sobre/">Sobre a DLT Academy</a> · <a href="/transparencia/">Transparência</a></span>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <section aria-labelledby="recebe">
     <p class="sp-kicker">O que você leva e como funciona</p>
     <h2 id="recebe">Grátis para começar. O Mapa para cruzar 3 cenas e ajustar no dia 7.</h2>
@@ -403,6 +442,33 @@
       </div>
     </div>
 
+    <div class="sp-kit-bloco">
+      <p class="sp-kicker">Incluído no ciclo · sem custo extra</p>
+      <h3 class="sp-kit-titulo">Quatro ferramentas práticas que matam o travamento na hora H</h3>
+      <div class="sp-kit-grid sp-kit-grid-2">
+        <article class="sp-kit-item">
+          <span class="sp-kit-tag">Incluído · Hora H</span>
+          <h4>Kit de Falas da Hora H: Roteiros Editáveis</h4>
+          <p>Elimina o bloqueio de não saber o que responder na hora de manter o preço cheio, cobrar aditivo ou colocar limite num pedido em família. Ajuste duas linhas e envie em 2 minutos.</p>
+        </article>
+        <article class="sp-kit-item">
+          <span class="sp-kit-tag">Incluído · Bolso</span>
+          <h4>Cartão de Bolso dos 60 Segundos</h4>
+          <p>Evita a recaída no impulso quando o cansaço ou a pressão sobem. Resumo direto para abrir no celular antes de ceder margem, gastar o excedente ou suspender o aporte do mês.</p>
+        </article>
+        <article class="sp-kit-item">
+          <span class="sp-kit-tag">Incluído · Dia 7</span>
+          <h4>Recalibração Sem Culpa + Versão pela Metade</h4>
+          <p>Mata o abandono na segunda semana. Se o plano travar, a leitura do dia 7 desliga cobrança, reduz o passo ao mínimo executável e reescreve os próximos 90 dias sobre o que funcionou.</p>
+        </article>
+        <article class="sp-kit-item">
+          <span class="sp-kit-tag">Incluído · 90 dias</span>
+          <h4>Agenda .ics + Painel Dia 30–90 + Lembretes Neutros</h4>
+          <p>Mantém os marcos vivos sem expor sua privacidade: datas prontas para o calendário, tabela de autoavaliação no PDF e até 6 e-mails quinzenais com texto neutro e saída em 1 clique.</p>
+        </article>
+      </div>
+    </div>
+
     <div class="sp-dois" id="diferenca">
       <div class="sp-cartao">
         <p class="sp-kicker">Protocolo gratuito (8 min)</p>
@@ -416,15 +482,15 @@
         <p class="sp-kicker">O Mapa do seu Teto (R$ 97)</p>
         <h3>3 cenas cruzadas + ajuste no dia 7</h3>
         <ul>
-          <li>Separa padrão interno de falta de margem ou de caixa em 3 áreas da vida.</li>
-          <li>Instala as 3 travas, entrega roteiros prontos e reescreve os 90 dias no dia 7.</li>
+          <li>Se fez o gratuito, o arquivo (.md) importa a primeira cena em 1 clique; as outras duas você preenche em campos curtos (10 a 15 min).</li>
+          <li>Separa padrão interno de falta de margem ou de caixa, instala as 3 travas e reescreve os 90 dias no dia 7.</li>
         </ul>
       </div>
     </div>
 
     <ol class="sp-passos">
       <li><h3>Paga R$ 97</h3><p>Pix (confirma na hora) ou cartão pelo Stripe, sem assinatura. O link abre na hora e vai para o seu e-mail.</p></li>
-      <li><h3>Preenche no seu ritmo</h3><p>Campos curtos guiados (sem redação longa): importa o .md do gratuito em 1 clique ou preenche no celular ou computador, sem banco nem CPF.</p></li>
+      <li><h3>Preenche no seu ritmo</h3><p>Campos curtos guiados (sem redação longa): se fez o gratuito, o .md importa a primeira cena em 1 clique, e as outras duas você escreve no celular ou computador, sem banco nem CPF.</p></li>
       <li><h3>Testa e ajusta</h3><p>Recebe a leitura do Dia 0 em tela e PDF, testa na semana e volta no dia 7 pelo mesmo link.</p></li>
     </ol>
   </section>
@@ -433,6 +499,7 @@
     <p class="sp-kicker">Dúvidas reais antes de decidir</p>
     <h2 id="funciona-mesmo">Funciona mesmo que você já tenha tentado antes</h2>
     <ul class="sp-objecoes" role="list">
+      <li><strong>Mesmo sem tempo para curso longo ou sem ter feito o gratuito:</strong> não há aulas para assistir. Você preenche as 3 cenas em 10 a 15 minutos (ou importa a primeira cena do arquivo .md do protocolo gratuito em 1 clique) e recebe a leitura completa logo depois.</li>
       <li><strong>Mesmo que você já saiba fazer conta:</strong> o teto raramente vem de falta de planilha; ele dispara no ponto de escolha sob pressão ou num imprevisto sem margem.</li>
       <li><strong>Mesmo que você já use chats de IA comuns:</strong> um chat comum concorda com o seu primeiro argumento. Aqui cada conclusão é conferida em código contra as suas frases e auditada contra falta real de caixa.</li>
       <li><strong>Mesmo com renda variável ou histórico de largar planos:</strong> o plano usa eventos reais da sua semana e volta no dia 7 sem culpa, com versão pela metade se travar.</li>
@@ -443,20 +510,21 @@
 
   <section class="sp-oferta" aria-labelledby="oferta" data-oferta>
     <div>
-      <p class="sp-kicker">O Mapa do seu Teto</p>
-      <h2 id="oferta">Ciclo completo: Dia 0 + Dia 7 até o Dia 90</h2>
-      <p class="sp-preco">R$ 97<small>pagamento único por ciclo</small></p>
-      <p class="sp-ancora" data-ancora data-preco="97">Um único desconto dado antes da hora, um mês de aporte suspenso ou mais um ciclo batendo no mesmo teto custa várias vezes os R$ 97. Instalar a trava antes da próxima entrada muda esta semana.</p>
-      <div class="sp-garantia"><span aria-hidden="true">↺</span><p><strong>Garantia do Espelho Real (7 dias):</strong> gerou o mapa, baixou o PDF e sentiu que parece texto genérico, ou desistiu por qualquer motivo em até 7 dias? Devolvemos os R$ 97 inteiros sem burocracia. Regras nos <a href="/termos/">Termos</a>.</p></div>
+      <p class="sp-kicker">Ciclo de Virada · lançamento até 31 de dezembro de 2026</p>
+      <h2 id="oferta">Comece 2027 fora do mesmo teto: Dia 0 + Dia 7 até o Dia 90</h2>
+      <p class="sp-preco">R$ 97<small>valor de lançamento · pagamento único por ciclo</small></p>
+      <p class="sp-preco-nota">Condição de virada de ano válida até 31/12/2026 (em 2027 o ciclo passa para o valor regular de R$ 148). Quem entra agora atravessa o 1º trimestre com o plano de 90 dias e ainda garante o próximo teto pelos mesmos R$ 97, sem assinatura.</p>
+      <p class="sp-ancora" data-ancora data-ancora-base="teto" data-preco="97">Quanto custa repetir mais um mês no mesmo teto? A distância entre um mês bom e a média de sempre, um desconto dado antes da hora ou um aporte suspenso costuma custar dezenas de vezes os R$ 97 deste ciclo inteiro.</p>
+      <div class="sp-garantia"><span aria-hidden="true">↺</span><p><strong>Garantia do Espelho Real (7 dias):</strong> você decide por dentro, não por esta página. Gere o mapa das suas 3 cenas, baixe o PDF completo de 8 páginas e confira se fala mesmo do seu caso com as suas próprias palavras. Se parecer texto genérico, ou se desistir por qualquer motivo em até 7 dias, um e-mail devolve os R$ 97 inteiros sem burocracia. Regras nos <a href="/termos/">Termos</a>.</p></div>
     </div>
     <div>
       <ul>
-        <li><strong>Dia 0 + ajuste no Dia 7:</strong> duas leituras completas na mesma compra, sem renovação automática</li>
-        <li><strong>Guarda curta e controle:</strong> fica no seu link por 10 dias para atravessar o dia 7, com botão de apagar na hora</li>
-        <li><strong>Lembretes neutros (opcionais):</strong> só dia 7 ou até o dia 90, saída em 1 clique (<a href="/privacidade/">Privacidade</a>)</li>
+        <li><strong>Dia 0 + Kit da Hora H + ajuste no Dia 7:</strong> duas leituras completas, roteiros editáveis, cartão 60s e ciclo de 90 dias sem renovação automática</li>
+        <li><strong>Preço travado para o próximo teto:</strong> entrando até 31/12/2026 por R$ 97, o seu próximo ciclo também sai por R$ 97 em vez do valor cheio de R$ 148</li>
+        <li><strong>Guarda curta e lembretes neutros:</strong> link ativo por 10 dias com botão de apagar na hora, e avisos opcionais até o dia 90 com saída em 1 clique (<a href="/privacidade/">Privacidade</a>)</li>
       </ul>
       <a class="sp-cta" href="https://relatorio.dlt.academy/comprar/teto-avancado?utm_source=portal&amp;utm_medium=pagina-de-vendas&amp;utm_content=oferta" rel="noopener noreferrer" referrerpolicy="no-referrer">Quero o Mapa do meu Teto <span class="sp-cta-preco">· R$ 97</span></a>
-      <p class="sp-letra">Pix ou cartão pelo Stripe · Material educacional sobre hábitos com dinheiro: não é diagnóstico nem recomendação de investimento.</p>
+      <p class="sp-letra">Instale suas 3 travas antes da virada do ano. Pix ou cartão pelo Stripe · Material educacional sobre hábitos com dinheiro: não é diagnóstico nem recomendação de investimento.</p>
     </div>
   </section>
 
@@ -495,7 +563,7 @@
 
 <footer><div class="wrap"><p>DLT Academy · Engenharia de Tomada de Decisão e Inteligência Financeira. Material educacional; não é recomendação de investimento nem promessa de retorno.</p><p><a href="/sobre/">Sobre a DLT Academy</a> · <a href="/transparencia/">Transparência</a> · <a href="/privacidade/">Privacidade</a> · <a href="/termos/">Termos</a> · Suporte: <a href="mailto:contato@dlt.academy">contato@dlt.academy</a></p><p class="footer-social"><a href="/comunidade/">Comunidade</a>: <a href="https://t.me/dltacademyc" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Canal no Telegram</a> · <a href="https://t.me/dltacademy" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Grupo</a> · <a href="https://www.youtube.com/c/DLTAcademy" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">YouTube</a></p><p>© 2026 DLT Academy</p></div></footer>
 <script src="/js/dlt-interactions.js"></script>
-<script src="/produtos/produtos.js?v=20261125b"></script>
+<script src="/produtos/produtos.js?v=20261126b"></script>
 <script src="/produtos/meta-pixel.js" defer></script>
 </body>
 </html>
