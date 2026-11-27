@@ -124,7 +124,7 @@ test("o toque reinicia do zero com som, e os marcos vão ao Pixel uma vez só", 
 test("autoplay bloqueado mantém o convite para assistir; economia de dados não faz autoplay", async () => {
   const bloqueado = montar({ src: "https://video.dlt.academy/teto/vsl-v8.mp4", autoplayFalha: true });
   await soltar();
-  assert.equal(bloqueado.botao.children[0].textContent, "Assistir à apresentação · ~13 min");
+  assert.equal(bloqueado.botao.children[0].textContent, "Assistir à apresentação");
   const poupa = montar({ src: "https://video.dlt.academy/teto/vsl-v8.mp4", poupar: true });
   assert.equal(poupa.plays.length, 0);
   assert.equal(poupa.video.preload, "none");

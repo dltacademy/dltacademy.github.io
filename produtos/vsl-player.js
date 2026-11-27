@@ -91,7 +91,8 @@
     botao.className = "sp-vsl-play";
     const rotulo = document.createElement("span");
     rotulo.className = "sp-vsl-selo";
-    rotulo.textContent = "Assistir à apresentação · ~13 min";
+    const duracao = String(slot.getAttribute("data-video-duracao") || "").replace(/[^0-9a-z ]/gi, "").trim();
+    rotulo.textContent = "Assistir à apresentação" + (duracao ? " · " + duracao : "");
     botao.appendChild(rotulo);
 
     if (capa) capa.hidden = true;
