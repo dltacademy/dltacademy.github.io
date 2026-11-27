@@ -29,7 +29,7 @@ function base(extra) {
     sinais_risco: ["nenhum"],
     fatos: { olhou: 1, preco_cheio: 0, extra: "na", pedido_amanha: "na", sobrou: 1 },
     cena_extra: NAO, cena_cobrar: NAO, cena_risco: NAO, cena_emocao: NAO,
-    cena_plano: NAO, cena_semanas: NAO, cena_circulo: NAO, cena_pedido: NAO,
+    cena_plano: NAO, cena_semanas: NAO, cena_circulo: NAO, cena_pedido: NAO, cena_delegar: NAO,
     ...extra,
   };
 }
@@ -455,7 +455,7 @@ test("as áreas do Raio-X: faixas 3, 2, 1 e 0 pela maior nota da área", () => {
 // ---- o que não indica ---------------------------------------------------------------------------------
 
 test("o que não indica nunca lista padrão com marca nem sem evidência", () => {
-  const sem = base({ cena_extra: [], cena_cobrar: [], cena_risco: [], cena_emocao: [], cena_plano: [], cena_semanas: [], cena_circulo: [], cena_pedido: [] });
+  const sem = base({ cena_extra: [], cena_cobrar: [], cena_risco: [], cena_emocao: [], cena_plano: [], cena_semanas: [], cena_circulo: [], cena_pedido: [], cena_delegar: [] });
   const f = R.pontuarFamilias({}, bib);
   assert.deepEqual(R.naoIndica(R.pontuarPadroes(sem, bib), sem, f, bib), { padroes: [], familias: [] });
   [casoA, casoB, casoC, casoE].forEach((r) => {

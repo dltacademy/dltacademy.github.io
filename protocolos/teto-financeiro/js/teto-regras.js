@@ -15,7 +15,7 @@
   var TRILHAS = ["ganho", "retencao"];
   var PADROES = [
     "ganho-que-escorre", "freio-na-cobranca", "passo-que-nao-sai", "decisao-no-calor",
-    "progresso-sem-trilho", "dinheiro-nao-combina", "caixa-da-familia",
+    "progresso-sem-trilho", "dinheiro-nao-combina", "caixa-da-familia", "delegar-sem-olhar",
   ];
   var VARIANTES = ["medo-de-errar", "nao-estou-pronto", "emocao-do-momento", "virar-o-jogo"];
   var EPS = 1e-9;

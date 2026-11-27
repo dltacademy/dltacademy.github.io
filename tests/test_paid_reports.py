@@ -452,7 +452,9 @@ console.log(link.href);
             "js/paid-reports.js": None,
             "produtos/decisao-fria/index.html": "2026-11-26",
             "produtos/carteira-aguenta/index.html": "2026-11-26",
-            "produtos/mapa-do-seu-teto/index.html": "2026-11-26",
+            "produtos/mapa-do-seu-teto/index.html": "2026-11-27",
+            "produtos/mapa-do-seu-teto-vsl/index.html": "2026-11-27",
+            "produtos/mapa-do-seu-teto-video/index.html": "2026-11-27",
         }
         for rel, expected_date in datas_por_arquivo.items():
             with self.subTest(arquivo=rel):
@@ -790,6 +792,51 @@ console.log(JSON.stringify({{ estadoVazio, estadoIgual, estadoGap, bloqueouSubmi
         self.assertEqual("60%", out["estadoGap"]["largura"])
         self.assertIn("1,6%", out["estadoGap"]["ancora"])
         self.assertTrue(out["bloqueouSubmit"])
+
+    def test_tres_paginas_do_mapa_alinhadas_a_definicao_canonica_e_vsl(self):
+        texto = (self.root / "produtos/mapa-do-seu-teto/index.html").read_text(encoding="utf-8")
+        vsl = (self.root / "produtos/mapa-do-seu-teto-vsl/index.html").read_text(encoding="utf-8")
+        hibrida = (self.root / "produtos/mapa-do-seu-teto-video/index.html").read_text(encoding="utf-8")
+
+        # LP só-texto: conceito canônico (termostato, porta de mola, autoverificação, 4 razões do externo, motor 3 camadas, sem Hendricks).
+        self.assertIn("termostato", texto.lower())
+        self.assertIn("porta de mola", texto.lower())
+        self.assertIn("autoverificação", texto.lower())
+        self.assertIn("sp-externo-grid", texto)
+        self.assertIn("sp-leituras-3", texto)
+        self.assertIn("sistema proprietário de agentes especializados", texto.lower())
+        self.assertNotIn("Gay Hendricks", texto)
+
+        # Páginas com vídeo: noindex enquanto o MP4 não está publicado, sem ID interno nem "2 min", com Ciclo de Virada e Garantia do Espelho Real.
+        for nome, html in (("vsl", vsl), ("hibrida", hibrida)):
+            with self.subTest(pagina=nome):
+                self.assertIn('content="noindex, follow"', html)
+                self.assertIn("Ciclo de Virada", html)
+                self.assertIn("31/12/2026", html)
+                self.assertIn("R$ 148", html)
+                self.assertIn("Garantia do Espelho Real", html)
+                self.assertIn("Quero o Mapa do meu Teto", html)
+                self.assertNotIn("TETO-VSL-01", html)
+                self.assertNotIn("vídeo de 2 min", html.lower())
+                self.assertNotIn("duração: ~2 min", html.lower())
+                self.assertNotIn("—", html)
+                self.assertNotIn("!", html.replace("<!DOCTYPE html>", "", 1))
+                self.assertNotIn(" style=", html)
+                ctas = re.findall(r'<a[^>]*class="sp-cta"[^>]*>', html)
+                self.assertEqual(3, len(ctas))
+                for tag in ctas:
+                    href = re.search(r'href="([^"]+)"', tag)
+                    self.assertIsNotNone(href)
+                    self.assertRegex(href.group(1).replace("&amp;", "&"), UTM_CHECKOUT_RE)
+
+        # Híbrida traz Kit 2x2 (4 ferramentas), motor 3 camadas e 4 casos de exemplo.
+        self.assertIn("sp-kit-grid-2", hibrida)
+        self.assertIn("sp-leituras-3", hibrida)
+        self.assertIn("FALTA REAL DE CAIXA", hibrida)
+
+        # Catálogo sem travessão e com o 8º padrão delegar-sem-olhar.
+        self.assertIn('"delegar-sem-olhar"', self.catalog)
+        self.assertNotIn("—", self.catalog.split("const PAID_REPORTS")[1])
 
 
 if __name__ == "__main__":

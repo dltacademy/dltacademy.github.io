@@ -492,6 +492,66 @@
         },
         "regra_trabalho_exemplo": "posso ajudar dentro do que cabe, e pensar até amanhã",
         "rascunho": false
+      },
+      "delegar-sem-olhar": {
+        "nome": "Delegar sem olhar",
+        "ordem": 8,
+        "trilha": "retencao",
+        "area": "decidir",
+        "empurrao": "o mês engrena e surge a chance de passar uma decisão séria para outra pessoa",
+        "frase_tipica": [
+          "ele cuida disso para mim",
+          "agora posso relaxar um pouco"
+        ],
+        "protege": "o cansaço de acompanhar e o desconforto de cobrar critério",
+        "familias_ligadas": [
+          "evitar",
+          "vigilancia"
+        ],
+        "variantes": [],
+        "sinais_gerais": [
+          "entregou dinheiro ou função importante sem critério nem acompanhamento",
+          "baixou a guarda logo depois de um mês forte e só viu o estrago semanas depois"
+        ],
+        "sinais_opcoes": [
+          {
+            "value": "alivio_passar",
+            "label": "Alívio imediato por passar o assunto adiante"
+          },
+          {
+            "value": "confiar_conversa",
+            "label": "Confiar só na boa conversa sem checar histórico"
+          },
+          {
+            "value": "evitar_cobrar",
+            "label": "Desconforto de pedir prestação de contas"
+          },
+          {
+            "value": "indiferenca_pico",
+            "label": "Sensação de que no mês bom dá para relaxar os critérios"
+          }
+        ],
+        "escada": {
+          "degrau0": "listar em 3 linhas qual decisão ou valor está na mão de outra pessoa sem revisão marcada",
+          "degrau1": [
+            {
+              "value": "criterio_escrito",
+              "label": "escrever 3 critérios mínimos e 1 data quinzenal de checagem antes de passar qualquer função ou valor"
+            }
+          ],
+          "degrau2": "enviar mensagem curta combinando prestação de contas semanal e teto de autonomia antes de liberar recurso",
+          "degrau3": "toda delegação ou indicação passa por teste pequeno com teto definido e revisão em 15 dias",
+          "se_entao_exemplo": "quando der vontade de passar uma decisão adiante por alívio, escrevo os critérios e a data de checagem antes",
+          "metrica": "decisões delegadas com critério e revisão marcada"
+        },
+        "trava": {
+          "texto": "Hoje: escreva 3 critérios objetivos e a data de revisão de qualquer decisão, valor ou função que esteja na mão de outra pessoa. Nunca libere o controle inteiro por boa conversa."
+        },
+        "leitura": {
+          "base": "Quando o ganho ou o saldo sobe, a guarda baixa e você entrega decisões, dinheiro ou funções importantes sem checar qualificação nem marcar revisão. O padrão protege você do desconforto de vigiar e cobrar critério, mas abre a porta para perdas que depois parecem azar."
+        },
+        "regra_trabalho_exemplo": "delegar com critério e revisão protege a confiança e o patrimônio",
+        "rascunho": false
       }
     },
     "variantes": {
@@ -1008,6 +1068,48 @@
             "value": "pedido_limite",
             "label": "Ajudei dentro de um valor que eu já tinha decidido",
             "padrao": "caixa-da-familia",
+            "tipo": "contra"
+          }
+        ],
+        "nao_acontece": {
+          "value": "nao_acontece",
+          "label": "Isso não acontece comigo"
+        }
+      },
+      {
+        "id": "cena_delegar",
+        "empurrao": "o mês engrena e surge a chance de passar uma decisão séria para outra pessoa",
+        "padrao_principal": "delegar-sem-olhar",
+        "prompt": "Quando o dinheiro ou o trabalho engrenou e você dividiu uma decisão, contratou alguém ou confiou um valor a outra pessoa, o que costumava acontecer?",
+        "opcoes": [
+          {
+            "value": "delegar_conversa",
+            "label": "Entreguei uma função ou decisão importante a alguém sem checar a qualificação, só porque a conversa era boa",
+            "padrao": "delegar-sem-olhar",
+            "tipo": "sinal"
+          },
+          {
+            "value": "delegar_sem_revisao",
+            "label": "Passei o assunto adiante para sentir alívio e fiquei semanas sem olhar os números",
+            "padrao": "delegar-sem-olhar",
+            "tipo": "sinal"
+          },
+          {
+            "value": "delegar_indicacao",
+            "label": "Coloquei dinheiro numa oportunidade só porque um amigo ou colega comentou, sem verificar por conta própria",
+            "padrao": "delegar-sem-olhar",
+            "tipo": "sinal"
+          },
+          {
+            "value": "delegar_nao_cobrar",
+            "label": "Evitei pedir prestação de contas para não parecer desconfiado, mesmo vendo sinais vermelhos",
+            "padrao": "delegar-sem-olhar",
+            "tipo": "sinal"
+          },
+          {
+            "value": "delegar_criterio",
+            "label": "Combinei critérios claros, limite de valor e data fixa de revisão antes de passar adiante",
+            "padrao": "delegar-sem-olhar",
             "tipo": "contra"
           }
         ],
