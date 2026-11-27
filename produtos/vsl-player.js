@@ -102,9 +102,25 @@
 
     // Botões que esperam o pitch (opcional): aparecem no segundo marcado, no fim ou em erro.
     const segundosCta = Number(slot.getAttribute("data-cta-segundos"));
-    const ctas = Number.isFinite(segundosCta) && segundosCta > 0 ? Array.from(document.querySelectorAll("[data-vsl-cta]")) : [];
-    ctas.forEach((c) => { c.hidden = true; });
-    const mostrarCtas = () => { ctas.forEach((c) => { c.hidden = false; }); };
+    const comPitch = Number.isFinite(segundosCta) && segundosCta > 0;
+    const ctas = comPitch ? Array.from(document.querySelectorAll("[data-vsl-cta]")) : [];
+    // [data-vsl-cta-leitura]: também aparece quando a pessoa rola para além do player
+    // (escolheu ler em vez de assistir), como a barra fixa da página híbrida.
+    const leitura = comPitch ? Array.from(document.querySelectorAll("[data-vsl-cta-leitura]")) : [];
+    ctas.concat(leitura).forEach((c) => { c.hidden = true; });
+    const mostrarLeitura = () => { leitura.forEach((c) => { c.hidden = false; }); };
+    const mostrarCtas = () => { ctas.forEach((c) => { c.hidden = false; }); mostrarLeitura(); };
+    if (leitura.length && typeof IntersectionObserver === "function") {
+      const obs = new IntersectionObserver((entradas) => {
+        entradas.forEach((e) => {
+          if (!e.isIntersecting && e.boundingClientRect && e.boundingClientRect.bottom < 0) {
+            mostrarLeitura();
+            obs.disconnect();
+          }
+        });
+      });
+      obs.observe(slot);
+    }
 
     let comSom = false;
     const vistos = new Set();
@@ -146,10 +162,13 @@
       avisar(slot, { tipo: "play" });
     });
 
-    if (!poupar) {
+    // Sem autoplay (bloqueado pelo navegador, economia de dados ou movimento reduzido), a
+    // pessoa não está vendo o vídeo correr: os botões aparecem já, para ninguém ficar sem compra.
+    if (poupar) mostrarCtas();
+    else {
       const p = video.play();
       if (p && typeof p.then === "function") {
-        p.then(() => { if (!comSom) rotulo.textContent = "Toque para ouvir"; }).catch(() => {});
+        p.then(() => { if (!comSom) rotulo.textContent = "Toque para ouvir"; }).catch(mostrarCtas);
       }
     }
   }

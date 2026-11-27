@@ -33,6 +33,7 @@ function casa(e, sel) {
   if (sel === ".sp-vsl[data-vsl-slot]") return (e.attrs.class || e.className || "").split(" ").includes("sp-vsl") && "data-vsl-slot" in e.attrs;
   if (sel.startsWith(".")) return (e.attrs.class || e.className || "").split(" ").includes(sel.slice(1));
   if (sel === "[data-vsl-cta]") return "data-vsl-cta" in e.attrs;
+  if (sel === "[data-vsl-cta-leitura]") return "data-vsl-cta-leitura" in e.attrs;
   if (sel === "p") return e.tagName === "P";
   return false;
 }
@@ -45,6 +46,8 @@ function montar({ src = "", legenda = "", ctaSegundos = "", autoplayFalha = fals
   const estado = frame.appendChild(new El("div", { class: "sp-vsl-estado" }));
   estado.appendChild(new El("p"));
   const cta = body.appendChild(new El("a", { "data-vsl-cta": "" }));
+  const barra = body.appendChild(new El("div", { "data-vsl-cta-leitura": "" }));
+  const observadores = [];
   const eventos = [];
   const pixel = [];
   const plays = [];
@@ -68,11 +71,13 @@ function montar({ src = "", legenda = "", ctaSegundos = "", autoplayFalha = fals
     fbq: (...a) => pixel.push(a),
     matchMedia: () => ({ matches: poupar }),
   };
-  const ctx = vm.createContext({ window, document, navigator: {}, CustomEvent: class { constructor(t, o) { this.type = t; this.detail = o.detail; } }, Promise, Number, Array, Set, Object, String });
+  class IO { constructor(fn) { this.fn = fn; observadores.push(this); } observe() {} disconnect() { this.fora = true; } }
+  const ctx = vm.createContext({ IntersectionObserver: IO, window, document, navigator: {}, CustomEvent: class { constructor(t, o) { this.type = t; this.detail = o.detail; } }, Promise, Number, Array, Set, Object, String });
   vm.runInContext(CODIGO, ctx);
   const video = frame.children.find((c) => c.tagName === "VIDEO");
   const botao = frame.children.find((c) => c.tagName === "BUTTON");
-  return { frame, capa, estado, cta, video, botao, eventos, pixel, plays };
+  const rolarAlemDoPlayer = () => observadores.forEach((o) => o.fn([{ isIntersecting: false, boundingClientRect: { bottom: -10 } }]));
+  return { frame, capa, estado, cta, barra, rolarAlemDoPlayer, video, botao, eventos, pixel, plays };
 }
 
 const soltar = () => new Promise((r) => setImmediate(r));
@@ -128,6 +133,13 @@ test("autoplay bloqueado mantém o convite para assistir; economia de dados não
   const poupa = montar({ src: "https://video.dlt.academy/teto/vsl-v8.mp4", poupar: true });
   assert.equal(poupa.plays.length, 0);
   assert.equal(poupa.video.preload, "none");
+  // Sem o vídeo correndo, os botões de compra não esperam o pitch.
+  const bloqueadoCta = montar({ src: "https://video.dlt.academy/teto/vsl-v8.mp4", autoplayFalha: true, ctaSegundos: "747" });
+  assert.equal(bloqueadoCta.cta.hidden, true);
+  await soltar();
+  assert.equal(bloqueadoCta.cta.hidden, false);
+  const poupaCta = montar({ src: "https://video.dlt.academy/teto/vsl-v8.mp4", poupar: true, ctaSegundos: "747" });
+  assert.equal(poupaCta.cta.hidden, false);
 });
 
 test("botão de compra no minuto do pitch (opcional) e volta para a capa se o vídeo falhar", () => {
@@ -145,3 +157,17 @@ test("botão de compra no minuto do pitch (opcional) e volta para a capa se o v�
   assert.match(f.estado.children[0].textContent, /versão completa em texto/);
   assert.equal(f.cta.hidden, false, "com o vídeo fora, o botão de compra volta");
 });
+
+test("barra da página híbrida: escondida até o preço, ou até a pessoa rolar além do player", () => {
+  const a = montar({ src: "https://video.dlt.academy/teto/vsl-v8.mp4", ctaSegundos: "747" });
+  assert.equal(a.barra.hidden, true);
+  a.rolarAlemDoPlayer();
+  assert.equal(a.barra.hidden, false, "rolou para ler: a barra aparece");
+  assert.equal(a.cta.hidden, true, "o botão de baixo do player continua esperando o preço");
+  const b = montar({ src: "https://video.dlt.academy/teto/vsl-v8.mp4", ctaSegundos: "747" });
+  b.video.currentTime = 748;
+  b.video.disparar("timeupdate");
+  assert.equal(b.barra.hidden, false);
+  assert.equal(b.cta.hidden, false);
+});
+
