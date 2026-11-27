@@ -164,6 +164,7 @@ class RecursiveScanTests(unittest.TestCase):
             "style-src 'self'; font-src 'self'; "
             "img-src 'self' data: blob: https://www.facebook.com; "
             "connect-src 'self' https://www.facebook.com https://connect.facebook.net; "
+            "media-src 'self' https://video.dlt.academy; "
             "object-src 'none'; frame-src 'none'; base-uri 'none'; form-action 'self'"
         )
         sales_head = (

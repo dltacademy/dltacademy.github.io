@@ -526,6 +526,10 @@
 .sp-vsl-play:hover { background: rgba(6,9,15,.18); }
 .sp-vsl-legenda { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 14px; margin: 10px 4px 2px; font-size: 0.8438rem; color: var(--text-dim); line-height: 1.5; }
 .sp-vsl-acao { display: flex; flex-direction: column; align-items: center; }
+.sp-vsl-frame [hidden], [data-vsl-cta][hidden] { display: none; }
+.sp-vsl-media { background: #06090F; }
+.sp-vsl-play .sp-vsl-selo { padding: 14px 26px; font-size: 1.0625rem; letter-spacing: .04em; background: rgba(74,141,248,.94); border-color: rgba(242,245,251,.55); box-shadow: 0 10px 30px rgba(0,0,0,.45); }
+.sp-vsl-play .sp-vsl-selo::before { content: "\1F50A\00A0\00A0"; }
 .sp-hero-vsl .sp-trust { justify-content: center; }
 .sp-hero-vsl .sp-hero-alt { max-width: 58ch; margin-left: auto; margin-right: auto; }
 
