@@ -914,13 +914,15 @@
     var padrao = bib.padroes[calc.padrao];
     if (!padrao) return null;
     var modo = calc.trilha === "ganho" ? "estagna" : "devolve";
-    var alvo = aparar(objeto(r).alvo);
+    // O rótulo da linha do teto leva um valor só quando a pessoa escreveu um no alvo da trava
+    // ("R$ 20 mil", "15 mil"); o alvo em si é uma ação, não o teto, e cortado virava ruído.
+    var valorAlvo = /R\$\s*\d[\d.,]*(?:\s*mil)?|\b\d[\d.,]*\s*mil\b/i.exec(aparar(objeto(r).alvo));
     var trava = travaImediata(calc.padrao, calc.variante, objeto(r).renda, bib);
     return {
       modo: modo,
-      titulo: modo === "devolve" ? "Curva do seu teto · Bate e devolve" : "Curva do seu teto · Empaca na resistência",
-      selo: modo === "devolve" ? "Padrão 02 · Queda no pico" : "Padrão 01 · Estagnação",
-      rotuloTeto: alvo ? "TETO · " + alvo.slice(0, 20) : "RESISTÊNCIA · SEU TETO",
+      titulo: modo === "devolve" ? "Curva do seu teto · Bate e devolve" : "Curva do seu teto · Empaca no marco",
+      selo: modo === "devolve" ? "Curva 2 · Bate e devolve" : "Curva 1 · Empaca no marco",
+      rotuloTeto: valorAlvo ? "TETO · " + (/^R\$/i.test(valorAlvo[0]) ? "" : "R$ ") + valorAlvo[0].replace(/\s+/g, " ") : "SEU TETO",
       rotuloBase: modo === "devolve" ? "Base / ponto de partida" : "Patamar anterior",
       toque: modo === "devolve" ? "bate no teto" : "1º toque",
       recuo: modo === "devolve" ? "devolve o ganho" : "recua e estagna",
@@ -1590,14 +1592,16 @@
   }
 
   // Onde a oferta do aprofundamento entra no resultado de `montarResultado`: nenhuma. Quem decide
-  // se há oferta é `ofertaDoResultado` (fim do Ato 2) e `ofertaDoRetorno` (dia 7), abaixo.
+  // se há oferta é `ofertaDoResultado` (fim do Ato 1, no checkpoint, e fim do Ato 2; ver
+  // protocol.js) e `ofertaDoRetorno` (dia 7), abaixo. No fim do Ato 1 ela entra em bloco à parte,
+  // abaixo das entregas: o .md do Ato 1 já leva o padrão para O Mapa do seu Teto.
   function ofertaDoAprofundamento() {
     return null;
   }
 
   var PRODUTO_DO_APROFUNDAMENTO = "teto-avancado";
 
-  // A oferta do fim do Ato 2: só para quem escolheu um padrão e não caiu no ramo de cuidado.
+  // A oferta do fim do Ato 1 e do Ato 2: só para quem escolheu um padrão e não caiu no ramo de cuidado.
   // Leva só o produto e o padrão (o nome dele aparece no texto da oferta); nada das respostas.
   // null no cuidado, no "nenhum" e sem escolha.
   function ofertaDoResultado(r, bib) {

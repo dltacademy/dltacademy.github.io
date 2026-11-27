@@ -559,10 +559,16 @@ test("curva personalizada de resistência: caso A estagna, caso B devolve e caso
   await jogar(pagA, "A");
   assert.equal(pagA.p.porClasse("protocol-curva-estagna").length, 1);
   assert.equal(pagA.p.porClasse("protocol-curva-svg").length, 1);
+  // Os nomes da curva são os do pago (Curva 1 / Curva 2) e o alvo da trava (uma ação) não vira rótulo do teto.
+  const textoA = pagA.p.mount.textContent;
+  assert.match(textoA, /Empaca no marco/);
+  assert.match(textoA, /Curva 1 · Empaca no marco/);
+  assert.doesNotMatch(textoA, /Empaca na resistência|Padrão 01 · Estagnação|TETO · mandar/);
 
   const pagB = abrir();
   await jogar(pagB, "B");
   assert.equal(pagB.p.porClasse("protocol-curva-devolve").length, 1);
+  assert.match(pagB.p.mount.textContent, /Curva 2 · Bate e devolve/);
 
   const pagE = abrir();
   await jogar(pagE, "E");

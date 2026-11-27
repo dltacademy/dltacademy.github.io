@@ -66,6 +66,7 @@ const PAID_REPORTS = {
       "Kit da Hora H incluído: Roteiros Editáveis de Conversa, Cartão de Bolso 60s, Recalibração Sem Culpa no Dia 7 e Agenda 90 dias",
       "Relatório em PDF de 8 páginas + texto (.md) + Garantia do Espelho Real (7 dias) + lembretes neutros opcionais até o dia 90",
     ],
+    lembreteMd: "Antes de seguir, baixe o seu resultado no botão “Baixar como texto (.md)”, nesta página. É esse arquivo que leva o seu padrão (e a sua 1ª cena, se você fez a parte 2) para O Mapa do seu Teto, sem escrever tudo de novo.",
     preco: "R$ 97",
     formato: "lançamento Ciclo de Virada até 31/12 (depois R$ 148) · Dia 0 + Dia 7 + PDF",
     preferirPagina: true,
