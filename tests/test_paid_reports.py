@@ -447,8 +447,8 @@ console.log(link.href);
         # Datas atualizadas em 2026-11-26 para home, paginas de vendas e legais.
         datas_por_arquivo = {
             "index.html": "2026-11-26",
-            "termos/index.html": "2026-11-26",
-            "privacidade/index.html": "2026-11-26",
+            "termos/index.html": "2026-11-27",
+            "privacidade/index.html": "2026-11-27",
             "js/paid-reports.js": None,
             "produtos/decisao-fria/index.html": "2026-11-26",
             "produtos/carteira-aguenta/index.html": "2026-11-26",
@@ -465,7 +465,7 @@ console.log(link.href);
                     self.assertIn(f'"dateModified": "{expected_date}"', text)
         for legal in ("termos/index.html", "privacidade/index.html"):
             text = (self.root / legal).read_text(encoding="utf-8")
-            self.assertIn('<time datetime="2026-11-26">26 de novembro de 2026</time>', text)
+            self.assertIn('<time datetime="2026-11-27">27 de novembro de 2026</time>', text)
         for slug in ("decisao-fria", "carteira-aguenta", "mapa-do-seu-teto"):
             html = (self.root / f"produtos/{slug}/index.html").read_text(encoding="utf-8")
             with self.subTest(sales_page=slug):
