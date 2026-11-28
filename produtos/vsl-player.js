@@ -136,7 +136,11 @@
       });
     });
     video.addEventListener("ended", mostrarCtas);
-    video.addEventListener("error", falhar, true);
+    // Captura pega o erro do <track> também: legenda que falha não derruba o vídeo.
+    video.addEventListener("error", (e) => {
+      if (e && e.target && e.target.tagName === "TRACK") return;
+      falhar();
+    }, true);
     fonte.addEventListener("error", falhar);
 
     function falhar() {
