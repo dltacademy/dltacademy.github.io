@@ -67,15 +67,15 @@ const PAID_REPORTS = {
       "Relatório em PDF de 8 páginas + texto (.md) + Garantia do Espelho Real (7 dias) + lembretes neutros opcionais até o dia 90",
     ],
     lembreteMd: "Antes de seguir, baixe o seu resultado no botão “Baixar como texto (.md)”, nesta página. É esse arquivo que leva o seu padrão (e a sua 1ª cena, se você fez a parte 2) para O Mapa do seu Teto, sem escrever tudo de novo.",
-    preco: "R$ 97",
-    formato: "lançamento Ciclo de Virada até 31/12 (depois R$ 148) · Dia 0 + Dia 7 + PDF",
+    preco: "R$ 148",
+    formato: "pagamento único por ciclo de 90 dias · Dia 0 + Dia 7 + PDF",
     preferirPagina: true,
     botao: "Ir direto ao pagamento →",
     paginaUrl: "/produtos/mapa-do-seu-teto/",
     botaoPagina: "Conhecer O Mapa do seu Teto →",
     plataforma: "Stripe",
     checkoutUrl: "https://relatorio.dlt.academy/comprar/teto-avancado?utm_source=portal&utm_medium=protocolo",
-    aviso: "Ciclo de Virada: R$ 97 de lançamento até 31/12/2026 (valor regular de R$ 148 em 2027), em pagamento único via Pix (confirma na hora) ou cartão pelo Stripe, com preço travado de R$ 97 garantido no seu próximo ciclo. Nada do que você escreveu aqui vai no link: depois de pagar, você escolhe se carrega o seu arquivo (.md). Suas respostas passam por um serviço de geração de texto contratado por nós apenas para produzir a leitura e ficam acessíveis no seu link por 10 dias para permitir o ajuste no dia 7 (ou você apaga na hora pelo botão da página; os lembretes quinzenais até o dia 90 são opcionais, neutros e com saída em 1 clique). É material educacional sobre hábitos com dinheiro, não é diagnóstico nem recomendação de investimento. Garantia do Espelho Real: 7 dias para pedir reembolso integral.",
+    aviso: "R$ 148 em pagamento único por ciclo de 90 dias, via Pix (confirma na hora) ou cartão pelo Stripe. Nada do que você escreveu aqui vai no link: depois de pagar, você escolhe se carrega o seu arquivo (.md). Suas respostas passam por um serviço de geração de texto contratado por nós apenas para produzir a leitura e ficam acessíveis no seu link por 10 dias para permitir o ajuste no dia 7 (ou você apaga na hora pelo botão da página; os lembretes quinzenais até o dia 90 são opcionais, neutros e com saída em 1 clique). É material educacional sobre hábitos com dinheiro, não é diagnóstico nem recomendação de investimento. Garantia do Espelho Real: 7 dias para pedir reembolso integral.",
     perfis: {
       "ganho-que-escorre": {
         capitulo: "O ganho que escorre",

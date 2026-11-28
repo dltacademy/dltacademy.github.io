@@ -447,8 +447,8 @@ console.log(link.href);
         # Datas atualizadas em 2026-11-26 para home, paginas de vendas e legais.
         datas_por_arquivo = {
             "index.html": "2026-11-26",
-            "termos/index.html": "2026-11-27",
-            "privacidade/index.html": "2026-11-27",
+            "termos/index.html": "2027-01-01",
+            "privacidade/index.html": "2027-01-01",
             "js/paid-reports.js": None,
             "produtos/decisao-fria/index.html": "2026-11-26",
             "produtos/carteira-aguenta/index.html": "2026-11-26",
@@ -465,7 +465,7 @@ console.log(link.href);
                     self.assertIn(f'"dateModified": "{expected_date}"', text)
         for legal in ("termos/index.html", "privacidade/index.html"):
             text = (self.root / legal).read_text(encoding="utf-8")
-            self.assertIn('<time datetime="2026-11-27">27 de novembro de 2026</time>', text)
+            self.assertIn('<time datetime="2027-01-01">1 de janeiro de 2027</time>', text)
         for slug in ("decisao-fria", "carteira-aguenta", "mapa-do-seu-teto"):
             html = (self.root / f"produtos/{slug}/index.html").read_text(encoding="utf-8")
             with self.subTest(sales_page=slug):
@@ -705,7 +705,7 @@ console.log(JSON.stringify({{ normal: rodar(false), reduzido: rodar(true) }}));
         self.assertIn('href="/produtos/decisao-fria/"', mapa_html)
         self.assertIn('href="/produtos/mapa-do-seu-teto/"', html)
         self.assertIn("por que o crescimento trava ou devolve?", home_html)
-        self.assertIn("(R$ 47 e R$ 97)", home_html)
+        self.assertIn("(R$ 47 e R$ 148)", home_html)
 
     def test_calculadora_pico_media_do_mapa_do_teto(self):
         html = (self.root / "produtos/mapa-do-seu-teto/index.html").read_text(encoding="utf-8")
@@ -715,10 +715,11 @@ console.log(JSON.stringify({{ normal: rodar(false), reduzido: rodar(true) }}));
         self.assertIn("sp-kit-bloco", html)
         self.assertIn("sp-kit-grid-2", html)
         self.assertIn("Distância acumulada em 12 meses", html)
-        self.assertIn("Ciclo de Virada", html)
-        self.assertIn("2027", html)
-        self.assertIn("31/12/2026", html)
+        # A partir de 01/01/2027 o Mapa tem valor regular único: sem campanha, sem prazo de lançamento e sem bônus de preço travado.
         self.assertIn("R$ 148", html)
+        self.assertIn('data-preco="148"', html)
+        for ausente in ("Ciclo de Virada", "31/12", "31 de dezembro", "R$ 97", "lançamento", "Preço travado"):
+            self.assertNotIn(ausente, html)
         self.assertNotIn("Isso tem nome.", html)
         self.assertNotIn("data-vsl-slot", html)
         self.assertNotIn("—", html)
@@ -745,7 +746,7 @@ function criarEl(extra = {{}}) {{
 const pico = criarEl(), media = criarEl();
 const saida = criarEl({{ hidden: true }}), gapEl = criarEl(), anualEl = criarEl();
 const barraI = criarEl(), barra = criarEl({{ querySelector: () => barraI }}), msg = criarEl(), resto = criarEl();
-const ancora = criarEl({{ textContent: "Texto padrão", "data-preco": "97", "data-ancora-base": "teto" }});
+const ancora = criarEl({{ textContent: "Texto padrão", "data-preco": "148", "data-ancora-base": "teto" }});
 const form = criarEl({{
   querySelector(sel) {{
     return ({{ "[data-pico]": pico, "[data-media]": media, "[data-saida]": saida,
@@ -774,7 +775,7 @@ const estadoVazio = {{ hidden: saida.hidden, ancora: ancora.textContent }};
 media.value = "15000";
 media.dispatch("input");
 const estadoIgual = {{ hidden: saida.hidden, gap: gapEl.textContent, ancora: ancora.textContent }};
-// 3) Pico 15000 e média 9000: mostra distância de R$ 6.000/mês, R$ 72.000/ano e 1,6% na âncora.
+// 3) Pico 15000 e média 9000: mostra distância de R$ 6.000/mês, R$ 72.000/ano e 2,5% na âncora.
 media.value = "9000";
 media.dispatch("input");
 const estadoGap = {{ hidden: saida.hidden, gap: gapEl.textContent, anual: anualEl.textContent, largura: barraI.style.width, ancora: ancora.textContent }};
@@ -790,7 +791,7 @@ console.log(JSON.stringify({{ estadoVazio, estadoIgual, estadoGap, bloqueouSubmi
         self.assertEqual("R$ 6.000/mês", out["estadoGap"]["gap"])
         self.assertEqual("R$ 72.000/ano", out["estadoGap"]["anual"])
         self.assertEqual("60%", out["estadoGap"]["largura"])
-        self.assertIn("1,6%", out["estadoGap"]["ancora"])
+        self.assertIn("2,5%", out["estadoGap"]["ancora"])
         self.assertTrue(out["bloqueouSubmit"])
 
     def test_tres_paginas_do_mapa_alinhadas_a_definicao_canonica_e_vsl(self):
@@ -807,13 +808,14 @@ console.log(JSON.stringify({{ estadoVazio, estadoIgual, estadoGap, bloqueouSubmi
         self.assertIn("sistema proprietário de agentes especializados", texto.lower())
         self.assertNotIn("Gay Hendricks", texto)
 
-        # Páginas com vídeo: noindex enquanto o MP4 não está publicado, sem ID interno nem "2 min", com Ciclo de Virada e Garantia do Espelho Real.
+        # Páginas com vídeo: noindex enquanto o MP4 não está publicado, sem ID interno nem "2 min", com o valor regular de R$ 148 e Garantia do Espelho Real.
         for nome, html in (("vsl", vsl), ("hibrida", hibrida)):
             with self.subTest(pagina=nome):
                 self.assertIn('content="noindex, follow"', html)
-                self.assertIn("Ciclo de Virada", html)
-                self.assertIn("31/12/2026", html)
                 self.assertIn("R$ 148", html)
+                self.assertIn('data-preco="148"', html)
+                for ausente in ("Ciclo de Virada", "31/12", "31 de dezembro", "R$ 97", "lançamento", "Preço travado"):
+                    self.assertNotIn(ausente, html)
                 self.assertIn("Garantia do Espelho Real", html)
                 self.assertIn("Quero o Mapa do meu Teto", html)
                 self.assertNotIn("TETO-VSL-01", html)
