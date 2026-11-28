@@ -17,7 +17,7 @@ ARQUIVO = ROOT / "js" / "biblioteca-teto.js"
 
 PADROES = [
     "ganho-que-escorre", "freio-na-cobranca", "passo-que-nao-sai", "decisao-no-calor",
-    "progresso-sem-trilho", "dinheiro-nao-combina", "caixa-da-familia",
+    "progresso-sem-trilho", "dinheiro-nao-combina", "caixa-da-familia", "delegar-sem-olhar",
 ]
 VARIANTES = {"passo-que-nao-sai": ["medo-de-errar", "nao-estou-pronto"], "decisao-no-calor": ["emocao-do-momento", "virar-o-jogo"]}
 FAMILIAS = ["evitar", "idolatrar", "status", "vigilancia", "lealdade"]
@@ -92,7 +92,7 @@ class BibliotecaTetoTests(unittest.TestCase):
             self.assertEqual(sorted(variantes), sorted(p["leitura"]["por_variante"]))
 
     def test_toda_opcao_de_cena_aponta_para_padrao_e_variante_validos(self) -> None:
-        self.assertEqual(8, len(self.bib["cenas"]))
+        self.assertEqual(9, len(self.bib["cenas"]))
         vistos: set[str] = set()
         for cena in self.bib["cenas"]:
             self.assertIn(cena["padrao_principal"], PADROES)

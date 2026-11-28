@@ -59,22 +59,23 @@ const PAID_REPORTS = {
   },
   "teto-avancado": {
     titulo: "O Mapa do seu Teto: leitura das suas 3 cenas + ajuste no dia 7",
-    promessa: "Você carrega o arquivo (.md) do protocolo gratuito, conta mais duas situações em que o seu crescimento travou ou voltou e recebe o compromisso oculto que puxa o freio, o plano para fazer diferente no teto, a blindagem do novo patamar e o ajuste dos 90 dias no dia 7.",
+    promessa: "Se você fez o protocolo completo (Ato 1 + Ato 2), o arquivo (.md) importa a 1ª cena em 1 clique; se fez só o Ato 1, importa seu padrão e você conta 3 cenas reais. O sistema cruza tudo, revela o seu Reflexo de Retorno ao Patamar, instala as 3 travas + Kit da Hora H e reescreve os 90 dias no dia 7.",
     conteudo: [
-      "O que se repete nas suas 3 cenas e o compromisso oculto que pisa no freio, preso às suas próprias frases",
-      "Inversão do padrão (onde dizer não e onde dizer sim no teto) + blindagem do novo patamar em 3 travas",
-      "Plano de 7 dias na sua semana real (com roteiros editáveis) + ajuste no dia 7 reescrevendo os 90 dias com evidência",
-      "Relatório em PDF + texto (.md) + lembretes quinzenais neutros até o dia 90 (opcionais, 1 clique para sair)",
+      "O que se repete nas suas 3 cenas (renda ou patrimônio) e o compromisso oculto, preso às suas próprias frases em código",
+      "Inversão do padrão no ponto de escolha + blindagem do novo patamar em 3 travas (pico, margem e retomada em 48h)",
+      "Kit da Hora H incluído: Roteiros Editáveis de Conversa, Cartão de Bolso 60s, Recalibração Sem Culpa no Dia 7 e Agenda 90 dias",
+      "Relatório em PDF de 8 páginas + texto (.md) + Garantia do Espelho Real (7 dias) + lembretes neutros opcionais até o dia 90",
     ],
+    lembreteMd: "Antes de seguir, baixe o seu resultado no botão “Baixar como texto (.md)”, nesta página. É esse arquivo que leva o seu padrão (e a sua 1ª cena, se você fez a parte 2) para O Mapa do seu Teto, sem escrever tudo de novo.",
     preco: "R$ 97",
-    formato: "leitura no dia 0 + ajuste no dia 7 + PDF",
+    formato: "lançamento Ciclo de Virada até 31/12 (depois R$ 148) · Dia 0 + Dia 7 + PDF",
     preferirPagina: true,
     botao: "Ir direto ao pagamento →",
     paginaUrl: "/produtos/mapa-do-seu-teto/",
     botaoPagina: "Conhecer O Mapa do seu Teto →",
     plataforma: "Stripe",
     checkoutUrl: "https://relatorio.dlt.academy/comprar/teto-avancado?utm_source=portal&utm_medium=protocolo",
-    aviso: "Pagamento único por ciclo via Pix (confirma na hora) ou cartão pelo Stripe. Nada do que você escreveu aqui vai no link: depois de pagar, você escolhe se carrega o seu arquivo (.md). Suas respostas passam por um serviço de geração de texto contratado por nós apenas para produzir a leitura e ficam acessíveis no seu link por 10 dias para permitir o ajuste no dia 7 (ou você apaga na hora pelo botão da página; os lembretes quinzenais até o dia 90 são opcionais, neutros e com saída em 1 clique). É material educacional sobre hábitos com dinheiro, não é diagnóstico nem recomendação de investimento. Você tem 7 dias para pedir reembolso.",
+    aviso: "Ciclo de Virada: R$ 97 de lançamento até 31/12/2026 (valor regular de R$ 148 em 2027), em pagamento único via Pix (confirma na hora) ou cartão pelo Stripe, com preço travado de R$ 97 garantido no seu próximo ciclo. Nada do que você escreveu aqui vai no link: depois de pagar, você escolhe se carrega o seu arquivo (.md). Suas respostas passam por um serviço de geração de texto contratado por nós apenas para produzir a leitura e ficam acessíveis no seu link por 10 dias para permitir o ajuste no dia 7 (ou você apaga na hora pelo botão da página; os lembretes quinzenais até o dia 90 são opcionais, neutros e com saída em 1 clique). É material educacional sobre hábitos com dinheiro, não é diagnóstico nem recomendação de investimento. Garantia do Espelho Real: 7 dias para pedir reembolso integral.",
     perfis: {
       "ganho-que-escorre": {
         capitulo: "O ganho que escorre",
@@ -82,7 +83,7 @@ const PAID_REPORTS = {
       },
       "freio-na-cobranca": {
         capitulo: "O freio na hora de cobrar",
-        porque: "A leitura cruza três cenas em que você adiou ou deu desconto para separar o medo de rejeição do fato — e entrega o roteiro da próxima conversa de preço.",
+        porque: "A leitura cruza três cenas em que você adiou ou deu desconto para separar o medo de rejeição do fato, e entrega o roteiro pronto da próxima conversa de preço.",
       },
       "passo-que-nao-sai": {
         capitulo: "O passo que não sai",
@@ -103,6 +104,10 @@ const PAID_REPORTS = {
       "caixa-da-familia": {
         capitulo: "O caixa da família",
         porque: "A leitura cruza três episódios de ajuda financeira à custa de si e entrega um teto mensal definido antes, além de roteiros editáveis de conversa.",
+      },
+      "delegar-sem-olhar": {
+        capitulo: "Delegar sem olhar",
+        porque: "A leitura cruza três cenas em que a guarda baixou no auge e monta travas objetivas de critério, limite e revisão periódica antes de passar qualquer decisão adiante.",
       },
     },
   },

@@ -35,7 +35,7 @@ function base(extra) {
     sinais_risco: ["nenhum"],
     fatos: { olhou: 1, preco_cheio: 0, extra: "na", pedido_amanha: "na", sobrou: 1 },
     cena_extra: NAO, cena_cobrar: NAO, cena_risco: NAO, cena_emocao: NAO,
-    cena_plano: NAO, cena_semanas: NAO, cena_circulo: NAO, cena_pedido: NAO,
+    cena_plano: NAO, cena_semanas: NAO, cena_circulo: NAO, cena_pedido: NAO, cena_delegar: NAO,
     ...extra,
   };
 }

@@ -206,7 +206,7 @@ test("dia 90 sem fatos do dia 0 não pergunta a retro", async () => {
 test("\"não, é outro\": volta às cenas e o resultado mostra o teto de antes e o de agora", async () => {
   const estado = await ciclo("A", { diasAtras: 40 });
   const b = { ...CASOS.B };
-  const cenasB = pick(b, ["cena_extra", "cena_cobrar", "cena_risco", "cena_emocao", "cena_plano", "cena_semanas", "cena_circulo", "cena_pedido", "custo"]);
+  const cenasB = pick(b, ["cena_extra", "cena_cobrar", "cena_risco", "cena_emocao", "cena_plano", "cena_semanas", "cena_circulo", "cena_pedido", "cena_delegar", "custo"]);
   // As tríades continuam as de A: o espelho oferece o que as cenas novas e a família de antes apontam.
   const candidatos = R.calcular({ ...clone(estado.respostas), ...cenasB }, bib).sugestao.candidatos;
   assert.ok(candidatos.includes("ganho-que-escorre"), "o outro teto está entre os candidatos: " + candidatos);

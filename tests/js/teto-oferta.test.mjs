@@ -54,6 +54,7 @@ test("no fim do Ato 1, a oferta aparece para casos A/B/C com link prioritário p
     assert.equal(botoesOferta.length, 2, letra);
     assert.equal(botoesOferta[0].getAttribute("href"), PAGINA_TETO, "botão primário leva à LP");
     assert.equal(botoesOferta[1].getAttribute("href"), COMPRA, "botão secundário leva ao checkout");
+    assert.match(cartoes(a.p)[0].textContent, /Baixar como texto \(\.md\)/, "lembra de levar o .md para o pago");
   }
   for (const letra of ["D", "E", "F"]) {
     const a = abrir({ catalogo: COMPRA });

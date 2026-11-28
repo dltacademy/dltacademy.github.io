@@ -1741,6 +1741,9 @@ function buildPaidReportOffer(ref, el) {
     box.appendChild(list);
   }
 
+  // Lembrete do catálogo para levar o arquivo do resultado ao pago (texto fixo, sem respostas).
+  if (product.lembreteMd) box.appendChild(el("p", "protocol-paid-text protocol-paid-lembrete", product.lembreteMd));
+
   const buy = el("div", "protocol-paid-buy");
   buy.appendChild(el("p", "protocol-paid-price", product.preco + (product.formato ? " · " + product.formato : "")));
   const actions = el("div", "protocol-paid-actions");
@@ -2697,7 +2700,7 @@ function buildCurvaTeto(curva, el) {
   const modo = curva && curva.modo === "devolve" ? "devolve" : "estagna";
   const fig = el("figure", "protocol-curva protocol-curva-" + modo);
   const topo = el("div", "protocol-curva-topo");
-  topo.appendChild(el("p", "protocol-curva-titulo", curva.titulo || (modo === "devolve" ? "Curva do seu teto · Bate e devolve" : "Curva do seu teto · Empaca na resistência")));
+  topo.appendChild(el("p", "protocol-curva-titulo", curva.titulo || (modo === "devolve" ? "Curva do seu teto · Bate e devolve" : "Curva do seu teto · Empaca no marco")));
   topo.appendChild(el("span", "protocol-curva-selo protocol-curva-selo-" + modo, curva.selo || (modo === "devolve" ? "Toca e devolve" : "Toca e estagna")));
   fig.appendChild(topo);
 

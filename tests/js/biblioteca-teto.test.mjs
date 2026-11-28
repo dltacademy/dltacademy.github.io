@@ -13,7 +13,7 @@ const bib = require("../../js/biblioteca-teto.js");
 
 const PADROES = [
   "ganho-que-escorre", "freio-na-cobranca", "passo-que-nao-sai", "decisao-no-calor",
-  "progresso-sem-trilho", "dinheiro-nao-combina", "caixa-da-familia",
+  "progresso-sem-trilho", "dinheiro-nao-combina", "caixa-da-familia", "delegar-sem-olhar",
 ];
 const VARIANTES = ["medo-de-errar", "nao-estou-pronto", "emocao-do-momento", "virar-o-jogo"];
 const FAMILIAS = ["evitar", "idolatrar", "status", "vigilancia", "lealdade"];
@@ -82,7 +82,7 @@ test("os sete padrões, as quatro variantes, as cinco famílias e os ids no form
   });
   bib.fatos.forEach((f) => assert.match(f.id, RE_SNAKE));
   const ordens = PADROES.map((id) => bib.padroes[id].ordem);
-  assert.deepEqual(ordens, [1, 2, 3, 4, 5, 6, 7]);
+  assert.deepEqual(ordens, [1, 2, 3, 4, 5, 6, 7, 8]);
   PADROES.forEach((id) => {
     const p = bib.padroes[id];
     assert.ok(["ganho", "retencao"].includes(p.trilha), id);
@@ -142,7 +142,7 @@ test("os padrões 3 e 4 têm as duas variantes, cada uma com escada, leitura e s
     assert.notEqual(a.se_entao_exemplo, b.se_entao_exemplo);
     assert.notEqual(a.degrau0, b.degrau0);
   });
-  ["ganho-que-escorre", "freio-na-cobranca", "progresso-sem-trilho", "dinheiro-nao-combina", "caixa-da-familia"].forEach((id) => {
+  ["ganho-que-escorre", "freio-na-cobranca", "progresso-sem-trilho", "dinheiro-nao-combina", "caixa-da-familia", "delegar-sem-olhar"].forEach((id) => {
     assert.ok(bib.padroes[id].escada, id);
     assert.equal(bib.padroes[id].escada_por_variante, undefined, id);
   });
@@ -156,9 +156,9 @@ test("a trava por renda existe nos padrões 1 e 5 com as três rendas", () => {
   assert.deepEqual(bib.telas.renda.opcoes.map((o) => o.value).sort(), ["fixa", "mista", "variavel"]);
 });
 
-test("as oito cenas: toda opção aponta para um padrão (e uma variante) que existe", () => {
+test("as nove cenas: toda opção aponta para um padrão (e uma variante) que existe", () => {
   assert.deepEqual(bib.cenas.map((c) => c.id), [
-    "cena_extra", "cena_cobrar", "cena_risco", "cena_emocao", "cena_plano", "cena_semanas", "cena_circulo", "cena_pedido",
+    "cena_extra", "cena_cobrar", "cena_risco", "cena_emocao", "cena_plano", "cena_semanas", "cena_circulo", "cena_pedido", "cena_delegar",
   ]);
   const vistos = new Set();
   bib.cenas.forEach((c) => {
@@ -191,7 +191,7 @@ test("a contagem de sinais por padrão e por variante é a do esqueleto aprovado
   }));
   assert.deepEqual(sinais, {
     "ganho-que-escorre": 4, "freio-na-cobranca": 4, "passo-que-nao-sai": 6, "decisao-no-calor": 5,
-    "progresso-sem-trilho": 4, "dinheiro-nao-combina": 4, "caixa-da-familia": 5,
+    "progresso-sem-trilho": 4, "dinheiro-nao-combina": 4, "caixa-da-familia": 5, "delegar-sem-olhar": 4,
   });
   assert.deepEqual(porVariante, { "medo-de-errar": 3, "nao-estou-pronto": 3, "emocao-do-momento": 2, "virar-o-jogo": 3 });
 });

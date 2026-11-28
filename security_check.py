@@ -33,12 +33,15 @@ REQUIRED_CSP = {
 }
 
 # Exceção restrita às páginas de oferta (/produtos/<slug>/index.html) para o
-# Meta Pixel: hosts exatos da Meta, sem inline nem eval.
+# Meta Pixel (hosts exatos da Meta, sem inline nem eval) e para o vídeo do VSL
+# (só o domínio de vídeo da DLT).
 SALES_PAGE_CSP = {
     **REQUIRED_CSP,
     "script-src": "'self' https://connect.facebook.net",
     "img-src": "'self' data: blob: https://www.facebook.com",
     "connect-src": "'self' https://www.facebook.com https://connect.facebook.net",
+    # O VSL próprio: o .mp4 vem do bucket R2 com domínio próprio, sem player de terceiro.
+    "media-src": "'self' https://video.dlt.academy",
 }
 
 
