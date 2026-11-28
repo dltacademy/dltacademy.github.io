@@ -20,7 +20,7 @@ DEST="${1:-$ROOT/_site}"
 case "$DEST" in /*) ;; *) DEST="$PWD/$DEST" ;; esac
 
 # Tipos que o navegador recebe. Outro tipo só entra aqui se uma página o usar.
-EXTENSOES="html css js png jpg jpeg webp gif svg ico avif woff2 woff xml txt webmanifest pdf"
+EXTENSOES="html css js png jpg jpeg webp gif svg ico avif woff2 woff xml txt webmanifest pdf vtt"
 
 # Pastas que nunca vão ao ar (além de qualquer pasta ou arquivo com ponto).
 PASTAS_FORA="tests dev node_modules scripts _site"
@@ -98,7 +98,8 @@ for path in sorted(site.rglob("*")):
 
 ATRIBUTOS = {"a": ("href",), "link": ("href",), "img": ("src", "srcset"), "script": ("src",),
              "source": ("src", "srcset"), "iframe": ("src",), "video": ("src", "poster"),
-             "audio": ("src",), "use": ("href",)}
+             "audio": ("src",), "use": ("href",), "track": ("src",),
+             "div": ("data-video-legenda",)}
 
 
 class Links(HTMLParser):

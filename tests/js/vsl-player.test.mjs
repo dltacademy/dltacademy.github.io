@@ -171,3 +171,10 @@ test("barra da página híbrida: escondida até o preço, ou até a pessoa rolar
   assert.equal(b.cta.hidden, false);
 });
 
+
+test("legenda que falha não derruba o vídeo", () => {
+  const p = montar({ src: "https://video.dlt.academy/teto/vsl-v8.mp4", ctaSegundos: "747" });
+  (p.video.ouvintes.error || []).forEach((fn) => fn({ type: "error", target: { tagName: "TRACK" } }));
+  assert.equal(p.frame.children.some((c) => c.tagName === "VIDEO"), true, "o vídeo continua");
+  assert.equal(p.cta.hidden, true, "o botão continua esperando o preço");
+});
