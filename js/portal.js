@@ -91,7 +91,7 @@
         },
         {
           label: "Já fiz o protocolo e quero a leitura das minhas 3 cenas",
-          badge: "Caminho sugerido · Leitura sob medida (R$ 97)",
+          badge: "Caminho sugerido · Leitura sob medida (R$ 148)",
           title: "O Mapa do seu Teto",
           why: "Você carrega o arquivo (.md) do protocolo, conta mais duas cenas e recebe o que se repete nas três, o plano da sua semana e o ajuste no dia 7.",
           primary: {
@@ -107,7 +107,7 @@
       step1Ids: ["protocolo-teto-financeiro"],
       step2Ids: ["protocolo-decisao-fria"],
       step3: {
-        kicker: "Se o padrão pesar · Leitura sob medida (R$ 97)",
+        kicker: "Se o padrão pesar · Leitura sob medida (R$ 148)",
         title: "O Mapa do seu Teto",
         desc: "Os agentes cruzam três cenas reais suas, prendem cada conclusão às suas palavras e montam o plano da semana; no dia 7, o plano de 90 dias é reescrito com o que aconteceu.",
         primaryCta: { label: "Ver exemplo e a oferta →", url: "/produtos/mapa-do-seu-teto/" },
