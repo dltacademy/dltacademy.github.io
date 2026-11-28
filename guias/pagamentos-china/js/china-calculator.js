@@ -140,11 +140,26 @@
     };
   }
 
+  // Sem gasto não há simulação: apaga totais, barras e a economia da rodada
+  // anterior, para a tela não mostrar números de uma conta que já não vale.
+  function clearTrip() {
+    Object.keys(rows).forEach(function (key) {
+      var row = rows[key];
+      row.total.textContent = "—";
+      row.detail.textContent = "";
+      row.fill.style.width = "0%";
+      row.root.removeAttribute("data-grade");
+      row.root.classList.remove("is-best");
+    });
+    if (ctaNote) ctaNote.textContent = "";
+  }
+
   function renderTrip(o) {
     var m = Model.cost(o, P);
     if (m.spend <= 0) {
       summary.textContent = "Coloque quanto pretende gastar em pelo menos um dos três tipos de gasto.";
       verdict.textContent = "";
+      clearTrip();
       return;
     }
     var feeText = m.walletFee > 0
